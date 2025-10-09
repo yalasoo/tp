@@ -111,6 +111,16 @@ public class DeleteCommandTest {
         assertEquals(expected, deleteCommand.toString());
     }
 
+    @Test
+    public void execute_validName_success() {
+        String name = "Charlotte Oliveiro";
+        DeleteCommand deleteCommand = new DeleteCommand(name);
+        String expected = DeleteCommand.class.getCanonicalName()
+                + "{targetIndex=null, targetName=" + name
+                + ", isDeletedByName=true}";
+        assertEquals(expected, deleteCommand.toString());
+    }
+
     /**
      * Updates {@code model}'s filtered list to show no one.
      */
