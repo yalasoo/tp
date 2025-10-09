@@ -30,12 +30,18 @@ public class DeleteCommand extends Command {
     private final String targetName;
     private final boolean isDeletedByName;
 
+    /**
+     * Creates a DeleteCommand to delete by index.
+     */
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
         this.targetName = null;
         this.isDeletedByName = false;
     }
 
+    /**
+     * Creates a DeleteCommand to delete by name.
+     */
     public DeleteCommand(String targetName) {
         this.targetIndex = null;
         this.targetName = targetName;
