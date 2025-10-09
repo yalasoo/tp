@@ -19,21 +19,37 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the index number used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + ": Deletes the person identified by the index number used in the displayed person list or his name.\n"
+            + "Parameters: INDEX (must be a positive integer) or NAME (implementing)\n"
+            + "Example: " + COMMAND_WORD + " 1 or " + COMMAND_WORD + " n/John ";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_BY_NAME = "Delete by name feature implementing";
 
     private final Index targetIndex;
+    private final String targetName;
+    private final boolean isDeletedByName;
 
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
+        this.targetName = null;
+        this.isDeletedByName = false;
+    }
+
+    public DeleteCommand(String targetName) {
+        this.targetIndex = null;
+        this.targetName = targetName;
+        this.isDeletedByName = true;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (isDeletedByName) {
+            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_BY_NAME));
+        }
+
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -57,13 +73,20 @@ public class DeleteCommand extends Command {
         }
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return targetIndex.equals(otherDeleteCommand.targetIndex);
+
+        if (isDeletedByName && otherDeleteCommand.isDeletedByName) {
+            return targetName.equalsIgnoreCase(otherDeleteCommand.targetName);
+        }
+
+        return !isDeletedByName && targetIndex.equals(otherDeleteCommand.targetIndex);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("targetIndex", targetIndex)
+                .add("targetName", targetName)
+                .add("isDeletedByName", isDeletedByName)
                 .toString();
     }
 }

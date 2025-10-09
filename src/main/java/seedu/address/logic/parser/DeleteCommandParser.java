@@ -17,6 +17,18 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteCommand parse(String args) throws ParseException {
+
+        //delete n/Name
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.startsWith("n/")) {
+            String name = trimmedArgs.substring(2).trim();
+            if (name.isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            }
+            return new DeleteCommand(name);
+        }
+
         try {
             Index index = ParserUtil.parseIndex(args);
             return new DeleteCommand(index);
