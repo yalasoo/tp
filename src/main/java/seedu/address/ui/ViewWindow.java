@@ -1,13 +1,13 @@
 package seedu.address.ui;
 
+import java.util.Comparator;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import seedu.address.model.person.Person;
-
-import java.util.Comparator;
 
 /**
  * A popup window containing the detailed view of a person, following the same pattern as HelpWindow.
