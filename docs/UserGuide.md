@@ -72,7 +72,7 @@ manage student and parent contact information efficiently.
 
    * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A` : Adds a contact named `John Doe` with class `K1A` to LittleLogBook.
    
-   * `note 1 desc/Allergic to peanut` : Add the not "Allergic to peanut" to contact at index 1. 
+   * `note 1 desc/Allergic to peanut` : Add the note "Allergic to peanut" to contact at index 1. 
 
    * `delete n/John Doe` : Deletes the contact named `John Doe`.
 
