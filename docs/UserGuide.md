@@ -62,9 +62,10 @@ manage student and parent contact information efficiently.
       - Type `java -jar littlelogbook.jar` and press Enter
 
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-    <center>
-        <img src="images/Ui.png" width="500px">
-    </center>
+
+    <div style="text-align: center;">
+        <img src="images/Ui.png" width="500pgsx">
+    </div>
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
@@ -114,9 +115,9 @@ manage student and parent contact information efficiently.
 
 Shows a message explaining how to access the help page.
 
-<center>
+<div style="text-align: center;">
     <img src="images/help_message.png" width="600px">
-</center>
+</div>
 
 Format: `help`
 
@@ -171,13 +172,13 @@ Delete by NAME
 - Failure: Triggers Pop up windows for further confirmation. 
 Possible matches and corresponding information will also be displayed in the name list.
   - No match → Pop up window stating `No matches found. Press ESC to exit`
-  <center>
+  <div style="text-align: center;">
     <img src="images/delete_no_matches.png" width="350px">
-  </center>
+  </div>
   - Multiple matches → Pop up window stating `Multiple matches found. Type index and ENTER to delete or ESC to cancel`
-  <center>
+  <div style="text-align: center;">
     <img src="images/delete_multiple_matches.png" width="500px">
-  </center>
+  </div>
 
 
 ### Viewing contact details: `view`
@@ -211,9 +212,9 @@ Success:
   - Attendance (Coming soon)
 
 
-<center>
+<div style="text-align: center;">
     <img src="images/view_contact_window.png" width="500px">
-</center>
+</div>
 
 Failure:
 - Invalid input for view → `Invalid command format`
