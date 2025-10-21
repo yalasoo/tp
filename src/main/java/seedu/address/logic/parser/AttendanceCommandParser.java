@@ -17,14 +17,15 @@ import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
- * Parses input arguments and creates a new AttendanceCommand object
+ * Parses input arguments and creates a new AttendanceCommand object.
  */
 public class AttendanceCommandParser implements Parser<AttendanceCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the AttendanceCommand
      * and returns an AttendanceCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     *
+     * @throws ParseException if the user input does not conform the expected format.
      */
     public AttendanceCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STATUS, PREFIX_DATE);
@@ -64,6 +65,13 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
         return new AttendanceCommand(indexes, date, status);
     }
 
+    /**
+     * Parses the given string index into a {@code Set<Index>}.
+     *
+     * @param strIndexes the given index in string format.
+     * @return parsed index(es) in the form of {@code Set<Index>}.
+     * @throws ParseException
+     */
     private Set<Index> parseIndexes(String strIndexes) throws ParseException {
         Set<Index> indexes = new HashSet<>();
         String[] parts = strIndexes.split(",");
@@ -81,6 +89,13 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
         return indexes;
     }
 
+    /**
+     * Parse the given range of index.
+     *
+     * @param range of index in the form of "startNum-endNum".
+     * @return parsed indexes in the form of {@code Set<Index>}.
+     * @throws ParseException
+     */
     private Set<Index> parseRange(String range) throws ParseException {
         Set<Index> indexes = new HashSet<>();
         String[] bounds = range.split("-");
@@ -99,6 +114,13 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
         return indexes;
     }
 
+    /**
+     * Parse the given string index.
+     *
+     * @param strIndex one index in string format.
+     * @return Index object.
+     * @throws ParseException
+     */
     private Index parseSingleIndex(String strIndex) throws ParseException {
         try {
             int index = Integer.parseInt(strIndex.trim());

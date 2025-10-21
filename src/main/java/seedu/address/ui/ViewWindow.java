@@ -34,7 +34,7 @@ public class ViewWindow extends UiPart<Stage> {
     @FXML
     private TextArea notesArea;
     @FXML
-    private VBox attendanceContainer; // Add this in your FXML
+    private VBox attendanceContainer;
 
     private AttendancePanel attendancePanel;
 

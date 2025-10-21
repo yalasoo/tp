@@ -17,7 +17,7 @@ import seedu.address.model.person.Person;
 
 /**
  * Marks the attendance of the specified person in the address book.
- * Only applicable to those with "student" tag
+ * Only applicable to those with "student" tag.
  */
 public class AttendanceCommand extends Command {
 
@@ -29,7 +29,7 @@ public class AttendanceCommand extends Command {
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
             + "s/STATUS (present/late/sick/absent) "
-            + "[d/DATE] (YYYY-MM-DD)\n"
+            + "[d/DATE] (yyyy-MM-dd)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
             + "s/present d/2025-12-12";
 
@@ -50,10 +50,11 @@ public class AttendanceCommand extends Command {
 
     /**
      * Creates a AttendanceCommand to mark attendance of the
-     * specified indexes
-     * @param indexes which index(es) to be mark
-     * @param date when does this marking apply
-     * @param status what is the status of the attendance
+     * specified indexes.
+     *
+     * @param indexes which index(es) to be mark.
+     * @param date when does this marking apply.
+     * @param status what is the status of the attendance.
      */
     public AttendanceCommand(Set<Index> indexes, LocalDate date, AttendanceStatus status) {
         requireNonNull(indexes);
