@@ -99,8 +99,8 @@ public class AttendanceTest {
 
         // then (should be sorted ascending by date)
         String expected =
-                "21 Oct 2025 → present\n" +
-                        "22 Oct 2025 → sick";
+                "21 Oct 2025 → present\n"
+                        + "22 Oct 2025 → sick";
 
         assertEquals(expected, formatted);
     }
