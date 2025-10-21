@@ -153,17 +153,17 @@ public class ModelManagerTest {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();
 
-        // Add in reverse order.
+        // Add in reverse order
         modelManager.addPerson(bob);
         modelManager.addPerson(alice);
 
-        // Store original order.
+        // Store original order
         List<Person> originalOrder = new ArrayList<>(modelManager.getFilteredPersonList());
 
-        // Sort through ModelManager's public API.
+        // Sort through ModelManager's public API
         modelManager.sortFilteredPersonList(Comparator.comparing(p -> p.getName().toString()));
 
-        // Verify the public filtered list is sorted.
+        // Verify the public filtered list is sorted
         List<Person> sortedOrder = new ArrayList<>(modelManager.getFilteredPersonList());
         assertNotEquals(originalOrder, sortedOrder);
         assertEquals(alice, sortedOrder.get(0));
@@ -187,27 +187,27 @@ public class ModelManagerTest {
         ModelManager modelManagerCopy = new ModelManager(addressBook, userPrefs);
         assertEquals(modelManager, modelManagerCopy);
 
-        // same object -> returns true.
+        // same object -> returns true
         assertEquals(modelManager, modelManager);
 
-        // null -> returns false.
+        // null -> returns false
         assertNotEquals(null, modelManager);
 
-        // different types -> returns false.
+        // different types -> returns false
         assertNotEquals(5, modelManager);
 
-        // different addressBook -> returns false.
+        // different addressBook -> returns false
         assertNotEquals(modelManager, new ModelManager(differentAddressBook, userPrefs));
 
-        // different filteredList -> returns false.
+        // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
-        // resets modelManager to initial state for upcoming tests.
+        // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        // different userPrefs -> returns false.
+        // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));

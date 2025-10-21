@@ -43,6 +43,7 @@ public class SortCommand extends Command {
     /**
      * Creates a SortCommand to sort the contact list
      * by the specified {@code field} and {@code order}.
+     *
      * @param field which field to sort by.
      * @param order what is the order to sort by.
      */
@@ -81,7 +82,7 @@ public class SortCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls.
+        // instanceof handles nulls
         if (!(other instanceof SortCommand)) {
             return false;
         }
