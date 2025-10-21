@@ -14,15 +14,15 @@ public class SortCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsSortCommand() {
-        // Test name ascending
+        // Test name ascending.
         assertParseSuccess(parser, " f/name o/asc",
                 new SortCommand(SortCommand.SortField.NAME, SortCommand.SortOrder.ASC));
 
-        // Test class descending
+        // Test class descending.
         assertParseSuccess(parser, " f/class o/desc",
                 new SortCommand(SortCommand.SortField.CLASS, SortCommand.SortOrder.DESC));
 
-        // Test tag ascending (default order)
+        // Test tag ascending (default order).
         assertParseSuccess(parser, " f/tag",
                 new SortCommand(SortCommand.SortField.TAG, SortCommand.SortOrder.ASC));
     }

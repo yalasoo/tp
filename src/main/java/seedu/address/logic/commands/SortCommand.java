@@ -9,7 +9,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Sort contact list based on field and order
+ * Sort contact list based on field and order.
  */
 public class SortCommand extends Command {
 
@@ -42,9 +42,9 @@ public class SortCommand extends Command {
 
     /**
      * Creates a SortCommand to sort the contact list
-     * by the specified {@code field} and {@code order}
-     * @param field which field to sort by
-     * @param order what is the order to sort by
+     * by the specified {@code field} and {@code order}.
+     * @param field which field to sort by.
+     * @param order what is the order to sort by.
      */
     public SortCommand(SortField field, SortOrder order) {
         requireNonNull(field);
@@ -81,7 +81,7 @@ public class SortCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
+        // instanceof handles nulls.
         if (!(other instanceof SortCommand)) {
             return false;
         }
