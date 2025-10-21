@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -103,6 +104,51 @@ public class AttendanceTest {
                         + "22 Oct 2025 → sick";
 
         assertEquals(expected, formatted);
+    }
+
+    @Test
+    public void formatAttendanceRecordsForMonth_emptyAttendance_returnsNoRecordsMessage() {
+        Attendance attendance = new Attendance();
+        YearMonth targetMonth = YearMonth.of(2024, 1);
+
+        String result = attendance.formatAttendanceRecordsForMonth(targetMonth);
+
+        assertEquals("No attendance records.", result);
+    }
+
+    @Test
+    public void formatAttendanceRecordsForMonth_recordsExistForTargetMonth_returnsFormattedRecords() {
+        Attendance attendance = new Attendance();
+        LocalDate date1 = LocalDate.of(2024, 1, 15);
+        LocalDate date2 = LocalDate.of(2024, 1, 10);
+        YearMonth targetMonth = YearMonth.of(2024, 1);
+
+        attendance.markAttendance(date1, AttendanceStatus.PRESENT);
+        attendance.markAttendance(date2, AttendanceStatus.LATE);
+
+        String result = attendance.formatAttendanceRecordsForMonth(targetMonth);
+
+        String expected = "10 Jan 2024 → late\n"
+                + "15 Jan 2024 → present";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void formatAttendanceRecordsForMonth_mixedMonths_onlyShowsTargetMonth() {
+        Attendance attendance = new Attendance();
+        LocalDate janDate = LocalDate.of(2024, 1, 15);
+        LocalDate febDate = LocalDate.of(2024, 2, 20);
+        LocalDate marDate = LocalDate.of(2024, 3, 10);
+        YearMonth targetMonth = YearMonth.of(2024, 2);
+
+        attendance.markAttendance(janDate, AttendanceStatus.PRESENT);
+        attendance.markAttendance(febDate, AttendanceStatus.LATE);
+        attendance.markAttendance(marDate, AttendanceStatus.SICK);
+
+        String result = attendance.formatAttendanceRecordsForMonth(targetMonth);
+
+        // Should only show February record
+        assertEquals("20 Feb 2024 → late", result);
     }
 
     @Test

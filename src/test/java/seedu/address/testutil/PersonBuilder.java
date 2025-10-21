@@ -119,8 +119,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Note} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAttendance(Attendance attendance) {
+        this.attendance = attendance;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, studentClass, note, tags, null);
+        return new Person(name, phone, email, address, studentClass, note, tags, attendance);
     }
 
 }

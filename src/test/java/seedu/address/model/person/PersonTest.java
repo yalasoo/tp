@@ -24,6 +24,16 @@ import seedu.address.testutil.PersonBuilder;
 public class PersonTest {
 
     @Test
+    public void constructor_studentWithProvidedAttendance_usesProvidedAttendance() {
+        Attendance existingAttendance = new Attendance();
+        existingAttendance.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT);
+
+        Person student = new PersonBuilder().withTags("student").withAttendance(existingAttendance).build();
+
+        assertEquals(1, student.getAttendanceRecords().size());
+    }
+
+    @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
         Person person = new PersonBuilder().build();
         assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
@@ -106,6 +116,22 @@ public class PersonTest {
         assertEquals(2, records.size());
         assertEquals(AttendanceStatus.PRESENT, records.get(date1));
         assertEquals(AttendanceStatus.LATE, records.get(date2));
+    }
+
+    @Test
+    public void getAttendanceRecords_studentWithoutAttendance_returnsEmptyMap() {
+        Person student = new PersonBuilder().withTags("student").build();
+
+        Map<LocalDate, AttendanceStatus> records = student.getAttendanceRecords();
+        assertTrue(records.isEmpty());
+    }
+
+    @Test
+    public void getAttendanceRecords_nonStudent_returnsEmptyMap() {
+        Person nonStudent = new PersonBuilder().withTags("teacher").build();
+
+        Map<LocalDate, AttendanceStatus> records = nonStudent.getAttendanceRecords();
+        assertTrue(records.isEmpty());
     }
 
     @Test
