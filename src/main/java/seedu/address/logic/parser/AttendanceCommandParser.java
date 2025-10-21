@@ -38,7 +38,8 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
 
         String strIndexes = argMultimap.getPreamble();
         String strStatus = argMultimap.getValue(PREFIX_STATUS).get();
-        String strDate = argMultimap.getValue(PREFIX_DATE).orElse(LocalDate.now().toString());
+        String strDate = argMultimap.getValue(PREFIX_DATE)
+                .orElse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
         Set<Index> indexes = parseIndexes(strIndexes);
 
@@ -53,13 +54,13 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
             throw new ParseException("Invalid status. Valid status: present, late, sick, absent");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         LocalDate date;
         try {
             date = LocalDate.parse(strDate, formatter);
         } catch (DateTimeParseException e) {
-            throw new ParseException("Invalid date format. Please use yyyy-MM-dd.");
+            throw new ParseException("Invalid date format. Please use dd-MM-yyyy.");
         }
 
         return new AttendanceCommand(indexes, date, status);

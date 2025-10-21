@@ -29,7 +29,7 @@ public class AttendanceCommandParserTest {
                         LocalDate.now(), AttendanceStatus.ABSENT));
 
         // Range with specific date - this should work fine
-        assertParseSuccess(parser, "1-3 s/late d/2024-10-23",
+        assertParseSuccess(parser, "1-3 s/late d/23-10-2024",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1), Index.fromOneBased(2), Index.fromOneBased(3)),
                         LocalDate.of(2024, 10, 23), AttendanceStatus.LATE));
 
@@ -87,7 +87,7 @@ public class AttendanceCommandParserTest {
     @Test
     public void parse_invalidDate_throwsParseException() {
         assertParseFailure(parser, "1 s/present d/invalid",
-                "Invalid date format. Please use yyyy-MM-dd.");
+                "Invalid date format. Please use dd-MM-yyyy.");
     }
 
     @Test

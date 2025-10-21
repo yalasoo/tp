@@ -29,9 +29,9 @@ public class AttendanceCommand extends Command {
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
             + "s/STATUS (present/late/sick/absent) "
-            + "[d/DATE] (yyyy-MM-dd)\n"
+            + "[d/DATE] (dd-MM-yyyy)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
-            + "s/present d/2025-12-12";
+            + "s/present d/12-12-2025";
 
     public static final String MESSAGE_SUCCESS = "Attendance marked.";
 
