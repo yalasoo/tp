@@ -13,13 +13,18 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ModelManagerTest {
 
@@ -140,6 +145,35 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void sortFilteredPersonList_validComparator_sortsAddressBook() {
+        ModelManager modelManager = new ModelManager();
+        Person alice = new PersonBuilder().withName("Alice").build();
+        Person bob = new PersonBuilder().withName("Bob").build();
+
+        // Add in reverse order
+        modelManager.addPerson(bob);
+        modelManager.addPerson(alice);
+
+        // Store original order
+        List<Person> originalOrder = new ArrayList<>(modelManager.getFilteredPersonList());
+
+        // Sort through ModelManager's public API
+        modelManager.sortFilteredPersonList(Comparator.comparing(p -> p.getName().toString()));
+
+        // Verify the public filtered list is sorted
+        List<Person> sortedOrder = new ArrayList<>(modelManager.getFilteredPersonList());
+        assertNotEquals(originalOrder, sortedOrder);
+        assertEquals(alice, sortedOrder.get(0));
+        assertEquals(bob, sortedOrder.get(1));
+    }
+
+    @Test
+    public void sortFilteredPersonList_nullComparator_throwsNullPointerException() {
+        ModelManager modelManager = new ModelManager();
+        assertThrows(NullPointerException.class, () -> modelManager.sortFilteredPersonList(null));
     }
 
     @Test
