@@ -152,7 +152,7 @@ public class AddressBookParserTest {
 
         assertEquals(expectedCommand, command);
     }
-  
+
     public void parseCommand_note() throws Exception {
         NoteCommand command = (NoteCommand) parser.parseCommand(
                 NoteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
