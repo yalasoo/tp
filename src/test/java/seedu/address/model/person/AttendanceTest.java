@@ -68,6 +68,44 @@ public class AttendanceTest {
     }
 
     @Test
+    public void formatAttendanceRecords_emptyAttendance_returnsNoRecordsMessage() {
+        String expected = "No attendance records";
+        assertEquals(expected, attendance.formatAttendanceRecords());
+    }
+
+
+    @Test
+    public void formatAttendanceRecords_nonEmptyAttendance_returnsFormattedString() {
+        attendance.markAttendance(LocalDate.of(2025, 10, 21), AttendanceStatus.PRESENT);
+        attendance.markAttendance(LocalDate.of(2025, 10, 22), AttendanceStatus.LATE);
+
+        String formatted = attendance.formatAttendanceRecords();
+
+        String expected =
+                "21 Oct 2025 → present\n"
+                        + "22 Oct 2025 → late";
+
+        assertEquals(expected, formatted);
+    }
+
+    @Test
+    public void formatAttendanceRecords_unsortedInput_isSortedByDate() {
+        // given (add in reverse order)
+        attendance.markAttendance(LocalDate.of(2025, 10, 22), AttendanceStatus.SICK);
+        attendance.markAttendance(LocalDate.of(2025, 10, 21), AttendanceStatus.PRESENT);
+
+        // when
+        String formatted = attendance.formatAttendanceRecords();
+
+        // then (should be sorted ascending by date)
+        String expected =
+                "21 Oct 2025 → present\n" +
+                        "22 Oct 2025 → sick";
+
+        assertEquals(expected, formatted);
+    }
+
+    @Test
     public void equals_sameObject_returnsTrue() {
         assertTrue(attendance.equals(attendance));
     }

@@ -120,7 +120,7 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance
-        attendanceLabel.setText("Attendance feature coming soon!");
+        attendanceLabel.setText(person.getAttendance().formatAttendanceRecords());
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
