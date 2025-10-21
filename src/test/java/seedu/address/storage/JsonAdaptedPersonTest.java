@@ -1,10 +1,12 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static seedu.address.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +15,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.testutil.PersonBuilder;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -26,8 +31,6 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_NOTE = "Hello" + '\u0000' + "World";
-    private static final String INVALID_ADDRESS = " ";
-    private static final String INVALID_ATTENDANCE = null;
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
@@ -47,6 +50,22 @@ public class JsonAdaptedPersonTest {
     public void toModelType_validPersonDetails_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(BENSON);
         assertEquals(BENSON, person.toModelType());
+    }
+
+    @Test
+    public void constructor_personWithAttendance_populatesAttendanceMap() throws IllegalValueException {
+        // Create a person with attendance records
+        Person person = new PersonBuilder().withTags("student").build();
+
+        // Add attendance records to the person
+        person.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT);
+        person.markAttendance(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE);
+
+        JsonAdaptedPerson jsonPerson = new JsonAdaptedPerson(person);
+        Person samePerson = jsonPerson.toModelType();
+
+        assertFalse(samePerson.getAttendance().isEmpty());
+        assertEquals(2, samePerson.getAttendance().size());
     }
 
     @Test

@@ -65,6 +65,23 @@ public class PersonTest {
     }
 
     @Test
+    public void markAttendance_nullDate_throwsAssertionError() {
+        Person student = new PersonBuilder().withTags("student").build();
+
+        assertThrows(AssertionError.class, () ->
+                student.markAttendance(null, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void markAttendance_nullStatus_throwsAssertionError() {
+        Person student = new PersonBuilder().withTags("student").build();
+        LocalDate date = LocalDate.of(2024, 1, 15);
+
+        assertThrows(AssertionError.class, () ->
+                student.markAttendance(date, null));
+    }
+
+    @Test
     public void markAttendance_validDateAndStatus_success() {
         LocalDate today = LocalDate.of(2025, 10, 9);
         Person person = new PersonBuilder().withTags("student").build();
@@ -74,6 +91,21 @@ public class PersonTest {
         Map<LocalDate, AttendanceStatus> records = person.getAttendanceRecords();
         assertEquals(1, records.size());
         assertEquals(AttendanceStatus.PRESENT, records.get(today));
+    }
+
+    @Test
+    public void getAttendanceRecords_studentWithAttendance_returnsRecords() {
+        Person student = new PersonBuilder().withTags("student").build();
+        LocalDate date1 = LocalDate.of(2024, 1, 15);
+        LocalDate date2 = LocalDate.of(2024, 1, 16);
+
+        student.markAttendance(date1, AttendanceStatus.PRESENT);
+        student.markAttendance(date2, AttendanceStatus.LATE);
+
+        Map<LocalDate, AttendanceStatus> records = student.getAttendanceRecords();
+        assertEquals(2, records.size());
+        assertEquals(AttendanceStatus.PRESENT, records.get(date1));
+        assertEquals(AttendanceStatus.LATE, records.get(date2));
     }
 
     @Test
@@ -117,6 +149,19 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+    }
+
+    @Test
+    public void hashCode_sameFields_sameHashCode() {
+        Person person1 = new PersonBuilder().withName("John Doe").withPhone("955-553-46")
+                .withEmail("john@example.com").withAddress("Main St").withClass("K1A")
+                .withNote("Test note").withTags("student").build();
+
+        Person person2 = new PersonBuilder().withName("John Doe").withPhone("955-553-46")
+                .withEmail("john@example.com").withAddress("Main St").withClass("K1A")
+                .withNote("Test note").withTags("student").build();
+
+        assertEquals(person1.hashCode(), person2.hashCode());
     }
 
     @Test

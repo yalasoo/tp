@@ -18,16 +18,44 @@ public class Attendance {
 
     public final Map<LocalDate, AttendanceStatus> attendance;
 
+    /**
+     * Constructs an empty {@code Attendance} object.
+     */
     public Attendance() {
         this.attendance = new HashMap<>();
     }
 
+    /**
+     * Marks attendance for a specific date with the given status.
+     * If attendance already exists for the date, it will be updated.
+     * @param date date the date of attendance
+     * @param status date the date of attendance
+     */
     public void markAttendance(LocalDate date, AttendanceStatus status) {
         attendance.put(date, status);
     }
 
+    /**
+     * Returns a copy of all attendance records.
+     * The returned map contains dates mapped to their corresponding attendance status.
+     * @return a copy of the attendance records map
+     */
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return new HashMap<>(attendance);
+    }
+
+    /**
+     * Returns true if there are no attendance records.
+     */
+    public boolean isEmpty() {
+        return attendance.isEmpty();
+    }
+
+    /**
+     * Returns the number of attendance records.
+     */
+    public int size() {
+        return attendance.size();
     }
 
     /**
