@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.Image?>
@@ -28,7 +29,7 @@
                         <Insets top="10" right="15" bottom="10" left="15"/>
                     </padding>
 
-                    <!-- Name label - Black and largest -->
+                    <!-- Name label -->
                     <Label fx:id="nameLabel" text="Full Name" styleClass="label-bright" />
 
                     <Separator/>
@@ -38,8 +39,8 @@
                         <Label text="Personal Information" styleClass="label-header"/>
 
                         <HBox spacing="10">
-                            <Label text="Tags: " styleClass="field-label" />
-                            <Label fx:id="tagsLabel" styleClass="data-label"/>
+                            <Label text="Tags: " styleClass="field-label"/>
+                            <FlowPane fx:id="tags" />
                         </HBox>
 
                         <HBox spacing="10">
@@ -50,9 +51,9 @@
 
                     <Separator/>
 
-                    <!-- Basic Information Section -->
+                    <!-- Emergency Contact Information Section -->
                     <VBox spacing="8">
-                        <Label text="Contact Information" styleClass="label-header"/>
+                        <Label text="Emergency Contact Information" styleClass="label-header"/>
 
                         <HBox spacing="10">
                             <Label text="Phone:" styleClass="field-label"/>
