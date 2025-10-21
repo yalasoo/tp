@@ -3,6 +3,7 @@ package seedu.address.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.model.person.Person;
 
@@ -30,7 +31,9 @@ public class ViewWindow extends UiPart<Stage> {
     @FXML
     private TextArea notesArea;
     @FXML
-    private Label attendanceLabel;
+    private VBox attendanceContainer; // Add this in your FXML
+
+    private AttendancePanel attendancePanel;
 
     /**
      * Creates a new ViewWindow.
@@ -41,6 +44,7 @@ public class ViewWindow extends UiPart<Stage> {
         super(FXML, root);
         root.setMinWidth(MIN_WIDTH);
         root.setMinHeight(MIN_HEIGHT);
+        initializeAttendancePanel();
     }
 
     /**
@@ -48,6 +52,14 @@ public class ViewWindow extends UiPart<Stage> {
      */
     public ViewWindow() {
         this(new Stage());
+    }
+
+    /**
+     * Initializes the attendance panel and adds it to the container.
+     */
+    private void initializeAttendancePanel() {
+        attendancePanel = new AttendancePanel();
+        attendanceContainer.getChildren().add(attendancePanel.getRoot());
     }
 
     /**
@@ -120,7 +132,7 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance
-        attendanceLabel.setText(person.getAttendance().formatAttendanceRecords());
+        attendancePanel.setAttendance(person.getAttendance());
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
@@ -137,7 +149,8 @@ public class ViewWindow extends UiPart<Stage> {
         classLabel.setText("");
         tagsLabel.setText("");
         notesArea.setText("");
-        attendanceLabel.setText("");
+        attendancePanel.setAttendance(null);
+        attendancePanel.resetToCurrentMonth();
         getRoot().setTitle("View Contact");
     }
 }

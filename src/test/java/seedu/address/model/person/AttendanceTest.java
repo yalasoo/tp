@@ -69,7 +69,7 @@ public class AttendanceTest {
 
     @Test
     public void formatAttendanceRecords_emptyAttendance_returnsNoRecordsMessage() {
-        String expected = "No attendance records";
+        String expected = "No attendance records.";
         assertEquals(expected, attendance.formatAttendanceRecords());
     }
 

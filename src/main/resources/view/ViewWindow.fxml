@@ -84,10 +84,8 @@
                 <Separator/>
 
                 <!-- Attendance Section -->
-                <VBox spacing="8">
-                    <Label text="Attendance"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                    <Label fx:id="attendanceLabel" wrapText="true"/>
+                <VBox fx:id="attendanceContainer" spacing="5" style="-fx-padding: 10 0 0 0;">
+                    <Label text="Attendance" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
                 </VBox>
             </VBox>
         </ScrollPane>

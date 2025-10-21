@@ -1,6 +1,7 @@
 package seedu.address.model.person;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
@@ -35,7 +36,7 @@ public class Attendance {
      */
     public String formatAttendanceRecords() {
         if (attendance.isEmpty()) {
-            return "No attendance records";
+            return "No attendance records.";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
@@ -52,6 +53,35 @@ public class Attendance {
                 });
 
         return formattedAttendanceRecord.toString().trim();
+    }
+
+    /**
+     * Attendance formatter for a given month to be displayed in the view window.
+     * @param targetMonth attendance month to be viewed.
+     * @return a formatted string of the attendance record for the specified month.
+     */
+    public String formatAttendanceRecordsForMonth(YearMonth targetMonth) {
+        if (attendance.isEmpty()) {
+            return "No attendance records.";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+        StringBuilder formattedAttendanceRecord = new StringBuilder();
+
+        attendance.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .filter(entry -> YearMonth.from(entry.getKey()).equals(targetMonth))
+                .forEach(entry -> {
+                    String formattedDate = entry.getKey().format(formatter);
+                    formattedAttendanceRecord.append(formattedDate)
+                            .append(" → ")
+                            .append(entry.getValue().toString().toLowerCase())
+                            .append("\n");
+                });
+
+        String result = formattedAttendanceRecord.toString().trim();
+        return result.isEmpty() ? "No attendance records for "
+                + targetMonth.format(DateTimeFormatter.ofPattern("MMM yyyy")) : result;
     }
 
     @Override
