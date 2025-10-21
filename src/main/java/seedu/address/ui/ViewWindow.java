@@ -23,6 +23,8 @@ public class ViewWindow extends UiPart<Stage> {
     @FXML
     private Label classLabel;
     @FXML
+    private Label birthdayLabel;
+    @FXML
     private Label nameLabel;
     @FXML
     private Label phoneLabel;
@@ -104,6 +106,7 @@ public class ViewWindow extends UiPart<Stage> {
         emailLabel.setText(person.getEmail().value);
         addressLabel.setText(person.getAddress().value);
         classLabel.setText(person.getStudentClass().value);
+        birthdayLabel.setText(person.getBirthday().value);
 
         // Tags
         if (person.getTags() != null && !person.getTags().isEmpty()) {
@@ -135,6 +138,7 @@ public class ViewWindow extends UiPart<Stage> {
         emailLabel.setText("");
         addressLabel.setText("");
         classLabel.setText("");
+        birthdayLabel.setText("");
         tags.getChildren().clear();
         notesArea.setText("");
         attendanceLabel.setText("");
