@@ -82,53 +82,12 @@
                     <Separator/>
 
                     <!-- Attendance Section -->
-                    <VBox spacing="8">
+                    <VBox fx:id="attendanceSection" spacing="8">
                         <Label text="Attendance" styleClass="label-header"/>
-                        <Label fx:id="attendanceLabel" wrapText="true" styleClass="data-label"/>
+                        <VBox fx:id="attendanceContainer" spacing="5"/>
                     </VBox>
                 </VBox>
-
-                <Separator/>
-
-                <!-- Basic Information Section -->
-                <VBox spacing="8">
-                    <Label text="Contact Information"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                    <HBox spacing="10">
-                        <Label text="Phone:" style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="phoneLabel"/>
-                    </HBox>
-
-                    <HBox spacing="10">
-                        <Label text="Email:" style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="emailLabel"/>
-                    </HBox>
-
-                    <HBox spacing="10">
-                        <Label text="Address:" style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="addressLabel" wrapText="true"/>
-                    </HBox>
-                </VBox>
-
-                <Separator/>
-
-                <!-- Notes Section -->
-                <VBox spacing="8">
-                    <Label text="Notes" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                    <TextArea fx:id="notesArea" editable="false"
-                              wrapText="true" prefRowCount="4">
-                        <style>-fx-background-color: #f8f9fa; -fx-border-color: #ddd;</style>
-                    </TextArea>
-                </VBox>
-
-                <Separator/>
-
-                <!-- Attendance Section -->
-                <VBox fx:id="attendanceContainer" spacing="5" style="-fx-padding: 10 0 0 0;">
-                    <Label text="Attendance" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-                </VBox>
-            </VBox>
-        </ScrollPane>
-    </Scene>
-  </scene>
+            </ScrollPane>
+        </Scene>
+    </scene>
 </fx:root>
