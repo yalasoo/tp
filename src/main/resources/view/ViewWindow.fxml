@@ -12,6 +12,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.stage.Stage?>
 
+<?import javafx.scene.layout.FlowPane?>
 <fx:root resizable="false" title="View Contact" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <!-- TODO: Add Icon for View Window -->
   <scene>
@@ -36,10 +37,9 @@
                 <VBox spacing="8">
                     <Label text="Personal Information"
                            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-
                     <HBox spacing="10">
                         <Label text="Tags: " style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="tagsLabel" />
+                        <FlowPane fx:id="tags" />
                     </HBox>
 
                     <HBox spacing="10">
