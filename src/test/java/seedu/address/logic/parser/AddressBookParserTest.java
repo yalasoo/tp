@@ -47,12 +47,14 @@ public class AddressBookParserTest {
                 .withEmail("amy@example.com")
                 .withAddress("123, Jurong West Ave 6, #08-111")
                 .withClass("K1B")
+                .withBirthday("23-10-1995")
                 .withNote("")
                 .withTags()
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
-        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com a/123, Jurong West Ave 6, #08-111 c/K1B";
+        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995";
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);
@@ -70,13 +72,17 @@ public class AddressBookParserTest {
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
     }
-
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder().withNote("").build();
+        Person person = new PersonBuilder().withBirthday("18-07-2018").withNote("").build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+
+        String editDetails = PersonUtil.getEditPersonDescriptorDetails(descriptor);
+        System.out.println("EDIT COMMAND STRING: " + EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails); // DEBUG
+
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails);
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
