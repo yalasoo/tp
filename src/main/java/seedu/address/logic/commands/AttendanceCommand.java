@@ -20,7 +20,6 @@ import seedu.address.model.person.Person;
  * Only applicable to those with "student" tag
  */
 public class AttendanceCommand extends Command {
-    private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
     public static final String COMMAND_WORD = "attendance";
 
@@ -35,6 +34,8 @@ public class AttendanceCommand extends Command {
             + "s/present d/2025-12-12";
 
     public static final String MESSAGE_SUCCESS = "Attendance marked.";
+
+    private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
     /**
      * Represents the status that can be used for marking attendance.

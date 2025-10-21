@@ -95,8 +95,8 @@ public class AttendanceCommandTest {
         AttendanceCommand command = new AttendanceCommand(indexes, LocalDate.now(), AttendanceStatus.PRESENT);
 
         assertThrows(CommandException.class,
-                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": " + outOfBoundIndex.getOneBased(),
-                () -> command.execute(model));
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+                        + outOfBoundIndex.getOneBased(), () -> command.execute(model));
     }
 
     @Test
