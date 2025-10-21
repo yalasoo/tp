@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CLASS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
@@ -12,6 +13,9 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
+
+import java.time.LocalDate;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +62,18 @@ public class PersonTest {
         assertTrue(BOB.isSamePerson(editedBob));
         // Additionally verify that the normalized name matches
         assertEquals(VALID_NAME_BOB, editedBob.getName().fullName);
+    }
+
+    @Test
+    public void markAttendance_validDateAndStatus_success() {
+        LocalDate today = LocalDate.of(2025, 10, 9);
+        Person person = new PersonBuilder().withTags("student").build();
+
+        person.markAttendance(today, AttendanceStatus.PRESENT);
+
+        Map<LocalDate, AttendanceStatus> records = person.getAttendanceRecords();
+        assertEquals(1, records.size());
+        assertEquals(AttendanceStatus.PRESENT, records.get(today));
     }
 
     @Test
