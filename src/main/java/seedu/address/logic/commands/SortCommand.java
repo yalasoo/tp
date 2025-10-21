@@ -17,7 +17,7 @@ public class SortCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Sort the contact list based on FIELD and ORDER.\n"
-            + "Parameters: f/FIELD (name / class / tag), "
+            + "Parameters: f/FIELD (name / class / tag) "
             + "[o/ORDER] (asc / desc) default to ascending if omitted\n"
             + "Example: " + COMMAND_WORD + " f/name o/asc";
 
