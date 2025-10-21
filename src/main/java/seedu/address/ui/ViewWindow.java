@@ -1,9 +1,12 @@
 package seedu.address.ui;
 
+import java.util.Comparator;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import seedu.address.model.person.Person;
 
@@ -17,7 +20,7 @@ public class ViewWindow extends UiPart<Stage> {
     private static final double MIN_HEIGHT = 600;
 
     @FXML
-    private Label tagsLabel;
+    private FlowPane tags;
     @FXML
     private Label classLabel;
     @FXML
@@ -114,14 +117,11 @@ public class ViewWindow extends UiPart<Stage> {
         addressLabel.setText(person.getAddress().value);
         classLabel.setText(person.getStudentClass().value);
 
-        // Format tags
+        // Tags
         if (person.getTags() != null && !person.getTags().isEmpty()) {
-            tagsLabel.setText(person.getTags().stream()
-                    .map(tag -> tag.tagName)
-                    .reduce((t1, t2) -> t1 + ", " + t2)
-                    .orElse("No tags"));
-        } else {
-            tagsLabel.setText("No tags");
+            person.getTags().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         }
 
         // Notes
@@ -147,7 +147,7 @@ public class ViewWindow extends UiPart<Stage> {
         emailLabel.setText("");
         addressLabel.setText("");
         classLabel.setText("");
-        tagsLabel.setText("");
+        tags.getChildren().clear();
         notesArea.setText("");
         attendancePanel.setAttendance(null);
         attendancePanel.resetToCurrentMonth();

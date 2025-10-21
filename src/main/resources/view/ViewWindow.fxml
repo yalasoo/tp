@@ -7,45 +7,86 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.stage.Stage?>
 
-<fx:root resizable="false" title="View Contact" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <!-- TODO: Add Icon for View Window -->
-  <scene>
-    <Scene>
-      <stylesheets>
-        <URL value="@ViewWindow.css" />
-      </stylesheets>
+<fx:root title="View Contact" type="javafx.stage.Stage"
+         minWidth="500" minHeight="600" maxWidth="800"
+         xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <!-- TODO: Add Icon for View Window -->
+    <scene>
+        <Scene>
+            <stylesheets>
+                <URL value="@ViewWindow.css" />
+            </stylesheets>
 
-        <ScrollPane style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 1;"
-                    fitToWidth="true">
-            <VBox spacing="15" style="-fx-padding: 20;">
-                <padding>
-                    <Insets top="10" right="15" bottom="10" left="15"/>
-                </padding>
+            <ScrollPane styleClass="root scroll-pane" fx:id="scrollPane" fitToWidth="true">
+                <VBox spacing="15" style="-fx-padding: 20;">
+                    <padding>
+                        <Insets top="10" right="15" bottom="10" left="15"/>
+                    </padding>
 
-                <!-- Header -->
-                <Label fx:id="nameLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                    <!-- Name label -->
+                    <Label fx:id="nameLabel" text="Full Name" styleClass="label-bright" />
 
-                <Separator/>
+                    <Separator/>
 
-                <!-- Personal Information Section -->
-                <VBox spacing="8">
-                    <Label text="Personal Information"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                    <!-- Personal Information Section -->
+                    <VBox spacing="8">
+                        <Label text="Personal Information" styleClass="label-header"/>
 
-                    <HBox spacing="10">
-                        <Label text="Tags: " style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="tagsLabel" />
-                    </HBox>
+                        <HBox spacing="10">
+                            <Label text="Tags: " styleClass="field-label"/>
+                            <FlowPane fx:id="tags" />
+                        </HBox>
 
-                    <HBox spacing="10">
-                        <Label text="Class: " style="-fx-font-weight: bold; -fx-min-width: 80;"/>
-                        <Label fx:id="classLabel" />
-                    </HBox>
+                        <HBox spacing="10">
+                            <Label text="Class: " styleClass="field-label"/>
+                            <Label fx:id="classLabel" styleClass="data-label"/>
+                        </HBox>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Emergency Contact Information Section -->
+                    <VBox spacing="8">
+                        <Label text="Emergency Contact Information" styleClass="label-header"/>
+
+                        <HBox spacing="10">
+                            <Label text="Phone:" styleClass="field-label"/>
+                            <Label fx:id="phoneLabel" styleClass="data-label"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Email:" styleClass="field-label"/>
+                            <Label fx:id="emailLabel" styleClass="data-label"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Address:" styleClass="field-label"/>
+                            <Label fx:id="addressLabel" wrapText="true" styleClass="data-label"/>
+                        </HBox>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Notes Section -->
+                    <VBox spacing="8">
+                        <Label text="Notes" styleClass="label-header"/>
+                        <TextArea fx:id="notesArea" editable="false" wrapText="true" prefRowCount="4"
+                                  styleClass="result-display" />
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Attendance Section -->
+                    <VBox spacing="8">
+                        <Label text="Attendance" styleClass="label-header"/>
+                        <Label fx:id="attendanceLabel" wrapText="true" styleClass="data-label"/>
+                    </VBox>
                 </VBox>
 
                 <Separator/>
