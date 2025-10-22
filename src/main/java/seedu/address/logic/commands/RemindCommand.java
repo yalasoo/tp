@@ -88,13 +88,16 @@ public class RemindCommand extends Command {
 
         // Upcoming birthdays section
         if (!upcomingBirthdays.isEmpty()) {
+            if (!todayBirthdays.isEmpty()) {
+                message.append("\n");
+            }
             message.append("Upcoming birthdays in the next ").append(UPCOMING_DAYS).append(" days:\n\n");
             message.append(getFormattedPersonList(upcomingBirthdays, false));
         } else if (todayBirthdays.isEmpty()) {
             return MESSAGE_NO_UPCOMING_BIRTHDAYS;
         }
 
-        message.append("\nDon't forget to wish them happy birthday!");
+        message.append("\nDon't forget to wish them happy birthday!\n");
         return message.toString();
     }
 
