@@ -5,6 +5,7 @@
     "email": "hans@example.com",
     "address": "123, Main Street",
     "studentClass": "K1A",
+    "birthday": "18-11-1997",
     "note": "",
     "tags": [ ]
   } ]

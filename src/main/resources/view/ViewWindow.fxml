@@ -46,6 +46,11 @@
                             <Label text="Class: " styleClass="field-label"/>
                             <Label fx:id="classLabel" styleClass="data-label"/>
                         </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Birthday: " styleClass="field-label"/>
+                            <Label fx:id="birthdayLabel" styleClass="data-label"/>
+                        </HBox>
                     </VBox>
 
                     <Separator/>

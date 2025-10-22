@@ -16,6 +16,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Attendance;
+import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -36,6 +37,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final String studentClass;
+    private final String birthday;
     private final String note;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final Map<String, String> attendance = new HashMap<>();
@@ -49,6 +51,7 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("address") String address,
                              @JsonProperty("studentClass") String studentClass,
+                             @JsonProperty("birthday") String birthday,
                              @JsonProperty("note") String note,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
                              @JsonProperty("attendance") Map<String, String> attendance) {
@@ -57,6 +60,7 @@ class JsonAdaptedPerson {
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.birthday = birthday;
         this.note = note;
         if (tags != null) {
             this.tags.addAll(tags);
@@ -75,6 +79,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         studentClass = source.getStudentClass().value;
+        birthday = source.getBirthday().value;
         note = source.getNote().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -144,6 +149,15 @@ class JsonAdaptedPerson {
         }
         final Class modelStudentClass = new Class(studentClass);
 
+        if (birthday == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Birthday.class.getSimpleName()));
+        }
+        if (!Birthday.isValidBirthday(birthday)) {
+            throw new IllegalValueException(Birthday.MESSAGE_CONSTRAINTS);
+        }
+        final Birthday modelBirthday = new Birthday(birthday);
+
         if (note == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Note.class.getSimpleName()));
         }
@@ -153,7 +167,8 @@ class JsonAdaptedPerson {
         final Note modelNote = new Note(note);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelNote, modelTags,
-                modelAttendance);
+
+        return new Person(modelName, modelPhone, modelEmail, modelAddress,
+                          modelStudentClass, modelBirthday, modelNote, modelTags, modelAttendance);
     }
 }
