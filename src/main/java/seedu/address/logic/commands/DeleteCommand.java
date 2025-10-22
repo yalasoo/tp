@@ -11,6 +11,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.ui.DeletePopup;
+import seedu.address.ui.InfoPopup;
 
 /**
  * Deletes a person identified using it's displayed index from the address book.
@@ -61,6 +62,9 @@ public class DeleteCommand extends Command {
 
             if (exactMatches.size() == 1) {
                 Person personToDelete = exactMatches.get(0);
+                if (isDeletionCancelled(personToDelete)) {
+                    throw new CommandException("Deletion cancelled.");
+                }
                 model.deletePerson(personToDelete);
                 return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
                         Messages.format(personToDelete)));
@@ -74,11 +78,15 @@ public class DeleteCommand extends Command {
                     : exactMatches;
 
             if (possibleMatches.isEmpty()) {
-                showNoMatchPopup();
-                throw new CommandException("Deletion cancelled.");
+                InfoPopup infoPopup = new InfoPopup();
+                infoPopup.show("No matches found. Please try again.");
+                throw new CommandException("No matches found.");
             }
 
             Person selectedPerson = showDeletePopup(possibleMatches);
+            if (isDeletionCancelled(selectedPerson)) {
+                throw new CommandException("Deletion cancelled.");
+            }
             model.deletePerson(selectedPerson);
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
                     Messages.format(selectedPerson)));
@@ -86,10 +94,15 @@ public class DeleteCommand extends Command {
 
         // delete by index
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            InfoPopup infoPopup = new InfoPopup();
+            infoPopup.show("Invalid index. Please try again.");
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+        if (isDeletionCancelled(personToDelete)) {
+            throw new CommandException("Deletion cancelled.");
+        }
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
@@ -99,8 +112,8 @@ public class DeleteCommand extends Command {
      * */
     private Person showDeletePopup(List<Person> matchingResults) throws CommandException {
         DeletePopup deletePopup = new DeletePopup();
-        deletePopup.show("Multiple matches found. Type index and ENTER to delete or ESC to cancel:",
-                matchingResults);
+        deletePopup.show("Possible matches found. Type INDEX and ENTER to delete or ESC to cancel:",
+                    matchingResults);
 
         if (deletePopup.isConfirmed()) {
             return deletePopup.getSelectedPerson();
@@ -110,11 +123,13 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Shows a Delete Pop up to tell the user no match found.
+     * Shows a Confirm Pop up to ask the user whether to proceed with the deletion.
      */
-    private void showNoMatchPopup() {
+    private boolean isDeletionCancelled(Person person) {
         DeletePopup deletePopup = new DeletePopup();
-        deletePopup.show("No matches found. Press ESC to exit.", List.of());
+        deletePopup.show("Are you sure you want to delete this contact ("
+                + person.getName() + ")? Type INDEX and ENTER to confirm or ESC to cancel.", List.of(person));
+        return !deletePopup.isConfirmed();
     }
 
     @Override
