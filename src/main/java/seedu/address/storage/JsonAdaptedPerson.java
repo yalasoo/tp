@@ -1,8 +1,11 @@
 package seedu.address.storage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,8 +13,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
+import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -35,6 +40,7 @@ class JsonAdaptedPerson {
     private final String birthday;
     private final String note;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final Map<String, String> attendance = new HashMap<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -47,7 +53,8 @@ class JsonAdaptedPerson {
                              @JsonProperty("studentClass") String studentClass,
                              @JsonProperty("birthday") String birthday,
                              @JsonProperty("note") String note,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("attendance") Map<String, String> attendance) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -57,6 +64,9 @@ class JsonAdaptedPerson {
         this.note = note;
         if (tags != null) {
             this.tags.addAll(tags);
+        }
+        if (attendance != null) {
+            this.attendance.putAll(attendance);
         }
     }
 
@@ -74,6 +84,11 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+
+        if (source.getAttendance() != null && !source.getAttendanceRecords().isEmpty()) {
+            source.getAttendanceRecords().forEach((date, status) ->
+                    attendance.put(date.toString(), status.toString()));
+        }
     }
 
     /**
@@ -85,6 +100,13 @@ class JsonAdaptedPerson {
         final List<Tag> personTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
+        }
+
+        final Attendance modelAttendance = new Attendance();
+        for (Map.Entry<String, String> entry : attendance.entrySet()) {
+            LocalDate date = LocalDate.parse(entry.getKey());
+            AttendanceStatus status = AttendanceStatus.valueOf(entry.getValue());
+            modelAttendance.markAttendance(date, status);
         }
 
         if (name == null) {
@@ -145,7 +167,8 @@ class JsonAdaptedPerson {
         final Note modelNote = new Note(note);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
+        
         return new Person(modelName, modelPhone, modelEmail, modelAddress,
-                modelStudentClass, modelBirthday, modelNote, modelTags);
+                          modelStudentClass, modelBirthday, modelNote, modelTags, modelAttendance);
     }
 }

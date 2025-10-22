@@ -2,12 +2,15 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -27,12 +30,13 @@ public class Person {
     // Data fields
     private final Class studentClass;
     private final Set<Tag> tags = new HashSet<>();
+    private final Attendance attendance;
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Class studentClass,
-                  Birthday birthday, Note note, Set<Tag> tags) {
+                  Birthday birthday, Note note, Set<Tag> tags, Attendance attendance) {
         this.birthday = birthday;
         requireAllNonNull(name, phone, email, address, studentClass, note, tags);
         this.name = name;
@@ -42,6 +46,13 @@ public class Person {
         this.studentClass = studentClass;
         this.note = note;
         this.tags.addAll(tags);
+
+        // only add attendance for student
+        if (tags.contains(new Tag("student"))) {
+            this.attendance = (attendance != null) ? attendance : new Attendance();
+        } else {
+            this.attendance = null;
+        }
     }
 
     public Name getName() {
@@ -72,12 +83,34 @@ public class Person {
         return note;
     }
 
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Marks the attendance of this person object
+     * @param date when does this attendance apply
+     * @param status what is the status of this attendance
+     */
+    public void markAttendance(LocalDate date, AttendanceStatus status) {
+        assert date != null;
+        assert status != null;
+
+        if (attendance != null) {
+            attendance.markAttendance(date, status);
+        }
+    }
+
+    public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
+        return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
     }
 
     /**

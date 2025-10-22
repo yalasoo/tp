@@ -54,7 +54,7 @@ public class NoteCommand extends Command {
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), personToEdit.getStudentClass(), personToEdit.getBirthday(),
-                note, personToEdit.getTags()
+                note, personToEdit.getTags(), personToEdit.getAttendance()
         );
 
         model.setPerson(personToEdit, editedPerson);

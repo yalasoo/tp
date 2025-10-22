@@ -5,6 +5,7 @@ import java.util.Set;
 
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
+import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -35,6 +36,7 @@ public class PersonBuilder {
     private Birthday birthday;
     private Note note;
     private Set<Tag> tags;
+    private Attendance attendance;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -48,6 +50,7 @@ public class PersonBuilder {
         birthday = new Birthday(DEFAULT_BIRTHDAY);
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
+        attendance = new Attendance();
     }
 
     /**
@@ -62,6 +65,7 @@ public class PersonBuilder {
         birthday = personToCopy.getBirthday();
         note = personToCopy.getNote();
         tags = new HashSet<>(personToCopy.getTags());
+        attendance = personToCopy.getAttendance();
     }
 
     /**
@@ -129,8 +133,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Note} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAttendance(Attendance attendance) {
+        this.attendance = attendance;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, studentClass, birthday, note, tags);
+        return new Person(name, phone, email, address, studentClass, birthday, note, tags, attendance);
     }
 
 }
