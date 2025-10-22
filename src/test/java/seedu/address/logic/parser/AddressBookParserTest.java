@@ -30,6 +30,7 @@ import seedu.address.logic.commands.FindTagCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.RemindCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.SortCommand.SortField;
 import seedu.address.logic.commands.SortCommand.SortOrder;
@@ -171,6 +172,12 @@ public class AddressBookParserTest {
         SortCommand command = (SortCommand) parser.parseCommand(
                 SortCommand.COMMAND_WORD + " " + PREFIX_FIELD + "name");
         assertEquals(new SortCommand(SortField.valueOf("NAME"), SortOrder.valueOf("ASC")), command);
+    }
+
+    @Test
+    public void parseCommand_remind() throws Exception {
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD) instanceof RemindCommand);
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD + " 3") instanceof RemindCommand);
     }
 
     @Test

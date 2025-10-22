@@ -21,6 +21,7 @@ public class RemindCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Birthday reminders displayed.";
     public static final String MESSAGE_NO_UPCOMING_BIRTHDAYS = "No upcoming birthdays found.";
     public static final String MESSAGE_NO_BIRTHDAYS_TODAY = "No birthdays today!";
+    public static final String MESSAGE_NO_PERSONS = "No contacts in address book.";
 
     // Number of days to look ahead for upcoming birthdays
     private static final int UPCOMING_DAYS = 7; // One week before will start reminding.
@@ -37,6 +38,11 @@ public class RemindCommand extends Command {
      * Generates the reminder message with people who have birthdays today and upcoming.
      */
     private String generateReminderMessage(Model model) {
+        // Check if there's people in the addressbook
+        if (model.getFilteredPersonList().isEmpty()) {
+            return MESSAGE_NO_PERSONS;
+        }
+
         LocalDate today = LocalDate.now();
         List<Person> todayBirthdays = new ArrayList<>();
         List<Person> upcomingBirthdays = new ArrayList<>();
@@ -131,7 +137,8 @@ public class RemindCommand extends Command {
                     if (!isTodayList) {
                         long daysUntil = calculateDaysUntilBirthday(person.getBirthday().date, LocalDate.now());
                         if (daysUntil > 0) {
-                            entry.append(" (in ").append(daysUntil).append(" day").append(daysUntil == 1 ? "" : "s").append(")");
+                            entry.append(" (in ").append(daysUntil).append(" day")
+                                    .append(daysUntil == 1 ? "" : "s").append(")");
                         }
                     } else {
                         entry.append(" (TODAY!)");

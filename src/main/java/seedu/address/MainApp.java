@@ -76,8 +76,8 @@ public class MainApp extends Application {
         String reminderMessage = logic.getBirthdayReminders();
 
         // Only log if there are actual reminders (not the "no birthdays" messages).
-        if (!reminderMessage.contains("No upcoming birthdays found.") &&
-                !reminderMessage.contains("No birthdays today!")) {
+        if (!reminderMessage.contains("No upcoming birthdays found.")
+                && !reminderMessage.contains("No birthdays today!")) {
 
             logger.info("Birthday reminders on startup: " + reminderMessage);
         }
