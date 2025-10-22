@@ -64,7 +64,23 @@ public class MainApp extends Application {
 
         logic = new LogicManager(model, storage);
 
+        showBirthdayReminders(logic);
+
         ui = new UiManager(logic);
+    }
+
+    /**
+     * Shows birthday reminders when the app starts.
+     */
+    private void showBirthdayReminders(Logic logic) {
+        String reminderMessage = logic.getBirthdayReminders();
+
+        // Only log if there are actual reminders (not the "no birthdays" messages).
+        if (!reminderMessage.contains("No upcoming birthdays found.") &&
+                !reminderMessage.contains("No birthdays today!")) {
+
+            logger.info("Birthday reminders on startup: " + reminderMessage);
+        }
     }
 
     /**
