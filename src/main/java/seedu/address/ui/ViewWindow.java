@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.model.person.Person;
 
@@ -33,7 +34,11 @@ public class ViewWindow extends UiPart<Stage> {
     @FXML
     private TextArea notesArea;
     @FXML
-    private Label attendanceLabel;
+    private VBox attendanceSection;
+    @FXML
+    private VBox attendanceContainer;
+
+    private AttendancePanel attendancePanel;
 
     /**
      * Creates a new ViewWindow.
@@ -44,6 +49,7 @@ public class ViewWindow extends UiPart<Stage> {
         super(FXML, root);
         root.setMinWidth(MIN_WIDTH);
         root.setMinHeight(MIN_HEIGHT);
+        initializeAttendancePanel();
     }
 
     /**
@@ -54,11 +60,20 @@ public class ViewWindow extends UiPart<Stage> {
     }
 
     /**
+     * Initializes the attendance panel and adds it to the container.
+     */
+    private void initializeAttendancePanel() {
+        attendancePanel = new AttendancePanel();
+        attendanceContainer.getChildren().add(attendancePanel.getRoot());
+    }
+
+    /**
      * Shows the view window with the specified person's details.
      *
      * @param person the person whose details will be displayed, cannot be null.
      */
     public void show(Person person) {
+        clearDisplay();
         fillFields(person);
         getRoot().show();
         getRoot().centerOnScreen();
@@ -119,8 +134,17 @@ public class ViewWindow extends UiPart<Stage> {
             notesArea.setText("No notes available");
         }
 
-        // Attendance
-        attendanceLabel.setText("Attendance feature coming soon!");
+        // Attendance - Only show for students
+        boolean isStudent = person.getTags().stream()
+                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
+
+        attendanceSection.setVisible(isStudent);
+
+        if (isStudent) {
+            attendancePanel.setAttendance(person.getAttendance());
+        } else {
+            attendancePanel.setAttendance(null);
+        }
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
@@ -137,7 +161,10 @@ public class ViewWindow extends UiPart<Stage> {
         classLabel.setText("");
         tags.getChildren().clear();
         notesArea.setText("");
-        attendanceLabel.setText("");
+        attendancePanel.setAttendance(null);
+        attendanceSection.setVisible(true);
+        attendanceSection.setManaged(true);
+        attendancePanel.resetToCurrentMonth();
         getRoot().setTitle("View Contact");
     }
 }

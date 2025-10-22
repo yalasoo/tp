@@ -73,7 +73,7 @@ public class MessagesTest {
         Note note = new Note("Test note");
         Set<Tag> tags = Set.of(new Tag("friend"), new Tag("colleague"));
 
-        Person person = new Person(name, phone, email, address, studentClass, note, tags);
+        Person person = new Person(name, phone, email, address, studentClass, note, tags, null);
 
         String result = Messages.format(person);
 
@@ -98,7 +98,7 @@ public class MessagesTest {
         Note note = new Note("");
         Set<Tag> tags = Set.of(); // Empty set of tags
 
-        Person person = new Person(name, phone, email, address, studentClass, note, tags);
+        Person person = new Person(name, phone, email, address, studentClass, note, tags, null);
 
         String result = Messages.format(person);
 

@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.image.Image?>
 <?import javafx.stage.Stage?>
 
 <fx:root title="View Contact" type="javafx.stage.Stage"
@@ -83,9 +82,9 @@
                     <Separator/>
 
                     <!-- Attendance Section -->
-                    <VBox spacing="8">
+                    <VBox fx:id="attendanceSection" spacing="8">
                         <Label text="Attendance" styleClass="label-header"/>
-                        <Label fx:id="attendanceLabel" wrapText="true" styleClass="data-label"/>
+                        <VBox fx:id="attendanceContainer" spacing="5"/>
                     </VBox>
                 </VBox>
             </ScrollPane>
