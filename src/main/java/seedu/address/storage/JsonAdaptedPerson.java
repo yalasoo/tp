@@ -167,7 +167,7 @@ class JsonAdaptedPerson {
         final Note modelNote = new Note(note);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress,
                           modelStudentClass, modelBirthday, modelNote, modelTags, modelAttendance);
     }
