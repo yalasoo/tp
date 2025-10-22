@@ -220,7 +220,7 @@ public class PersonTest {
 
         Person differentTags = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertNotEquals(ALICE.hashCode(), differentTags.hashCode());
-    
+
     public void hashCode_sameFields_sameHashCode() {
         Person person1 = new PersonBuilder().withName("John Doe").withPhone("955-553-46")
                 .withEmail("john@example.com").withAddress("Main St").withClass("K1A")
