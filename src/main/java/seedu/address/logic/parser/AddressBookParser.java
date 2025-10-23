@@ -39,24 +39,6 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
-    private final PopupHandler infoPopupHandler;
-    private final DeletePopupHandler deletePopupHandler;
-
-    /**
-     * Used for real pop up inside app.
-     */
-    public AddressBookParser() {
-        this.infoPopupHandler = new InfoPopupHandler();
-        this.deletePopupHandler = new DeletePopupHandle();
-    }
-
-    /**
-     * Used for tests pop up.
-     */
-    public AddressBookParser(PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
-        this.infoPopupHandler = infoPopupHandler;
-        this.deletePopupHandler = deletePopupHandler;
-    }
 
     /**
      * Parses user input into command for execution.
