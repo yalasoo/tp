@@ -44,6 +44,10 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.PopupHandler;
+import seedu.address.ui.TestDeletePopupHandler;
+import seedu.address.ui.TestInfoPopupHandler;
 
 public class AddressBookParserTest {
 
@@ -79,10 +83,13 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
+        PopupHandler testInfoHandler = new TestInfoPopupHandler();
+        DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler), command);
     }
+
     @Test
     public void parseCommand_edit() throws Exception {
         Person person = new PersonBuilder().withBirthday("18-07-2018").withNote("").build();

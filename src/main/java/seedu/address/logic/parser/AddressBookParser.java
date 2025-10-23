@@ -25,6 +25,10 @@ import seedu.address.logic.commands.RemindCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.ui.DeletePopupHandle;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.InfoPopupHandler;
+import seedu.address.ui.PopupHandler;
 
 /**
  * Parses user input.
@@ -66,7 +70,9 @@ public class AddressBookParser {
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+            PopupHandler infoHandler = new InfoPopupHandler();
+            DeletePopupHandler deleteHandler = new DeletePopupHandle();
+            return new DeleteCommandParser(infoHandler, deleteHandler).parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
