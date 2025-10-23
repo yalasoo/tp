@@ -234,6 +234,18 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_cancelledMultipleMatches_throwsCommandException() {
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
+        TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
+        testDeleteHandler.setConfirmDeletion(false);
+        DeleteCommand deleteCommand = new DeleteCommand("George Best", testInfoHandler, testDeleteHandler);
+        CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
+        assertEquals("Deletion cancelled.", exception.getMessage());
+    }
+
+
+    @Test
     public void execute_userCancelsDeletion_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
