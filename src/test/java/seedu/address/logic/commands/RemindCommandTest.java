@@ -9,6 +9,8 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -454,20 +456,22 @@ public class RemindCommandTest {
     }
 
     @Test
-    public void execute_emptyListsInGetFormattedPersonList_handlesGracefully() {
-        java.time.LocalDate farFutureDate = java.time.LocalDate.now().plusDays(30);
-        String farFutureBirthday = farFutureDate.format(DATE_FORMATTER);
-
-        Person farFuturePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
-                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(farFutureBirthday),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
-
-        Model testModel = new ModelManager();
-        testModel.addPerson(farFuturePerson);
-
+    public void getFormattedPersonList_emptyList_returnsEmptyString() {
         RemindCommand remindCommand = new RemindCommand();
-        CommandResult result = remindCommand.execute(testModel);
 
+        // Use reflection to test private method, or test through public interface
+        List<Person> emptyList = new ArrayList<>();
+
+        // Since it's private, we'll test through the public execute method
+        // This case is covered when there are no birthdays but persons exist
+        Model testModel = new ModelManager();
+        Person personWithFarFutureBirthday = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-2030"),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+        testModel.addPerson(personWithFarFutureBirthday);
+
+        CommandResult result = remindCommand.execute(testModel);
+        // Should show no upcoming birthdays message, not crash
         assertTrue(result.getFeedbackToUser().contains("No upcoming birthdays"));
     }
 
