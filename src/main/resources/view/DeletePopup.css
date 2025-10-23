@@ -1,0 +1,106 @@
+.background {
+    -fx-background-color: linear-gradient(to bottom, #B1DFF3, #FFFFFF);
+    background-color: #B1DFF3;
+}
+
+.root {
+    -fx-background-color: linear-gradient(to bottom, #B1DFF3, #FFFFFF);
+}
+
+#headerLabel {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #005074;
+    -fx-opacity: 0.9;
+}
+
+#inputField {
+    -fx-background-color: white;
+    -fx-background-radius: 100;
+    -fx-border-width: 2;
+    -fx-border-radius: 100;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 12pt;
+    -fx-text-fill: #005074;
+    -fx-padding: 5 14 5 14;
+}
+
+#personListView {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:even {
+    -fx-background-color: #9CC3D5;
+    -fx-border-color: #2681AC transparent #2681AC transparent;
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: #9CC3D5;
+    -fx-border-color: #2681AC transparent #2681AC transparent;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #5f95ad;
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: #5f95ad;
+    -fx-border-width: 1;
+}
+
+.list-cell:filled:selected .label {
+    -fx-text-fill: white;
+}
+
+.list-cell .label {
+    -fx-text-fill: #005074;
+}
+
+.scroll-bar {
+    -fx-background-color: #81A8BA;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #4D6570;
+    -fx-background-insets: 3;
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: #4D6570;
+    -fx-padding: 0 0 0 0;
+}
+
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+}
+
+.scroll-bar:vertical .increment-arrow, .scroll-bar:vertical .decrement-arrow {
+    -fx-padding: 1 8 1 8;
+}
+
+.scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
+    -fx-padding: 8 1 8 1;
+}
+
+#tags {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#tags .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 11;
+}
