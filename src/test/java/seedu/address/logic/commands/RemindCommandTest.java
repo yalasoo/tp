@@ -310,6 +310,87 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void execute_emptyTodayList_returnsNoBirthdaysTodayMessage() {
+        // Only add persons with future birthdays, no today birthdays
+        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(3);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        // Should show "No birthdays today!" message
+        assertTrue(result.getFeedbackToUser().contains("No birthdays today!"));
+    }
+
+    @Test
+    public void execute_emptyUpcomingList_returnsNoUpcomingBirthdaysMessage() {
+        // Only add persons with today birthdays, no upcoming birthdays
+        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+
+        Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(todayPerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        // Should show today birthdays but no upcoming section
+        assertTrue(result.getFeedbackToUser().contains("Happy Birthday to these people today"));
+        assertTrue(result.getFeedbackToUser().contains(ALICE.getName().toString()));
+        assertFalse(result.getFeedbackToUser().contains("Upcoming birthdays"));
+    }
+
+    @Test
+    public void execute_bothListsEmpty_returnsNoUpcomingBirthdaysMessage() {
+        // Add persons with birthdays far in the future (beyond 7 days)
+        java.time.LocalDate farFutureDate = java.time.LocalDate.now().plusDays(10);
+        String farFutureBirthday = farFutureDate.format(DATE_FORMATTER);
+
+        Person farFuturePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(farFutureBirthday),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(farFuturePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        // Should show "No upcoming birthdays found" since both today and upcoming lists are empty
+        assertEquals(RemindCommand.MESSAGE_NO_UPCOMING_BIRTHDAYS, result.getFeedbackToUser());
+    }
+
+    @Test
+    public void execute_pastBirthdaysOnly_returnsNoUpcomingBirthdaysMessage() {
+        // Add persons with birthdays that already passed this year
+        java.time.LocalDate pastDate = java.time.LocalDate.now().minusDays(5);
+        String pastBirthday = pastDate.format(DATE_FORMATTER);
+
+        Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(pastBirthday),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(pastPerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        // Should show "No upcoming birthdays found" since both today and upcoming lists are empty
+        assertEquals(RemindCommand.MESSAGE_NO_UPCOMING_BIRTHDAYS, result.getFeedbackToUser());
+    }
+
+    @Test
     public void execute_personWithMultipleTags_showsAllTags() {
         String today = java.time.LocalDate.now().format(DATE_FORMATTER);
 
