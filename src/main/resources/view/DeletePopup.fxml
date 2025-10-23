@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.stage.Stage?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 
 <fx:root resizable = "false" title = "Delete Contact" type = "javafx.stage.Stage"
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <scene>
     <Scene>
-        <VBox spacing="10" style="-fx-padding: 20;">
-            <Label fx:id="headerLabel" wrapText="true"/>
-            <TextField fx:id="inputField" promptText="Type index and press Enter to confirm, ESC to cancel"/>
-            <ListView fx:id="personListView" prefHeight="300"/>
+        <stylesheets>
+            <URL value="@DeletePopup.css" />
+        </stylesheets>
+
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+            <Label fx:id="headerLabel" wrapText="true" textAlignment="CENTER"/>
+            <TextField fx:id="inputField"/>
+            <ListView fx:id="personListView" VBox.vgrow="ALWAYS" prefHeight="300"/>
         </VBox>
     </Scene>
   </scene>

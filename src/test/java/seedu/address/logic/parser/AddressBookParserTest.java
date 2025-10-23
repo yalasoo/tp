@@ -8,13 +8,17 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_FIELD;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AttendanceCommand;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -39,6 +43,10 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.PopupHandler;
+import seedu.address.ui.TestDeletePopupHandler;
+import seedu.address.ui.TestInfoPopupHandler;
 
 public class AddressBookParserTest {
 
@@ -53,12 +61,14 @@ public class AddressBookParserTest {
                 .withEmail("amy@example.com")
                 .withAddress("123, Jurong West Ave 6, #08-111")
                 .withClass("K1B")
+                .withBirthday("23-10-1995")
                 .withNote("")
                 .withTags()
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
-        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com a/123, Jurong West Ave 6, #08-111 c/K1B";
+        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995";
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);
@@ -72,17 +82,24 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
+        PopupHandler testInfoHandler = new TestInfoPopupHandler();
+        DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler), command);
     }
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder().withNote("").build();
+        Person person = new PersonBuilder().withBirthday("18-07-2018").withNote("").build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+
+        String editDetails = PersonUtil.getEditPersonDescriptorDetails(descriptor);
+        System.out.println("EDIT COMMAND STRING: " + EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails); // DEBUG
+
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails);
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
@@ -136,6 +153,19 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_attendance() throws Exception {
+        AttendanceCommand command = (AttendanceCommand) parser.parseCommand(
+                AttendanceCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " s/present");
+
+        AttendanceCommand expectedCommand = new AttendanceCommand(
+                Set.of(INDEX_FIRST_PERSON),
+                LocalDate.now(),
+                AttendanceStatus.PRESENT
+        );
+
+        assertEquals(expectedCommand, command);
+    }
+
     public void parseCommand_note() throws Exception {
         NoteCommand command = (NoteCommand) parser.parseCommand(
                 NoteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()

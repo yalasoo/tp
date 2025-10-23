@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
+import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Favourite;
@@ -24,6 +26,7 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_CLASS = "K1A";
+    public static final String DEFAULT_BIRTHDAY = "23-10-1995";
     public static final String DEFAULT_NOTE = "She is allergic to peanut.";
 
     private Name name;
@@ -31,8 +34,10 @@ public class PersonBuilder {
     private Email email;
     private Address address;
     private Class studentClass;
+    private Birthday birthday;
     private Note note;
     private Set<Tag> tags;
+    private Attendance attendance;
     private Favourite favourite;
 
     /**
@@ -44,8 +49,10 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         studentClass = new Class(DEFAULT_CLASS);
+        birthday = new Birthday(DEFAULT_BIRTHDAY);
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
+        attendance = new Attendance();
         //by default no contact is indicated as favourite
         favourite = new Favourite(false);
     }
@@ -59,8 +66,10 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         studentClass = personToCopy.getStudentClass();
+        birthday = personToCopy.getBirthday();
         note = personToCopy.getNote();
         tags = new HashSet<>(personToCopy.getTags());
+        attendance = personToCopy.getAttendance();
         favourite = personToCopy.getFavouriteStatus();
     }
 
@@ -113,6 +122,15 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code Birthday} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withBirthday(String birthday) {
+        this.birthday = new Birthday(birthday);
+        return this;
+    }
+
+
+    /**
      * Sets the {@code Note} of the {@code Person} that we are building.
      */
     public PersonBuilder withNote(String note) {
@@ -130,8 +148,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Note} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAttendance(Attendance attendance) {
+        this.attendance = attendance;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, studentClass, note, tags, favourite);
+        return new Person(name, phone, email, address, studentClass, birthday, note, tags, attendance, favourite);
     }
 
 }
