@@ -13,6 +13,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Favourite;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -33,6 +34,7 @@ class JsonAdaptedPerson {
     private final String studentClass;
     private final String note;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final Boolean favourite;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -44,7 +46,8 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("studentClass") String studentClass,
                              @JsonProperty("note") String note,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("favourite") Boolean favourite) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -54,6 +57,7 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        this.favourite = favourite;
     }
 
     /**
@@ -69,6 +73,7 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        favourite = source.getIsFavBoolean();
     }
 
     /**
@@ -130,7 +135,17 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
+        final Favourite modelFavourite;
+        if (favourite == null) {
+            //be default favourite so can be taken to be false
+            modelFavourite = new Favourite(false);
+        } else {
+            modelFavourite = new Favourite(favourite);
+        }
+
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelNote, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelNote, modelTags,
+                modelFavourite);
     }
 }

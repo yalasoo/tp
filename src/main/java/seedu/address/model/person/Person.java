@@ -27,10 +27,14 @@ public class Person {
     private final Class studentClass;
     private final Set<Tag> tags = new HashSet<>();
 
+    //Extra fields
+    private final Favourite favourite;
+
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Class studentClass, Note note, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Class studentClass, Note note, Set<Tag> tags,
+                  Favourite favourite) {
         requireAllNonNull(name, phone, email, address, studentClass, note, tags);
         this.name = name;
         this.phone = phone;
@@ -39,6 +43,12 @@ public class Person {
         this.studentClass = studentClass;
         this.note = note;
         this.tags.addAll(tags);
+        //favourite could potentially be null in which case set it to default false
+        if (favourite == null) {
+            this.favourite = new Favourite(false);
+        } else {
+            this.favourite = favourite;
+        }
     }
 
     public Name getName() {
@@ -65,12 +75,36 @@ public class Person {
         return note;
     }
 
+    public Favourite getFavouriteStatus() {
+        return favourite;
+    }
+
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Updates the favourite status of this person.
+     * @param value Can be true or false. If true means indicate this
+     *              person as favourite contact.
+     */
+    public void updateFavourite(Boolean value) {
+        assert value != null;
+        favourite.updateFavourite(value);
+    }
+
+    /**
+     * Retrieves the boolean value of favourite attribute.
+     *
+     * @return whether Person is in favourites or not.
+     */
+    public boolean getIsFavBoolean() {
+        return favourite.getIsFavouriteBoolean();
     }
 
     /**

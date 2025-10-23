@@ -6,6 +6,7 @@ import java.util.Set;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Favourite;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -32,6 +33,7 @@ public class PersonBuilder {
     private Class studentClass;
     private Note note;
     private Set<Tag> tags;
+    private Favourite favourite;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -44,6 +46,8 @@ public class PersonBuilder {
         studentClass = new Class(DEFAULT_CLASS);
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
+        //by default no contact is indicated as favourite
+        favourite = new Favourite(false);
     }
 
     /**
@@ -57,6 +61,7 @@ public class PersonBuilder {
         studentClass = personToCopy.getStudentClass();
         note = personToCopy.getNote();
         tags = new HashSet<>(personToCopy.getTags());
+        favourite = personToCopy.getFavouriteStatus();
     }
 
     /**
@@ -115,8 +120,18 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Favourite} of the {@code Person} that we are building.
+     * @param value Can be true or false to set the favourite attribute.
+     * @return PersonBuilder object.
+     */
+    public PersonBuilder withFavourite(Boolean value) {
+        this.favourite = new Favourite(value);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, studentClass, note, tags);
+        return new Person(name, phone, email, address, studentClass, note, tags, favourite);
     }
 
 }
