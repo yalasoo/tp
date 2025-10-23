@@ -106,7 +106,8 @@ public class DeleteCommandTest {
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler);
+        DeleteCommand deleteFirstCommandCopy =
+                new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
@@ -151,7 +152,8 @@ public class DeleteCommandTest {
         Person personToDelete = TypicalPersons.AMY;
         PopupHandler testInfoHandler = new TestInfoPopupHandler();
         DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getName().fullName, testInfoHandler, testDeleteHandler);
+        DeleteCommand deleteCommand =
+                new DeleteCommand(personToDelete.getName().fullName, testInfoHandler, testDeleteHandler);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
