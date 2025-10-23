@@ -84,6 +84,21 @@ public class DeletePopup extends UiPart<Stage> {
             switch (event.getCode()) {
             case ENTER -> handleEnter();
             case ESCAPE -> handleEscape();
+            // allow scrolling person list using up and down
+            case UP -> {
+                int prevIndex = personListView.getSelectionModel().getSelectedIndex() - 1;
+                if (prevIndex >= 0) {
+                    personListView.getSelectionModel().select(prevIndex);
+                    personListView.scrollTo(prevIndex);
+                }
+            }
+            case DOWN -> {
+                int nextIndex = personListView.getSelectionModel().getSelectedIndex() + 1;
+                if (nextIndex < personListView.getItems().size()) {
+                    personListView.getSelectionModel().select(nextIndex);
+                    personListView.scrollTo(nextIndex);
+                }
+            }
             default -> { }
             }
         });
