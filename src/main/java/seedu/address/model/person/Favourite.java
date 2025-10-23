@@ -1,6 +1,8 @@
 package seedu.address.model.person;
 
-/** Represents if a person is marked as favourite.*/
+/**
+ * Represents if a person is marked as favourite.
+ */
 public class Favourite {
 
     private boolean isFavourite;

@@ -57,7 +57,7 @@ public class Person {
             this.attendance = null;
         }
 
-        //favourite could potentially be null in which case set it to default false
+        // favourite could potentially be null in which case set it to default false
         if (favourite == null) {
             this.favourite = new Favourite(false);
         } else {
@@ -130,8 +130,9 @@ public class Person {
 
     /**
      * Updates the favourite status of this person.
-     * @param value Can be true or false. If true means indicate this
-     *              person as favourite contact.
+     *
+     * @param value Can be true or false. If true, it indicates that this
+     *              person is a favourite contact.
      */
     public void updateFavourite(Boolean value) {
         assert value != null;

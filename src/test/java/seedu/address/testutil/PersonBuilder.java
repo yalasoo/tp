@@ -53,7 +53,7 @@ public class PersonBuilder {
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
         attendance = new Attendance();
-        //by default no contact is indicated as favourite
+        // by default no contact is indicated as favourite
         favourite = new Favourite(false);
     }
 

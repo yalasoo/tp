@@ -16,7 +16,7 @@ public class FavouriteCommandParser implements Parser<FavouriteCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the FavouriteCommand
      * and returns a FavouriteCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform the expected format.
      */
     public FavouriteCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();

@@ -175,7 +175,7 @@ class JsonAdaptedPerson {
 
         final Favourite modelFavourite;
         if (favourite == null) {
-            //be default favourite so can be taken to be false
+            // be default favourite so can be taken to be false
             modelFavourite = new Favourite(false);
         } else {
             modelFavourite = new Favourite(favourite);
