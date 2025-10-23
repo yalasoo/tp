@@ -24,6 +24,10 @@ import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.DeletePopupHandle;
+import seedu.address.ui.InfoPopupHandler;
+import seedu.address.ui.PopupHandler;
 
 /**
  * Parses user input.
@@ -35,6 +39,20 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
+    private final PopupHandler infoPopupHandler;
+    private final DeletePopupHandler deletePopupHandler;
+
+    // App constructor
+    public AddressBookParser() {
+        this.infoPopupHandler = new InfoPopupHandler();       // real popup
+        this.deletePopupHandler = new DeletePopupHandle();   // real popup
+    }
+
+    // Test constructor
+    public AddressBookParser(PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
+        this.infoPopupHandler = infoPopupHandler;
+        this.deletePopupHandler = deletePopupHandler;
+    }
 
     /**
      * Parses user input into command for execution.
@@ -65,7 +83,9 @@ public class AddressBookParser {
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+            PopupHandler infoHandler = new InfoPopupHandler();
+            DeletePopupHandler deleteHandler = new DeletePopupHandle();
+            return new DeleteCommandParser(infoHandler, deleteHandler).parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();

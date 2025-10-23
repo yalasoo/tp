@@ -6,8 +6,13 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.PopupHandler;
+import seedu.address.ui.TestDeletePopupHandler;
+import seedu.address.ui.TestInfoPopupHandler;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -18,11 +23,22 @@ import seedu.address.logic.commands.DeleteCommand;
  */
 public class DeleteCommandParserTest {
 
-    private DeleteCommandParser parser = new DeleteCommandParser();
+    private PopupHandler testInfoHandler;
+    private DeletePopupHandler testDeleteHandler;
+    private DeleteCommandParser parser;
+
+    @BeforeEach
+    public void setUp() {
+        testInfoHandler = new TestInfoPopupHandler();
+        testDeleteHandler = new TestDeletePopupHandler();
+        parser = new DeleteCommandParser(testInfoHandler, testDeleteHandler);
+    }
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1", new DeleteCommand(INDEX_FIRST_PERSON));
+        DeleteCommand expectedCommand =
+                new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler);
+        assertParseSuccess(parser, "1", expectedCommand);
     }
 
     @Test
@@ -32,7 +48,9 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validName_returnsDeleteCommand() {
-        assertParseSuccess(parser, "n/Charlotte Oliveiro", new DeleteCommand("Charlotte Oliveiro"));
+        DeleteCommand expectedCommand =
+                new DeleteCommand("Charlotte Oliveiro", testInfoHandler, testDeleteHandler);
+        assertParseSuccess(parser, "n/Charlotte Oliveiro", expectedCommand);
     }
 
     @Test
