@@ -218,7 +218,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_multipleMatches_userConfirmsDeletion_successful() {
+    public void execute_confirmedMultipleMatches_successful() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         Person personToDelete = TypicalPersons.GEORGE;
         TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
@@ -255,7 +255,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_deleteByIndex_userCancelsDeletion_throwsCommandException() {
+    public void execute_cancelledDeleteByIndex_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
         TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
