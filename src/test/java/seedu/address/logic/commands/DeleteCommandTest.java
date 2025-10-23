@@ -218,24 +218,24 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_userConfirmsDeletion_successful() {
+    public void execute_multipleMatches_userConfirmsDeletion_successful() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Person personToDelete = TypicalPersons.ALICE;
+        Person personToDelete = TypicalPersons.GEORGE;
         TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
         TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         testDeleteHandler.setConfirmDeletion(true);
-        DeleteCommand deleteCommand = new DeleteCommand("Alice Pauline", testInfoHandler, testDeleteHandler);
+        DeleteCommand deleteCommand = new DeleteCommand("George Best", testInfoHandler, testDeleteHandler);
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        assertTrue(testDeleteHandler.isShowDeletePopupCalled());
     }
 
     @Test
     public void execute_userCancelsDeletion_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Person personToDelete = TypicalPersons.ALICE;
         TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
         TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         testDeleteHandler.setConfirmDeletion(false);
@@ -252,5 +252,26 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand("Random Name", testInfoHandler, testDeleteHandler);
         CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
         assertEquals("Deletion cancelled.", exception.getMessage());
+    }
+
+    @Test
+    public void execute_deleteByIndex_userCancelsDeletion_throwsCommandException() {
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
+        TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
+        testDeleteHandler.setConfirmDeletion(false);
+        DeleteCommand deleteCommand = new DeleteCommand(Index.fromOneBased(1), testInfoHandler, testDeleteHandler);
+        CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
+        assertEquals("Deletion cancelled.", exception.getMessage());
+    }
+
+    @Test
+    public void execute_invalidIndex_showsInfoPopup() {
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        TestInfoPopupHandler testInfoHandler = new TestInfoPopupHandler();
+        TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
+        DeleteCommand deleteCommand = new DeleteCommand(Index.fromOneBased(99), testInfoHandler, testDeleteHandler);
+        CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
+        assertEquals(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, exception.getMessage());
     }
 }

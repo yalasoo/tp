@@ -11,10 +11,12 @@ import seedu.address.model.person.Person;
 public class TestDeletePopupHandler implements DeletePopupHandler {
 
     private boolean confirmDeletion = true;
+    private boolean showDeletePopupCalled = false;
 
     @Override
     public Person showDeletePopup(String message, List<Person> options) throws CommandException {
         // Auto-select the first person for tests
+        showDeletePopupCalled = true;
         return options.get(0);
     }
 
@@ -28,5 +30,12 @@ public class TestDeletePopupHandler implements DeletePopupHandler {
     @Override
     public boolean confirmDeletion(Person person) {
         return confirmDeletion;
+    }
+
+    /**
+     * Checks whether the deletion pop up window is called.
+     */
+    public boolean isShowDeletePopupCalled() {
+        return showDeletePopupCalled;
     }
 }
