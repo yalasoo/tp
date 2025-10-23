@@ -5,6 +5,7 @@
     "email": "hans@example.com",
     "address": "123, Main Street",
     "studentClass": "K1A",
+    "birthday": "18-08-2018",
     "note": "",
     "tags": [ ]
   }, {
@@ -13,6 +14,7 @@
     "email": "hans@example.com",
     "address": "456, Second Street",
     "studentClass": "K1B",
+    "birthday": "18-11-1997",
     "note": "",
     "tags": [ ]
   } ]
