@@ -454,6 +454,24 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void execute_emptyListsInGetFormattedPersonList_handlesGracefully() {
+        java.time.LocalDate farFutureDate = java.time.LocalDate.now().plusDays(30);
+        String farFutureBirthday = farFutureDate.format(DATE_FORMATTER);
+
+        Person farFuturePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(farFutureBirthday),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(farFuturePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("No upcoming birthdays"));
+    }
+
+    @Test
     public void equals() {
         RemindCommand remindCommand = new RemindCommand();
 
