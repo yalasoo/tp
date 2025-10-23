@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -8,9 +9,13 @@
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <scene>
         <Scene>
-            <VBox spacing="10" style="-fx-padding: 20;">
-                <Label fx:id="msgLabel" wrapText="true"/>
-                <Label text="(Press Enter to continue)"/>
+            <stylesheets>
+                <URL value="@InfoPopup.css" />
+            </stylesheets>
+
+            <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+                <Label fx:id="msgLabel" wrapText="true" textAlignment="CENTER"/>
+                <Label text="(Press Enter to continue)" textAlignment="CENTER"/>
             </VBox>
         </Scene>
     </scene>

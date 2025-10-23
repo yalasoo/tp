@@ -36,6 +36,8 @@ public class DeletePopup extends UiPart<Stage> {
     public DeletePopup(Stage root) {
         super(FXML, root);
         setUpKeyboardHandlers();
+        root.setWidth(500);
+        root.setHeight(500);
     }
 
     /**

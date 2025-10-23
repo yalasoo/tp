@@ -25,6 +25,8 @@ public class InfoPopup extends UiPart<Stage> {
     public InfoPopup(Stage root) {
         super(FXML, root);
         setUpKeyboardHandlers();
+        root.setWidth(300);
+        root.setHeight(200);
     }
 
     /**

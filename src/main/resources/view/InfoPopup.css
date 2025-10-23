@@ -1,0 +1,17 @@
+.root {
+    -fx-background-color: #9CC3D5;
+}
+
+#msgLabel {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #005074;
+    -fx-opacity: 1;
+}
+
+.label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #666666;
+    -fx-opacity: 0.9;
+}

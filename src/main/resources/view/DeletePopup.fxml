@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -9,10 +10,14 @@
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <scene>
     <Scene>
-        <VBox spacing="10" style="-fx-padding: 20;">
-            <Label fx:id="headerLabel" wrapText="true"/>
-            <TextField fx:id="inputField" promptText="Type index and press Enter to confirm, ESC to cancel"/>
-            <ListView fx:id="personListView" prefHeight="300"/>
+        <stylesheets>
+            <URL value="@DeletePopup.css" />
+        </stylesheets>
+
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+            <Label fx:id="headerLabel" wrapText="true" textAlignment="CENTER"/>
+            <TextField fx:id="inputField"/>
+            <ListView fx:id="personListView" VBox.vgrow="ALWAYS" prefHeight="300"/>
         </VBox>
     </Scene>
   </scene>

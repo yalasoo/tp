@@ -112,7 +112,7 @@ public class DeleteCommand extends Command {
      * */
     private Person showDeletePopup(List<Person> matchingResults) throws CommandException {
         DeletePopup deletePopup = new DeletePopup();
-        deletePopup.show("Possible matches found. Type INDEX and ENTER to delete or ESC to cancel:",
+        deletePopup.show("Possible matches found below.\nType INDEX and ENTER to delete or ESC to cancel:",
                     matchingResults);
 
         if (deletePopup.isConfirmed()) {
@@ -128,7 +128,7 @@ public class DeleteCommand extends Command {
     private boolean isDeletionCancelled(Person person) {
         DeletePopup deletePopup = new DeletePopup();
         deletePopup.show("Are you sure you want to delete this contact ("
-                + person.getName() + ")? Type INDEX and ENTER to confirm or ESC to cancel.", List.of(person));
+                + person.getName() + ")?\nType INDEX and ENTER to confirm or ESC to cancel.", List.of(person));
         return !deletePopup.isConfirmed();
     }
 
