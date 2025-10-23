@@ -32,11 +32,14 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Attendance attendance;
 
+    //Extra fields
+    private final Favourite favourite;
+
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Class studentClass,
-                  Birthday birthday, Note note, Set<Tag> tags, Attendance attendance) {
+                  Birthday birthday, Note note, Set<Tag> tags, Attendance attendance, Favourite favourite) {
         this.birthday = birthday;
         requireAllNonNull(name, phone, email, address, studentClass, note, tags);
         this.name = name;
@@ -52,6 +55,13 @@ public class Person {
             this.attendance = (attendance != null) ? attendance : new Attendance();
         } else {
             this.attendance = null;
+        }
+
+        // favourite could potentially be null in which case set it to default false
+        if (favourite == null) {
+            this.favourite = new Favourite(false);
+        } else {
+            this.favourite = favourite;
         }
     }
 
@@ -87,6 +97,11 @@ public class Person {
         return attendance;
     }
 
+    public Favourite getFavouriteStatus() {
+        return favourite;
+    }
+
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
@@ -111,6 +126,26 @@ public class Person {
 
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
+    }
+
+    /**
+     * Updates the favourite status of this person.
+     *
+     * @param value Can be true or false. If true, it indicates that this
+     *              person is a favourite contact.
+     */
+    public void updateFavourite(Boolean value) {
+        assert value != null;
+        favourite.updateFavourite(value);
+    }
+
+    /**
+     * Retrieves the boolean value of favourite attribute.
+     *
+     * @return whether Person is in favourites or not.
+     */
+    public boolean getIsFavBoolean() {
+        return favourite.getIsFavouriteBoolean();
     }
 
     /**

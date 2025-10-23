@@ -39,7 +39,7 @@ public class RemindCommandTest {
         Model testModel = new ModelManager();
         Person futurePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-2030"),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
         testModel.addPerson(futurePerson);
 
         RemindCommand remindCommand = new RemindCommand();
@@ -53,7 +53,7 @@ public class RemindCommandTest {
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -74,7 +74,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -93,14 +93,14 @@ public class RemindCommandTest {
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         // Create a person with birthday in 2 days
         LocalDate futureDate = LocalDate.now().plusDays(2);
         String futureBirthday = futureDate.format(DATE_FORMATTER);
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -124,7 +124,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -144,7 +144,7 @@ public class RemindCommandTest {
         String pastBirthday = pastDate.format(DATE_FORMATTER);
         Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(pastBirthday),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(pastPerson);
@@ -163,7 +163,7 @@ public class RemindCommandTest {
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -181,7 +181,7 @@ public class RemindCommandTest {
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -200,7 +200,7 @@ public class RemindCommandTest {
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -218,7 +218,7 @@ public class RemindCommandTest {
         String today = java.time.LocalDate.now().format(DATE_FORMATTER);
         Person todayPersonWithoutTags = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), new java.util.HashSet<>(), ALICE.getAttendance());
+                ALICE.getNote(), new java.util.HashSet<>(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPersonWithoutTags);
@@ -238,7 +238,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -257,7 +257,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -275,7 +275,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -293,11 +293,11 @@ public class RemindCommandTest {
 
         Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Person person2 = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(today),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(person1);
@@ -319,7 +319,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -338,7 +338,7 @@ public class RemindCommandTest {
 
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -360,7 +360,7 @@ public class RemindCommandTest {
 
         Person farFuturePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(farFutureBirthday),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(farFuturePerson);
@@ -380,7 +380,7 @@ public class RemindCommandTest {
 
         Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(pastBirthday),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(pastPerson);
@@ -402,7 +402,7 @@ public class RemindCommandTest {
 
         Person multiTagPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), multipleTags, ALICE.getAttendance());
+                ALICE.getNote(), multipleTags, ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(multiTagPerson);
@@ -422,7 +422,7 @@ public class RemindCommandTest {
 
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
@@ -442,7 +442,7 @@ public class RemindCommandTest {
 
         Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
                 BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
-                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(futurePerson);
@@ -467,7 +467,7 @@ public class RemindCommandTest {
         Model testModel = new ModelManager();
         Person personWithFarFutureBirthday = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-2030"),
-                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
         testModel.addPerson(personWithFarFutureBirthday);
 
         CommandResult result = remindCommand.execute(testModel);
