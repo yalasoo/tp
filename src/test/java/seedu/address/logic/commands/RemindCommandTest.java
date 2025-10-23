@@ -115,6 +115,27 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void execute_birthdayExactlySevenDays_showsUpcomingBirthday() {
+        // Create a person with birthday exactly 7 days from now (boundary case)
+        LocalDate futureDate = LocalDate.now().plusDays(7);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("Upcoming birthdays"));
+        assertTrue(result.getFeedbackToUser().contains(BENSON.getName().toString()));
+        assertTrue(result.getFeedbackToUser().contains("in 7 days"));
+    }
+
+    @Test
     public void execute_pastBirthday_doesNotShow() {
         // Create a person with birthday that passed 10 days ago
         LocalDate pastDate = LocalDate.now().minusDays(10);
@@ -188,6 +209,167 @@ public class RemindCommandTest {
         // Should display without issues (student class doesn't affect birthday display)
         assertTrue(result.getFeedbackToUser().contains("Happy Birthday to these people today"));
         assertTrue(result.getFeedbackToUser().contains(ALICE.getName().toString()));
+    }
+
+    @Test
+    public void execute_personWithoutTags_showsWithoutBrackets() {
+        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        Person todayPersonWithoutTags = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
+                ALICE.getNote(), new java.util.HashSet<>(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(todayPersonWithoutTags);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("Happy Birthday to these people today"));
+        assertTrue(result.getFeedbackToUser().contains(ALICE.getName().toString()));
+        assertFalse(result.getFeedbackToUser().contains("[]"));
+    }
+
+    @Test
+    public void execute_upcomingBirthdayOneDay_showsSingularDay() {
+        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(1);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("in 1 day"));
+        assertFalse(result.getFeedbackToUser().contains("in 1 days"));
+    }
+
+    @Test
+    public void execute_upcomingBirthdayMultipleDays_showsPluralDays() {
+        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(2);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("in 2 days"));
+    }
+
+    @Test
+    public void execute_birthdayEightDaysAway_doesNotShow() {
+        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(8);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("No upcoming birthdays"));
+        assertFalse(result.getFeedbackToUser().contains(BENSON.getName().toString()));
+    }
+
+    @Test
+    public void execute_multiplePersonsSameBirthday_showsAll() {
+        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+
+        Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Person person2 = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(today),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(person1);
+        testModel.addPerson(person2);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("Happy Birthday to these people today"));
+        assertTrue(result.getFeedbackToUser().contains(ALICE.getName().toString()));
+        assertTrue(result.getFeedbackToUser().contains(BENSON.getName().toString()));
+    }
+
+    @Test
+    public void execute_personWithMultipleTags_showsAllTags() {
+        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+
+        java.util.Set<seedu.address.model.tag.Tag> multipleTags = new java.util.HashSet<>();
+        multipleTags.add(new seedu.address.model.tag.Tag("friends"));
+        multipleTags.add(new seedu.address.model.tag.Tag("classmate"));
+
+        Person multiTagPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
+                ALICE.getNote(), multipleTags, ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(multiTagPerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("friends"));
+        assertTrue(result.getFeedbackToUser().contains("classmate"));
+        assertTrue(result.getFeedbackToUser().contains("friends, classmate")
+                || result.getFeedbackToUser().contains("classmate, friends"));
+    }
+
+    @Test
+    public void execute_onlyTodayBirthdays_noUpcomingSection() {
+        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+
+        Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
+                ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(todayPerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("Happy Birthday to these people today"));
+        assertTrue(result.getFeedbackToUser().contains(ALICE.getName().toString()));
+        assertFalse(result.getFeedbackToUser().contains("Upcoming birthdays"));
+    }
+
+    @Test
+    public void execute_onlyUpcomingBirthdays_noTodaySection() {
+        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(3);
+        String futureBirthday = futureDate.format(DATE_FORMATTER);
+
+        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+                BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance());
+
+        Model testModel = new ModelManager();
+        testModel.addPerson(futurePerson);
+
+        RemindCommand remindCommand = new RemindCommand();
+        CommandResult result = remindCommand.execute(testModel);
+
+        assertTrue(result.getFeedbackToUser().contains("Upcoming birthdays"));
+        assertTrue(result.getFeedbackToUser().contains(BENSON.getName().toString()));
+        assertTrue(result.getFeedbackToUser().contains("No birthdays today"));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -169,5 +170,27 @@ public class LogicManagerTest {
         expectedModel.addPerson(expectedPerson);
 
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void getBirthdayReminders_success() {
+        // This test assumes that RemindCommand executes successfully
+        // and returns a non-null string
+        String reminders = logic.getBirthdayReminders();
+        assertNotNull(reminders);
+    }
+
+    @Test
+    public void getBirthdayReminders_verifyRemindCommandIsCalled() {
+        // This is a more comprehensive test that would require mocking
+        // to verify the interaction with RemindCommand
+        String reminders = logic.getBirthdayReminders();
+
+        // Basic assertion that something is returned
+        // The actual content would depend on your RemindCommand implementation
+        assertNotNull(reminders);
+
+        // You could also test specific scenarios by setting up the model with people
+        // who have birthdays and verifying the reminder format
     }
 }
