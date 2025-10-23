@@ -24,8 +24,8 @@ import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.DeletePopupHandle;
+import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.PopupHandler;
 
@@ -42,13 +42,17 @@ public class AddressBookParser {
     private final PopupHandler infoPopupHandler;
     private final DeletePopupHandler deletePopupHandler;
 
-    // App constructor
+    /**
+     * Used for real pop up inside app.
+     */
     public AddressBookParser() {
-        this.infoPopupHandler = new InfoPopupHandler();       // real popup
-        this.deletePopupHandler = new DeletePopupHandle();   // real popup
+        this.infoPopupHandler = new InfoPopupHandler();
+        this.deletePopupHandler = new DeletePopupHandle();
     }
 
-    // Test constructor
+    /**
+     * Used for tests pop up.
+     */
     public AddressBookParser(PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
         this.infoPopupHandler = infoPopupHandler;
         this.deletePopupHandler = deletePopupHandler;

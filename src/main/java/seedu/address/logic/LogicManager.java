@@ -17,8 +17,6 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 import seedu.address.storage.Storage;
-import seedu.address.ui.DeletePopupHandler;
-import seedu.address.ui.PopupHandler;
 
 /**
  * The main LogicManager of the app.
@@ -34,8 +32,6 @@ public class LogicManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final AddressBookParser addressBookParser;
-    private PopupHandler infoPopupHandler;
-    private DeletePopupHandler deletePopupHandler;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -44,15 +40,6 @@ public class LogicManager implements Logic {
         this.model = model;
         this.storage = storage;
         addressBookParser = new AddressBookParser();
-    }
-
-    public LogicManager(Model model, Storage storage, PopupHandler infoPopupHandler,
-                        DeletePopupHandler deletePopupHandler) {
-        this.model = model;
-        this.storage = storage;
-        this.infoPopupHandler = infoPopupHandler;
-        this.deletePopupHandler = deletePopupHandler;
-        addressBookParser = new AddressBookParser(infoPopupHandler, deletePopupHandler);
     }
 
     @Override

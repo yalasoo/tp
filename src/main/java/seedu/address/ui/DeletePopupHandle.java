@@ -1,9 +1,13 @@
 package seedu.address.ui;
 
 import java.util.List;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 
+/**
+ * A class handles showing delete confirmation popups in the application.
+ */
 public class DeletePopupHandle implements DeletePopupHandler {
 
     @Override

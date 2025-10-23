@@ -16,6 +16,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
     private final PopupHandler infoPopupHandler;
     private final DeletePopupHandler deletePopupHandler;
 
+    /**
+     * Constructs a {@code DeleteCommandParser} with the specified popup handlers.
+     */
     public DeleteCommandParser(PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
         this.infoPopupHandler = infoPopupHandler;
         this.deletePopupHandler = deletePopupHandler;
