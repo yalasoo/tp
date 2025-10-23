@@ -87,4 +87,18 @@ public class FavouriteCommand extends Command {
         return new CommandResult(MESSAGE_FAVOURITE_UPDATE_SUCCESS);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof FavouriteCommand)) {
+            return false;
+        }
+
+        FavouriteCommand e = (FavouriteCommand) other;
+        return vals.equals(e.vals);
+    }
+
 }
