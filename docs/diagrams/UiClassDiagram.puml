@@ -12,6 +12,7 @@ Class MainWindow
 Class HelpWindow
 Class ViewWindow
 Class DeletePopup
+Class InfoPopup
 Class ResultDisplay
 Class PersonListPanel
 Class PersonCard
@@ -39,6 +40,7 @@ MainWindow *-down-> "1" StatusBarFooter
 MainWindow --> "0..1" HelpWindow
 MainWindow --> "0..1" ViewWindow
 MainWindow --> "0..1" DeletePopup
+MainWindow --> "0..1" InfoPopup
 
 PersonListPanel -down-> "*" PersonCard
 
@@ -52,6 +54,7 @@ StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 ViewWindow --|> UiPart
 DeletePopup --|> UiPart
+InfoPopup --|> UiPart
 
 PersonCard ..> Model
 UiManager -right-> Logic
