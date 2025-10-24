@@ -21,7 +21,7 @@ Given below are my contributions to the project.
 
 * **Enhancements to existing features**:
     * **UI Improvements**: Enhanced the user interface to better display contact information including the new birthday field, improving readability and visual appeal.
-    * **Testing**: Significantly improved test coverage by adding comprehensive unit and integration tests for new features (Birthday field and View command) as well as existing functionality.
+    * **Testing**: Improved test coverage by adding comprehensive unit and integration tests for new features (Birthday field and View command) as well as existing functionality.
 
 * **Documentation**:
     * User Guide:
@@ -35,6 +35,6 @@ Given below are my contributions to the project.
     * **Team Collaboration**: Actively participated in team discussions and planning sessions, helping to resolve integration issues between different features.
 
 * **Tools**:
-    * Utilized JUnit for writing comprehensive test cases.
+    * Utilised JUnit for writing comprehensive test cases.
     * Employed JavaFX for UI enhancements.
     * Used GitHub Projects for task management and collaboration.
