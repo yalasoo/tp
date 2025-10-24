@@ -473,7 +473,8 @@ public class AddCommandParserTest {
                 + CLASS_DESC_BOB + BIRTHDAY_DESC_BOB + " t/";
         assertParseFailure(parser, commandWithEmptyTag, Tag.MESSAGE_CONSTRAINTS);
 
-        // Test case 3: Multiple tags - caught by duplicate prefix validation (already tested in parse_multipleTags_failure)
+        // Test case 3: Multiple tags - caught by duplicate prefix validation
+        // (already tested in parse_multipleTags_failure)
         // The "exactly one tag" validation remains uncovered because it's unreachable
     }
 }
