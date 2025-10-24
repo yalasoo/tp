@@ -7,7 +7,7 @@
     "studentClass": "K1A",
     "birthday": "15-03-2018",
     "note": "",
-    "tags": [ "friends" ]
+    "tags": [ "student" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
@@ -16,6 +16,6 @@
     "studentClass": "K1B",
     "birthday": "24-12-2017",
     "note": "",
-    "tags": [ ]
+    "tags": [ "colleague" ]
   } ]
 }

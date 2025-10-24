@@ -64,12 +64,12 @@ public class AddressBookParserTest {
                 .withClass("K1B")
                 .withBirthday("23-10-1995")
                 .withNote("")
-                .withTags()
+                .withTags("student") // Add mandatory tag
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
         String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
-                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995";
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995 t/student"; // Add tag parameter
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);

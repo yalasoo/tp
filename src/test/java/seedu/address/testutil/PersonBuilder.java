@@ -28,6 +28,7 @@ public class PersonBuilder {
     public static final String DEFAULT_CLASS = "K1A";
     public static final String DEFAULT_BIRTHDAY = "23-10-1995";
     public static final String DEFAULT_NOTE = "She is allergic to peanut.";
+    public static final String DEFAULT_TAG = "student";
 
     private Name name;
     private Phone phone;
@@ -52,6 +53,7 @@ public class PersonBuilder {
         birthday = new Birthday(DEFAULT_BIRTHDAY);
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
+        tags.add(new Tag(DEFAULT_TAG)); // Add default tag since it's mandatory
         attendance = new Attendance();
         // by default no contact is indicated as favourite
         favourite = new Favourite(false);

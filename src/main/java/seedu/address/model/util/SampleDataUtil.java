@@ -32,20 +32,20 @@ public class SampleDataUtil {
                     new Birthday("25-06-1987"), EMPTY_NOTE, getTagSet("student"), null, DEFAULT_FAV_STATUS),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"), new Class("K1B"),
-                    new Birthday("03-07-1997"), EMPTY_NOTE, getTagSet("colleagues", "student"), null,
+                    new Birthday("03-07-1997"), EMPTY_NOTE, getTagSet("colleague"), null,
                     DEFAULT_FAV_STATUS),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                 new Address("Blk 11 Ang Mo Kio Street 74, #11-04"), new Class("K1C"),
-                    new Birthday("15-01-1975"), EMPTY_NOTE, getTagSet("neighbours"), null, DEFAULT_FAV_STATUS),
+                    new Birthday("15-01-1975"), EMPTY_NOTE, getTagSet("student"), null, DEFAULT_FAV_STATUS),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"), new Class("K2A"),
-                    new Birthday("11-02-1960"), EMPTY_NOTE, getTagSet("family"), null, DEFAULT_FAV_STATUS),
+                    new Birthday("08-04-1984"), EMPTY_NOTE, getTagSet("colleague"), null, DEFAULT_FAV_STATUS),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                 new Address("Blk 47 Tampines Street 20, #17-35"), new Class("K2B"),
-                    new Birthday("12-08-1992"), EMPTY_NOTE, getTagSet("student"), null, DEFAULT_FAV_STATUS),
+                    new Birthday("12-12-1990"), EMPTY_NOTE, getTagSet("student"), null, DEFAULT_FAV_STATUS),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                 new Address("Blk 45 Aljunied Street 85, #11-31"), new Class("K2C"),
-                    new Birthday("17-11-1981"), EMPTY_NOTE, getTagSet("colleagues"), null, DEFAULT_FAV_STATUS)
+                    new Birthday("20-09-1988"), EMPTY_NOTE, getTagSet("colleague"), null, DEFAULT_FAV_STATUS)
         };
     }
 

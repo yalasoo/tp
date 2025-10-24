@@ -31,8 +31,8 @@ public class ParserUtilTest {
     private static final String VALID_PHONE = "81234567";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_NOTE = "";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_TAG_1 = "student";
+    private static final String VALID_TAG_2 = "colleague";
 
     private static final String WHITESPACE = " \t\r\n";
 

@@ -152,12 +152,13 @@ public class LogicManagerTest {
 
         logic = new LogicManager(model, storage);
 
-        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main St c/K1A b/23-10-1995";
+        // Add mandatory tag parameter
+        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main St c/K1A b/23-10-1995 t/student";
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         Person expectedPerson = new PersonBuilder().withName("Amy Bee").withPhone("81111111")
                 .withEmail("amy@example.com").withAddress("123 Main St").withClass("K1A")
-                .withBirthday("23-10-1995").withNote("").withTags().build();
+                .withBirthday("23-10-1995").withNote("").withTags("student").build();
         expectedModel.addPerson(expectedPerson);
 
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);

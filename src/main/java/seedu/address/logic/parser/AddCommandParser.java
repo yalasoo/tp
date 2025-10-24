@@ -41,13 +41,13 @@ public class AddCommandParser implements Parser<AddCommand> {
                         PREFIX_CLASS, PREFIX_BIRTHDAY, PREFIX_NOTE, PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                PREFIX_ADDRESS, PREFIX_CLASS, PREFIX_BIRTHDAY)
+                PREFIX_ADDRESS, PREFIX_CLASS, PREFIX_BIRTHDAY, PREFIX_TAG)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_CLASS, PREFIX_BIRTHDAY, PREFIX_NOTE);
+                PREFIX_CLASS, PREFIX_BIRTHDAY, PREFIX_NOTE, PREFIX_TAG);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
@@ -56,6 +56,11 @@ public class AddCommandParser implements Parser<AddCommand> {
         Birthday birthday = ParserUtil.parseBirthday(argMultimap.getValue(PREFIX_BIRTHDAY).get());
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+
+        // Ensure exactly one tag is provided
+        if (tagList.size() != 1) {
+            throw new ParseException("Exactly one tag must be provided (either 'student' or 'colleague')");
+        }
 
         Person person = new Person(name, phone, email, address, studentClass, birthday, note, tagList, null, null);
 
