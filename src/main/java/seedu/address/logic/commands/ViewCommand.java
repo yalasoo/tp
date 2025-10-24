@@ -26,12 +26,11 @@ public class ViewCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SUCCESS = "Viewing information of %1$s";
-    public static final String MESSAGE_VIEW_PERSON_DETAILS = "Detailed information for: %1$s";
 
     private final Index targetIndex;
 
     /**
-     * Creates a ViewCommand to view information for the specified {@code index}
+     * Creates a ViewCommand to view information for the specified {@code index}.
      */
     public ViewCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
