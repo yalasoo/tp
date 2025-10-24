@@ -444,4 +444,36 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + CLASS_DESC_BOB + " b/ 15-03-2018 " + TAG_DESC_STUDENT, new AddCommand(expectedPerson));
     }
+
+    @Test
+    public void parse_exactlyOneTagValidation_unreachableCode() {
+        // This test documents that the "exactly one tag" validation at lines 61-63 in AddCommandParser
+        // is actually unreachable dead code due to prior validation checks:
+        //
+        // 1. arePrefixesPresent() requires PREFIX_TAG to be present (line 43-46)
+        // 2. verifyNoDuplicatePrefixesFor() prevents multiple tag prefixes (line 48-49)
+        // 3. parseTag() validates individual tag content before count check (line 58)
+        //
+        // Therefore, the validation "if (tagList.size() != 1)" can never be triggered because:
+        // - Zero tags: Caught by arePrefixesPresent() → MESSAGE_INVALID_COMMAND_FORMAT
+        // - Multiple tags: Caught by verifyNoDuplicatePrefixesFor() → duplicate prefix error
+        // - Invalid tag content: Caught by parseTag() → Tag.MESSAGE_CONSTRAINTS
+        //
+        // The only way to reach the count validation would be if exactly one valid tag is provided,
+        // in which case tagList.size() == 1 and the condition is false.
+
+        // Test case 1: Zero tags - caught by required field validation
+        String commandWithNoTags = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + BIRTHDAY_DESC_BOB;
+        assertParseFailure(parser, commandWithNoTags,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+
+        // Test case 2: Empty tag content - caught by individual tag validation
+        String commandWithEmptyTag = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + BIRTHDAY_DESC_BOB + " t/";
+        assertParseFailure(parser, commandWithEmptyTag, Tag.MESSAGE_CONSTRAINTS);
+
+        // Test case 3: Multiple tags - caught by duplicate prefix validation (already tested in parse_multipleTags_failure)
+        // The "exactly one tag" validation remains uncovered because it's unreachable
+    }
 }
