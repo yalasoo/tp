@@ -18,4 +18,9 @@ Person *--> Name
 Person *--> Phone
 Person *--> Email
 Person *--> Address
+Person *--> Attendance
+Person *--> Birthday
+Person *--> Class
+Person *--> Favorite
+Person *--> Note
 @enduml
