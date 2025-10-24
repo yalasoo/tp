@@ -28,8 +28,8 @@ public class BirthdayTest {
         assertFalse(Birthday.isValidBirthday("")); // empty string
         assertFalse(Birthday.isValidBirthday(" ")); // spaces only
         assertFalse(Birthday.isValidBirthday("32-13-2005")); // invalid date
-        // assertFalse(Birthday.isValidBirthday("31-04-2020")); // April only has 30 days
-        // assertFalse(Birthday.isValidBirthday("29-02-2021")); // 2021 is not a leap year
+        assertFalse(Birthday.isValidBirthday("31-04-2020")); // April only has 30 days
+        assertFalse(Birthday.isValidBirthday("29-02-2021")); // 2021 is not a leap year
         assertFalse(Birthday.isValidBirthday("15-03-20")); // wrong year format
         assertFalse(Birthday.isValidBirthday("15/03/2020")); // wrong separator
         assertFalse(Birthday.isValidBirthday("15-3-2020")); // single digit month
@@ -46,11 +46,12 @@ public class BirthdayTest {
         // valid birthdays
         assertTrue(Birthday.isValidBirthday("15-03-2018")); // valid date
         assertTrue(Birthday.isValidBirthday("24-12-2017")); // valid date
+
+        // edge cases
         assertTrue(Birthday.isValidBirthday("29-02-2020")); // leap year
         assertTrue(Birthday.isValidBirthday("31-01-2019")); // 31-day month
         assertTrue(Birthday.isValidBirthday("30-04-2019")); // 30-day month
         assertTrue(Birthday.isValidBirthday("28-02-2019")); // non-leap year February
-        assertTrue(Birthday.isValidBirthday("01-01-2020")); // single digit with leading zeros
     }
 
     @Test

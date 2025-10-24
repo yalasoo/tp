@@ -49,8 +49,6 @@ public class ViewCommand extends Command {
 
         Person personToView = lastShownList.get(targetIndex.getZeroBased());
 
-        // This will trigger the UI to display the detailed view
-        // You'll need to implement the UI component separately
         model.setSelectedPerson(personToView);
 
         return new CommandResult(

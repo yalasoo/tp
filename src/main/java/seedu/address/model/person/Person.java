@@ -37,13 +37,13 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Class studentClass,
                   Birthday birthday, Note note, Set<Tag> tags, Attendance attendance) {
-        this.birthday = birthday;
-        requireAllNonNull(name, phone, email, address, studentClass, note, tags);
+        requireAllNonNull(name, phone, email, address, studentClass, birthday, note, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.birthday = birthday;
         this.note = note;
         this.tags.addAll(tags);
 
