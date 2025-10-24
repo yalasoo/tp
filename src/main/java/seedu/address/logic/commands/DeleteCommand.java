@@ -62,6 +62,7 @@ public class DeleteCommand extends Command {
 
         // delete by name
         if (isDeletedByName) {
+            assert targetName != null : "Target name should not be null when deleting by name";
             List<Person> exactMatches = lastShownList.stream()
                     .filter(p -> p.getName().fullName.equalsIgnoreCase(targetName))
                     .toList();
@@ -104,6 +105,7 @@ public class DeleteCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+        assert personToDelete != null : "Person to delete should not be null";
         if (isDeletionCancelled(personToDelete)) {
             throw new CommandException("Deletion cancelled.");
         }
