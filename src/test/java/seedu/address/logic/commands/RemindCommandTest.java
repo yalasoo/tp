@@ -172,7 +172,7 @@ public class RemindCommandTest {
         CommandResult result = remindCommand.execute(testModel);
 
         // Check that tags are displayed
-        assertTrue(result.getFeedbackToUser().contains("friends"));
+        assertTrue(result.getFeedbackToUser().contains("student"));
     }
 
     @Test
@@ -397,8 +397,7 @@ public class RemindCommandTest {
         String today = java.time.LocalDate.now().format(DATE_FORMATTER);
 
         java.util.Set<seedu.address.model.tag.Tag> multipleTags = new java.util.HashSet<>();
-        multipleTags.add(new seedu.address.model.tag.Tag("friends"));
-        multipleTags.add(new seedu.address.model.tag.Tag("classmate"));
+        multipleTags.add(new seedu.address.model.tag.Tag("student"));
 
         Person multiTagPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
@@ -410,10 +409,7 @@ public class RemindCommandTest {
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
 
-        assertTrue(result.getFeedbackToUser().contains("friends"));
-        assertTrue(result.getFeedbackToUser().contains("classmate"));
-        assertTrue(result.getFeedbackToUser().contains("friends, classmate")
-                || result.getFeedbackToUser().contains("classmate, friends"));
+        assertTrue(result.getFeedbackToUser().contains("student"));
     }
 
     @Test

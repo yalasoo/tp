@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CLASS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_COLLEAGUE;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -48,7 +48,7 @@ public class AddressBookTest {
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
         // Two persons with the same identity fields
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_HUSBAND).build();
+                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_COLLEAGUE).build();
         List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newPersons);
 
@@ -75,7 +75,7 @@ public class AddressBookTest {
     public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
         addressBook.addPerson(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_HUSBAND).build();
+                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_COLLEAGUE).build();
         assertTrue(addressBook.hasPerson(editedAlice));
     }
 
@@ -94,7 +94,7 @@ public class AddressBookTest {
     public void setPerson_editedPersonHasSameIdentity_success() {
         addressBook.addPerson(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_HUSBAND).build();
+                .withClass(VALID_CLASS_BOB).withTags(VALID_TAG_COLLEAGUE).build();
         addressBook.setPerson(ALICE, editedAlice);
         AddressBook expectedAddressBook = new AddressBook();
         expectedAddressBook.addPerson(editedAlice);
