@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CLASS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -29,6 +30,7 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_CLASS + "CLASS "
+            + PREFIX_BIRTHDAY + "BIRTHDAY "
             + PREFIX_TAG + "TAG (must be 'student' or 'colleague') "
             + "[" + PREFIX_NOTE + "NOTE] "
             + "...\n"
@@ -38,6 +40,7 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "john.doe@gmail.com "
             + PREFIX_ADDRESS + "Blk 456, Den Road, #01-355 "
             + PREFIX_CLASS + "K1A "
+            + PREFIX_BIRTHDAY + "15-03-2018 "
             + PREFIX_TAG + "student "
             + PREFIX_NOTE + "Likes to study in the library";
 
