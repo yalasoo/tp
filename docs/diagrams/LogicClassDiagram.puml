@@ -7,14 +7,57 @@ skinparam classBackgroundColor LOGIC_COLOR
 package Logic as LogicPackage {
 
 package "Parser Classes" as ParserClasses{
+    Class "<<interface>>\nParser" as Parser
+    Class AddressBookParser
+    Class AddCommandParser
+    Class DeleteCommandParser
+    Class EditCommandParser
+    Class AttendanceCommandParser
+    Class FavouriteCommandParser
+    Class FindNameCommandParser
+    Class FindClassCommandParser
+    Class FindPhoneCommandParser
+    Class FindTagCommandParser
+    Class NoteCommandParser
+    Class SortCommandParser
+    Class ViewCommandParser
+    Class ArgumentMultimap
+    Class ArgumentTokenizer
+    Class CliSyntax
+    Class ParserUtil
+    Class Prefix
 }
-Class XYZCommand
-Class CommandResult
-Class "{abstract}\nCommand" as Command
 
+package "Command Classes" as CommandClasses{
+    Class "{abstract}\nCommand" as Command
+    Class CommandResult
+    Class AddCommand
+    Class DeleteCommand
+    Class EditCommand
+    Class AttendanceCommand
+    Class ClearCommand
+    Class ExitCommand
+    Class FavouriteCommand
+    Class FindNameCommand
+    Class FindClassCommand
+    Class FindPhoneCommand
+    Class FindTagCommand
+    Class HelpCommand
+    Class ListCommand
+    Class NoteCommand
+    Class RemindCommand
+    Class SortCommand
+    Class ViewCommand
+}
+
+package "Exception Classes" as ExceptionClasses{
+    Class CommandException
+    Class ParseException
+}
 
 Class "<<interface>>\nLogic" as Logic
 Class LogicManager
+Class Messages
 }
 
 package Model {
@@ -22,26 +65,62 @@ Class HiddenModel #FFFFFF
 }
 
 package Storage {
+Class HiddenStorage #FFFFFF
 }
 
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
-LogicManager -right->"1" ParserClasses
-ParserClasses ..> XYZCommand : <<create>>
-
-XYZCommand -up-|> Command
-LogicManager .left.> Command : <<call>>
-
+LogicManager -right->"1" AddressBookParser
 LogicManager --> Model
 LogicManager --> Storage
-Storage --[hidden] Model
-Command .[hidden]up.> Storage
-Command .right.> Model
-note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
+
+AddressBookParser --> ParserClasses : <<uses>>
+ParserClasses ..> CommandClasses : <<create>>
+
+AddCommand -up-|> Command
+DeleteCommand -up-|> Command
+EditCommand -up-|> Command
+AttendanceCommand -up-|> Command
+ClearCommand -up-|> Command
+ExitCommand -up-|> Command
+FavouriteCommand -up-|> Command
+FindNameCommand -up-|> Command
+FindClassCommand -up-|> Command
+FindPhoneCommand -up-|> Command
+FindTagCommand -up-|> Command
+HelpCommand -up-|> Command
+ListCommand -up-|> Command
+NoteCommand -up-|> Command
+RemindCommand -up-|> Command
+SortCommand -up-|> Command
+ViewCommand -up-|> Command
+
+AddCommandParser ..|> Parser
+DeleteCommandParser ..|> Parser
+EditCommandParser ..|> Parser
+AttendanceCommandParser ..|> Parser
+FavouriteCommandParser ..|> Parser
+FindNameCommandParser ..|> Parser
+FindClassCommandParser ..|> Parser
+FindPhoneCommandParser ..|> Parser
+FindTagCommandParser ..|> Parser
+NoteCommandParser ..|> Parser
+SortCommandParser ..|> Parser
+ViewCommandParser ..|> Parser
+
+LogicManager .left.> Command : <<executes>>
+Command .right.> Model : <<accesses>>
+Command .up.> CommandResult : <<creates>>
+Command .down.> CommandException : <<throws>>
+ParserClasses .down.> ParseException : <<throws>>
 
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
-Command .up.> CommandResult : <<create>>
+Storage --[hidden] Model
+Command .[hidden]up.> Storage
+
+note right of CommandClasses: Concrete command implementations\nhandle specific user actions
+note left of ParserClasses: Parser classes convert user input\ninto executable commands
 @enduml

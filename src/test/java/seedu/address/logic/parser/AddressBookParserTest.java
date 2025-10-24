@@ -30,6 +30,7 @@ import seedu.address.logic.commands.FindTagCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.RemindCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.SortCommand.SortField;
 import seedu.address.logic.commands.SortCommand.SortOrder;
@@ -43,6 +44,10 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.PopupHandler;
+import seedu.address.ui.TestDeletePopupHandler;
+import seedu.address.ui.TestInfoPopupHandler;
 
 public class AddressBookParserTest {
 
@@ -59,12 +64,12 @@ public class AddressBookParserTest {
                 .withClass("K1B")
                 .withBirthday("23-10-1995")
                 .withNote("")
-                .withTags()
+                .withTags("student") // Add mandatory tag
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
         String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
-                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995";
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995 t/student"; // Add tag parameter
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);
@@ -78,10 +83,13 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
+        PopupHandler testInfoHandler = new TestInfoPopupHandler();
+        DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler), command);
     }
+
     @Test
     public void parseCommand_edit() throws Exception {
         Person person = new PersonBuilder().withBirthday("18-07-2018").withNote("").build();
@@ -171,6 +179,12 @@ public class AddressBookParserTest {
         SortCommand command = (SortCommand) parser.parseCommand(
                 SortCommand.COMMAND_WORD + " " + PREFIX_FIELD + "name");
         assertEquals(new SortCommand(SortField.valueOf("NAME"), SortOrder.valueOf("ASC")), command);
+    }
+
+    @Test
+    public void parseCommand_remind() throws Exception {
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD) instanceof RemindCommand);
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD + " 3") instanceof RemindCommand);
     }
 
     @Test

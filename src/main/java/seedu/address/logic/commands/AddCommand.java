@@ -31,16 +31,18 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_CLASS + "CLASS "
             + PREFIX_BIRTHDAY + "BIRTHDAY "
+            + PREFIX_TAG + "TAG (must be 'student' or 'colleague') "
             + "[" + PREFIX_NOTE + "NOTE] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "john.doe@gmail.com "
             + PREFIX_ADDRESS + "Blk 456, Den Road, #01-355 "
             + PREFIX_CLASS + "K1A "
-            + PREFIX_NOTE + "Likes to study in the library "
-            + PREFIX_TAG + "friends";
+            + PREFIX_BIRTHDAY + "15-03-2018 "
+            + PREFIX_TAG + "student "
+            + PREFIX_NOTE + "Likes to study in the library";
 
     public static final String MESSAGE_SUCCESS = "New %1$s added";
     public static final String MESSAGE_DUPLICATE_PERSON = "Duplicate contact detected.";

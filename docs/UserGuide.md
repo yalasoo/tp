@@ -125,7 +125,7 @@ Format: `help`
 
 Purpose: Allows teachers to create a new contact entry for students or colleagues.
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS [desc/NOTE] [t/TAG]...`
+Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [no/NOTE]`
 
 **Parameters & Validation Rules:**
 - **Name (n/):** Alphabetic characters, spaces, hyphens, apostrophes only. Leading/trailing spaces trimmed, multiple spaces collapsed. Case-insensitive for duplicates. Error if empty or contains numbers/symbols.
@@ -133,19 +133,20 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS [desc/NOTE] [t/TAG]...`
 - **Email (e/):** Must follow standard email format. Case-insensitive. Error if invalid format.
 - **Address (a/):** Any non-blank text. Error if empty or contains only whitespace.
 - **Class (c/):** Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K (case-insensitive). Error if invalid class format.
-- **Note (desc/):** Optional. Any text up to 500 characters. Leading/trailing spaces trimmed.
-- **Tag (t/):** Optional. Alphanumeric characters only. Multiple tags can be added.
+- **Birthday (b/):** Date in DD-MM-YYYY format. Must be a valid date.
+- **Tag (t/):** **MANDATORY**. Must be either 'student' or 'colleague' (case-insensitive). Exactly one tag required.
+- **Note (no/):** Optional. Any text up to 500 characters. Leading/trailing spaces trimmed.
 
 **Duplicate Handling:**
 Duplicate if name + phone already exist (case-insensitive). If detected, error message: `Duplicate contact detected.`
 
 Examples:
-* `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A`
-* `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B desc/Allergic to peanuts t/student`
+* `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`
+* `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague no/Allergic to peanuts`
 
 **Outputs:**
 - Success: GUI updates contact list, message: `New contact added`
-- Failure: Error message with reason (invalid/missing parameter, duplicate, etc.)
+- Failure: Error message with reason (invalid/missing parameter, duplicate, invalid tag, etc.)
 
 ### Deleting a contact: `delete`
 
@@ -363,9 +364,8 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 Action     | Format, Examples
 -----------|-----------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE e/EMAIL c/CATEGORY`<br>e.g., `add n/John Doe p/98765432 e/john.doe@gmail.com c/student`
-**Search** | `search KEYWORD`<br>e.g., `search John`
-**Delete** | `delete n/NAME`<br>e.g., `delete n/John Doe`<br>`delete n/INDEX`<br>e.g., `delete 1`
+**Add**    | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [no/NOTE]`<br>e.g., `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`
+**Delete** | `delete n/NAME`<br>e.g., `delete n/John Doe`<br>`delete INDEX`<br>e.g., `delete 1`
 **View**   | `view INDEX`<br>e.g., `view 1`
 **Find-n** | `find-n KEYWORD`<br>e.g., `find-n John`
 **Find-p** | `find-p KEYWORD`<br>e.g., `find-p 84871234`

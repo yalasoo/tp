@@ -8,6 +8,7 @@ import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Favourite;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -27,6 +28,7 @@ public class PersonBuilder {
     public static final String DEFAULT_CLASS = "K1A";
     public static final String DEFAULT_BIRTHDAY = "23-10-1995";
     public static final String DEFAULT_NOTE = "She is allergic to peanut.";
+    public static final String DEFAULT_TAG = "student";
 
     private Name name;
     private Phone phone;
@@ -37,6 +39,7 @@ public class PersonBuilder {
     private Note note;
     private Set<Tag> tags;
     private Attendance attendance;
+    private Favourite favourite;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -50,7 +53,10 @@ public class PersonBuilder {
         birthday = new Birthday(DEFAULT_BIRTHDAY);
         note = new Note(DEFAULT_NOTE);
         tags = new HashSet<>();
+        tags.add(new Tag(DEFAULT_TAG)); // Add default tag since it's mandatory
         attendance = new Attendance();
+        // by default no contact is indicated as favourite
+        favourite = new Favourite(false);
     }
 
     /**
@@ -66,6 +72,7 @@ public class PersonBuilder {
         note = personToCopy.getNote();
         tags = new HashSet<>(personToCopy.getTags());
         attendance = personToCopy.getAttendance();
+        favourite = personToCopy.getFavouriteStatus();
     }
 
     /**
@@ -134,6 +141,16 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code Favourite} of the {@code Person} that we are building.
+     * @param value Can be true or false to set the favourite attribute.
+     * @return PersonBuilder object.
+     */
+    public PersonBuilder withFavourite(Boolean value) {
+        this.favourite = new Favourite(value);
+        return this;
+    }
+
+    /**
      * Sets the {@code Note} of the {@code Person} that we are building.
      */
     public PersonBuilder withAttendance(Attendance attendance) {
@@ -142,7 +159,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, studentClass, birthday, note, tags, attendance);
+        return new Person(name, phone, email, address, studentClass, birthday, note, tags, attendance, favourite);
     }
 
 }

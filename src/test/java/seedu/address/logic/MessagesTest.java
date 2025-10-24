@@ -73,9 +73,9 @@ public class MessagesTest {
         Class studentClass = new Class("Nursery"); // Valid kindergarten class format
         Birthday birthday = new Birthday("23-04-1999");
         Note note = new Note("Test note");
-        Set<Tag> tags = Set.of(new Tag("friend"), new Tag("colleague"));
+        Set<Tag> tags = Set.of(new Tag("student")); // Use valid tag: student or colleague
 
-        Person person = new Person(name, phone, email, address, studentClass, birthday, note, tags, null);
+        Person person = new Person(name, phone, email, address, studentClass, birthday, note, tags, null, null);
 
         String result = Messages.format(person);
 
@@ -85,8 +85,7 @@ public class MessagesTest {
         assertTrue(result.contains("Email: john@example.com"));
         assertTrue(result.contains("Class: NURSERY")); // Class values are stored in uppercase
         assertTrue(result.contains("Tags:"));
-        assertTrue(result.contains("friend"));
-        assertTrue(result.contains("colleague"));
+        assertTrue(result.contains("student"));
     }
 
     @Test
@@ -101,7 +100,7 @@ public class MessagesTest {
         Note note = new Note("");
         Set<Tag> tags = Set.of(); // Empty set of tags
 
-        Person person = new Person(name, phone, email, address, studentClass, birthday, note, tags, null);
+        Person person = new Person(name, phone, email, address, studentClass, birthday, note, tags, null, null);
 
         String result = Messages.format(person);
 

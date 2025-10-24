@@ -19,6 +19,7 @@ import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Favourite;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -41,6 +42,7 @@ class JsonAdaptedPerson {
     private final String note;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final Map<String, String> attendance = new HashMap<>();
+    private final Boolean favourite;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -53,8 +55,9 @@ class JsonAdaptedPerson {
                              @JsonProperty("studentClass") String studentClass,
                              @JsonProperty("birthday") String birthday,
                              @JsonProperty("note") String note,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
-                             @JsonProperty("attendance") Map<String, String> attendance) {
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags ,
+                             @JsonProperty("attendance") Map<String, String> attendance,
+                             @JsonProperty("favourite") Boolean favourite) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -68,6 +71,8 @@ class JsonAdaptedPerson {
         if (attendance != null) {
             this.attendance.putAll(attendance);
         }
+
+        this.favourite = favourite;
     }
 
     /**
@@ -89,6 +94,8 @@ class JsonAdaptedPerson {
             source.getAttendanceRecords().forEach((date, status) ->
                     attendance.put(date.toString(), status.toString()));
         }
+
+        favourite = source.getIsFavBoolean();
     }
 
     /**
@@ -166,9 +173,18 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
+        final Favourite modelFavourite;
+        if (favourite == null) {
+            // be default favourite so can be taken to be false
+            modelFavourite = new Favourite(false);
+        } else {
+            modelFavourite = new Favourite(favourite);
+        }
+
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
         return new Person(modelName, modelPhone, modelEmail, modelAddress,
-                          modelStudentClass, modelBirthday, modelNote, modelTags, modelAttendance);
+                          modelStudentClass, modelBirthday, modelNote, modelTags, modelAttendance, modelFavourite);
     }
 }

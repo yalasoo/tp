@@ -124,6 +124,22 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        autoShowReminders();
+    }
+
+    /**
+     * Automatically shows reminders by executing the Remind command.
+     */
+    private void autoShowReminders() {
+        try {
+            // Execute Remind Command and display result in result display
+            CommandResult commandResult = logic.execute("remind");
+            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+        } catch (CommandException | ParseException e) {
+            // Silently fail - don't show error if remind command fails on startup
+            logger.info("No reminders to show on startup: " + e.getMessage());
+        }
     }
 
     /**

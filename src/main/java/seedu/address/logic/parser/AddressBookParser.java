@@ -15,15 +15,22 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FavouriteCommand;
+import seedu.address.logic.commands.FindClassCommand;
 import seedu.address.logic.commands.FindNameCommand;
 import seedu.address.logic.commands.FindPhoneCommand;
 import seedu.address.logic.commands.FindTagCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.RemindCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.ui.DeletePopupHandle;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.InfoPopupHandler;
+import seedu.address.ui.PopupHandler;
 
 /**
  * Parses user input.
@@ -65,10 +72,18 @@ public class AddressBookParser {
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+            PopupHandler infoHandler = new InfoPopupHandler();
+            DeletePopupHandler deleteHandler = new DeletePopupHandle();
+            return new DeleteCommandParser(infoHandler, deleteHandler).parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
+
+        case FavouriteCommand.COMMAND_WORD:
+            return new FavouriteCommandParser().parse(arguments);
+
+        case FindClassCommand.COMMAND_WORD:
+            return new FindClassCommandParser().parse(arguments);
 
         case FindNameCommand.COMMAND_WORD:
             return new FindNameCommandParser().parse(arguments);
@@ -99,6 +114,9 @@ public class AddressBookParser {
 
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);
+
+        case RemindCommand.COMMAND_WORD:
+            return new RemindCommand();
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

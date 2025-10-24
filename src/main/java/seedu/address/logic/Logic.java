@@ -47,4 +47,9 @@ public interface Logic {
      * Set the user prefs' GUI settings.
      */
     void setGuiSettings(GuiSettings guiSettings);
+
+    /**
+     * Returns reminder for birthdays (including upcoming).
+     */
+    String getBirthdayReminders();
 }

@@ -8,7 +8,7 @@
     "studentClass" : "K1A",
     "birthday": "15-03-2018",
     "note": "She likes aardvarks.",
-    "tags" : [ "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
@@ -17,7 +17,7 @@
     "studentClass" : "K1B",
     "birthday": "24-12-2017",
     "note": "He can't take beer!",
-    "tags" : [ "owesMoney", "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
@@ -35,7 +35,7 @@
     "studentClass" : "K2A",
     "birthday": "30-01-2017",
     "note": "",
-    "tags" : [ "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "94822240",
@@ -53,7 +53,7 @@
     "studentClass" : "K2C",
     "birthday": "03-11-2018",
     "note": "",
-    "tags" : [ ]
+    "tags" : [ "student" ]
   }, {
     "name" : "George Best",
     "phone" : "94824420",
@@ -62,7 +62,7 @@
     "studentClass" : "Nursery",
     "birthday": "19-09-2019",
     "note": "",
-    "tags" : [ ]
+    "tags" : [ "student" ]
   }, {
     "name" : "George Best",
     "phone" : "94824888",
@@ -71,6 +71,6 @@
     "studentClass" : "Nursery",
     "birthday": "19-09-2019",
     "note": "",
-    "tags" : [ ]
+    "tags" : [ "student" ]
   }]
 }
