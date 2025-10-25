@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 
@@ -38,10 +39,27 @@ public class Attendance {
     /**
      * Returns a copy of all attendance records.
      * The returned map contains dates mapped to their corresponding attendance status.
+     *
      * @return a copy of the attendance records map
      */
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return new HashMap<>(attendance);
+    }
+
+    /**
+     * Returns the attendance records within the specified month.
+     *
+     * @param targetMonth specified attendance month.
+     * @return attendance records map at the specified month.
+     */
+    public Map<LocalDate, AttendanceStatus> getAttendanceRecordsForMonth(YearMonth targetMonth) {
+        return attendance.entrySet()
+                .stream()
+                .filter(entry -> YearMonth.from(entry.getKey()).equals(targetMonth))
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue()
+                ));
     }
 
     /**
