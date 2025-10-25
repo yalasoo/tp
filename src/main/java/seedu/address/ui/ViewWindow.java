@@ -5,6 +5,7 @@ import java.util.Comparator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -79,6 +80,8 @@ public class ViewWindow extends UiPart<Stage> {
         fillFields(person);
         getRoot().show();
         getRoot().centerOnScreen();
+        getRoot().requestFocus();
+        setUpKeyboardNavigation();
     }
 
     /**
@@ -151,6 +154,22 @@ public class ViewWindow extends UiPart<Stage> {
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
+    }
+
+    /**
+     * Sets up listener for left and arrow key to
+     * navigate previous and next month respectively.
+     */
+    public void setUpKeyboardNavigation() {
+        getRoot().getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.LEFT) {
+                attendancePanel.navigatePreviousMonth();
+                event.consume();
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                attendancePanel.navigateNextMonth();
+                event.consume();
+            }
+        });
     }
 
     /**
