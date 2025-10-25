@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -173,7 +172,7 @@ public class ViewWindow extends UiPart<Stage> {
             } else if (event.getCode() == KeyCode.RIGHT) {
                 attendancePanel.navigateNextMonth();
                 event.consume();
-            } else if (event.getClose() == KeyCode.ESCAPE) {
+            } else if (event.getCode() == KeyCode.ESCAPE) {
                 hide();
                 event.consume();
             }
