@@ -45,7 +45,6 @@ public class ViewWindow extends UiPart<Stage> {
 
     /**
      * Creates a new ViewWindow.
-     *
      * @param root Stage to use as the root of the ViewWindow.
      */
     public ViewWindow(Stage root) {
@@ -90,6 +89,11 @@ public class ViewWindow extends UiPart<Stage> {
     public void show() {
         getRoot().show();
         getRoot().centerOnScreen();
+
+        // Ensure the scene has focus to receive key events
+        if (getRoot().getScene() != null) {
+            getRoot().getScene().getRoot().requestFocus();
+        }
     }
 
     /**
@@ -167,6 +171,9 @@ public class ViewWindow extends UiPart<Stage> {
                 event.consume();
             } else if (event.getCode() == KeyCode.RIGHT) {
                 attendancePanel.navigateNextMonth();
+                event.consume();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                hide();
                 event.consume();
             }
         });

@@ -6,10 +6,11 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * Represents a Person's birthday in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(String)}
+ * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(String)}.
  */
 public class Birthday {
 
@@ -17,14 +18,14 @@ public class Birthday {
             "Birthday should be in the format dd-MM-yyyy (e.g., 24-12-2005) and must be a valid date";
 
     public static final String VALIDATION_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
+            .withResolverStyle(ResolverStyle.STRICT);;
 
     public final String value;
     public final LocalDate date;
 
     /**
      * Constructs a {@code Birthday}.
-     *
      * @param birthday A valid birthday.
      */
     public Birthday(String birthday) {
@@ -44,8 +45,10 @@ public class Birthday {
         }
 
         try {
-            LocalDate.parse(test, DATE_FORMATTER);
-            return true;
+            LocalDate parsedDate = LocalDate.parse(test, DATE_FORMATTER);
+
+            String formatted = parsedDate.format(DATE_FORMATTER);
+            return formatted.equals(test);
         } catch (DateTimeParseException e) {
             return false;
         }

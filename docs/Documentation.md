@@ -19,3 +19,7 @@
 **Converting to PDF**
 
 * See the guide [_se-edu/guides **Saving web documents as PDF files**_](https://se-education.org/guides/tutorials/savingPdf.html).
+
+**Credits:**
+* View Window Icon: 
+  * <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Freepik - Flaticon</a>

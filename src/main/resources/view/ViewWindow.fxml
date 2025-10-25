@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,7 +16,9 @@
 <fx:root title="View Contact" type="javafx.stage.Stage"
          minWidth="500" minHeight="600" maxWidth="800"
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-    <!-- TODO: Add Icon for View Window -->
+    <icons>
+        <Image url="@/images/view_window_icon.png" />
+    </icons>
     <scene>
         <Scene>
             <stylesheets>
@@ -29,7 +32,10 @@
                     </padding>
 
                     <!-- Name label -->
-                    <Label fx:id="nameLabel" text="Full Name" styleClass="label-bright" />
+                    <HBox alignment="CENTER">
+                        <Label fx:id="nameLabel" text="Full Name" styleClass="label-bright"
+                               maxWidth="Infinity" alignment="CENTER" />
+                    </HBox>
 
                     <Separator/>
 

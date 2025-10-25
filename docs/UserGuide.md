@@ -34,9 +34,10 @@ manage student and parent contact information efficiently.
 
 1. Copy the file to the folder you want to use as the _home folder_ for your LittleLogBook.
 
-1. **Open and navigate to your jar file using command terminal:**
+1. Open and navigate to your jar file using command terminal:
 
-   **What is `cd`?** `cd` stands for "change directory" - it's a command that lets you navigate to different folders on your computer through the command line.
+   **Tips:** 
+   1. What is `cd`? `cd` stands for "change directory" - it's a command that lets you navigate to different folders on your computer through the command line.
 
    **Step-by-step instructions:**
 
@@ -186,6 +187,8 @@ Possible matches and corresponding information will also be displayed in the nam
 
 Purpose: Show full information of a contact (including notes, classes, attendance).
 
+**NOTE:** View Window will automatically close when other commands are called.
+
 Format: `view INDEX`
 
 **Parameters:**
@@ -220,11 +223,6 @@ Success:
 Failure:
 - Invalid input for view → `Invalid command format`
 - Out Of Bounds index → `Person index provided is invalid`
-
-
-**Outputs:**
-- Success: List updates to show all matching contacts.
-- Failure: No results → `No contacts found for "Tan"`
 
 ### Adding/Editing notes: `note`
 
