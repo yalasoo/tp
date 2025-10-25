@@ -32,7 +32,7 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Attendance attendance;
 
-    //Extra fields
+    // Extra fields
     private final Favourite favourite;
 
     /**
@@ -40,13 +40,13 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Class studentClass,
                   Birthday birthday, Note note, Set<Tag> tags, Attendance attendance, Favourite favourite) {
-        this.birthday = birthday;
-        requireAllNonNull(name, phone, email, address, studentClass, note, tags);
+        requireAllNonNull(name, phone, email, address, studentClass, birthday, note, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.birthday = birthday;
         this.note = note;
         this.tags.addAll(tags);
 
@@ -100,7 +100,6 @@ public class Person {
     public Favourite getFavouriteStatus() {
         return favourite;
     }
-
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

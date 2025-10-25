@@ -178,6 +178,16 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Closes the View window if it's opened.
+     */
+    @FXML
+    public void handleCloseView() {
+        if (viewWindow.isShowing()) {
+            viewWindow.hide();
+        }
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -216,6 +226,8 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isShowView()) {
                 handleView();
+            } else {
+                handleCloseView();
             }
 
             if (commandResult.isExit()) {

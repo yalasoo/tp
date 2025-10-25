@@ -287,8 +287,8 @@ view 1
 <div style="text-align: center;">
     <strong>Valid index provided</strong><br>
     <img src="images/view_contact_window.png" width="500px">
-  </div>
-
+</div>
+  
 [//]: # (COMMAND BREAK)
 <br>
 

@@ -1,9 +1,13 @@
-.root {
+.background {
     -fx-background-color: linear-gradient(to bottom, #B1DFF3, #FFFFFF);
 }
 
 .scroll-pane {
-    -fx-background-color: transparent;
+    -fx-background-color: linear-gradient(to bottom, #B1DFF3, #FFFFFF);
+}
+
+.scroll-pane.background {
+    -fx-background-color: linear-gradient(to bottom, #B1DFF3, #FFFFFF);
 }
 
 .scroll-pane .viewport {
@@ -26,6 +30,8 @@
 
 .label-bright {
     -fx-font-size: 20pt;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
     -fx-font-family: "Segoe UI";
     -fx-text-fill: #005074;
     -fx-padding: 0 0 7 0;
