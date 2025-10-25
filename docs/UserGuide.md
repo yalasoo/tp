@@ -27,14 +27,17 @@ manage students' and parents' contact information efficiently.
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
-   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+1. Ensure you have Java `17` or above installed in your Computer.
+   <box type="warning">
+   <strong>Mac users:</strong> Ensure you have the precise JDK version prescribed
+   <a href="https://se-education.org/guides/tutorials/javaInstallationMac.html">here</a>.
+   </box>
 
 1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F14B-1/tp).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your LittleLogBook.
 
-1. **Open and navigate to your jar file using command terminal:**
+1. Open and navigate to your jar file using command terminal:
 
 [//]: # (EXPLANATION BLOCK)
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-left: 4px solid #ffd519;">
@@ -110,9 +113,9 @@ manage students' and parents' contact information efficiently.
 
 **Notes about the parameters and validation rules:**<br>
 
-* Mandatory parameters will be colored <span style="color: #e83f8b">**PINK**</span>
+* Mandatory parameters will be colored <span style="color: #e83f8b">**PINK**</span>.
 
-* Optional parameters will be colored <span style="color: #6b7280">**GREY**</span>
+* Optional parameters will be colored <span style="color: #6b7280">**GREY**</span>.
 
 </box>
 
