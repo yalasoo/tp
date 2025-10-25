@@ -187,6 +187,8 @@ Possible matches and corresponding information will also be displayed in the nam
 
 Purpose: Show full information of a contact (including notes, classes, attendance).
 
+**NOTE:** View Window will automatically close when other commands are called.
+
 Format: `view INDEX`
 
 **Parameters:**
