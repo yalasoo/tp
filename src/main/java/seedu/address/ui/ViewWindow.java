@@ -5,6 +5,7 @@ import java.util.Comparator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -51,6 +52,18 @@ public class ViewWindow extends UiPart<Stage> {
         root.setMinWidth(MIN_WIDTH);
         root.setMinHeight(MIN_HEIGHT);
         initializeAttendancePanel();
+        setUpEscHandler();
+    }
+
+    /**
+     * Sets up escape keyboard handler for the view window.
+     */
+    private void setUpEscHandler() {
+        getRoot().getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                hide();
+            }
+        });
     }
 
     /**
@@ -78,6 +91,11 @@ public class ViewWindow extends UiPart<Stage> {
         fillFields(person);
         getRoot().show();
         getRoot().centerOnScreen();
+
+        // Ensure the scene has focus to receive key events
+        if (getRoot().getScene() != null) {
+            getRoot().getScene().getRoot().requestFocus();
+        }
     }
 
     /**
@@ -86,6 +104,11 @@ public class ViewWindow extends UiPart<Stage> {
     public void show() {
         getRoot().show();
         getRoot().centerOnScreen();
+
+        // Ensure the scene has focus to receive key events
+        if (getRoot().getScene() != null) {
+            getRoot().getScene().getRoot().requestFocus();
+        }
     }
 
     /**
@@ -101,6 +124,8 @@ public class ViewWindow extends UiPart<Stage> {
     public void hide() {
         getRoot().hide();
     }
+
+
 
     /**
      * Focuses on the view window.
@@ -150,6 +175,16 @@ public class ViewWindow extends UiPart<Stage> {
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
+    }
+
+    /**
+     * Refreshes the view window with updated person data.
+     */
+    public void refresh(Person person) {
+        if (isShowing()) {
+            clearDisplay();
+            fillFields(person);
+        }
     }
 
     /**

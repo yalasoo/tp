@@ -17,7 +17,7 @@ public class CommandResult {
     /** Help information should be shown to the user. */
     private final boolean showHelp;
 
-    /** */
+    /** View information should be shown to user. */
     private final boolean showView;
 
     /** The application should exit. */
