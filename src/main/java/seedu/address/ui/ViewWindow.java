@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -52,7 +53,6 @@ public class ViewWindow extends UiPart<Stage> {
         root.setMinWidth(MIN_WIDTH);
         root.setMinHeight(MIN_HEIGHT);
         initializeAttendancePanel();
-        setUpEscHandler();
     }
 
     /**
@@ -80,11 +80,8 @@ public class ViewWindow extends UiPart<Stage> {
         fillFields(person);
         getRoot().show();
         getRoot().centerOnScreen();
-
-        // Ensure the scene has focus to receive key events
-        if (getRoot().getScene() != null) {
-            getRoot().getScene().getRoot().requestFocus();
-        }
+        getRoot().requestFocus();
+        setUpKeyboardNavigation();
     }
 
     /**
@@ -112,17 +109,6 @@ public class ViewWindow extends UiPart<Stage> {
      */
     public void hide() {
         getRoot().hide();
-    }
-
-    /**
-     * Sets up escape keyboard handler for the view window.
-     */
-    private void setUpEscHandler() {
-        getRoot().getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                hide();
-            }
-        });
     }
 
     /**
@@ -176,13 +162,22 @@ public class ViewWindow extends UiPart<Stage> {
     }
 
     /**
-     * Refreshes the view window with updated person data.
+     * Sets up listener for left and arrow key to
+     * navigate previous and next month respectively.
      */
-    public void refresh(Person person) {
-        if (isShowing()) {
-            clearDisplay();
-            fillFields(person);
-        }
+    public void setUpKeyboardNavigation() {
+        getRoot().getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.LEFT) {
+                attendancePanel.navigatePreviousMonth();
+                event.consume();
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                attendancePanel.navigateNextMonth();
+                event.consume();
+            } else if (event.getClose() == KeyCode.ESCAPE) {
+                hide();
+                event.consume();
+            }
+        });
     }
 
     /**
