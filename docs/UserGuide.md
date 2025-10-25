@@ -7,17 +7,17 @@
 # LittleLogBook
 
 ## Product description
-LittleLogBook helps **kindergarten teachers** keep track of **student and parent information** with ease.
-Unlike traditional contact management tools, it’s optimised for fast typing and minimal clicking, making it ideal for those who prefer keyboard-driven workflows.
+LittleLogBook helps **kindergarten teachers** keep track of **students' and parents' information** with ease.
+Unlike traditional contact management tools, LittleLogBook is optimised for fast typing and minimal clicking, making it ideal for teachers who prefer keyboard-driven workflows.
 
 ## Target User
-LittleLogBook is designed for kindergarten teachers who need to 
-manage student and parent contact information efficiently.
+LittleLogBook is designed for kindergarten teachers who need to
+manage students' and parents' contact information efficiently.
 
 **Assumptions** about our target user:
 1. A kindergarten teacher who is an avid user of typed user commands
 (able to use Command prompt/terminal).
-2. The teacher teaches multiple classes. Each class holds multiple students.
+2. The teacher teaches multiple classes, each containing multiple students.
 3. The teacher will also have multiple colleagues to work with.
 
 <!-- * Table of Contents -->
@@ -36,23 +36,26 @@ manage student and parent contact information efficiently.
 
 1. **Open and navigate to your jar file using command terminal:**
 
-   **What is `cd`?** `cd` stands for "change directory" - it's a command that lets you navigate to different folders on your computer through the command line.
+[//]: # (EXPLANATION BLOCK)
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-left: 4px solid #ffd519;">
+<strong>What is <code>cd</code>?</strong> <code>cd</code> stands for "change directory" - it's a command that lets you navigate to different folders on your computer through the command line.
+</div>
+<br>
 
    **Step-by-step instructions:**
+   
+   1. **Navigate to the jar file folder:**
+      - Windows: Open Command Prompt and run `cd C:\path\to\LittleLogBook`
+      - Mac/Linux: Open Terminal and run `cd /path/to/LittleLogBook`
 
-   1. **For Windows users:**
-      - Press `Windows key + R`, type `cmd`, and press Enter to open Command Prompt
-      - Type `cd` followed by a space, then the full path to your jar file folder
-      - Example: `cd C:\Users\YourName\Desktop\LittleLogBook` (replace with your actual folder path)
-      - Press Enter to navigate to that folder
-      - Type `java -jar littlelogbook.jar` and press Enter to run the application
+<box type="tip">
+<strong>Tip:</strong> Replace the path with your actual folder location containing the jar file.
+</box>
 
-   1. **For Mac/Linux users:**
-      - Press `Cmd + Space` (Mac) or `Ctrl + Alt + T` (Linux) to open Terminal
-      - Type `cd` followed by a space, then the full path to your jar file folder
-      - Example: `cd /Users/YourName/Desktop/LittleLogBook` (replace with your actual folder path)
-      - Press Enter to navigate to that folder
-      - Type `java -jar littlelogbook.jar` and press Enter to run the application
+   2. **Run the application:**
+        ```shell
+        java -jar littlelogbook.jar
+        ```
 
    1. **Alternative method (easier for beginners):**
       - Navigate to the folder containing `littlelogbook.jar` using your file explorer
@@ -63,26 +66,18 @@ manage student and parent contact information efficiently.
 
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
 
-    <div style="text-align: center;">
-        <img src="images/Ui.png" width="500px">
-    </div>
+<div style="text-align: center;">
+<img src="images/Ui.png" width="500px">
+</div>
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
    * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A` : Adds a contact named `John Doe` with class `K1A` to LittleLogBook.
-   
-   * `note 1 desc/Allergic to peanut` : Add the note "Allergic to peanut" to contact at index 1. 
 
-   * `delete n/John Doe` : Deletes the contact named `John Doe`.
+   * `edit 1 n/Bob` : Edit the first contact's name to `Bob`.
 
-   * `view n/John Doe` : Shows full details of the contact named `John Doe`.
-
-   * `find-n John` : Searches for contacts with names containing `John`.
-   
-   * `find-p 8987` : Searches for contacts with phone number containing `8987`.
-
-   * `find-t student` : Searches for contacts labelled with tag `student`.
+   * `delete n/Bob` : Deletes the contact named `Bob`.
 
    * `exit` : Exits the app.
 
@@ -111,235 +106,388 @@ manage student and parent contact information efficiently.
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
+<box type="info" seamless>
+
+**Notes about the parameters and validation rules:**<br>
+
+* Mandatory parameters will be colored <span style="color: #e83f8b">**PINK**</span>
+
+* Optional parameters will be colored <span style="color: #6b7280">**GREY**</span>
+
+</box>
+
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+**Purpose**: Shows a message explaining how to access the help page.
 
 <div style="text-align: center;">
     <img src="images/help_message.png" width="600px">
 </div>
 
-Format: `help`
+##### Command Format
+```shell
+help
+```
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Adding a contact: `add`
 
-Purpose: Allows teachers to create a new contact entry for students or colleagues.
+**Purpose**: Allows teachers to create a new contact entry for students or colleagues.
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [no/NOTE]`
+##### Command Format
+```shell
+add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
+```
 
-**Parameters & Validation Rules:**
-- **Name (n/):** Alphabetic characters, spaces, hyphens, apostrophes only. Leading/trailing spaces trimmed, multiple spaces collapsed. Case-insensitive for duplicates. Error if empty or contains numbers/symbols.
-- **Phone (p/):** 8-digit Singapore numbers only. Spaces/dashes ignored. Error if not numeric, wrong length, or invalid starting digit.
-- **Email (e/):** Must follow standard email format. Case-insensitive. Error if invalid format.
-- **Address (a/):** Any non-blank text. Error if empty or contains only whitespace.
-- **Class (c/):** Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K (case-insensitive). Error if invalid class format.
-- **Birthday (b/):** Date in DD-MM-YYYY format. Must be a valid date.
-- **Tag (t/):** **MANDATORY**. Must be either 'student' or 'colleague' (case-insensitive). Exactly one tag required.
-- **Note (no/):** Optional. Any text up to 500 characters. Leading/trailing spaces trimmed.
+##### Parameters & Validation Rules
+|                       Parameter                       | Validation Rules                                                         |
+|:-----------------------------------------------------:|--------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                 |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
+|                                                       | Case-insensitive for duplicates                                          |
+|                                                       | Error if empty or contains numbers/symbols                               |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers only                                           |
+|                                                       | Spaces/dashes ignored                                                    |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
+|                                                       | Case-insensitive                                                         |
+|                                                       | Error if invalid format                                                  |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                       |
+|                                                       | Error if empty or contains only whitespace                               |
+|  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
+|                                                       | Case-insensitive                                                         |
+|                                                       | Error if invalid class format                                            |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
+|                                                       | Must be a valid date                                                     |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
+|                                                       | Leading/trailing spaces trimmed                                          |
 
-**Duplicate Handling:**
-Duplicate if name + phone already exist (case-insensitive). If detected, error message: `Duplicate contact detected.`
+<box type="warning">
+<strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
+If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected.</code>
+</box>
 
-Examples:
-* `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`
-* `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague no/Allergic to peanuts`
+##### Example Commands
+```shell
+add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student
+```
+```shell
+add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts
+```
 
-**Outputs:**
-- Success: GUI updates contact list, message: `New contact added`
-- Failure: Error message with reason (invalid/missing parameter, duplicate, invalid tag, etc.)
+##### Outputs
+|                Outcome Type                   | Scenario                   | Message                                                    | GUI Action                            |
+|:---------------------------------------------:|----------------------------|------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
+|                                               | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
+|                                               | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Deleting a contact: `delete`
 
-Purpose: Remove outdated or incorrect contacts from the list.
+**Purpose**: Removes outdated or incorrect contacts from the list.
 
-Format: `delete n/NAME` or `delete INDEX`
+##### Command Format 
+```shell
+delete n/NAME
+```
+```shell
+delete INDEX
+```
 
-**Parameters & Validation Rules:**
-- **Name (n/):** Same rules as Add. Case-insensitive match.
-- **Index:** The index must be a positive integer (1, 2, 3,...)
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                           |
+|:-------------------------------------------------:|------------------------------------------------------------|
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Alphabetic characters, spaces, hyphens, apostrophes only   |
+|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed |
+|                                                   | Case-insensitive match                                     |
+|                                                   | Error if empty or contains numbers/symbols                 |
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                  |
+|                                                   | Cannot be 0 or negative                                    |
+|                                                   | Must correspond to an existing contact in the current list |
 
-Examples:
-* `delete n/John Doe`
-* `delete 3`
+##### Example Commands
+```shell
+delete n/John Doe
+```
+```shell
+delete 3
+```
 
-**Outputs:**
+##### Outputs
 
-Delete by INDEX 
-- Success:  List updates, message: `Deleted Person: <Person>`
-- Failure: Message: `Invalid command format!`
+**1. Delete by INDEX**
 
-Delete by NAME 
-- Success: Exact match: list updates, message: `Deleted Person: <Person>`
-- Failure: Triggers Pop up windows for further confirmation. 
-Possible matches and corresponding information will also be displayed in the name list.
-  - No match → Pop up window stating `No matches found. Press ESC to exit`
+|                Outcome Type                   | Scenario          | Message                                                    | GUI Action                                   |
+|:---------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
+| <span style="color: green">**Success**</span> | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
+|  <span style="color: red">**Failure**</span>  | Invalid index     | `The person index provided is invalid`                     | No changes                                   |
+|                                               | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+
+**2. Delete by NAME**
+
+|                        Outcome Type                          | Scenario               | Message                                                                   | GUI Action                                   |
+|:------------------------------------------------------------:|------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Exact match found      | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry |
+| <span style="color: orange">**Confirmation Required**</span> | No matches found       | `No matches found. Press ESC to exit`                                     | Pop-up window appears                        |
+|                                                              | Multiple matches found | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window with list of matches appears   |
+
+<div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
-    <img src="images/delete_no_matches.png" width="350px">
+    <strong>No matches found</strong><br>
+    <img src="images/delete_no_matches.png" width="300px">
   </div>
-  - Multiple matches → Pop up window stating `Multiple matches found. Type index and ENTER to delete or ESC to cancel`
   <div style="text-align: center;">
-    <img src="images/delete_multiple_matches.png" width="500px">
+    <strong>Multiple matches found</strong><br>
+    <img src="images/delete_multiple_matches.png" width="400px">
   </div>
+</div>
 
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Viewing contact details: `view`
 
-Purpose: Show full information of a contact (including notes, classes, attendance).
+**Purpose**: Shows full information of a contact (including notes, classes, attendance).
 
-Format: `view INDEX`
+##### Format
+```shell
+view INDEX
+````
 
-**Parameters:**
-- INDEX (required): The index number of the contact shown in the displayed contact list.
-  - Must be a positive integer (1, 2, 3, ...)
-  - Cannot be zero or negative
-  - Must correspond to an existing contact in the current list
+##### Parameters & Validation Rules
+|                  Parameter                    | Validation Rules                                           |
+|:---------------------------------------------:|------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX**</span> | Must be a positive integer (1, 2, 3, ...)                  |
+|                                               | Cannot be zero or negative                                 |
+|                                               | Must correspond to an existing contact in the current list |
 
-Example:
-* `view 1` - Shows detailed information for the 1st contact in the current list.
+##### Example Commands:
+```shell
+view 1
+````
 
-**Outputs:**
-
-Success:
-- A popup window appears displaying:
-  - Full name
-  - Personal Information
-    - Tags
-    - Student class
-  - Contact Information
-    - Phone number
-    - Email address
-    - Home address
-  - Notes (Scrollable text area)
-  - Attendance (Coming soon)
-
+##### Outputs
+|                Outcome Type                   | Scenario               | Message                                                    | GUI Action                                                                |
+|:---------------------------------------------:|------------------------|------------------------------------------------------------|---------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Popup displays: Full name, Personal Info, Contact Info, Notes, Attendance |
+|  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                                |
+|                                               | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
 
 <div style="text-align: center;">
+    <strong>Valid index provided</strong><br>
     <img src="images/view_contact_window.png" width="500px">
-</div>
+  </div>
 
-Failure:
-- Invalid input for view → `Invalid command format`
-- Out Of Bounds index → `Person index provided is invalid`
-
-
-**Outputs:**
-- Success: List updates to show all matching contacts.
-- Failure: No results → `No contacts found for "Tan"`
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Adding/Editing notes: `note`
 
-Purpose: Store additional info (student progress, allergies, parent instructions, etc.).
+**Purpose**: Stores additional info (student progress, allergies, parent instructions, etc.).
 
-Format: `note INDEX desc/NOTE_TEXT` or `note INDEX` (Remove note)
+##### Command Format
+```shell
+note INDEX desc/NOTE_TEXT
+```
+```shell
+note INDEX
+```
 
-**Parameters & Validation Rules:**
-- **INDEX (required):** The index number of the contact shown in the displayed contact list.
-  - Must be a positive number (1, 2, 3, ...)
-  - Cannot be 0 or negative
-  - Must correspond to an existing contact in the current list
-- **Note text (desc/):** The note to be written. Remove current note if omitted or left empty.
-  - Accepts all letters, numbers, symbols, spaces
-  - Cannot be control characters (e.g. Tab, invisible commands, etc.)
-  - Up to 500 characters
-  - Leading/trailing spaces trimmed
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                           |
+|:-------------------------------------------------:|------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                  |
+|                                                   | Cannot be 0 or negative                                    |
+|                                                   | Must correspond to an existing contact in the current list |
+| <span style="color: #6b7280">**NOTE_TEXT**</span> | Accepts all letters, numbers, symbols, spaces              |
+|                                                   | Cannot be control characters                               |
+|                                                   | Up to 500 characters                                       |
+|                                                   | Leading/trailing spaces trimmed                            |
+|                                                   | Remove current note if omitted or left empty               |
 
-Examples:
-* `note 1 desc/Allergic to peanuts`
-* `note 1`
+##### Example Commands
+```shell
+note 1 desc/Allergic to peanuts
+```
+```shell
+note 1
+```
 
-**Outputs:**
-- Success:
-  - Note added to contact, message: `Added note to Person: <Person>`
-  - Empty note → `Removed note from Person: <Person>`
-- Failure:
-  - No matching index → `The person index provided is invalid`
-  - No index provided → `Invalid command format!` (And inform user of correct command format)
+##### Outputs
+|                Outcome Type                   | Scenario              | Message                                                    | GUI Action                            |
+|:---------------------------------------------:|-----------------------|------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Note added to contact | `Added note to Person: <Contact>`                          | Contact details update with new note  |
+|                                               | Empty note provided   | `Removed note from Person: <Contact>`                      | Note field cleared in contact details |
+|  <span style="color: red">**Failure**</span>  | No matching index     | `The person index provided is invalid`                     | No changes                            |
+|                                               | No index provided     | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Finding contacts by name : `find-n`
-Purpose: Allows teachers to find contacts quickly with partial names(contiguous).
+**Purpose**: Allows teachers to find contacts quickly with partial names (contiguous).
 
-Format: `find-n KEYWORD`
+##### Format 
+```shell
+find-n KEYWORD
+```
 
-**Parameters:**
-- **Keyword:** Alphanumeric string, case-insensitive, matches partial names. Error if empty string.
+##### Parameters & Validation Rules
+|                   Parameter                     | Validation Rules          |
+|:-----------------------------------------------:|---------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
+|                                                 | Case-insensitive matching |
+|                                                 | Matches partial names     |
+|                                                 | Error if empty string     |
 
-Examples:
-* `find-n John ecka`
-* `find-n Tan`
+##### Example Commands
+```shell
+find-n John ecka
+```
+```shell
+find-n Tan
+```
 
-**Outputs:**
-- Success: The find-n results in matches: `<x> persons listed!`
-- Failure:
-    - No match → `0 persons listed!`
-    - Empty string → `Invalid command format!` (And inform user of correct command format)
+##### Outputs
+|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
+|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
+|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
+|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Finding contacts by phone number : `find-p`
-Purpose: Allows teachers to find contacts quickly with partial number(contiguous).
+**Purpose**: Allows teachers to find contacts quickly with partial number (contiguous).
 
-Format: `find-p KEYWORD`
+##### Format 
+```shell
+find-p KEYWORD
+```
 
-**Parameters:**
-- **Keyword:** numeric string, matches partial numbers. Error if empty string.
+##### Parameters & Validation Rules
+|                   Parameter                     | Validation Rules              |
+|:-----------------------------------------------:|-------------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string only           |
+|                                                 | Matches partial phone numbers |
+|                                                 | Error if empty string         |
 
-Examples:
-* `find-p 8431 967`
-* `find-p 84313390`
-* `find-p 3133`
+##### Example Commands
+```shell
+find-p 8431 967
+```
+```shell
+find-p 84313390
+```
+```shell
+find-p 3133
+```
 
-**Outputs:**
-- Success: The find-p results in matches: `<x> persons listed!`
-- Failure:
-    - No match → `0 persons listed!`
-    - Empty string → `Invalid command format!` (And inform user of correct command format)
+##### Outputs
+|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
+|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
+|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
+|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Finding contacts by tags : `find-t`
-Purpose: Allows teachers to find contacts quickly with tags(contiguous).
+**Purpose**: Allows teachers to find contacts quickly with tags (contiguous).
 
-Format: `find-t KEYWORD`
+##### Format
+```shell
+find-t KEYWORD
+```
 
-**Parameters:**
-- **Keyword:** alphanumeric string, matches partial tag. Error if empty string.
+##### Parameters & Validation Rules
+|                   Parameter                     | Validation Rules          |
+|:-----------------------------------------------:|---------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
+|                                                 | Matches partial tag names |
+|                                                 | Error if empty string     |
 
-Examples:
-* `find-t student`
-* `find-t stu colle`
-* `find-t ague`
+##### Example Commands
+```shell
+find-t student
+```
+```shell
+find-t stu colle
+```
+```shell
+find-t ague
+```
 
-**Outputs:**
-- Success: The find-t results in matches: `<x> persons listed!`
-- Failure:
-    - No match → `0 persons listed!`
-    - Empty string → `Invalid command format!` (And inform user of correct command format)
+##### Outputs
+|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
+|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
+|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
+|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Listing all contacts : `list`
 
-Shows a list of all contacts in LittleLogBook.
+**Purpose**: Shows a list of all contacts in LittleLogBook.
 
-Format: `list`
+##### Format
+```shell
+list
+```
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Clearing all entries : `clear`
 
-Clears all entries from LittleLogBook.
+**Purpose**: Clears all entries from LittleLogBook.
 
-Format: `clear`
+##### Format
+```shell
+clear
+```
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Exiting the program : `exit`
 
-Exits the program.
+**Purpose**: Exits the program.
 
-Format: `exit`
+##### Format
+```shell
+exit
+```
+
+[//]: # (COMMAND BREAK)
+<br>
 
 ### Saving the data
 
 LittleLogBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Editing the data file
 
 LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/littlelogbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
-<box type="warning" seamless>
+<box type="warning">
 
-**Caution:**
+**Warning:**
 If your changes to the data file makes its format invalid, LittleLogBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
@@ -362,16 +510,16 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-Action     | Format, Examples
------------|-----------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [no/NOTE]`<br>e.g., `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`
-**Delete** | `delete n/NAME`<br>e.g., `delete n/John Doe`<br>`delete INDEX`<br>e.g., `delete 1`
-**View**   | `view INDEX`<br>e.g., `view 1`
-**Find-n** | `find-n KEYWORD`<br>e.g., `find-n John`
-**Find-p** | `find-p KEYWORD`<br>e.g., `find-p 84871234`
-**Find-t** | `find-t KEYWORD`<br>e.g., `find-t student`
-**Note**   | `note INDEX desc/NOTE_TEXT`<br>e.g., `note 1 desc/Allergic to peanuts` <br> `note INDEX` <br>e.g., `note 1`
-**List**   | `list`
-**Clear**  | `clear`
-**Help**   | `help`
-**Exit**   | `exit`
+|    Action    | Command Format                                                              | Example Commands                                                                                           |
+|:------------:|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+|   **Add**    | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
+|  **Delete**  | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
+|   **View**   | `view INDEX`                                                                | `view 1`                                                                                                   |
+|   **Note**   | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
+|  **Find-n**  | `find-n KEYWORD`                                                            | `find-n John`                                                                                              |
+|  **Find-p**  | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
+|  **Find-t**  | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
+|   **List**   | `list`                                                                      | `list`                                                                                                     |
+|  **Clear**   | `clear`                                                                     | `clear`                                                                                                    |
+|   **Help**   | `help`                                                                      | `help`                                                                                                     |
+|   **Exit**   | `exit`                                                                      | `exit`                                                                                                     |
