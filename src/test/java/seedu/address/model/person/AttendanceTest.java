@@ -57,7 +57,7 @@ public class AttendanceTest {
     }
 
     @Test
-    public void getAttendanceRecords_returnsCopy_notOriginal() {
+    public void getAttendanceRecords_nonEmptyAttendance_returnsCopy() {
         LocalDate date = LocalDate.of(2024, 1, 15);
         attendance.markAttendance(date, AttendanceStatus.PRESENT);
 
@@ -66,6 +66,55 @@ public class AttendanceTest {
 
         // Original should not be modified
         assertEquals(1, attendance.getAttendanceRecords().size());
+    }
+
+    @Test
+    public void getAttendanceRecordsForMonth_attendanceSameMonth_returnsAllAttendance() {
+        LocalDate date1 = LocalDate.of(2024, 1, 15);
+        LocalDate date2 = LocalDate.of(2024, 1, 16);
+        LocalDate date3 = LocalDate.of(2024, 1, 17);
+        LocalDate date4 = LocalDate.of(2024, 1, 18);
+
+        attendance.markAttendance(date1, AttendanceStatus.PRESENT);
+        attendance.markAttendance(date2, AttendanceStatus.LATE);
+        attendance.markAttendance(date3, AttendanceStatus.SICK);
+        attendance.markAttendance(date4, AttendanceStatus.ABSENT);
+
+        YearMonth targetMonth = YearMonth.of(2024, 1);
+        Map<LocalDate, AttendanceStatus> records = attendance.getAttendanceRecordsForMonth(targetMonth);
+
+        assertEquals(4, records.size());
+        assertTrue(records.containsKey(date2));
+        assertTrue(records.containsKey(date3));
+
+        assertEquals(AttendanceStatus.PRESENT, records.get(date1));
+        assertEquals(AttendanceStatus.ABSENT, records.get(date4));
+    }
+
+    @Test
+    public void getAttendanceRecordsForMonth_nonEmptyAttendance_returnsCopy() {
+        LocalDate date1 = LocalDate.of(2024, 1, 15);
+
+        attendance.markAttendance(date1, AttendanceStatus.PRESENT);
+
+        YearMonth targetMonth = YearMonth.of(2024, 1);
+        Map<LocalDate, AttendanceStatus> records = attendance.getAttendanceRecordsForMonth(targetMonth);
+        records.put(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE);
+
+        // Original should not be modified
+        assertEquals(1, attendance.getAttendanceRecords().size());
+    }
+
+    @Test
+    public void getAttendanceRecordsForMonth_differentMonthAttendance_returnsEmpty() {
+        LocalDate date1 = LocalDate.of(2024, 1, 15);
+
+        attendance.markAttendance(date1, AttendanceStatus.PRESENT);
+
+        YearMonth targetMonth = YearMonth.of(2024, 2);
+        Map<LocalDate, AttendanceStatus> records = attendance.getAttendanceRecordsForMonth(targetMonth);
+
+        assertTrue(records.isEmpty());
     }
 
     @Test
