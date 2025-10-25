@@ -56,17 +56,6 @@ public class ViewWindow extends UiPart<Stage> {
     }
 
     /**
-     * Sets up escape keyboard handler for the view window.
-     */
-    private void setUpEscHandler() {
-        getRoot().getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                hide();
-            }
-        });
-    }
-
-    /**
      * Creates a new ViewWindow.
      */
     public ViewWindow() {
@@ -125,7 +114,16 @@ public class ViewWindow extends UiPart<Stage> {
         getRoot().hide();
     }
 
-
+    /**
+     * Sets up escape keyboard handler for the view window.
+     */
+    private void setUpEscHandler() {
+        getRoot().getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                hide();
+            }
+        });
+    }
 
     /**
      * Focuses on the view window.
