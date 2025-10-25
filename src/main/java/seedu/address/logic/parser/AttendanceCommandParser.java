@@ -45,7 +45,7 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
 
         Set<Index> indexes = IndexParser.parseIndexes(strIndexes);
 
-        if (strStatus == null || strStatus.trim().isEmpty()) {
+        if (strStatus.trim().isEmpty()) {
             throw new ParseException("Status cannot be empty. Use: present, late, sick, absent");
         }
 
