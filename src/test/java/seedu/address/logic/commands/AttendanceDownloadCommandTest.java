@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -110,5 +112,44 @@ public class AttendanceDownloadCommandTest {
 
         CommandResult result = command.execute(model);
         assertTrue(result.getFeedbackToUser().contains("Saved to:"));
+    }
+
+    @Test
+    public void equals_sameObject_returnsTrue() {
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                Set.of(Index.fromOneBased(1)), null, LocalDate.now(), YearMonth.now(),
+                false, false);
+
+        assertEquals(command, command);
+    }
+
+    @Test
+    public void equals_differentType_returnsFalse() {
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                Set.of(Index.fromOneBased(1)), null, LocalDate.now(), YearMonth.now(),
+                false, false);
+
+        assertFalse(command.equals("not a command"));
+        assertFalse(command.equals(null));
+    }
+
+    @Test
+    public void toString_containsAllFields() {
+        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date = LocalDate.of(2025, 12, 29);
+        YearMonth month = YearMonth.of(2025, 1);
+
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                indexes, classes, date, month, true, false);
+
+        String result = command.toString();
+
+        assertTrue(result.contains("indexes"));
+        assertTrue(result.contains("classes"));
+        assertTrue(result.contains("date"));
+        assertTrue(result.contains("month"));
+        assertTrue(result.contains("userProvideDate"));
+        assertTrue(result.contains("userProvideMonth"));
     }
 }

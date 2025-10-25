@@ -40,9 +40,9 @@ public class IndexParser {
      *
      * @param range of index in the form of "startNum-endNum".
      * @return parsed indexes in the form of {@code Set<Index>}.
-     * @throws ParseException
+     * @throws ParseException if an error occurred during parsing.
      */
-    private static Set<Index> parseRange(String range) throws ParseException {
+    public static Set<Index> parseRange(String range) throws ParseException {
         Set<Index> indexes = new HashSet<>();
         String[] bounds = range.split("-");
 
@@ -71,7 +71,7 @@ public class IndexParser {
      * @return Index object.
      * @throws ParseException
      */
-    private static Index parseSingleIndex(String strIndex) throws ParseException {
+    public static Index parseSingleIndex(String strIndex) throws ParseException {
         try {
             int index = Integer.parseInt(strIndex.trim());
             if (index <= 0) {
