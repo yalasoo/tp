@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.tag.Tag;
@@ -18,6 +21,8 @@ import seedu.address.model.tag.Tag;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
+
+    private static Logger logger = LogsCenter.getLogger(Person.class);
 
     // Identity fields
     private final Name name;
@@ -60,8 +65,11 @@ public class Person {
         // favourite could potentially be null in which case set it to default false
         if (favourite == null) {
             this.favourite = new Favourite(false);
+            logger.info("favourite was null for " + name + "so we set it to false");
         } else {
             this.favourite = favourite;
+            logger.info("favourite was available for " + name + " so we set it to"
+                    + favourite.getIsFavouriteBoolean());
         }
     }
 
@@ -145,6 +153,15 @@ public class Person {
      */
     public boolean getIsFavBoolean() {
         return favourite.getIsFavouriteBoolean();
+    }
+
+    /**
+     * Retrieves the BooleanProperty value of favourite.
+     *
+     * @return BooleanProperty The favourite value.
+     */
+    public BooleanProperty getFavBooleanProperty() {
+        return favourite.getFavBooleanProperty();
     }
 
     /**

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.Person;
 
 /**
@@ -130,6 +132,22 @@ public class ModelManager implements Model {
      */
     public ObjectProperty<Person> selectedPersonProperty() {
         return selectedPerson;
+    }
+
+    /**
+     * Adds those with a favourite indication upon launching model.
+     *
+     * @return ArrayList List of indexes from filtered list which has favourite property.
+     */
+    public ArrayList<Index> retrieveInitialFavList() {
+        ArrayList<Index> favInitialList = new ArrayList<>();
+        for (Person p: filteredPersons) {
+            if (p.getIsFavBoolean()) {
+                Index indexToInclude = Index.fromZeroBased(filteredPersons.indexOf(p));
+                favInitialList.add(indexToInclude);
+            }
+        }
+        return favInitialList;
     }
 
     //=========== Filtered Person List Accessors =============================================================

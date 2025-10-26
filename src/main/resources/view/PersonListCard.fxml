@@ -27,7 +27,7 @@
           </minWidth>
         </Label>
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
-        <ImageView fx:id="icon" fitHeight="84.0" fitWidth="84.0" preserveRatio="true"  />
+        <ImageView fx:id="icon" fitHeight="84.0" fitWidth="84.0" preserveRatio="true" />
       </HBox>
       <FlowPane fx:id="tags" />
       <Label fx:id="birthday" styleClass="cell_small_label" text="\$birthday" />

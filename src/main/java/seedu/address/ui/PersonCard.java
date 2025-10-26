@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,7 +17,7 @@ import seedu.address.model.person.Person;
 
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * A UI component that displays information of a {@code Person}.
  */
 public class PersonCard extends UiPart<Region> {
 
@@ -74,6 +75,7 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         Image imageIcon = new Image(this.getClass().getResourceAsStream("/images/star.png"));
+        BooleanProperty favProperty = person.getFavBooleanProperty();
 
         if (this.getClass().getResourceAsStream("/images/star.png") == null) {
             logger.warning("Image path was not found for star icon");
@@ -82,14 +84,22 @@ public class PersonCard extends UiPart<Region> {
         }
 
         icon.setImage(imageIcon);
-        if (person.getIsFavBoolean()) {
-            //if indeed favourite, then display image
-            icon.setVisible(true);
-            logger.info("Manged to get favourite boolean true and set icon visibility");
-        } else {
-            icon.setVisible(false);
-            logger.info("Favourite boolean was false for this person so icon visibility is false");
-        }
+        boolean currFavStatus = favProperty.get();
+        icon.setVisible(currFavStatus);
+        logger.info("Initial favourite value is " + currFavStatus + ". So visibility set.");
+
+        //to trigger icon visibility setting when any changes to favourite property
+        favProperty.addListener((observable, oldValue, newValue) -> {
+            //check if newValue is true meaning property became true
+            if (newValue) {
+                icon.setVisible(true);
+                logger.info("Manged to get favourite boolean true and set icon visibility");
+            } else {
+                icon.setVisible(false);
+                logger.info("Favourite boolean was false for this person so icon visibility is false");
+            }
+
+        });
 
     }
 }
