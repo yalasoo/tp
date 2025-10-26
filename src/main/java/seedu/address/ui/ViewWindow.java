@@ -149,6 +149,8 @@ public class ViewWindow extends UiPart<Stage> {
             emailText.setText("Email:");
         } else {
             contactInfoHeader.setText("Contact Information");
+            phoneText.setText("Personal Phone:");
+            emailText.setText("Personal Email:");
         }
 
         // Tags with different colors based on type
