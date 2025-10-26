@@ -47,13 +47,31 @@ public class FavouriteCommand extends Command {
         this.vals = vals;
     }
 
+    /**
+     * Checks if the index user passed in is out of bounds.
+     *
+     * @param vals The List of indexes user passed in.
+     * @param contactList The full list of all persons in addressBook.
+     * @throws CommandException If index passed in is invalid.
+     */
+    public void checkOutOfBoundsIndex(List<Index> vals, List<Person> contactList) throws CommandException {
+        int validLength = contactList.size();
+        if (contactList.isEmpty()) {
+            throw new CommandException("No contacts are available to be added to favourites.");
+        }
+        for (Index i: vals) {
+            if (i.getOneBased() > validLength) {
+                throw new CommandException("You have passed in out of bound index(es). \n"
+                        + "Use only positive indexes within 1 to " + validLength + " inclusive!");
+            }
+        }
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> fullContactList = model.getFilteredPersonList();
-        if (fullContactList.isEmpty()) {
-            throw new CommandException("No contacts are available to be added to favourites.");
-        }
+        checkOutOfBoundsIndex(vals, fullContactList);
 
         if (favourites.isEmpty()) {
             // Populates favourites arraylist based on each person's details
@@ -70,7 +88,7 @@ public class FavouriteCommand extends Command {
 
         String infoOnRemovedFromFavourites = "";
 
-        /* Validity of index would have been checked in FavouriteCommandParser (meaning all existing indexes
+        /* Validity of index has been checked above (meaning all existing indexes
           in favourites are only valid ones) */
         for (Index i: favourites) {
             int zeroBasedIndex = i.getZeroBased();
