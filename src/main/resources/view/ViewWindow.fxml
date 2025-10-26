@@ -61,11 +61,11 @@
                         <!-- Contact fields that will be shown for non-students -->
                         <VBox fx:id="contactFieldsForNonStudents" spacing="8" visible="false">
                             <HBox spacing="10">
-                                <Label text="Personal Phone:" styleClass="field-label"/>
+                                <Label text="Phone:" styleClass="field-label"/>
                                 <Label fx:id="phoneLabel" styleClass="data-label"/>
                             </HBox>
                             <HBox spacing="10">
-                                <Label text="Personal Email:" styleClass="field-label"/>
+                                <Label text="Email:" styleClass="field-label"/>
                                 <Label fx:id="emailLabel" styleClass="data-label"/>
                             </HBox>
                             <HBox spacing="10">
