@@ -28,12 +28,23 @@ public class ViewWindow extends UiPart<Stage> {
     private Label birthdayLabel;
     @FXML
     private Label nameLabel;
+
+    // Contact labels for non-students (in personal info section)
     @FXML
     private Label phoneLabel;
     @FXML
     private Label emailLabel;
     @FXML
     private Label addressLabel;
+
+    // Contact labels for students (in separate contact section)
+    @FXML
+    private Label phoneLabelStudent;
+    @FXML
+    private Label emailLabelStudent;
+    @FXML
+    private Label addressLabelStudent;
+
     @FXML
     private TextArea notesArea;
     @FXML
@@ -41,15 +52,23 @@ public class ViewWindow extends UiPart<Stage> {
     @FXML
     private VBox attendanceContainer;
 
-    private AttendancePanel attendancePanel;
+    // Layout containers
+    @FXML
+    private VBox personalInfoSection;
+    @FXML
+    private VBox contactInfoSection;
+    @FXML
+    private VBox contactFieldsForNonStudents;
 
-    // Custom text
+    // Headers
+    @FXML
+    private Label personalInfoHeader;
     @FXML
     private Label contactInfoHeader;
     @FXML
-    private Label phoneText;
-    @FXML
-    private Label emailText;
+    private Label classText;
+
+    private AttendancePanel attendancePanel;
 
     /**
      * Creates a new ViewWindow.
@@ -132,9 +151,6 @@ public class ViewWindow extends UiPart<Stage> {
      */
     private void fillFields(Person person) {
         nameLabel.setText(person.getName().fullName);
-        phoneLabel.setText(person.getPhone().value);
-        emailLabel.setText(person.getEmail().value);
-        addressLabel.setText(person.getAddress().value);
         classLabel.setText(person.getStudentClass().value);
         birthdayLabel.setText(person.getBirthday().value);
 
@@ -142,15 +158,15 @@ public class ViewWindow extends UiPart<Stage> {
         boolean isStudent = person.getTags().stream()
                 .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
 
-        // Update contact information header based on tag
+        // Update layout based on whether it's a student or not
         if (isStudent) {
-            contactInfoHeader.setText("Emergency Contact");
-            phoneText.setText("Phone:");
-            emailText.setText("Email:");
+            // Student layout: Separate sections
+            setupStudentLayout(person);
+            classText.setText("Class:");
         } else {
-            contactInfoHeader.setText("Contact Information");
-            phoneText.setText("Personal Phone:");
-            emailText.setText("Personal Email:");
+            // Non-student layout: Merged sections
+            setupNonStudentLayout(person);
+            classText.setText("Class taught:");
         }
 
         // Tags with different colors based on type
@@ -176,8 +192,8 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance - Only show for students
-
         attendanceSection.setVisible(isStudent);
+        attendanceSection.setManaged(isStudent); // This affects layout
 
         if (isStudent) {
             attendancePanel.setAttendance(person.getAttendance());
@@ -187,6 +203,49 @@ public class ViewWindow extends UiPart<Stage> {
 
         // Set window title
         getRoot().setTitle("View Contact: " + person.getName().fullName);
+    }
+
+    /**
+     * Sets up the layout for student contacts with separate sections.
+     */
+    private void setupStudentLayout(Person person) {
+        // Show separate contact section for students
+        contactInfoSection.setVisible(true);
+        contactInfoSection.setManaged(true);
+
+        // Hide contact fields in personal info section
+        contactFieldsForNonStudents.setVisible(false);
+        contactFieldsForNonStudents.setManaged(false);
+
+        // Update headers
+        personalInfoHeader.setText("Personal Information");
+        contactInfoHeader.setText("Emergency Contact");
+
+        // Set contact data in student section
+        phoneLabelStudent.setText(person.getPhone().value);
+        emailLabelStudent.setText(person.getEmail().value);
+        addressLabelStudent.setText(person.getAddress().value);
+    }
+
+    /**
+     * Sets up the layout for non-student contacts with merged sections.
+     */
+    private void setupNonStudentLayout(Person person) {
+        // Hide separate contact section
+        contactInfoSection.setVisible(false);
+        contactInfoSection.setManaged(false);
+
+        // Show contact fields in personal info section
+        contactFieldsForNonStudents.setVisible(true);
+        contactFieldsForNonStudents.setManaged(true);
+
+        // Update header to reflect merged information
+        personalInfoHeader.setText("Contact Information");
+
+        // Set contact data in personal info section
+        phoneLabel.setText(person.getPhone().value);
+        emailLabel.setText(person.getEmail().value);
+        addressLabel.setText(person.getAddress().value);
     }
 
     /**
@@ -216,13 +275,25 @@ public class ViewWindow extends UiPart<Stage> {
         phoneLabel.setText("");
         emailLabel.setText("");
         addressLabel.setText("");
+        phoneLabelStudent.setText("");
+        emailLabelStudent.setText("");
+        addressLabelStudent.setText("");
         classLabel.setText("");
         birthdayLabel.setText("");
         tags.getChildren().clear();
         notesArea.setText("");
         attendancePanel.setAttendance(null);
-        attendanceSection.setVisible(true);
-        attendanceSection.setManaged(true);
+
+        // Reset layout to default state
+        contactInfoSection.setVisible(false);
+        contactInfoSection.setManaged(false);
+        contactFieldsForNonStudents.setVisible(false);
+        contactFieldsForNonStudents.setManaged(false);
+        attendanceSection.setVisible(false);
+        attendanceSection.setManaged(false);
+
+        personalInfoHeader.setText("Personal Information");
+
         attendancePanel.resetToCurrentMonth();
         getRoot().setTitle("View Contact");
     }

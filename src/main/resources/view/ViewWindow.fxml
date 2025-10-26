@@ -39,9 +39,9 @@
 
                     <Separator/>
 
-                    <!-- Personal Information Section -->
-                    <VBox spacing="8">
-                        <Label text="Personal Information" styleClass="label-header"/>
+                    <!-- Personal Information Section (for all contacts) -->
+                    <VBox fx:id="personalInfoSection" spacing="8">
+                        <Label fx:id="personalInfoHeader" text="Personal Information" styleClass="label-header"/>
 
                         <HBox spacing="10">
                             <Label text="Tags: " styleClass="field-label"/>
@@ -49,7 +49,7 @@
                         </HBox>
 
                         <HBox spacing="10">
-                            <Label text="Class: " styleClass="field-label"/>
+                            <Label fx:id="classText" text="Class: " styleClass="field-label"/>
                             <Label fx:id="classLabel" styleClass="data-label"/>
                         </HBox>
 
@@ -57,27 +57,38 @@
                             <Label text="Birthday: " styleClass="field-label"/>
                             <Label fx:id="birthdayLabel" styleClass="data-label"/>
                         </HBox>
+
+                        <!-- Contact fields that will be shown for non-students -->
+                        <VBox fx:id="contactFieldsForNonStudents" spacing="8" visible="false">
+                            <HBox spacing="10">
+                                <Label text="Personal Phone:" styleClass="field-label"/>
+                                <Label fx:id="phoneLabel" styleClass="data-label"/>
+                            </HBox>
+                            <HBox spacing="10">
+                                <Label text="Personal Email:" styleClass="field-label"/>
+                                <Label fx:id="emailLabel" styleClass="data-label"/>
+                            </HBox>
+                            <HBox spacing="10">
+                                <Label text="Address:" styleClass="field-label"/>
+                                <Label fx:id="addressLabel" wrapText="true" styleClass="data-label"/>
+                            </HBox>
+                        </VBox>
                     </VBox>
 
-                    <Separator/>
-
-                    <!-- Contact Information Section -->
-                    <VBox spacing="8">
-                        <Label fx:id="contactInfoHeader" text="Contact Information" styleClass="label-header"/>
-
+                    <!-- Separate Contact Information Section (for students only) -->
+                    <VBox fx:id="contactInfoSection" spacing="8">
+                        <Label fx:id="contactInfoHeader" text="Emergency Contact" styleClass="label-header"/>
                         <HBox spacing="10">
-                            <Label fx:id="phoneText" text="Personal Phone:" styleClass="field-label"/>
-                            <Label fx:id="phoneLabel" styleClass="data-label"/>
+                            <Label fx:id="phoneText" text="Phone:" styleClass="field-label"/>
+                            <Label fx:id="phoneLabelStudent" styleClass="data-label"/>
                         </HBox>
-
                         <HBox spacing="10">
-                            <Label fx:id="emailText" text="Personal Email:" styleClass="field-label"/>
-                            <Label fx:id="emailLabel" styleClass="data-label"/>
+                            <Label fx:id="emailText" text="Email:" styleClass="field-label"/>
+                            <Label fx:id="emailLabelStudent" styleClass="data-label"/>
                         </HBox>
-
                         <HBox spacing="10">
                             <Label text="Address:" styleClass="field-label"/>
-                            <Label fx:id="addressLabel" wrapText="true" styleClass="data-label"/>
+                            <Label fx:id="addressLabelStudent" wrapText="true" styleClass="data-label"/>
                         </HBox>
                     </VBox>
 
