@@ -288,4 +288,13 @@ public class DeleteCommandTest {
         CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
         assertEquals(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, exception.getMessage());
     }
+
+    @Test
+    public void testPersonNotNullAssertion() {
+        Person personToDelete = null;
+        assertThrows(AssertionError.class, () -> {
+            assert personToDelete != null;
+        });
+    }
 }
+
