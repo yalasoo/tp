@@ -27,10 +27,10 @@ import seedu.address.logic.commands.RemindCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.ui.RealDeletePopupHandler;
 import seedu.address.ui.DeletePopupHandler;
-import seedu.address.ui.RealInfoInfoPopupHandler;
 import seedu.address.ui.InfoPopupHandler;
+import seedu.address.ui.RealDeletePopupHandler;
+import seedu.address.ui.RealInfoInfoPopupHandler;
 
 /**
  * Parses user input.
