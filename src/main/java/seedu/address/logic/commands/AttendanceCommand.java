@@ -55,9 +55,9 @@ public class AttendanceCommand extends Command {
      * Creates a AttendanceCommand to mark attendance of the
      * specified indexes.
      *
-     * @param indexes which index(es) to be mark.
-     * @param date when does this marking apply.
-     * @param status what is the status of the attendance.
+     * @param indexes Which index(es) to be mark.
+     * @param date When does this marking apply.
+     * @param status What is the status of the attendance.
      */
     public AttendanceCommand(Set<Index> indexes, LocalDate date, AttendanceStatus status) {
         requireNonNull(indexes);

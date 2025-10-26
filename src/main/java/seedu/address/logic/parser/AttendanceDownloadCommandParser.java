@@ -30,7 +30,7 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
      * Parses the given {@code String} of arguments in the context of the AttendanceDownloadCommand
      * and returns an AttendanceDownloadCommand object for execution.
      *
-     * @throws ParseException if the user input does not conform the expected format.
+     * @throws ParseException If the user input does not conform the expected format.
      */
     @Override
     public AttendanceDownloadCommand parse(String args) throws ParseException {
@@ -72,11 +72,11 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
     /**
      * Validates the parameter combinations for the attendance download command.
      *
-     * @param hasIndex whether index(es) are provided in the preamble.
-     * @param hasClass whether class prefix(es) are provided.
-     * @param userProvidedDate whether a specific date was provided by the user.
-     * @param userProvidedMonth whether a specific month was provided by the user.
-     * @throws ParseException if the parameter combinations are invalid.
+     * @param hasIndex Whether index(es) are provided in the preamble.
+     * @param hasClass Whether class prefix(es) are provided.
+     * @param userProvidedDate Whether a specific date was provided by the user.
+     * @param userProvidedMonth Whether a specific month was provided by the user.
+     * @throws ParseException If the parameter combinations are invalid.
      */
     private void validateParameterCombinations(boolean hasIndex,
                                                boolean hasClass,
@@ -97,10 +97,10 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
      * Parses a date string into a {@code LocalDate} object.
      * If no date is provided, defaults to today's date.
      *
-     * @param dateOpt the optional date string provided by the user.
-     * @param userProvided whether the date was explicitly provided by the user.
-     * @return the parsed {@code LocalDate} object.
-     * @throws ParseException if the date format is invalid when explicitly provided.
+     * @param dateOpt The optional date string provided by the user.
+     * @param userProvided Whether the date was explicitly provided by the user.
+     * @return The parsed {@code LocalDate} object.
+     * @throws ParseException If the date format is invalid when explicitly provided.
      */
     private LocalDate parseDate(Optional<String> dateOpt, boolean userProvided) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -120,10 +120,10 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
      * Parses a month string into a {@code YearMonth} object.
      * If no month is provided, defaults to the current month.
      *
-     * @param monthOpt the optional month string provided by the user.
-     * @param userProvided whether the month was explicitly provided by the user.
-     * @return the parsed {@code YearMonth} object.
-     * @throws ParseException if the month format is invalid when explicitly provided.
+     * @param monthOpt The optional month string provided by the user.
+     * @param userProvided Whether the month was explicitly provided by the user.
+     * @return The parsed {@code YearMonth} object.
+     * @throws ParseException If the month format is invalid when explicitly provided.
      */
     private YearMonth parseMonth(Optional<String> monthOpt, boolean userProvided) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");

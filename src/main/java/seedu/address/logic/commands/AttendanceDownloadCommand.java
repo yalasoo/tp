@@ -26,7 +26,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Class;
 
 /**
- * Download attendance report of a specific student or class
+ * Downloads attendance report of a specific student or class
  * on a specific date or month.
  * Only applicable to contact with "student" tag.
  */
@@ -59,10 +59,11 @@ public class AttendanceDownloadCommand extends Command {
     /**
      * Creates a AttendanceDownloadCommand to download
      * attendance report.
-     * @param indexes which index(es) to download.
-     * @param studentClass which class(es) to download.
-     * @param date which date to download attendance report.
-     * @param month which month to download attendance report.
+     *
+     * @param indexes Which index(es) to download.
+     * @param studentClass Which class(es) to download.
+     * @param date Which date to download attendance report.
+     * @param month Which month to download attendance report.
      */
     public AttendanceDownloadCommand(Set<Index> indexes, List<Class> studentClass, LocalDate date, YearMonth month,
                                      Boolean userProvideDate, Boolean userProvideMonth) {
@@ -107,10 +108,10 @@ public class AttendanceDownloadCommand extends Command {
      * Generates separate CSV files for each class and returns the path
      * of the last saved file.
      *
-     * @param model the model containing the person data.
-     * @param filePath the file path for saving the reports.
-     * @return the file path of the last saved class attendance report.
-     * @throws IOException if an error occurs during file saving.
+     * @param model The model containing the person data.
+     * @param filePath The file path for saving the reports.
+     * @return The file path of the last saved class attendance report.
+     * @throws IOException If an error occurs during file saving.
      */
     private String downloadClassMonthlyAttendanceReport(Model model, String filePath) throws IOException {
         String fileName;
@@ -130,10 +131,10 @@ public class AttendanceDownloadCommand extends Command {
      * Generates separate CSV files for each class and returns the path
      * of the last saved file.
      *
-     * @param model the model containing the person data.
-     * @param filePath the file path for saving the reports.
-     * @return the file path of the last saved class attendance report.
-     * @throws IOException if an error occurs during file saving.
+     * @param model The model containing the person data.
+     * @param filePath The file path for saving the reports.
+     * @return The file path of the last saved class attendance report.
+     * @throws IOException If an error occurs during file saving.
      */
     private String downloadClassDailyAttendanceReport(Model model, String filePath) throws IOException {
         String fileName;
@@ -152,9 +153,9 @@ public class AttendanceDownloadCommand extends Command {
      * Downloads a monthly attendance report for the specified student indexes.
      * Generates a single CSV file containing attendance data for all specified students.
      *
-     * @param model the model containing the person data.
-     * @return the file path of the saved student attendance report.
-     * @throws IOException if an error occurs during file saving.
+     * @param model The model containing the person data.
+     * @return The file path of the saved student attendance report.
+     * @throws IOException If an error occurs during file saving.
      */
     private String downloadStudentMonthlyAttendanceReport(Model model) throws IOException {
         String fileCsv = generateStudentsMonthlyAttendanceReport(model, indexes, month);
@@ -190,8 +191,7 @@ public class AttendanceDownloadCommand extends Command {
                 .toList()
                 : null;
 
-        // Sort classes before comparison
-        // Sort classes by their string value
+        // Sort classes by their string value before comparison
         List<Class> thisSortedClass = (this.studentClass != null)
                 ? this.studentClass.stream()
                 .sorted(Comparator.comparing(Class::toString))

@@ -14,9 +14,9 @@ public class IndexParser {
     /**
      * Parses the given string index into a {@code Set<Index>}.
      *
-     * @param strIndexes the given index in string format.
-     * @return parsed index(es) in the form of {@code Set<Index>}.
-     * @throws ParseException
+     * @param strIndexes The given index in string format.
+     * @return Parsed index(es) in the form of {@code Set<Index>}.
+     * @throws ParseException If an error occurs during parsing.
      */
     public static Set<Index> parseIndexes(String strIndexes) throws ParseException {
         Set<Index> indexes = new HashSet<>();
@@ -36,11 +36,11 @@ public class IndexParser {
     }
 
     /**
-     * Parse the given range of index.
+     * Parses the given range of index.
      *
-     * @param range of index in the form of "startNum-endNum".
-     * @return parsed indexes in the form of {@code Set<Index>}.
-     * @throws ParseException if an error occurred during parsing.
+     * @param range Of index in the form of "startNum-endNum".
+     * @return Parsed indexes in the form of {@code Set<Index>}.
+     * @throws ParseException If an error occurred during parsing.
      */
     public static Set<Index> parseRange(String range) throws ParseException {
         Set<Index> indexes = new HashSet<>();
@@ -65,11 +65,11 @@ public class IndexParser {
     }
 
     /**
-     * Parse the given string index.
+     * Parses the given string index.
      *
-     * @param strIndex one index in string format.
+     * @param strIndex One index in string format.
      * @return Index object.
-     * @throws ParseException
+     * @throws ParseException If an error occurs during parsing.
      */
     public static Index parseSingleIndex(String strIndex) throws ParseException {
         try {

@@ -25,9 +25,9 @@ public class AttendanceCsvUtil {
      * Generates a monthly attendance report based on the specified index(es)
      * and the specified month.
      *
-     * @param model {@code Model} which the command should operate on.
-     * @param indexes the index(es) to generate attendance for.
-     * @param month the month to generate attendance for.
+     * @param model {@code Model} Which the command should operate on.
+     * @param indexes The index(es) to generate attendance for.
+     * @param month The month to generate attendance for.
      * @return CSV string with all dates in the month as columns.
      */
     public static String generateStudentsMonthlyAttendanceReport(Model model, Set<Index> indexes, YearMonth month) {
@@ -58,9 +58,9 @@ public class AttendanceCsvUtil {
      * Generates a daily attendance report based on the specified class
      * and the specified date.
      *
-     * @param model {@code Model} which the command should operate on.
-     * @param studentClass the class to generate attendance for.
-     * @param date the date to generate attendance for.
+     * @param model {@code Model} Which the command should operate on.
+     * @param studentClass The class to generate attendance for.
+     * @param date The date to generate attendance for.
      * @return CSV string with students' attendance in rows.
      */
     public static String generateClassDailyAttendanceReport(Model model, Class studentClass, LocalDate date) {
@@ -78,7 +78,6 @@ public class AttendanceCsvUtil {
                 .filtered(person -> person.getStudentClass().equals(studentClass));
 
         for (Person student : filteredStudent) {
-            // TO BE REMOVED ONCE SAMPLE DATA HAS BEEN FIXED
             if (student.getTags().contains(new Tag("student"))) {
                 csv.append(student.getName()).append(",");
 
@@ -101,9 +100,9 @@ public class AttendanceCsvUtil {
      * Generates a monthly attendance report based on the specified class
      * and the specified month.
      *
-     * @param model {@code Model} which the command should operate on.
-     * @param studentClass the class to generate data for.
-     * @param month the month to generate attendance for.
+     * @param model {@code Model} Which the command should operate on.
+     * @param studentClass The class to generate data for.
+     * @param month The month to generate attendance for.
      * @return CSV string with all dates in the month as columns.
     */
     public static String generateClassMonthlyAttendanceReport(Model model, Class studentClass, YearMonth month) {
@@ -120,7 +119,6 @@ public class AttendanceCsvUtil {
         for (Person student : filteredStudent) {
             String row;
 
-            // TO BE REMOVED ONCE SAMPLE DATA HAS BEEN FIXED
             if (student.getTags().contains(new Tag("student"))) {
                 row = generateStudentMonthlyRow(student, month);
             } else {
@@ -137,7 +135,7 @@ public class AttendanceCsvUtil {
      * Generates the header row for a monthly attendance report CSV.
      * Format: "Name,Class,01-10-2024,02-10-2024,...,31-10-2024".
      *
-     * @param month the month to generate headers for.
+     * @param month The month to generate headers for.
      * @return CSV header string with all dates in the month as columns.
      */
     private static String generateStudentMonthlyHeader(YearMonth month) {
@@ -159,8 +157,8 @@ public class AttendanceCsvUtil {
      * Format: "John Doe,K1A,PRESENT,,ABSENT,,LATE".
      * Empty cells represent dates with no attendance records.
      *
-     * @param person the student to generate data for.
-     * @param month the month to generate attendance for.
+     * @param person The student to generate data for.
+     * @param month The month to generate attendance for.
      * @return CSV row string with student's attendance data for the month.
      */
     private static String generateStudentMonthlyRow(Person person, YearMonth month) {

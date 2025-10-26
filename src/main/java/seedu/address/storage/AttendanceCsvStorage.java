@@ -17,10 +17,10 @@ public class AttendanceCsvStorage {
     /**
      * Saves Attendance CSV file into /data.
      *
-     * @param fileCsv a CSV formatted attendance content.
-     * @param fileName the name of the CSV file to be saved.
-     * @return a String of path where the CSV file is saved.
-     * @throws IOException
+     * @param fileCsv A CSV formatted attendance content.
+     * @param fileName The name of the CSV file to be saved.
+     * @return A String of path where the CSV file is saved.
+     * @throws IOException If an error occurs during file saving.
      */
     public static String saveAttendanceCsv(String fileCsv, String fileName) throws IOException {
         FileUtil.createIfMissing(dataDir);
@@ -36,7 +36,8 @@ public class AttendanceCsvStorage {
 
     /**
      * Changes where attendance reports are being saved.
-     * @param customDataDir the new path to save the attendance reports.
+     *
+     * @param customDataDir The new path to save the attendance reports.
      */
     public static void setDataDirectory(Path customDataDir) {
         dataDir = customDataDir;
@@ -46,9 +47,9 @@ public class AttendanceCsvStorage {
      * Generates a unique file name to prevent overwriting files
      * with the same name.
      *
-     * @param directory the path to save the file.
-     * @param fileName the name of the file to be saved.
-     * @return a String of the unique file name.
+     * @param directory The path to save the file.
+     * @param fileName The name of the file to be saved.
+     * @return A String of the unique file name.
      */
     private static String getUniqueFileName(Path directory, String fileName) {
         String baseName = fileName.replaceFirst("[.][^.]+$", ""); // Remove extension
