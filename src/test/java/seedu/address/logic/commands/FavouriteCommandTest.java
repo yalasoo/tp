@@ -39,6 +39,22 @@ public class FavouriteCommandTest {
     }
 
     @Test
+    public void execute_outOfBoundsIndex_throwsCommandException() {
+        int validLength = model.getFilteredPersonList().size();
+        Index outOfBoundIndex = Index.fromOneBased(validLength + 1);
+        List<Index> index = List.of(INDEX_FIRST_PERSON, outOfBoundIndex);
+
+        FavouriteCommand favouriteCommand = new FavouriteCommand(index);
+
+        String expectedMessage = "You have passed in out of bound index(es). \n"
+                + "Use only positive indexes within 1 to " + validLength + " inclusive!";
+
+        CommandException exception = assertThrows(CommandException.class, () ->
+                favouriteCommand.execute(model));
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
     public void execute_personNotAlreadyFavourite_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(firstPerson).withFavourite(false).build();
