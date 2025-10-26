@@ -61,17 +61,17 @@
 
                     <Separator/>
 
-                    <!-- Emergency Contact Information Section -->
+                    <!-- Contact Information Section -->
                     <VBox spacing="8">
-                        <Label text="Emergency Contact Information" styleClass="label-header"/>
+                        <Label fx:id="contactInfoHeader" text="Contact Information" styleClass="label-header"/>
 
                         <HBox spacing="10">
-                            <Label text="Phone:" styleClass="field-label"/>
+                            <Label fx:id="phoneText" text="Personal Phone:" styleClass="field-label"/>
                             <Label fx:id="phoneLabel" styleClass="data-label"/>
                         </HBox>
 
                         <HBox spacing="10">
-                            <Label text="Email:" styleClass="field-label"/>
+                            <Label fx:id="emailText" text="Personal Email:" styleClass="field-label"/>
                             <Label fx:id="emailLabel" styleClass="data-label"/>
                         </HBox>
 

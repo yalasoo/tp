@@ -43,6 +43,14 @@ public class ViewWindow extends UiPart<Stage> {
 
     private AttendancePanel attendancePanel;
 
+    // Custom text
+    @FXML
+    private Label contactInfoHeader;
+    @FXML
+    private Label phoneText;
+    @FXML
+    private Label emailText;
+
     /**
      * Creates a new ViewWindow.
      * @param root Stage to use as the root of the ViewWindow.
@@ -131,11 +139,32 @@ public class ViewWindow extends UiPart<Stage> {
         birthdayLabel.setText(person.getBirthday().value);
 
         // Tags
-        if (person.getTags() != null && !person.getTags().isEmpty()) {
-            person.getTags().stream()
-                    .sorted(Comparator.comparing(tag -> tag.tagName))
-                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        boolean isStudent = person.getTags().stream()
+                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
+
+        // Update contact information header based on tag
+        if (isStudent) {
+            contactInfoHeader.setText("Emergency Contact");
+            phoneText.setText("Phone:");
+            emailText.setText("Email:");
+        } else {
+            contactInfoHeader.setText("Contact Information");
         }
+
+        // Tags with different colors based on type
+        tags.getChildren().clear(); // Clear any existing tags
+        person.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    // Apply different CSS classes based on tag type
+                    if (isStudent) {
+                        tagLabel.getStyleClass().add("student-tag");
+                    } else {
+                        tagLabel.getStyleClass().add("colleague-tag");
+                    }
+                    tags.getChildren().add(tagLabel);
+                });
 
         // Notes
         if (person.getNote() != null && !person.getNote().value.isEmpty()) {
@@ -145,8 +174,6 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance - Only show for students
-        boolean isStudent = person.getTags().stream()
-                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
 
         attendanceSection.setVisible(isStudent);
 
