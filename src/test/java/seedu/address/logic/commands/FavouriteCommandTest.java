@@ -85,7 +85,8 @@ public class FavouriteCommandTest {
         List<Index> indexes = List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
 
         FavouriteCommand favouriteCommand = new FavouriteCommand(indexes);
-        String expectedMessage = String.format(FavouriteCommand.MESSAGE_FAVOURITE_UPDATE_SUCCESS);
+        String expectedMessage = String.format(FavouriteCommand.MESSAGE_FAVOURITE_UPDATE_SUCCESS
+                + "\nThese people were removed from favourites: \n" + firstPerson.getName() + "\n");
 
         assertCommandSuccess(favouriteCommand, model, expectedMessage, expectedModel);
     }
