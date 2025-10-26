@@ -56,7 +56,7 @@ public class FavouriteCommand extends Command {
         }
 
         if (favourites.isEmpty()) {
-            //I need to populate favourites based on each person details
+            // Populates favourites arraylist based on each person's details
             favourites.addAll(model.retrieveInitialFavList());
         }
 
