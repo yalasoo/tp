@@ -265,7 +265,7 @@ public class DeleteCommandTest {
         DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand deleteCommand = new DeleteCommand("Random Name", testInfoHandler, testDeleteHandler);
         CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
-        assertEquals(Messages.MESSAGE_DELETION_CANCELLED, exception.getMessage());
+        assertEquals(Messages.MESSAGE_NO_MATCHES_FOUND, exception.getMessage());
     }
 
     @Test
