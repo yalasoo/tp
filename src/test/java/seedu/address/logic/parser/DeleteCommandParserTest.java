@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.ui.DeletePopupHandler;
-import seedu.address.ui.PopupHandler;
+import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.TestDeletePopupHandler;
-import seedu.address.ui.TestInfoPopupHandler;
+import seedu.address.ui.TestInfoInfoPopupHandler;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -23,13 +23,13 @@ import seedu.address.ui.TestInfoPopupHandler;
  */
 public class DeleteCommandParserTest {
 
-    private PopupHandler testInfoHandler;
+    private InfoPopupHandler testInfoHandler;
     private DeletePopupHandler testDeleteHandler;
     private DeleteCommandParser parser;
 
     @BeforeEach
     public void setUp() {
-        testInfoHandler = new TestInfoPopupHandler();
+        testInfoHandler = new TestInfoInfoPopupHandler();
         testDeleteHandler = new TestDeletePopupHandler();
         parser = new DeleteCommandParser(testInfoHandler, testDeleteHandler);
     }
@@ -49,8 +49,8 @@ public class DeleteCommandParserTest {
     @Test
     public void parse_validName_returnsDeleteCommand() {
         DeleteCommand expectedCommand =
-                new DeleteCommand("Charlotte Oliveiro", testInfoHandler, testDeleteHandler);
-        assertParseSuccess(parser, "n/Charlotte Oliveiro", expectedCommand);
+                new DeleteCommand("Alice Pauline", testInfoHandler, testDeleteHandler);
+        assertParseSuccess(parser, "n/Alice Pauline", expectedCommand);
     }
 
     @Test

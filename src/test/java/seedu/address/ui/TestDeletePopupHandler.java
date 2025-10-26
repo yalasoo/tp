@@ -6,18 +6,18 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 
 /**
- * A class handling delete pop up for tests.
+ * A class handles showing delete confirmation popup windows for test cases.
  */
 public class TestDeletePopupHandler implements DeletePopupHandler {
 
     private boolean confirmDeletion = true;
-    private boolean showDeletePopupCalled = false;
+    private boolean showPossibleMatchesCalled = false;
 
     @Override
-    public Person showDeletePopup(String message, List<Person> options) throws CommandException {
-        // Auto-select the first person for tests
-        showDeletePopupCalled = true;
-        return options.get(0);
+    public Person showPossibleMatches(String message, List<Person> matches) throws CommandException {
+        // Simulate user selecting the first match from the list
+        showPossibleMatchesCalled = true;
+        return matches.get(0);
     }
 
     /**
@@ -33,9 +33,9 @@ public class TestDeletePopupHandler implements DeletePopupHandler {
     }
 
     /**
-     * Checks whether the deletion pop up window is called.
+     * Checks whether the deletion popup window is called.
      */
-    public boolean isShowDeletePopupCalled() {
-        return showDeletePopupCalled;
+    public boolean isShowPossibleMatchesCalled() {
+        return showPossibleMatchesCalled;
     }
 }

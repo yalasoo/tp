@@ -1,16 +1,14 @@
 package seedu.address.ui;
 
-import javafx.application.Platform;
-
 /**
- * A class handles showing delete error message.
+ * An interface handles showing delete error message popup windows in the application.
  */
-public class InfoPopupHandler implements PopupHandler {
-    @Override
-    public void showMessage(String message) {
-        Platform.runLater(() -> {
-            InfoPopup popup = new InfoPopup();
-            popup.show(message);
-        });
-    }
+public interface InfoPopupHandler {
+
+    /**
+     * Displays a popup window showing the specified error message.
+     *
+     * @param message the error message to display in the popup window.
+     */
+    void showMessage(String message);
 }
