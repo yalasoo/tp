@@ -147,6 +147,14 @@
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
       "headingKeywords": {}
+    },
+    {
+      "src": "team/zengjing.md",
+      "title": "Zeng Jing's Project Portfolio Page",
+      "headings": {
+        "project-littlelogbook": "Project: LittleLogBook"
+      },
+      "headingKeywords": {}
     }
   ]
 }
