@@ -158,6 +158,47 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### View Command
+
+#### Implementation
+The `view` command displays detailed information about a specific person in a pop-up window.
+
+**Operation:** `view INDEX`
+
+**How it works:**
+1. Parses the user-provided index
+2. Retrieves the corresponding person from the filtered person list
+3. Opens a new window displaying all person details
+4. The main window remains accessible while the view window is open
+
+**Sequence Flow:**
+- User enters `view 1`
+- `LogicManager` receives the command
+- `AddressBookParser` creates `ViewCommandParser`
+- `ViewCommandParser` validates the index
+- `ViewCommand` is created and executed
+- `ViewCommand` retrieves the person from `Model`
+- `ViewCommand` returns a `CommandResult` with the person data
+- `MainWindow` detects the `CommandResult` and opens the view window
+
+### Remind Command
+
+#### Implementation
+The `remind` command shows upcoming birthdays and events that require attention.
+
+**Operation:** `remind [DAYS]`
+
+**How it works:**
+1. If no days specified, uses a default reminder period
+2. Filters persons with birthdays within the specified timeframe
+3. Displays a list of upcoming events/birthdays
+4. Can show both students and colleagues with upcoming dates
+
+**Key Classes:**
+- `RemindCommand` - Handles the command execution
+- `Birthday` - Contains date logic for reminder calculations
+- `Person` - Stores birthday information
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation

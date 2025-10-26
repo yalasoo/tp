@@ -1,0 +1,52 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box UI UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+participant ":ViewWindow" as ViewWindow UI_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Person" as Person MODEL_COLOR
+end box
+
+[-> MainWindow : openViewWindow(personData)
+activate MainWindow
+
+MainWindow -> ViewWindow : new ViewWindow(personData)
+activate ViewWindow
+
+ViewWindow -> Person : getName()
+activate Person
+Person --> ViewWindow : name
+deactivate Person
+
+ViewWindow -> Person : getPhone()
+activate Person
+Person --> ViewWindow : phone
+deactivate Person
+
+ViewWindow -> Person : getEmail()
+activate Person
+Person --> ViewWindow : email
+deactivate Person
+
+ViewWindow -> Person : getBirthday()
+activate Person
+Person --> ViewWindow : birthday
+deactivate Person
+
+' Add other person attributes as needed
+
+ViewWindow --> ViewWindow : populateFields()
+ViewWindow --> ViewWindow : show()
+
+ViewWindow --> MainWindow :
+deactivate ViewWindow
+
+MainWindow --> MainWindow : window displayed\n(main window remains active)
+
+[<-- MainWindow
+deactivate MainWindow
+@enduml
