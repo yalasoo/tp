@@ -192,7 +192,7 @@ public class ModelManagerTest {
         ArrayList<Index> actualList = modelManager.retrieveInitialFavList();
         ArrayList<Index> expectedList = new ArrayList<>();
 
-        //from zeroBased indexing, firstPerson will be index 1
+        // From zeroBased indexing, firstPerson will be index 1
         expectedList.add(Index.fromZeroBased(0));
         expectedList.add(Index.fromZeroBased(2));
         assertEquals(actualList, expectedList);

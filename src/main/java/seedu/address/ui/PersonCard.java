@@ -88,9 +88,9 @@ public class PersonCard extends UiPart<Region> {
         icon.setVisible(currFavStatus);
         logger.info("Initial favourite value is " + currFavStatus + ". So visibility set.");
 
-        //to trigger icon visibility setting when any changes to favourite property
+        // To trigger icon visibility setting when any changes to favourite property
         favProperty.addListener((observable, oldValue, newValue) -> {
-            //check if newValue is true meaning property became true
+            // Check if newValue is true meaning property became true
             if (newValue) {
                 icon.setVisible(true);
                 logger.info("Manged to get favourite boolean true and set icon visibility");

@@ -441,14 +441,51 @@ find-t ague
 [//]: # (COMMAND BREAK)
 <br>
 
+### Favourite/Unfavourite contacts : `fav`
+
+**Purpose**: Indicates contacts as favourites.
+
+##### Format
+```shell
+fav KEYWORD
+```
+
+##### Parameters & Validation Rules
+|                    Parameter                     | Validation Rules         |
+|:------------------------------------------------:|--------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span>  | Numeric string           | 
+|                                                  | Error if empty string    |
+
+##### Example Commands
+```shell
+fav 1 
+```
+```shell
+fav 1 2 3 4 5
+```
+```shell
+fav 3 5 2 1
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                                   | Message                                                                              | GUI Action                                                                                                     |
+|:---------------------------------------------:|--------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.`                                                   | Contact list updates with star icon next to favourite contacts                                                 |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully. These people were removed from favourites: <names>` | Contact list shows updates with star icon next to favourite contacts and no star next to unfavourite contacts. |
+|                                               | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Listing all contacts : `list`
 
-**Purpose**: Shows a list of all contacts in LittleLogBook.
+**Purpose**: Shows a list of all contacts in LittleLogBook with those set as favourite shown on top.
 
 ##### Format
 ```shell
 list
 ```
+
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -513,16 +550,17 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|    Action    | Command Format                                                              | Example Commands                                                                                           |
-|:------------:|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-|   **Add**    | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-|  **Delete**  | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
-|   **View**   | `view INDEX`                                                                | `view 1`                                                                                                   |
-|   **Note**   | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-|  **Find-n**  | `find-n KEYWORD`                                                            | `find-n John`                                                                                              |
-|  **Find-p**  | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
-|  **Find-t**  | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
-|   **List**   | `list`                                                                      | `list`                                                                                                     |
-|  **Clear**   | `clear`                                                                     | `clear`                                                                                                    |
-|   **Help**   | `help`                                                                      | `help`                                                                                                     |
-|   **Exit**   | `exit`                                                                      | `exit`                                                                                                     |
+|   Action   | Command Format                                                              | Example Commands                                                                                           |
+|:----------:|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
+| **Delete** | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
+|  **View**  | `view INDEX`                                                                | `view 1`                                                                                                   |
+|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
+| **Find-n** | `find-n KEYWORD`                                                            | `find-n John`                                                                                              |
+| **Find-p** | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
+| **Find-t** | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
+|  **Fav**   | `fav KEYWORD`                                                               | `fav 1 2`                                                                                                  |
+|  **List**  | `list`                                                                      | `list`                                                                                                     |
+| **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
+|  **Help**  | `help`                                                                      | `help`                                                                                                     |
+|  **Exit**  | `exit`                                                                      | `exit`                                                                                                     |
