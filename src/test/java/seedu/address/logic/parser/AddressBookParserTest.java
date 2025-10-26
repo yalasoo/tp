@@ -9,6 +9,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AttendanceCommand;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.AttendanceDownloadCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -167,6 +169,22 @@ public class AddressBookParserTest {
         assertEquals(expectedCommand, command);
     }
 
+    @Test
+    public void parseCommand_attendanceDownload() throws Exception {
+        AttendanceDownloadCommand command = (AttendanceDownloadCommand) parser.parseCommand(
+                AttendanceDownloadCommand.COMMAND_WORD + " "
+                        + INDEX_FIRST_PERSON.getOneBased()
+                        + " m/12-2025"
+        );
+
+        AttendanceDownloadCommand expectedCommand = new AttendanceDownloadCommand(
+                Set.of(INDEX_FIRST_PERSON), null, LocalDate.now(),
+                        YearMonth.of(2025, 12), false, true);
+
+        assertEquals(expectedCommand, command);
+    }
+
+    @Test
     public void parseCommand_note() throws Exception {
         NoteCommand command = (NoteCommand) parser.parseCommand(
                 NoteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()

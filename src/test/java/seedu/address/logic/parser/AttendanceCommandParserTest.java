@@ -19,27 +19,33 @@ public class AttendanceCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsAttendanceCommand() throws Exception {
-        // Single index with present status - use fixed date for comparison
+        // Single index with present status
         assertParseSuccess(parser, "1 s/present",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1)), LocalDate.now(), AttendanceStatus.PRESENT));
 
-        // Multiple indexes with absent status - use fixed date
+        // Multiple indexes with absent status
         assertParseSuccess(parser, "1,3,5 s/absent",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1), Index.fromOneBased(3), Index.fromOneBased(5)),
                         LocalDate.now(), AttendanceStatus.ABSENT));
 
-        // Range with specific date - this should work fine
+        // Range with specific date
         assertParseSuccess(parser, "1-3 s/late d/23-10-2024",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1), Index.fromOneBased(2), Index.fromOneBased(3)),
                         LocalDate.of(2024, 10, 23), AttendanceStatus.LATE));
 
-        // Mixed range and individual indexes - use fixed date
+        // Mixed range and individual indexes
         assertParseSuccess(parser, "1-3,5,7 s/sick",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1), Index.fromOneBased(2), Index.fromOneBased(3),
                         Index.fromOneBased(5), Index.fromOneBased(7)),
                         LocalDate.now(), AttendanceStatus.SICK));
 
-        // Case insensitive status - use fixed date
+        // Mixed range and individual indexes with whitespaces
+        assertParseSuccess(parser, "1     -     3,5    ,   7 s/     sick     ",
+                new AttendanceCommand(Set.of(Index.fromOneBased(1), Index.fromOneBased(2), Index.fromOneBased(3),
+                        Index.fromOneBased(5), Index.fromOneBased(7)),
+                        LocalDate.now(), AttendanceStatus.SICK));
+
+        // Case insensitive status
         assertParseSuccess(parser, "1 s/PRESENT",
                 new AttendanceCommand(Set.of(Index.fromOneBased(1)), LocalDate.now(), AttendanceStatus.PRESENT));
     }
@@ -87,7 +93,7 @@ public class AttendanceCommandParserTest {
     @Test
     public void parse_invalidDate_throwsParseException() {
         assertParseFailure(parser, "1 s/present d/invalid",
-                "Invalid date format. Please use dd-MM-yyyy.");
+                "Invalid date format. Please use dd-MM-yyyy (e.g. 29-12-2025).");
     }
 
     @Test
