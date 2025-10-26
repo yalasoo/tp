@@ -33,13 +33,14 @@ public class FavouriteCommand extends Command {
 
     private static Logger logger = LogsCenter.getLogger(Main.class);
 
-    /** To refer to the indexes the command is being called on  */
+    /** To refer to the indexes the command is being called on */
     private List<Index> vals;
 
     /**
      * Updates the arraylist of favourites.
      * If vals is already in favourites then calling fav command on it again
      * will remove it from favourites.
+     *
      * @param vals The index values of contact to be added to favourites.
      */
     public FavouriteCommand(List<Index> vals) {
