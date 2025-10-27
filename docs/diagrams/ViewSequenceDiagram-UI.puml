@@ -17,29 +17,11 @@ activate MainWindow
 MainWindow -> ViewWindow : new ViewWindow(personData)
 activate ViewWindow
 
-ViewWindow -> Person : getName()
+ViewWindow -> Person : fillFields()
 activate Person
-Person --> ViewWindow : name
+Person --> ViewWindow :
 deactivate Person
 
-ViewWindow -> Person : getPhone()
-activate Person
-Person --> ViewWindow : phone
-deactivate Person
-
-ViewWindow -> Person : getEmail()
-activate Person
-Person --> ViewWindow : email
-deactivate Person
-
-ViewWindow -> Person : getBirthday()
-activate Person
-Person --> ViewWindow : birthday
-deactivate Person
-
-' Add other person attributes as needed
-
-ViewWindow --> ViewWindow : populateFields()
 ViewWindow --> ViewWindow : show()
 
 ViewWindow --> MainWindow :

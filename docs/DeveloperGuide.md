@@ -168,18 +168,14 @@ The `view` command displays detailed information about a specific person in a po
 **How it works:**
 1. Parses the user-provided index
 2. Retrieves the corresponding person from the filtered person list
-3. Opens a new window displaying all person details
+3. Opens a pop-up window displaying all person details
 4. The main window remains accessible while the view window is open
 
-**Sequence Flow:**
-- User enters `view 1`
-- `LogicManager` receives the command
-- `AddressBookParser` creates `ViewCommandParser`
-- `ViewCommandParser` validates the index
-- `ViewCommand` is created and executed
-- `ViewCommand` retrieves the person from `Model`
-- `ViewCommand` returns a `CommandResult` with the person data
-- `MainWindow` detects the `CommandResult` and opens the view window
+**Sequence Flow Logic:**
+<puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
+
+**Sequence Flow UI:**
+<puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
 
 ### Remind Command
 
