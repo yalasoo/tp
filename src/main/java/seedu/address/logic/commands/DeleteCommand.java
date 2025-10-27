@@ -11,10 +11,10 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.ui.DeletePopupHandler;
-import seedu.address.ui.PopupHandler;
+import seedu.address.ui.InfoPopupHandler;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes a person identified using its name or the displayed index from the address book.
  */
 public class DeleteCommand extends Command {
 
@@ -30,13 +30,13 @@ public class DeleteCommand extends Command {
     private final Index targetIndex;
     private final String targetName;
     private final boolean isDeletedByName;
-    private final PopupHandler infoPopupHandler;
+    private final InfoPopupHandler infoPopupHandler;
     private final DeletePopupHandler deletePopupHandler;
 
     /**
      * Creates a DeleteCommand to delete by index.
      */
-    public DeleteCommand(Index targetIndex, PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
+    public DeleteCommand(Index targetIndex, InfoPopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
         this.targetIndex = targetIndex;
         this.targetName = null;
         this.isDeletedByName = false;
@@ -47,7 +47,7 @@ public class DeleteCommand extends Command {
     /**
      * Creates a DeleteCommand to delete by name.
      */
-    public DeleteCommand(String targetName, PopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
+    public DeleteCommand(String targetName, InfoPopupHandler infoPopupHandler, DeletePopupHandler deletePopupHandler) {
         this.targetIndex = null;
         this.targetName = targetName;
         this.isDeletedByName = true;
@@ -62,7 +62,7 @@ public class DeleteCommand extends Command {
 
         // delete by name
         if (isDeletedByName) {
-            assert targetName != null : "Target name should not be null when deleting by name";
+            assert targetName != null;
             List<Person> exactMatches = lastShownList.stream()
                     .filter(p -> p.getName().fullName.equalsIgnoreCase(targetName))
                     .toList();
@@ -70,7 +70,7 @@ public class DeleteCommand extends Command {
             if (exactMatches.size() == 1) {
                 Person personToDelete = exactMatches.get(0);
                 if (isDeletionCancelled(personToDelete)) {
-                    throw new CommandException("Deletion cancelled.");
+                    throw new CommandException(Messages.MESSAGE_DELETION_CANCELLED);
                 }
                 model.deletePerson(personToDelete);
                 return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
@@ -85,13 +85,13 @@ public class DeleteCommand extends Command {
                     : exactMatches;
 
             if (possibleMatches.isEmpty()) {
-                infoPopupHandler.showMessage("No matches found. Please try again.");
-                throw new CommandException("Deletion cancelled.");
+                infoPopupHandler.showMessage(Messages.MESSAGE_NO_MATCHES_FOUND);
+                throw new CommandException(Messages.MESSAGE_NO_MATCHES_FOUND);
             }
 
             Person selectedPerson = showDeletePopup(possibleMatches);
             if (isDeletionCancelled(selectedPerson)) {
-                throw new CommandException("Deletion cancelled.");
+                throw new CommandException(Messages.MESSAGE_DELETION_CANCELLED);
             }
             model.deletePerson(selectedPerson);
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
@@ -100,29 +100,28 @@ public class DeleteCommand extends Command {
 
         // delete by index
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            infoPopupHandler.showMessage("Invalid index. Please try again.");
+            infoPopupHandler.showMessage(Messages.MESSAGE_INVALID_INDEX);
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
-        assert personToDelete != null : "Person to delete should not be null";
+        assert personToDelete != null;
         if (isDeletionCancelled(personToDelete)) {
-            throw new CommandException("Deletion cancelled.");
+            throw new CommandException(Messages.MESSAGE_DELETION_CANCELLED);
         }
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
 
     /**
-     * Shows a Delete Pop up for the user to select from matchingResults.
+     * Shows a Delete popup window for the user to select from matching results.
      * */
     private Person showDeletePopup(List<Person> matchingResults) throws CommandException {
-        return deletePopupHandler.showDeletePopup(
-                "Possible matches found below.\nType INDEX and ENTER to delete or ESC to cancel:", matchingResults);
+        return deletePopupHandler.showPossibleMatches(Messages.MESSAGE_POSSIBLE_MATCHES_FOUND, matchingResults);
     }
 
     /**
-     * Shows a Confirm Pop up to ask the user whether to proceed with the deletion.
+     * Shows a Confirm popup window to ask the user whether to proceed with the deletion.
      */
     private boolean isDeletionCancelled(Person person) {
         return !deletePopupHandler.confirmDeletion(person);
