@@ -228,12 +228,12 @@ delete 3
 
 **1. Delete by INDEX**
 
-|                Outcome Type                   | Scenario          | Message                                                    | GUI Action                                   |
-|:---------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
-| <span style="color: green">**Success**</span> | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
-|  <span style="color: red">**Failure**</span>  | Invalid index     | `The person index provided is invalid`                     | Pop-up window appears                        |
-|                                               | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
-| <span style="color: orange">**Confirmation Required**</span> | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
+|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                   |
+|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | Pop-up window appears                        |
+|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
 **2. Delete by NAME**
 
