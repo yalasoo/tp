@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import seedu.address.Main;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -26,30 +25,44 @@ public class FavouriteCommand extends Command {
             + "Parameters: fav indexes \n"
             + "Example: " + COMMAND_WORD + " 1 2";
 
-    public static final String MESSAGE_FAVOURITE_UPDATE_SUCCESS = "Updated favourites successfully";
+    public static final String MESSAGE_FAVOURITE_UPDATE_SUCCESS = "Updated favourites successfully.";
 
     /** The arraylist storing indexes of all the contacts that have been indicated as favourite */
     private static ArrayList<Index> favourites = new ArrayList<>();
 
-    private static Logger logger = LogsCenter.getLogger(Main.class);
+    private static Logger logger = LogsCenter.getLogger(FavouriteCommand.class);
 
-    /** To refer to the indexes the command is being called on  */
+    /** To refer to the indexes the command is being called on */
     private List<Index> vals;
 
     /**
      * Updates the arraylist of favourites.
      * If vals is already in favourites then calling fav command on it again
      * will remove it from favourites.
+     *
      * @param vals The index values of contact to be added to favourites.
      */
     public FavouriteCommand(List<Index> vals) {
         requireNonNull(vals);
         this.vals = vals;
-        for (Index p : vals) {
-            if (favourites.contains(p)) {
-                favourites.remove(p);
-            } else {
-                favourites.add(p);
+    }
+
+    /**
+     * Checks if the index user passed in is out of bounds.
+     *
+     * @param vals The List of indexes user passed in.
+     * @param contactList The full list of all persons in addressBook.
+     * @throws CommandException If index passed in is invalid.
+     */
+    public void checkOutOfBoundsIndex(List<Index> vals, List<Person> contactList) throws CommandException {
+        int validLength = contactList.size();
+        if (contactList.isEmpty()) {
+            throw new CommandException("No contacts are available to be added to favourites.");
+        }
+        for (Index i: vals) {
+            if (i.getOneBased() > validLength) {
+                throw new CommandException("You have passed in out of bound index(es). \n"
+                        + "Use only positive indexes within 1 to " + validLength + " inclusive!");
             }
         }
     }
@@ -58,11 +71,24 @@ public class FavouriteCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> fullContactList = model.getFilteredPersonList();
-        if (fullContactList.isEmpty()) {
-            throw new CommandException("No contacts are available to be added to favourites.");
+        checkOutOfBoundsIndex(vals, fullContactList);
+
+        if (favourites.isEmpty()) {
+            // Populates favourites arraylist based on each person's details
+            favourites.addAll(model.retrieveInitialFavList());
         }
 
-        /* Validity of index would have been checked in FavouriteCommandParser (meaning all existing indexes
+        for (Index p : vals) {
+            if (favourites.contains(p)) {
+                favourites.remove(p);
+            } else {
+                favourites.add(p);
+            }
+        }
+
+        String infoOnRemovedFromFavourites = "";
+
+        /* Validity of index has been checked above (meaning all existing indexes
           in favourites are only valid ones) */
         for (Index i: favourites) {
             int zeroBasedIndex = i.getZeroBased();
@@ -81,10 +107,17 @@ public class FavouriteCommand extends Command {
                 Person personToEdit = fullContactList.get(zeroBasedIndex);
                 personToEdit.updateFavourite(false);
                 logger.info("This person" + r + "was previously in favourites so we make isFavourite to false");
+                infoOnRemovedFromFavourites = infoOnRemovedFromFavourites.concat(personToEdit.getName() + "\n");
             }
         }
 
-        return new CommandResult(MESSAGE_FAVOURITE_UPDATE_SUCCESS);
+        if (infoOnRemovedFromFavourites.isEmpty()) {
+            return new CommandResult(MESSAGE_FAVOURITE_UPDATE_SUCCESS);
+        } else {
+            return new CommandResult(MESSAGE_FAVOURITE_UPDATE_SUCCESS
+                    + "\nThese people were removed from favourites: \n" + infoOnRemovedFromFavourites);
+        }
+
     }
 
     @Override

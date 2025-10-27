@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.AddressBookBuilder;
@@ -174,6 +175,27 @@ public class ModelManagerTest {
     public void sortFilteredPersonList_nullComparator_throwsNullPointerException() {
         ModelManager modelManager = new ModelManager();
         assertThrows(NullPointerException.class, () -> modelManager.sortFilteredPersonList(null));
+    }
+
+    @Test
+    public void retrieveInitialFavList_returnsCorrectList() {
+        ModelManager modelManager = new ModelManager();
+        Person firstPerson = new PersonBuilder().withName("Alice").withFavourite(true).build();
+        Person secondPerson = new PersonBuilder().withName("Bob").withFavourite(false).build();
+        Person thirdPerson = new PersonBuilder().withName("Charles").withFavourite(true).build();
+
+        // Add the people
+        modelManager.addPerson(firstPerson);
+        modelManager.addPerson(secondPerson);
+        modelManager.addPerson(thirdPerson);
+
+        ArrayList<Index> actualList = modelManager.retrieveInitialFavList();
+        ArrayList<Index> expectedList = new ArrayList<>();
+
+        // From zeroBased indexing, firstPerson will be index 1
+        expectedList.add(Index.fromZeroBased(0));
+        expectedList.add(Index.fromZeroBased(2));
+        assertEquals(actualList, expectedList);
     }
 
     @Test

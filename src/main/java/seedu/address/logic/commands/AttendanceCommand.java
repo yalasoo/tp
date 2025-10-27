@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +19,7 @@ import seedu.address.model.person.Person;
 
 /**
  * Marks the attendance of the specified person in the address book.
- * Only applicable to those with "student" tag.
+ * Only applicable to contact with "student" tag.
  */
 public class AttendanceCommand extends Command {
 
@@ -28,10 +30,11 @@ public class AttendanceCommand extends Command {
             + "with the specified STATUS. "
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
-            + "s/STATUS (present/late/sick/absent) "
-            + "[d/DATE] (dd-MM-yyyy)\n"
+            + PREFIX_STATUS + "STATUS (present/late/sick/absent) "
+            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
-            + "s/present d/12-12-2025";
+            + PREFIX_STATUS + "present "
+            + PREFIX_DATE + "29-12-2025";
 
     public static final String MESSAGE_SUCCESS = "Attendance marked.";
 
@@ -52,9 +55,9 @@ public class AttendanceCommand extends Command {
      * Creates a AttendanceCommand to mark attendance of the
      * specified indexes.
      *
-     * @param indexes which index(es) to be mark.
-     * @param date when does this marking apply.
-     * @param status what is the status of the attendance.
+     * @param indexes Which index(es) to be mark.
+     * @param date When does this marking apply.
+     * @param status What is the status of the attendance.
      */
     public AttendanceCommand(Set<Index> indexes, LocalDate date, AttendanceStatus status) {
         requireNonNull(indexes);

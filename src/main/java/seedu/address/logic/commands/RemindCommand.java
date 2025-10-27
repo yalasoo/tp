@@ -18,6 +18,7 @@ import seedu.address.model.person.Person;
 public class RemindCommand extends Command {
 
     public static final String COMMAND_WORD = "remind";
+
     public static final String MESSAGE_SUCCESS = "Birthday reminders displayed.";
     public static final String MESSAGE_NO_UPCOMING_BIRTHDAYS = "No upcoming birthdays found.";
     public static final String MESSAGE_NO_BIRTHDAYS_TODAY = "No birthdays today!";
@@ -35,7 +36,10 @@ public class RemindCommand extends Command {
     }
 
     /**
-     * Generates the reminder message with people who have birthdays today and upcoming.
+     * Generates a reminder message listing people who have birthdays today or within the next {@code UPCOMING_DAYS}.
+     *
+     * @param model The model containing the filtered list of persons.
+     * @return A formatted reminder message string.
      */
     private String generateReminderMessage(Model model) {
         // Check if there's people in the addressbook
@@ -63,8 +67,12 @@ public class RemindCommand extends Command {
     }
 
     /**
-     * Calculates days until next birthday.
-     * Handles birthdays that have already occurred this year (calculates for next year).
+     * Calculates the number of days from {@code today} until the next occurrence of {@code birthday}.
+     * If the birthday has already occurred this year, the calculation is based on the birthday in the next year.
+     *
+     * @param birthday The birthday date to check.
+     * @param today The current date.
+     * @return The number of days until the next birthday.
      */
     private long calculateDaysUntilBirthday(LocalDate birthday, LocalDate today) {
         LocalDate nextBirthday = birthday.withYear(today.getYear());
@@ -78,7 +86,11 @@ public class RemindCommand extends Command {
     }
 
     /**
-     * Builds the formatted reminder string similar to your previous implementation.
+     * Builds the formatted reminder message string containing today's and upcoming birthdays.
+     *
+     * @param todayBirthdays List of persons whose birthday is today.
+     * @param upcomingBirthdays List of persons whose birthday is within {@code UPCOMING_DAYS}.
+     * @return A formatted reminder message string.
      */
     private String buildReminderString(List<Person> todayBirthdays, List<Person> upcomingBirthdays) {
         StringBuilder message = new StringBuilder();
@@ -108,7 +120,13 @@ public class RemindCommand extends Command {
     }
 
     /**
-     * Formats a list of persons with numbering and tags, similar to your previous getStringReminders method.
+     * Formats a list of persons into a numbered, readable list for display in the reminder message.
+     * Each entry includes the person's name, birthday date, and optional tags.
+     * If {@code isTodayList} is false, the number of days until the person's birthday is also shown.
+     *
+     * @param persons The list of persons to format.
+     * @param isTodayList Whether the list represents people with birthdays today.
+     * @return A formatted string representing the list of persons.
      */
     private String getFormattedPersonList(List<Person> persons, boolean isTodayList) {
         if (persons.isEmpty()) {
