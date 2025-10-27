@@ -26,6 +26,7 @@ public class Birthday {
 
     /**
      * Constructs a {@code Birthday}.
+     *
      * @param birthday A valid birthday.
      */
     public Birthday(String birthday) {

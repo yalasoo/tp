@@ -32,7 +32,7 @@ public class FavouriteCommand extends Command {
 
     private static Logger logger = LogsCenter.getLogger(FavouriteCommand.class);
 
-    /** To refer to the indexes the command is being called on  */
+    /** To refer to the indexes the command is being called on */
     private List<Index> vals;
 
     /**

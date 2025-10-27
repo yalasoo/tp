@@ -71,9 +71,19 @@ public class PersonCard extends UiPart<Region> {
         studentClass.setText(person.getStudentClass().value);
         birthday.setText(person.getBirthday().value);
         note.setText(person.getNote().value);
+        boolean isStudent = person.getTags().stream()
+                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    if (isStudent) {
+                        tagLabel.getStyleClass().add("student-tag");
+                    } else {
+                        tagLabel.getStyleClass().add("colleague-tag");
+                    }
+                    tags.getChildren().add(tagLabel);
+                });
         Image imageIcon = new Image(this.getClass().getResourceAsStream("/images/star.png"));
         BooleanProperty favProperty = person.getFavBooleanProperty();
 

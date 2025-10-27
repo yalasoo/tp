@@ -29,6 +29,7 @@ public class Attendance {
     /**
      * Marks attendance for a specific date with the given status.
      * If attendance already exists for the date, it will be updated.
+     *
      * @param date date the date of attendance
      * @param status date the date of attendance
      */
