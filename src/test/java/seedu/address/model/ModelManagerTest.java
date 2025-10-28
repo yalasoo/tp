@@ -13,13 +13,19 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ModelManagerTest {
 
@@ -45,7 +51,7 @@ public class ModelManagerTest {
         modelManager.setUserPrefs(userPrefs);
         assertEquals(userPrefs, modelManager.getUserPrefs());
 
-        // Modifying userPrefs should not modify modelManager's userPrefs
+        // Modifying userPrefs should not modify modelManager's userPrefs.
         UserPrefs oldUserPrefs = new UserPrefs(userPrefs);
         userPrefs.setAddressBookFilePath(Paths.get("new/address/book/file/path"));
         assertEquals(oldUserPrefs, modelManager.getUserPrefs());
@@ -140,6 +146,56 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void sortFilteredPersonList_validComparator_sortsAddressBook() {
+        ModelManager modelManager = new ModelManager();
+        Person alice = new PersonBuilder().withName("Alice").build();
+        Person bob = new PersonBuilder().withName("Bob").build();
+
+        // Add in reverse order
+        modelManager.addPerson(bob);
+        modelManager.addPerson(alice);
+
+        // Store original order
+        List<Person> originalOrder = new ArrayList<>(modelManager.getFilteredPersonList());
+
+        // Sort through ModelManager's public API
+        modelManager.sortFilteredPersonList(Comparator.comparing(p -> p.getName().toString()));
+
+        // Verify the public filtered list is sorted
+        List<Person> sortedOrder = new ArrayList<>(modelManager.getFilteredPersonList());
+        assertNotEquals(originalOrder, sortedOrder);
+        assertEquals(alice, sortedOrder.get(0));
+        assertEquals(bob, sortedOrder.get(1));
+    }
+
+    @Test
+    public void sortFilteredPersonList_nullComparator_throwsNullPointerException() {
+        ModelManager modelManager = new ModelManager();
+        assertThrows(NullPointerException.class, () -> modelManager.sortFilteredPersonList(null));
+    }
+
+    @Test
+    public void retrieveInitialFavList_returnsCorrectList() {
+        ModelManager modelManager = new ModelManager();
+        Person firstPerson = new PersonBuilder().withName("Alice").withFavourite(true).build();
+        Person secondPerson = new PersonBuilder().withName("Bob").withFavourite(false).build();
+        Person thirdPerson = new PersonBuilder().withName("Charles").withFavourite(true).build();
+
+        // Add the people
+        modelManager.addPerson(firstPerson);
+        modelManager.addPerson(secondPerson);
+        modelManager.addPerson(thirdPerson);
+
+        ArrayList<Index> actualList = modelManager.retrieveInitialFavList();
+        ArrayList<Index> expectedList = new ArrayList<>();
+
+        // From zeroBased indexing, firstPerson will be index 1
+        expectedList.add(Index.fromZeroBased(0));
+        expectedList.add(Index.fromZeroBased(2));
+        assertEquals(actualList, expectedList);
     }
 
     @Test

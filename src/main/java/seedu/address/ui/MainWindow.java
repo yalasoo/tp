@@ -124,6 +124,22 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        autoShowReminders();
+    }
+
+    /**
+     * Automatically shows reminders by executing the Remind command.
+     */
+    private void autoShowReminders() {
+        try {
+            // Execute Remind Command and display result in result display
+            CommandResult commandResult = logic.execute("remind");
+            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+        } catch (CommandException | ParseException e) {
+            // Silently fail - don't show error if remind command fails on startup
+            logger.info("No reminders to show on startup: " + e.getMessage());
+        }
     }
 
     /**
@@ -162,6 +178,16 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Closes the View window if it's opened.
+     */
+    @FXML
+    public void handleCloseView() {
+        if (viewWindow.isShowing()) {
+            viewWindow.hide();
+        }
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -190,6 +216,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
+            resultDisplay.clear();
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
@@ -200,6 +227,8 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isShowView()) {
                 handleView();
+            } else {
+                handleCloseView();
             }
 
             if (commandResult.isExit()) {

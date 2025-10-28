@@ -4,16 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FIELD;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AttendanceCommand;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.AttendanceDownloadCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -24,15 +31,25 @@ import seedu.address.logic.commands.FindPhoneCommand;
 import seedu.address.logic.commands.FindTagCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.NoteCommand;
+import seedu.address.logic.commands.RemindCommand;
+import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.SortCommand.SortField;
+import seedu.address.logic.commands.SortCommand.SortOrder;
 import seedu.address.logic.commands.ViewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PhoneContainsKeywordsPredicate;
 import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.ui.DeletePopupHandler;
+import seedu.address.ui.InfoPopupHandler;
+import seedu.address.ui.TestDeletePopupHandler;
+import seedu.address.ui.TestInfoInfoPopupHandler;
 
 public class AddressBookParserTest {
 
@@ -47,12 +64,14 @@ public class AddressBookParserTest {
                 .withEmail("amy@example.com")
                 .withAddress("123, Jurong West Ave 6, #08-111")
                 .withClass("K1B")
+                .withBirthday("23-10-1995")
                 .withNote("")
-                .withTags()
+                .withTags("student") // Add mandatory tag
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
-        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com a/123, Jurong West Ave 6, #08-111 c/K1B";
+        String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995 t/student"; // Add tag parameter
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);
@@ -66,17 +85,24 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
+        InfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
+        DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON, testInfoHandler, testDeleteHandler), command);
     }
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder().withNote("").build();
+        Person person = new PersonBuilder().withBirthday("18-07-2018").withNote("").build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+
+        String editDetails = PersonUtil.getEditPersonDescriptorDetails(descriptor);
+        System.out.println("EDIT COMMAND STRING: " + EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails); // DEBUG
+
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                + INDEX_FIRST_PERSON.getOneBased() + " " + editDetails);
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
@@ -127,6 +153,56 @@ public class AddressBookParserTest {
         ViewCommand command = (ViewCommand) parser.parseCommand(
                 ViewCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new ViewCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_attendance() throws Exception {
+        AttendanceCommand command = (AttendanceCommand) parser.parseCommand(
+                AttendanceCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " s/present");
+
+        AttendanceCommand expectedCommand = new AttendanceCommand(
+                Set.of(INDEX_FIRST_PERSON),
+                LocalDate.now(),
+                AttendanceStatus.PRESENT
+        );
+
+        assertEquals(expectedCommand, command);
+    }
+
+    @Test
+    public void parseCommand_attendanceDownload() throws Exception {
+        AttendanceDownloadCommand command = (AttendanceDownloadCommand) parser.parseCommand(
+                AttendanceDownloadCommand.COMMAND_WORD + " "
+                        + INDEX_FIRST_PERSON.getOneBased()
+                        + " m/12-2025"
+        );
+
+        AttendanceDownloadCommand expectedCommand = new AttendanceDownloadCommand(
+                Set.of(INDEX_FIRST_PERSON), null, LocalDate.now(),
+                        YearMonth.of(2025, 12), false, true);
+
+        assertEquals(expectedCommand, command);
+    }
+
+    @Test
+    public void parseCommand_note() throws Exception {
+        NoteCommand command = (NoteCommand) parser.parseCommand(
+                NoteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+        );
+        assertEquals(new NoteCommand(INDEX_FIRST_PERSON, new Note("")), command);
+    }
+
+    @Test
+    public void parseCommand_sort() throws Exception {
+        SortCommand command = (SortCommand) parser.parseCommand(
+                SortCommand.COMMAND_WORD + " " + PREFIX_FIELD + "name");
+        assertEquals(new SortCommand(SortField.valueOf("NAME"), SortOrder.valueOf("ASC")), command);
+    }
+
+    @Test
+    public void parseCommand_remind() throws Exception {
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD) instanceof RemindCommand);
+        assertTrue(parser.parseCommand(RemindCommand.COMMAND_WORD + " 3") instanceof RemindCommand);
     }
 
     @Test

@@ -6,22 +6,25 @@
     "email" : "alice@example.com",
     "address" : "123, Jurong West Ave 6, #08-111",
     "studentClass" : "K1A",
+    "birthday": "15-03-2018",
     "note": "She likes aardvarks.",
-    "tags" : [ "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
     "email" : "johnd@example.com",
     "address" : "311, Clementi Ave 2, #02-25",
     "studentClass" : "K1B",
+    "birthday": "24-12-2017",
     "note": "He can't take beer!",
-    "tags" : [ "owesMoney", "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "email" : "heinz@example.com",
     "address" : "wall street",
     "studentClass" : "K1C",
+    "birthday": "08-05-2018",
     "note": "",
     "tags" : [ "colleague" ]
   }, {
@@ -30,14 +33,16 @@
     "email" : "cornelia@example.com",
     "address" : "10th street",
     "studentClass" : "K2A",
+    "birthday": "30-01-2017",
     "note": "",
-    "tags" : [ "friends" ]
+    "tags" : [ "student" ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "94822240",
     "email" : "werner@example.com",
     "address" : "michegan ave",
     "studentClass" : "K2B",
+    "birthday": "14-07-2017",
     "note": "",
     "tags" : [ "student" ]
   }, {
@@ -46,24 +51,26 @@
     "email" : "lydia@example.com",
     "address" : "little tokyo",
     "studentClass" : "K2C",
+    "birthday": "03-11-2018",
     "note": "",
-    "tags" : [ ]
+    "tags" : [ "student" ]
   }, {
     "name" : "George Best",
     "phone" : "94824420",
     "email" : "anna@example.com",
     "address" : "4th street",
     "studentClass" : "Nursery",
+    "birthday": "19-09-2019",
     "note": "",
-    "tags" : [ ]
+    "tags" : [ "student" ]
   }, {
     "name" : "George Best",
     "phone" : "94824888",
     "email" : "annaa@example.com",
     "address" : "4th street",
     "studentClass" : "Nursery",
+    "birthday": "19-09-2019",
     "note": "",
-    "tags" : [ ]
-  }
-  ]
+    "tags" : [ "student" ]
+  }]
 }

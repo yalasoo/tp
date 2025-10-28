@@ -2,12 +2,18 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -16,29 +22,55 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+    private static Logger logger = LogsCenter.getLogger(Person.class);
+
     // Identity fields
     private final Name name;
     private final Phone phone;
     private final Email email;
     private final Address address;
+    private final Birthday birthday;
     private final Note note;
 
     // Data fields
     private final Class studentClass;
     private final Set<Tag> tags = new HashSet<>();
+    private final Attendance attendance;
+
+    // Extra fields
+    private final Favourite favourite;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Class studentClass, Note note, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, studentClass, note, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Class studentClass,
+                  Birthday birthday, Note note, Set<Tag> tags, Attendance attendance, Favourite favourite) {
+        requireAllNonNull(name, phone, email, address, studentClass, birthday, note, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.birthday = birthday;
         this.note = note;
         this.tags.addAll(tags);
+
+        // only add attendance for student
+        if (tags.contains(new Tag("student"))) {
+            this.attendance = (attendance != null) ? attendance : new Attendance();
+        } else {
+            this.attendance = null;
+        }
+
+        // favourite could potentially be null in which case set it to default false
+        if (favourite == null) {
+            this.favourite = new Favourite(false);
+            logger.info("favourite was null for " + name + "so we set it to false");
+        } else {
+            this.favourite = favourite;
+            logger.info("favourite was available for " + name + " so we set it to"
+                    + favourite.getIsFavouriteBoolean());
+        }
     }
 
     public Name getName() {
@@ -61,8 +93,20 @@ public class Person {
         return studentClass;
     }
 
+    public Birthday getBirthday() {
+        return birthday;
+    }
+
     public Note getNote() {
         return note;
+    }
+
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
+    public Favourite getFavouriteStatus() {
+        return favourite;
     }
 
     /**
@@ -71,6 +115,53 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Marks the attendance of this person object
+     * @param date when does this attendance apply
+     * @param status what is the status of this attendance
+     */
+    public void markAttendance(LocalDate date, AttendanceStatus status) {
+        assert date != null;
+        assert status != null;
+
+        if (attendance != null) {
+            attendance.markAttendance(date, status);
+        }
+    }
+
+    public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
+        return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
+    }
+
+    /**
+     * Updates the favourite status of this person.
+     *
+     * @param value Can be true or false. If true, it indicates that this
+     *              person is a favourite contact.
+     */
+    public void updateFavourite(Boolean value) {
+        assert value != null;
+        favourite.updateFavourite(value);
+    }
+
+    /**
+     * Retrieves the boolean value of favourite attribute.
+     *
+     * @return whether Person is in favourites or not.
+     */
+    public boolean getIsFavBoolean() {
+        return favourite.getIsFavouriteBoolean();
+    }
+
+    /**
+     * Retrieves the BooleanProperty value of favourite.
+     *
+     * @return BooleanProperty The favourite value.
+     */
+    public BooleanProperty getFavBooleanProperty() {
+        return favourite.getFavBooleanProperty();
     }
 
     /**
@@ -108,6 +199,7 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && studentClass.equals(otherPerson.studentClass)
+                && birthday.equals(otherPerson.birthday)
                 && note.equals(otherPerson.note)
                 && tags.equals(otherPerson.tags);
     }
@@ -115,7 +207,7 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, studentClass, note, tags);
+        return Objects.hash(name, phone, email, address, studentClass, birthday, note, tags);
     }
 
     @Override
@@ -126,6 +218,7 @@ public class Person {
                 .add("email", email)
                 .add("address", address)
                 .add("class", studentClass)
+                .add("birthday", birthday)
                 .add("note", note)
                 .add("tags", tags)
                 .toString();

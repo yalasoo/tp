@@ -3,7 +3,7 @@ package seedu.address.logic.parser.exceptions;
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
- * Represents a parse error encountered by a parser.
+ * Represents a parse error encountered by a parse.
  */
 public class ParseException extends IllegalValueException {
 

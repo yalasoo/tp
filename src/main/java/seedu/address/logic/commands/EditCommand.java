@@ -24,8 +24,11 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
+import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Favourite;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -63,8 +66,8 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * @param index of the person in the filtered person list to edit.
+     * @param editPersonDescriptor details to edit the person with.
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(index);
@@ -107,11 +110,14 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Class updatedStudentClass = editPersonDescriptor.getStudentClass().orElse(personToEdit.getStudentClass());
+        Birthday updatedBirthday = editPersonDescriptor.getBirthday().orElse(personToEdit.getBirthday());
         Note updatedNote = editPersonDescriptor.getNote().orElse(personToEdit.getNote());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Favourite updatedFavourite = personToEdit.getFavouriteStatus();
+        Attendance updatedAttendance = personToEdit.getAttendance();
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedStudentClass,
-                updatedNote, updatedTags);
+                updatedBirthday, updatedNote, updatedTags, updatedAttendance, updatedFavourite);
     }
 
     @Override
@@ -148,6 +154,7 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private Class studentClass;
+        private Birthday birthday;
         private Set<Tag> tags;
         private Note note;
 
@@ -163,6 +170,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setStudentClass(toCopy.studentClass);
+            setBirthday(toCopy.birthday);
             setTags(toCopy.tags);
             setNote(toCopy.note);
         }
@@ -171,7 +179,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, studentClass, tags, note);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, studentClass, birthday, tags, note);
         }
 
         public void setName(Name name) {
@@ -212,6 +220,14 @@ public class EditCommand extends Command {
 
         public Optional<Class> getStudentClass() {
             return Optional.ofNullable(studentClass);
+        }
+
+        public void setBirthday(Birthday birthday) {
+            this.birthday = birthday;
+        }
+
+        public Optional<Birthday> getBirthday() {
+            return Optional.ofNullable(birthday);
         }
 
         /**
@@ -262,6 +278,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(studentClass, otherEditPersonDescriptor.studentClass)
+                    && Objects.equals(birthday, otherEditPersonDescriptor.birthday)
                     && Objects.equals(note, otherEditPersonDescriptor.note)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
@@ -274,6 +291,7 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("class", studentClass)
+                    .add("birthday", birthday)
                     .add("note", note)
                     .add("tags", tags)
                     .toString();

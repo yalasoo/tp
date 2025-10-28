@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" spacing="8">
+    <HBox spacing="5">
+        <Label text="Legends: " />
+        <Label fx:id="legendPresent" />
+        <Label fx:id="legendLate" />
+        <Label fx:id="legendSick" />
+        <Label fx:id="legendAbsent" />
+    </HBox>
+    <VBox spacing="5" style="-fx-background-color: #f8f9fa; -fx-border-color: #ddd; -fx-border-radius: 5;
+               -fx-padding: 10;">
+        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 5;">
+            <!-- Month header and buttons to change months -->
+            <Button fx:id="prevMonthButton" text="←" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="monthLabel" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="nextMonthButton" text="→" />
+        </HBox>
+
+        <GridPane fx:id="attendanceGrid" hgap="3" vgap="3" style="-fx-padding: 10;">
+            <!-- Column constraints to make each column equal width and fill available space -->
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+            </columnConstraints>
+
+            <!-- Days of week headers with centered alignment and padding -->
+            <Label text="Sun" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Mon" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Tue" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Wed" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Thu" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="4" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Fri" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="5" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label text="Sat" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-alignment: center; -fx-padding: 5;"
+                   GridPane.columnIndex="6" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" maxWidth="Infinity"/>
+        </GridPane>
+    </VBox>
+</VBox>

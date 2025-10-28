@@ -1,10 +1,13 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.Person;
 
 /**
@@ -94,5 +97,15 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Sort the person list by the given {@code comparator}.
+     */
+    void sortFilteredPersonList(Comparator<Person> comparator);
+
+    /**
+     * Retrieve the list of favourites when model is launched.
+     */
+    ArrayList<Index> retrieveInitialFavList();
 
 }

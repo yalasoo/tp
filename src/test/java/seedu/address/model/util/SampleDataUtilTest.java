@@ -27,6 +27,7 @@ public class SampleDataUtilTest {
             assertNotNull(person.getEmail());
             assertNotNull(person.getAddress());
             assertNotNull(person.getStudentClass());
+            assertNotNull(person.getBirthday());
             assertNotNull(person.getNote());
             assertNotNull(person.getTags());
         }

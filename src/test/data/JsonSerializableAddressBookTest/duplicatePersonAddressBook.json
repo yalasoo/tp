@@ -5,15 +5,17 @@
     "email": "alice@example.com",
     "address": "123, Jurong West Ave 6, #08-111",
     "studentClass": "K1A",
+    "birthday": "15-03-2018",
     "note": "",
-    "tags": [ "friends" ]
+    "tags": [ "student" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
     "email": "pauline@example.com",
     "address": "456, Clementi Ave 3, #02-25",
     "studentClass": "K1B",
+    "birthday": "24-12-2017",
     "note": "",
-    "tags": [ ]
+    "tags": [ "colleague" ]
   } ]
 }
