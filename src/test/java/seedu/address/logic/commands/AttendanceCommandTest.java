@@ -21,6 +21,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 public class AttendanceCommandTest {
 
@@ -152,6 +154,21 @@ public class AttendanceCommandTest {
                 assertTrue(result.getFeedbackToUser().contains(dateStr));
             }
         }
+    }
+
+    @Test
+    public void execute_nonStudentIndex_throwsCommandException() {
+        Model newModel = new ModelManager();
+
+        Person colleague = new PersonBuilder().withTags("colleague").build();
+        newModel.addPerson(colleague);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
+
+        assertThrows(CommandException.class, () -> command.execute(newModel));
     }
 
     @Test
