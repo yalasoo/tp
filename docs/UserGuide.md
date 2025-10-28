@@ -488,6 +488,41 @@ fav 3 5 2 1
 [//]: # (COMMAND BREAK)
 <br>
 
+### Sort contacts : `sort`
+
+**Purpose**: Sorts contact based on specified field and order.
+
+##### Format
+```shell
+sort f/FIELD [o/ORDER]
+```
+
+##### Parameters & Validation Rules
+|                   Parameter                   | Validation Rules              |
+|:---------------------------------------------:|-------------------------------|
+| <span style="color: #e83f8b">**FIELD**</span> | Valid field: name, class, tag | 
+|                                               | Error if empty string         |
+| <span style="color: #e83f8b">**ORDER**</span> | Valid order: asc, desc        | 
+|                                               | Default to asc if empty       |
+
+##### Example Commands
+```shell
+sort f/name
+```
+```shell
+sort f/class o/desc
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                              |
+|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|-----------------------------------------|
+| <span style="color: green">**Success**</span> | Contacts sorted successfully | `Sorted successfully`                                        | Contact list updates with new ordering  |
+|  <span style="color: red">**Failure**</span>  | Missing required parameters  | `Invalid command format!` _(with correct format guidance)_   | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                              |
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Listing all contacts : `list`
 
 **Purpose**: Shows a list of all contacts in LittleLogBook with those set as favourite shown on top.
