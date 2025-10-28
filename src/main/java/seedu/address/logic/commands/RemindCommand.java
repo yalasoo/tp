@@ -75,11 +75,24 @@ public class RemindCommand extends Command {
      * @return The number of days until the next birthday.
      */
     private long calculateDaysUntilBirthday(LocalDate birthday, LocalDate today) {
-        LocalDate nextBirthday = birthday.withYear(today.getYear());
+        // Normalise birthday's month/day to this year
+        int year = today.getYear();
+        LocalDate nextBirthday;
+        try {
+            nextBirthday = LocalDate.of(year, birthday.getMonth(), birthday.getDayOfMonth());
+        } catch (java.time.DateTimeException e) {
+            // Handles Feb 29 on non-leap years: choose Feb 28 (common convention)
+            nextBirthday = LocalDate.of(year, 2, 28);
+        }
 
-        // If birthday already passed this year, use next year's birthday
         if (nextBirthday.isBefore(today)) {
-            nextBirthday = nextBirthday.plusYears(1);
+            // birthday already passed this year -> next year
+            try {
+                nextBirthday = LocalDate.of(year + 1, birthday.getMonth(), birthday.getDayOfMonth());
+            } catch (java.time.DateTimeException e) {
+                // Feb 29 case -> use Feb 28 next year (or adjust as preferred)
+                nextBirthday = LocalDate.of(year + 1, 2, 28);
+            }
         }
 
         return ChronoUnit.DAYS.between(today, nextBirthday);
