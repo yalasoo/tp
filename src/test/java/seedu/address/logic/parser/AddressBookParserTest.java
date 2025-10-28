@@ -47,9 +47,9 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 import seedu.address.ui.DeletePopupHandler;
-import seedu.address.ui.PopupHandler;
+import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.TestDeletePopupHandler;
-import seedu.address.ui.TestInfoPopupHandler;
+import seedu.address.ui.TestInfoInfoPopupHandler;
 
 public class AddressBookParserTest {
 
@@ -85,7 +85,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
-        PopupHandler testInfoHandler = new TestInfoPopupHandler();
+        InfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
         DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());

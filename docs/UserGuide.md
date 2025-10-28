@@ -228,28 +228,38 @@ delete 3
 
 **1. Delete by INDEX**
 
-|                Outcome Type                   | Scenario          | Message                                                    | GUI Action                                   |
-|:---------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
-| <span style="color: green">**Success**</span> | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
-|  <span style="color: red">**Failure**</span>  | Invalid index     | `The person index provided is invalid`                     | No changes                                   |
-|                                               | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                   |
+|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | Pop-up window appears                        |
+|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
 **2. Delete by NAME**
 
-|                        Outcome Type                          | Scenario               | Message                                                                   | GUI Action                                   |
-|:------------------------------------------------------------:|------------------------|---------------------------------------------------------------------------|----------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Exact match found      | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry |
-| <span style="color: orange">**Confirmation Required**</span> | No matches found       | `No matches found. Press ESC to exit`                                     | Pop-up window appears                        |
-|                                                              | Multiple matches found | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window with list of matches appears   |
+|                         Outcome Type                         | Scenario                            | Message                                                                   | GUI Action                                   |
+|:------------------------------------------------------------:|-------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Exact match found                   | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry |
+|         <span style="color: red">**Failure**</span>          | No matches found                    | `No matches found. Please try again`                                      | Pop-up window appears                        |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found              | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window with list of matches appears   |
+| <span style="color: orange">**Confirmation Required**</span> | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
+    <strong>Invalid index</strong><br>
+    <img src="src/main/resources/images/invalid_index.png" width="300px">
+  </div>
+  <div style="text-align: center;">
     <strong>No matches found</strong><br>
-    <img src="images/delete_no_matches.png" width="300px">
+    <img src="src/main/resources/images/no_matches.png" width="300px">
   </div>
   <div style="text-align: center;">
     <strong>Multiple matches found</strong><br>
-    <img src="images/delete_multiple_matches.png" width="400px">
+    <img src="src/main/resources/images/multiple_matches.png" width="400px">
+  </div>
+  <div style="text-align: center;">
+    <strong>Delete confirmation</strong><br>
+    <img src="src/main/resources/images/delete_confirmation.png" width="400px">
   </div>
 </div>
 
@@ -365,6 +375,7 @@ find-n Tan
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
 |                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+
 
 [//]: # (COMMAND BREAK)
 <br>

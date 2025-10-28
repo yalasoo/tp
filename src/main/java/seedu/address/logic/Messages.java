@@ -20,6 +20,14 @@ public class Messages {
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_SEE_UNFILTERED_CONTACTS = "\nUse list command to escape this filtered view "
             + "\nso that you can use the commands on all contacts!";
+    public static final String MESSAGE_NO_MATCHES_FOUND = "No matches found. Please try again.";
+    public static final String MESSAGE_INVALID_INDEX = "Invalid index. Please try again.";
+    public static final String MESSAGE_DELETION_CANCELLED = "Deletion cancelled.";
+    public static final String MESSAGE_DELETE_CONFIRMATION =
+            "Are you sure you want to delete this contact (%s)?\nType INDEX and ENTER to confirm or ESC to cancel.";
+    public static final String MESSAGE_POSSIBLE_MATCHES_FOUND =
+            "Possible matches found below.\nType INDEX and ENTER to delete or ESC to cancel:";
+
 
     /**
      * Returns an error message indicating the duplicate prefixes.
