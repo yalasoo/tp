@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -449,6 +450,88 @@ public class RemindCommandTest {
         assertTrue(result.getFeedbackToUser().contains("Upcoming birthdays"));
         assertTrue(result.getFeedbackToUser().contains(BENSON.getName().toString()));
         assertTrue(result.getFeedbackToUser().contains("No birthdays today"));
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_normalBirthdayThisYear_returnsCorrectDays() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate birthday = LocalDate.of(2000, 6, 15);
+        LocalDate today = LocalDate.of(2024, 6, 10);
+
+        long result = remindCommand.calculateDaysUntilBirthday(birthday, today);
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_birthdayPassedThisYear_returnsNextYear() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate birthday = LocalDate.of(2000, 1, 15);
+        LocalDate today = LocalDate.of(2024, 6, 10);
+
+        long result = remindCommand.calculateDaysUntilBirthday(birthday, today);
+        LocalDate expectedNextBirthday = LocalDate.of(2025, 1, 15);
+        long expectedDays = ChronoUnit.DAYS.between(today, expectedNextBirthday);
+
+        assertEquals(expectedDays, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_feb29NonLeapYear_returnsFeb28() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate feb29Birthday = LocalDate.of(2000, 2, 29);
+        LocalDate today = LocalDate.of(2023, 1, 1); // Non-leap year
+
+        long result = remindCommand.calculateDaysUntilBirthday(feb29Birthday, today);
+        LocalDate expectedNextBirthday = LocalDate.of(2023, 2, 28);
+        long expectedDays = ChronoUnit.DAYS.between(today, expectedNextBirthday);
+
+        assertEquals(expectedDays, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_feb29LeapYear_returnsFeb29() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate feb29Birthday = LocalDate.of(2000, 2, 29);
+        LocalDate today = LocalDate.of(2024, 1, 1); // Leap year
+
+        long result = remindCommand.calculateDaysUntilBirthday(feb29Birthday, today);
+        LocalDate expectedNextBirthday = LocalDate.of(2024, 2, 29);
+        long expectedDays = ChronoUnit.DAYS.between(today, expectedNextBirthday);
+
+        assertEquals(expectedDays, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_todayIsBirthday_returnsZero() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate birthday = LocalDate.of(2000, 6, 15);
+        LocalDate today = LocalDate.of(2024, 6, 15);
+
+        long result = remindCommand.calculateDaysUntilBirthday(birthday, today);
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_yearBoundary_handlesCorrectly() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate birthday = LocalDate.of(2000, 1, 1);
+        LocalDate today = LocalDate.of(2024, 12, 31);
+
+        long result = remindCommand.calculateDaysUntilBirthday(birthday, today);
+        assertEquals(1, result); // Next birthday is Jan 1, 2025 (1 day away)
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_feb28Birthday_normalCase() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate feb28Birthday = LocalDate.of(2000, 2, 28);
+        LocalDate today = LocalDate.of(2023, 1, 1); // Non-leap year
+
+        long result = remindCommand.calculateDaysUntilBirthday(feb28Birthday, today);
+        LocalDate expectedNextBirthday = LocalDate.of(2023, 2, 28);
+        long expectedDays = ChronoUnit.DAYS.between(today, expectedNextBirthday);
+
+        assertEquals(expectedDays, result);
     }
 
     @Test
