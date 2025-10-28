@@ -535,6 +535,33 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void calculateDaysUntilBirthday_feb29LeapYearAfterFeb_returnsFeb29NextYear() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate feb29Birthday = LocalDate.of(2000, 2, 29);
+        LocalDate today = LocalDate.of(2024, 3, 1); // After February in leap year
+
+        long result = remindCommand.calculateDaysUntilBirthday(feb29Birthday, today);
+
+        // Should calculate days until Feb 28, 2025 (next year is non-leap)
+        LocalDate expectedNextBirthday = LocalDate.of(2025, 2, 28);
+        long expectedDays = ChronoUnit.DAYS.between(today, expectedNextBirthday);
+
+        assertEquals(expectedDays, result);
+    }
+
+    @Test
+    public void calculateDaysUntilBirthday_feb29LeapYearOnFeb28_returnsOneDay() {
+        RemindCommand remindCommand = new RemindCommand();
+        LocalDate feb29Birthday = LocalDate.of(2000, 2, 29);
+        LocalDate today = LocalDate.of(2024, 2, 28); // On Feb 28 in leap year
+
+        long result = remindCommand.calculateDaysUntilBirthday(feb29Birthday, today);
+
+        // Should calculate 1 day until Feb 29, 2024 (tomorrow)
+        assertEquals(1, result);
+    }
+
+    @Test
     public void getFormattedPersonList_emptyList_returnsEmptyString() {
         RemindCommand remindCommand = new RemindCommand();
 
