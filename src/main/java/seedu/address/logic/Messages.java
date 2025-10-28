@@ -18,6 +18,8 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
+    public static final String MESSAGE_SEE_UNFILTERED_CONTACTS = "\nUse list command to escape this filtered view "
+            + "\nso that you can use the commands on all contacts!";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

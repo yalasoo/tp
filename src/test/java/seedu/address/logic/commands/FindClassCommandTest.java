@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.logic.Messages.MESSAGE_SEE_UNFILTERED_CONTACTS;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -58,7 +59,7 @@ public class FindClassCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW + MESSAGE_SEE_UNFILTERED_CONTACTS, 0);
         ClassContainsKeywordsPredicate predicate = preparePredicate(" ");
         FindClassCommand command = new FindClassCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -68,7 +69,7 @@ public class FindClassCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW + MESSAGE_SEE_UNFILTERED_CONTACTS, 3);
         ClassContainsKeywordsPredicate predicate = preparePredicate("K1A Nursery");
         FindClassCommand command = new FindClassCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -78,7 +79,7 @@ public class FindClassCommandTest {
 
     @Test
     public void execute_multiplePartialKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 5);
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW + MESSAGE_SEE_UNFILTERED_CONTACTS, 5);
         ClassContainsKeywordsPredicate predicate = preparePredicate("K1 urs");
         FindClassCommand command = new FindClassCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
