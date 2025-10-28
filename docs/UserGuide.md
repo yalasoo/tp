@@ -488,6 +488,124 @@ fav 3 5 2 1
 [//]: # (COMMAND BREAK)
 <br>
 
+### Mark attendance : `attendance`
+
+**Purpose**: Marks attendance of student(s) with the specified status on a specified date. Only applies to contact with `student` tag.
+
+##### Format
+```shell
+attendance INDEX(es) s/STATUS [d/DATE]
+```
+
+##### Parameters & Validation Rules
+|                     Parameter                      | Validation Rules                                           |
+|:--------------------------------------------------:|------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
+|                                                    | Cannot be 0 or negative                                    |
+|                                                    | Must correspond to an existing contact in the current list |
+|                                                    | Accepts multiple inputs                                    |
+| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent            |
+|                                                    | Must be contiguous without spaces or symbols in between    |
+|                                                    | Error if empty                                             |
+|    <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
+|                                                    | Must be a valid date                                       |
+|                                                    | Default to current date if empty                           |
+
+##### Example Commands
+```shell
+attendance 1 s/present
+```
+```shell
+attendance 1,4,6 s/late d/29-01-2025
+```
+```shell
+attendance 1-3,7,9 s/sick d/29-01-2025
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                            |
+|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked  | `Attendance marked.`                                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter   | `Invalid command format!` _(with correct format guidance)_   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Download attendance report : `attendanceD`
+
+**Purpose**: Downloads attendance report of the specified student(s) or class(es) on a specific date or month. Only applies to contact with `student` tag.
+
+##### Format
+```shell
+attendanceD INDEX(es) [m/MONTH]
+```
+```shell
+attendanceD c/CLASS(es) [d/DATE]
+```
+```shell
+attendanceD c/CLASS(es) [m/MONTH]
+```
+<box type="warning">
+
+**Warning:**
+* You can only download monthly attendance report for individual (<code>INDEX(es)</code>).
+* You can download daily or monthly attendance report for class (<code>CLASS(es)</code>) but will default to monthly report if <code>DATE</code> or <code>MONTH</code> is not specified.
+</box>
+
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                                         |
+|:-------------------------------------------------:|--------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                | 
+|                                                   | Cannot be 0 or negative                                                  |
+|                                                   | Must correspond to an existing contact in the current list               |
+|                                                   | Accepts multiple inputs                                                  |
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
+|                                                   | Case-insensitive                                                         |
+|                                                   | Error if invalid class format                                            |                                           
+|   <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                                |
+|                                                   | Must be a valid date                                                     |
+|                                                   | Default to current date if empty                                         |
+|   <span style="color: #e83f8b">**MONTH**</span>   | Month in MM-yyyy format                                                  |
+|                                                   | Must be a valid month                                                    |
+|                                                   | Default to current month if empty                                        |
+
+<box type="info" seamless>
+
+**Notes about report saving:**
+* Individual attendance (<code>INDEX(es)</code>) will be saved into one file named: <code>student_attendance_[MONTH].csv</code>
+* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]_[MONTH].csv</code> or <code>[CLASS]\_attendance\_[DATE].csv</code>
+* All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
+</box>
+
+##### Example Commands
+```shell
+attendanceD 1
+```
+```shell
+attendanceD 1-4,6 m/01-2025
+```
+```shell
+attendanceD c/K1A
+```
+```shell
+attendanceD c/K1A d/29-01-2025
+```
+```shell
+attendanceD c/K1A m/01-2025
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                         | Message                                                       | GUI Action                            |
+|:---------------------------------------------:|----------------------------------|---------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded     | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter       | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format         | _Parameter-specific validation error_                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report   | `Error saving attendance report: _error message_`             | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Listing all contacts : `list`
 
 **Purpose**: Shows a list of all contacts in LittleLogBook with those set as favourite shown on top.
@@ -549,6 +667,34 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous LittleLogBook home folder.
+
+--------------------------------------------------------------------------------------------------------------------
+
+<h3 id="open-csv-guide">How to Open CSV Files</h3>
+
+**Using Microsoft Excel:**
+
+1. Launch Microsoft Excel
+2. Create a new blank workbook
+3. Go to **Data** and click the **Get Data** dropdown
+4. Select **From Text/CSV**
+5. Choose the CSV file you want to open
+6. In the import wizard, select **Delimited** and click **Next**
+7. Check only the **Comma** delimiter option and click **Next**
+8. Choose your desired cell location and click **Import**
+
+**Using Google Sheets:**
+
+1. Open Google Sheets in your browser
+2. Create a new blank spreadsheet
+3. Go to **File** → **Import**
+4. Select the **Upload** tab and upload your CSV file
+5. Configure the import settings:
+    - Choose your preferred import location
+    - Set **Separator type** to **Comma**
+    - Check **Convert text to numbers, dates, and formulas**
+6. Click **Import Data**
+7. Your CSV file will now be properly formatted in the spreadsheet
 
 --------------------------------------------------------------------------------------------------------------------
 
