@@ -16,7 +16,7 @@ public class Birthday {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Birthday should be in the format dd-MM-yyyy (e.g., 24-12-2005) and must be a valid date.\n"
-        + "(i.e. birthday cannot be after today's date)";
+        + "Birthday given must be between 01-01-1900 and today's date.";
 
     public static final String VALIDATION_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
