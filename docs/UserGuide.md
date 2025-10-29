@@ -603,6 +603,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Find-p** | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
 | **Find-t** | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
 |  **Fav**   | `fav KEYWORD`                                                               | `fav 1 2`                                                                                                  |
+| **Remind** | `remind`                                                                    | `remind`                                                                                                   |
 |  **List**  | `list`                                                                      | `list`                                                                                                     |
 | **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
 |  **Help**  | `help`                                                                      | `help`                                                                                                     |
