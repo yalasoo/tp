@@ -25,7 +25,7 @@ public class RealDeletePopupHandler implements DeletePopupHandler {
     @Override
     public boolean confirmDeletion(Person person) {
         DeletePopup popup = new DeletePopup();
-        popup.show(Messages.MESSAGE_DELETE_CONFIRMATION, List.of(person));
+        popup.show(String.format(Messages.MESSAGE_DELETE_CONFIRMATION, person.getName()), List.of(person));
         return popup.isConfirmed();
     }
 }

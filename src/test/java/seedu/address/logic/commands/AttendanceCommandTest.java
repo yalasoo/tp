@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 public class AttendanceCommandTest {
 
@@ -48,44 +51,62 @@ public class AttendanceCommandTest {
     @Test
     public void execute_validSingleIndex_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
-        AttendanceCommand command = new AttendanceCommand(indexes, LocalDate.now(), AttendanceStatus.PRESENT);
+        LocalDate date = LocalDate.of(2025, 12, 12);
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
 
         CommandResult result = command.execute(model);
 
-        assertEquals(AttendanceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
-        // Verify attendance was marked (you might need to check the person's attendance)
+        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("out of"));
+        assertTrue(result.getFeedbackToUser().contains("PRESENT"));
+        assertTrue(result.getFeedbackToUser().contains("12-12-2025"));
     }
 
     @Test
     public void execute_validMultipleIndexes_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
-        AttendanceCommand command = new AttendanceCommand(indexes, LocalDate.now(), AttendanceStatus.ABSENT);
+        LocalDate date = LocalDate.of(2025, 12, 12);
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.ABSENT);
 
         CommandResult result = command.execute(model);
 
-        assertEquals(AttendanceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("out of"));
+        assertTrue(result.getFeedbackToUser().contains("ABSENT"));
+        assertTrue(result.getFeedbackToUser().contains("12-12-2025"));
     }
 
+    // THIS IS NOT SUPPOSED TO WORK IN FUTURE IMPLEMENTATION
+    // SINCE WE DON'T WANT TO ALLOW MARKING OF FUTURE DATES!
+    // REMOVE AND FIX!!!
     @Test
     public void execute_validFutureDate_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
-        LocalDate futureDate = LocalDate.now().plusDays(1);
+        LocalDate futureDate = LocalDate.of(2025, 12, 12).plusDays(1);
         AttendanceCommand command = new AttendanceCommand(indexes, futureDate, AttendanceStatus.LATE);
 
         CommandResult result = command.execute(model);
 
-        assertEquals(AttendanceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("out of"));
+        assertTrue(result.getFeedbackToUser().contains("LATE"));
+        assertTrue(result.getFeedbackToUser().contains("13-12-2025"));
     }
 
     @Test
     public void execute_validPastDate_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
         LocalDate pastDate = LocalDate.now().minusDays(1);
+        String pastDateStr = pastDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         AttendanceCommand command = new AttendanceCommand(indexes, pastDate, AttendanceStatus.SICK);
 
         CommandResult result = command.execute(model);
 
-        assertEquals(AttendanceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("out of"));
+        assertTrue(result.getFeedbackToUser().contains("SICK"));
+        assertTrue(result.getFeedbackToUser().contains(pastDateStr));
     }
 
     @Test
@@ -119,14 +140,35 @@ public class AttendanceCommandTest {
     @Test
     public void execute_allAttendanceStatuses_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+        String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         for (AttendanceStatus status : AttendanceStatus.values()) {
             if (status != AttendanceStatus.UNRECORDED) { // Skip UNRECORDED as it's not for marking
-                AttendanceCommand command = new AttendanceCommand(indexes, LocalDate.now(), status);
+                AttendanceCommand command = new AttendanceCommand(indexes, date, status);
                 CommandResult result = command.execute(model);
-                assertEquals(AttendanceCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+
+                assertTrue(result.getFeedbackToUser().contains("Marked"));
+                assertTrue(result.getFeedbackToUser().contains("out of"));
+                assertTrue(result.getFeedbackToUser().contains(status.toString()));
+                assertTrue(result.getFeedbackToUser().contains(dateStr));
             }
         }
+    }
+
+    @Test
+    public void execute_nonStudentIndex_throwsCommandException() {
+        Model newModel = new ModelManager();
+
+        Person colleague = new PersonBuilder().withTags("colleague").build();
+        newModel.addPerson(colleague);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
+
+        assertThrows(CommandException.class, () -> command.execute(newModel));
     }
 
     @Test
