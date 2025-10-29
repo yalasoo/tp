@@ -151,8 +151,10 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
 |                                                       | Case-insensitive for duplicates                                          |
 |                                                       | Error if empty or contains numbers/symbols                               |
-|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers only                                           |
-|                                                       | Spaces/dashes ignored                                                    |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile) |
+|                                                       | **Valid formats:** 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)  |
+|                                                       | **Examples:** 61234567, 81234567, 91234567                              |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                   |
 |                                                       | Error if not numeric, wrong length, or invalid starting digit            |
 |  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
 |                                                       | Case-insensitive                                                         |
