@@ -74,7 +74,7 @@ public class RemindCommand extends Command {
      * @param today The current date.
      * @return The number of days until the next birthday.
      */
-    private long calculateDaysUntilBirthday(LocalDate birthday, LocalDate today) {
+    protected long calculateDaysUntilBirthday(LocalDate birthday, LocalDate today) {
         // Normalise birthday's month/day to this year
         int year = today.getYear();
         LocalDate nextBirthday;
