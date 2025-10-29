@@ -20,9 +20,6 @@ public class TestDeletePopupHandler implements DeletePopupHandler {
         return matches.get(0);
     }
 
-    public void hidePopup() {
-
-    }
     /**
      * Sets whether the next simulated deletion should be confirmed or cancelled.
      */
