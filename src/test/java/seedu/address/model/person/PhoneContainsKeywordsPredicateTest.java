@@ -133,7 +133,8 @@ public class PhoneContainsKeywordsPredicateTest {
             fail();
         } catch (Exception e) {
             assertEquals("Phone numbers must be exactly 8 digits starting with 6 (landline), 8 or 9 (mobile). "
-                    + "Examples: 61234567, 81234567, 91234567. Spaces and dashes are allowed but ignored.", e.getMessage());
+                    + "Examples: 61234567, 81234567, 91234567. "
+                    + "Spaces and dashes are allowed but ignored.", e.getMessage());
         }
     }
 
