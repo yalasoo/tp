@@ -18,7 +18,7 @@ import seedu.address.model.person.Person;
  */
 public class DeletePopup extends UiPart<Stage> {
 
-    public static final String ERROR_STYLE_CLASS = "error-text";
+    public static final String ERROR_STYLE_CLASS = "invalid-input";
     private static final String FXML = "DeletePopup.fxml";
 
     @FXML
