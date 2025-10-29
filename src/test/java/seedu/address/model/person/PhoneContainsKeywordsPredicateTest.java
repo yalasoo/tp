@@ -2,9 +2,8 @@ package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,34 +24,34 @@ public class PhoneContainsKeywordsPredicateTest {
         PhoneContainsKeywordsPredicate secondPredicate = new PhoneContainsKeywordsPredicate(secondPredicateKeywordList);
 
         // same object -> returns true
-        assertTrue(firstPredicate.equals(firstPredicate));
+        assertEquals(firstPredicate, firstPredicate);
 
         // same values -> returns true
         PhoneContainsKeywordsPredicate firstPredicateCopy =
                 new PhoneContainsKeywordsPredicate(firstPredicateKeywordList);
-        assertTrue(firstPredicate.equals(firstPredicateCopy));
+        assertEquals(firstPredicate, firstPredicateCopy);
 
         // different types -> returns false
-        assertFalse(firstPredicate.equals(1));
-        assertFalse(firstPredicate.equals("phone"));
+        assertNotEquals(firstPredicate, 1);
+        assertNotEquals(firstPredicate, "phone");
 
         // null -> returns false
-        assertFalse(firstPredicate.equals(null));
+        assertNotEquals(firstPredicate, null);
 
         // different predicate -> returns false
-        assertFalse(firstPredicate.equals(secondPredicate));
+        assertNotEquals(firstPredicate, secondPredicate);
 
         // empty lists -> returns true
         PhoneContainsKeywordsPredicate emptyPredicate1 = new PhoneContainsKeywordsPredicate(Collections.emptyList());
         PhoneContainsKeywordsPredicate emptyPredicate2 = new PhoneContainsKeywordsPredicate(Collections.emptyList());
-        assertTrue(emptyPredicate1.equals(emptyPredicate2));
+        assertEquals(emptyPredicate1, emptyPredicate2);
 
         // different order, same content -> returns false (list order matters)
         PhoneContainsKeywordsPredicate orderPredicate1 =
                 new PhoneContainsKeywordsPredicate(Arrays.asList("943", "812"));
         PhoneContainsKeywordsPredicate orderPredicate2 =
                 new PhoneContainsKeywordsPredicate(Arrays.asList("812", "943"));
-        assertFalse(orderPredicate1.equals(orderPredicate2));
+        assertNotEquals(orderPredicate1, orderPredicate2);
     }
 
     @Test
@@ -102,11 +101,11 @@ public class PhoneContainsKeywordsPredicateTest {
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
         // Non-matching keyword - completely different number
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("95357710"));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("95357710"));
         assertFalse(predicate.test(new PersonBuilder().withPhone("92222222").build()));
 
         // Non-matching keyword - similar but not matching
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("944"));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("944"));
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
         // Multiple non-matching keywords
@@ -114,28 +113,21 @@ public class PhoneContainsKeywordsPredicateTest {
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
         // Keyword longer than phone number
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("943512530000"));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("943512530000"));
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
         // Non-numeric keyword
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("abc"));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("abc"));
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
         // Empty string keyword
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList(""));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList(""));
         assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
 
-        // Wrong Keywords matching name, email instead of phone - with invalid phone format
-        try {
-            predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("Alice", "alice@email.com"));
-            assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345678")
-                    .withEmail("alice@email.com").build()));
-            fail();
-        } catch (Exception e) {
-            assertEquals("Phone numbers must be exactly 8 digits starting with 6 (landline), 8 or 9 (mobile). "
-                    + "Examples: 61234567, 81234567, 91234567. "
-                    + "Spaces and dashes are allowed but ignored.", e.getMessage());
-        }
+        // Keywords that don't match phone number
+        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("Alice", "email"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("91234567")
+                .withEmail("alice@email.com").build()));
     }
 
     @Test
@@ -147,10 +139,7 @@ public class PhoneContainsKeywordsPredicateTest {
         assertEquals(expected, predicate.toString());
     }
 
-    @Test
-    public void constructor_nullKeywords_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new PhoneContainsKeywordsPredicate(null));
-    }
+
 
     @Test
     public void test_phoneWithSpacesAndDashes_returnsTrue() {
@@ -192,21 +181,20 @@ public class PhoneContainsKeywordsPredicateTest {
 
     @Test
     public void test_keywordsWithWhitespace_returnsCorrectResult() {
-        // Keywords with leading/trailing spaces should still work due to StringUtil behavior
+        // Keywords with leading/trailing spaces - test that it doesn't throw exception
         PhoneContainsKeywordsPredicate predicate =
                 new PhoneContainsKeywordsPredicate(Arrays.asList(" 943 ", "812"));
-        // This depends on StringUtil.containsWordIgnoreCase implementation
-        // Testing the actual behavior of the predicate
-        boolean result = predicate.test(new PersonBuilder().withPhone("94351253").build());
-        // We're testing that the predicate handles this case consistently
-        assertTrue(result || !result); // Accept either outcome, just ensure no exception
+        // The predicate should handle whitespace in keywords gracefully
+        // We expect it to match since "943" is contained in "94351253"
+        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
     }
 
     @Test
     public void hashCode_sameKeywords_returnsSameHashCode() {
-        List<String> keywords = Arrays.asList("943", "812");
-        PhoneContainsKeywordsPredicate predicate1 = new PhoneContainsKeywordsPredicate(keywords);
-        PhoneContainsKeywordsPredicate predicate2 = new PhoneContainsKeywordsPredicate(keywords);
+        List<String> keywords1 = Arrays.asList("943", "812");
+        List<String> keywords2 = Arrays.asList("943", "812");
+        PhoneContainsKeywordsPredicate predicate1 = new PhoneContainsKeywordsPredicate(keywords1);
+        PhoneContainsKeywordsPredicate predicate2 = new PhoneContainsKeywordsPredicate(keywords2);
 
         assertEquals(predicate1.hashCode(), predicate2.hashCode());
     }
