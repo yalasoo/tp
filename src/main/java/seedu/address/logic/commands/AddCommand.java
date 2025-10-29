@@ -44,7 +44,7 @@ public class AddCommand extends Command {
             + PREFIX_TAG + "student "
             + PREFIX_NOTE + "Likes to study in the library";
 
-    public static final String MESSAGE_SUCCESS = "New %1$s added";
+    public static final String MESSAGE_SUCCESS = "Successfully added a new contact: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "Duplicate contact detected.";
 
     private final Person toAdd;
