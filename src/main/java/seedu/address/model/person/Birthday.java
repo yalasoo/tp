@@ -15,11 +15,15 @@ import java.time.format.ResolverStyle;
 public class Birthday {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Birthday should be in the format dd-MM-yyyy (e.g., 24-12-2005) and must be a valid date";
+            "Birthday should be in the format dd-MM-yyyy (e.g., 24-12-2005) and must be a valid date.\n"
+        + "(i.e. birthday cannot be after today's date)";
 
     public static final String VALIDATION_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
             .withResolverStyle(ResolverStyle.STRICT);;
+
+    public static final LocalDate MIN_VALID_DATE = LocalDate.of(1900, 1, 1);
+    public static final LocalDate MAX_VALID_DATE = LocalDate.now();
 
     public final String value;
     public final LocalDate date;
@@ -48,8 +52,14 @@ public class Birthday {
         try {
             LocalDate parsedDate = LocalDate.parse(test, DATE_FORMATTER);
 
+            // Check if the date is within valid range (1900 to today)
+            if (parsedDate.isBefore(MIN_VALID_DATE) || parsedDate.isAfter(MAX_VALID_DATE)) {
+                return false;
+            }
+
             String formatted = parsedDate.format(DATE_FORMATTER);
             return formatted.equals(test);
+
         } catch (DateTimeParseException e) {
             return false;
         }
