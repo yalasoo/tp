@@ -23,11 +23,11 @@ public class Messages {
     public static final String MESSAGE_NO_MATCHES_FOUND = "No matches found. Please try again.";
     public static final String MESSAGE_DELETION_CANCELLED = "Deletion cancelled.";
     public static final String MESSAGE_POSSIBLE_MATCHES_FOUND =
-            "Possible matches found below.\nType INDEX and ENTER to select the person" +
-                    "\nor ESC to cancel and return to main window:";
+            "Possible matches found below.\nType INDEX and ENTER to select the person"
+                    + "\nor ESC to cancel and return to main window:";
     public static final String MESSAGE_DELETE_CONFIRMATION =
-            "Are you sure you want to delete this contact (%s)?\nType INDEX and ENTER to confirm this deletion" +
-                    "\nor ESC to cancel and return to main window.";
+            "Are you sure you want to delete this contact (%s)?\nType INDEX and ENTER to confirm this deletion"
+                    + "\nor ESC to cancel and return to main window.";
     public static final String MESSAGE_INVALID_INDEX_IN_POPUP =
             "Please enter a valid index number\nor press ESC to cancel and go back to main window.";
 

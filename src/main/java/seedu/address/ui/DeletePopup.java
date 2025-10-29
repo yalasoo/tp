@@ -18,8 +18,8 @@ import seedu.address.model.person.Person;
  */
 public class DeletePopup extends UiPart<Stage> {
 
-    private static final String FXML = "DeletePopup.fxml";
     public static final String ERROR_STYLE_CLASS = "error-text";
+    private static final String FXML = "DeletePopup.fxml";
 
     @FXML
     private Label headerLabel;
