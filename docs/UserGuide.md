@@ -145,31 +145,31 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                         |
-|:-----------------------------------------------------:|--------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                 |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
-|                                                       | Case-insensitive for duplicates                                          |
-|                                                       | Error if empty or contains numbers/symbols                               |
+|                       Parameter                       | Validation Rules                                                  |
+|:-----------------------------------------------------:|-------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only          |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed        |
+|                                                       | Case-insensitive for duplicates                                   |
+|                                                       | Error if empty or contains numbers/symbols                        |
 |  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile) |
-|                                                       | **Valid formats:** 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)  |
-|                                                       | **Examples:** 61234567, 81234567, 91234567                              |
-|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                   |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
-|                                                       | Case-insensitive                                                         |
-|                                                       | Error if invalid format                                                  |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                       |
-|                                                       | Error if empty or contains only whitespace                               |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile) |
+|                                                       | Examples: 61234567, 81234567, 91234567                            |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)              |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit     |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                 |
+|                                                       | Case-insensitive                                                  |
+|                                                       | Error if invalid format                                           |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                |
+|                                                       | Error if empty or contains only whitespace                        |
 |  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
-|                                                       | Case-insensitive                                                         |
-|                                                       | Error if invalid class format                                            |
-| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
-|                                                       | Must be a valid date                                                     |
-|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
-|                                                       | Leading/trailing spaces trimmed                                          |
+|                                                       | Case-insensitive                                                  |
+|                                                       | Error if invalid class format                                     |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                         |
+|                                                       | Must be a valid date                                              |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                   |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)        |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                |
+|                                                       | Leading/trailing spaces trimmed                                   |
 
 <box type="warning">
 <strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
