@@ -13,6 +13,13 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
  */
 public class FindNameCommandParser implements Parser<FindNameCommand> {
 
+    public static final String MESSAGE_CONSTRAINTS =
+            "Names to find should only contain alphabetic characters, spaces, hyphens, and apostrophes, "
+                    + "and it can be partial names (case-insensitive)" + "\nExample: find-n Joh Brooke manis -";
+
+    /** The variable used to check against name to ensure it contains only letters, spaces, hyphens, and apostrophes */
+    public static final String VALIDATION_REGEX = "^[\\p{L}\\s\\-']+$";
+
     /**
      * Parses the given {@code String} of arguments in the context of the FindNameCommand
      * and returns a FindNameCommand object for execution.
@@ -26,6 +33,12 @@ public class FindNameCommandParser implements Parser<FindNameCommand> {
         }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
+
+        for (String name : nameKeywords) {
+            if (!name.matches(VALIDATION_REGEX)) {
+                throw new ParseException(MESSAGE_CONSTRAINTS);
+            }
+        }
 
         return new FindNameCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }

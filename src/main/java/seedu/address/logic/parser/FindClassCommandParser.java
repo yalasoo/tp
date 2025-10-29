@@ -13,6 +13,14 @@ import seedu.address.model.person.ClassContainsKeywordsPredicate;
  */
 public class FindClassCommandParser implements Parser<FindClassCommand> {
 
+    public static final String MESSAGE_CONSTRAINTS =
+            "Classes to find should only contain alphanumeric characters and hyphens"
+                    + " and can be partial (case insensitive)"
+                    + "\nExample: find-c K1A K2B K1B ";
+
+    /** The variable used to check against class to ensure it contains only letters, numerals and hyphens */
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9-]+$";
+
     /**
      * Parses the given {@code String} of arguments in the context of the FindClassCommand
      * and returns a FindClassCommand object for execution.
@@ -26,6 +34,12 @@ public class FindClassCommandParser implements Parser<FindClassCommand> {
         }
 
         String[] classKeywords = trimmedArgs.split("\\s+");
+
+        for (String className : classKeywords) {
+            if (!className.matches(VALIDATION_REGEX)) {
+                throw new ParseException(MESSAGE_CONSTRAINTS);
+            }
+        }
 
         return new FindClassCommand(new ClassContainsKeywordsPredicate(Arrays.asList(classKeywords)));
     }

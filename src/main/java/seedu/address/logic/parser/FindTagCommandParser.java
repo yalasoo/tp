@@ -13,6 +13,14 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
  */
 public class FindTagCommandParser implements Parser<FindTagCommand> {
 
+    public static final String MESSAGE_CONSTRAINTS =
+            "Tags to find should only contain alphabetic characters"
+                    + " and can be partial (case insensitive)"
+                    + "\nExample: find-t stu oll ";
+
+    /** The variable used to check against tags to ensure it contains only letters */
+    public static final String VALIDATION_REGEX = "^[a-zA-Z]+$";
+
     /**
      * Parses the given {@code String} of arguments in the context of the FindTagCommand
      * and returns a FindTagCommand object for execution.
@@ -26,6 +34,12 @@ public class FindTagCommandParser implements Parser<FindTagCommand> {
         }
 
         String[] tagKeywords = trimmedArgs.split("\\s+");
+
+        for (String tag : tagKeywords) {
+            if (!tag.matches(VALIDATION_REGEX)) {
+                throw new ParseException(MESSAGE_CONSTRAINTS);
+            }
+        }
 
         return new FindTagCommand(new TagContainsKeywordsPredicate(Arrays.asList(tagKeywords)));
     }
