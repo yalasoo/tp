@@ -187,8 +187,8 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 |:---------------------------------------------:|----------------------------|------------------------------------------------------------|---------------------------------------|
 | <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
 |  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
-|                                               | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
-|                                               | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -247,19 +247,19 @@ delete 3
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
     <strong>Invalid index</strong><br>
-    <img src="src/main/resources/images/invalid_index.png" width="300px">
+    <img src="images/invalid_index.png" width="300px">
   </div>
   <div style="text-align: center;">
     <strong>No matches found</strong><br>
-    <img src="src/main/resources/images/no_matches.png" width="300px">
+    <img src="images/no_matches.png" width="300px">
   </div>
   <div style="text-align: center;">
     <strong>Multiple matches found</strong><br>
-    <img src="src/main/resources/images/multiple_matches.png" width="400px">
+    <img src="images/multiple_matches.png" width="400px">
   </div>
   <div style="text-align: center;">
     <strong>Delete confirmation</strong><br>
-    <img src="src/main/resources/images/delete_confirmation.png" width="400px">
+    <img src="images/delete_confirmation.png" width="400px">
   </div>
 </div>
 
@@ -292,7 +292,7 @@ view 1
 |:---------------------------------------------:|------------------------|------------------------------------------------------------|---------------------------------------------------------------------------|
 | <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Popup displays: Full name, Personal Info, Contact Info, Notes, Attendance |
 |  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                                |
-|                                               | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
+|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
 
 <div style="text-align: center;">
     <strong>Valid index provided</strong><br>
@@ -338,9 +338,9 @@ note 1
 |                Outcome Type                   | Scenario              | Message                                                    | GUI Action                            |
 |:---------------------------------------------:|-----------------------|------------------------------------------------------------|---------------------------------------|
 | <span style="color: green">**Success**</span> | Note added to contact | `Added note to Person: <Contact>`                          | Contact details update with new note  |
-|                                               | Empty note provided   | `Removed note from Person: <Contact>`                      | Note field cleared in contact details |
+| <span style="color: green">**Success**</span> | Empty note provided   | `Removed note from Person: <Contact>`                      | Note field cleared in contact details |
 |  <span style="color: red">**Failure**</span>  | No matching index     | `The person index provided is invalid`                     | No changes                            |
-|                                               | No index provided     | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | No index provided     | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -374,7 +374,7 @@ find-n Tan
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
 
 
 [//]: # (COMMAND BREAK)
@@ -411,7 +411,7 @@ find-p 3133
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -447,7 +447,7 @@ find-t ague
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -483,7 +483,7 @@ fav 3 5 2 1
 |:---------------------------------------------:|--------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.`                                                   | Contact list updates with star icon next to favourite contacts                                                 |
 | <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully. These people were removed from favourites: <names>` | Contact list shows updates with star icon next to favourite contacts and no star next to unfavourite contacts. |
-|                                               | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
 
 [//]: # (COMMAND BREAK)
 <br>
