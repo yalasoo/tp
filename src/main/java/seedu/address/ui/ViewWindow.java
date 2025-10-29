@@ -20,6 +20,8 @@ public class ViewWindow extends UiPart<Stage> {
     private static final double MIN_WIDTH = 500;
     private static final double MIN_HEIGHT = 600;
 
+    private javafx.event.EventHandler<javafx.scene.input.KeyEvent> keyEventHandler;
+
     @FXML
     private FlowPane tags;
     @FXML
@@ -253,7 +255,11 @@ public class ViewWindow extends UiPart<Stage> {
      * navigate previous and next month respectively.
      */
     public void setUpKeyboardNavigation() {
-        getRoot().getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+        if (keyEventHandler != null) {
+            getRoot().getScene().removeEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, keyEventHandler);
+        }
+
+        keyEventHandler = event -> {
             if (event.getCode() == KeyCode.LEFT) {
                 attendancePanel.navigatePreviousMonth();
                 event.consume();
@@ -264,7 +270,9 @@ public class ViewWindow extends UiPart<Stage> {
                 hide();
                 event.consume();
             }
-        });
+        };
+
+        getRoot().getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, keyEventHandler);
     }
 
     /**

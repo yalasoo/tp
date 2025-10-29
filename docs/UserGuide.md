@@ -187,8 +187,8 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 |:---------------------------------------------:|----------------------------|------------------------------------------------------------|---------------------------------------|
 | <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
 |  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
-|                                               | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
-|                                               | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -228,28 +228,38 @@ delete 3
 
 **1. Delete by INDEX**
 
-|                Outcome Type                   | Scenario          | Message                                                    | GUI Action                                   |
-|:---------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
-| <span style="color: green">**Success**</span> | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
-|  <span style="color: red">**Failure**</span>  | Invalid index     | `The person index provided is invalid`                     | No changes                                   |
-|                                               | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                   |
+|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | Pop-up window appears                        |
+|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
 **2. Delete by NAME**
 
-|                        Outcome Type                          | Scenario               | Message                                                                   | GUI Action                                   |
-|:------------------------------------------------------------:|------------------------|---------------------------------------------------------------------------|----------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Exact match found      | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry |
-| <span style="color: orange">**Confirmation Required**</span> | No matches found       | `No matches found. Press ESC to exit`                                     | Pop-up window appears                        |
-|                                                              | Multiple matches found | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window with list of matches appears   |
+|                         Outcome Type                         | Scenario                            | Message                                                                   | GUI Action                                   |
+|:------------------------------------------------------------:|-------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Exact match found                   | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry |
+|         <span style="color: red">**Failure**</span>          | No matches found                    | `No matches found. Please try again`                                      | Pop-up window appears                        |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found              | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window with list of matches appears   |
+| <span style="color: orange">**Confirmation Required**</span> | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
+    <strong>Invalid index</strong><br>
+    <img src="images/invalid_index.png" width="300px">
+  </div>
+  <div style="text-align: center;">
     <strong>No matches found</strong><br>
-    <img src="images/delete_no_matches.png" width="300px">
+    <img src="images/no_matches.png" width="300px">
   </div>
   <div style="text-align: center;">
     <strong>Multiple matches found</strong><br>
-    <img src="images/delete_multiple_matches.png" width="400px">
+    <img src="images/multiple_matches.png" width="400px">
+  </div>
+  <div style="text-align: center;">
+    <strong>Delete confirmation</strong><br>
+    <img src="images/delete_confirmation.png" width="400px">
   </div>
 </div>
 
@@ -282,7 +292,7 @@ view 1
 |:---------------------------------------------:|------------------------|------------------------------------------------------------|---------------------------------------------------------------------------|
 | <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Popup displays: Full name, Personal Info, Contact Info, Notes, Attendance |
 |  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                                |
-|                                               | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
+|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
 
 <div style="text-align: center;">
     <strong>Valid index provided</strong><br>
@@ -328,9 +338,9 @@ note 1
 |                Outcome Type                   | Scenario              | Message                                                    | GUI Action                            |
 |:---------------------------------------------:|-----------------------|------------------------------------------------------------|---------------------------------------|
 | <span style="color: green">**Success**</span> | Note added to contact | `Added note to Person: <Contact>`                          | Contact details update with new note  |
-|                                               | Empty note provided   | `Removed note from Person: <Contact>`                      | Note field cleared in contact details |
+| <span style="color: green">**Success**</span> | Empty note provided   | `Removed note from Person: <Contact>`                      | Note field cleared in contact details |
 |  <span style="color: red">**Failure**</span>  | No matching index     | `The person index provided is invalid`                     | No changes                            |
-|                                               | No index provided     | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | No index provided     | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -364,7 +374,8 @@ find-n Tan
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -400,7 +411,7 @@ find-p 3133
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -436,7 +447,7 @@ find-t ague
 |:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
 |  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|                                               | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -472,7 +483,204 @@ fav 3 5 2 1
 |:---------------------------------------------:|--------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.`                                                   | Contact list updates with star icon next to favourite contacts                                                 |
 | <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully. These people were removed from favourites: <names>` | Contact list shows updates with star icon next to favourite contacts and no star next to unfavourite contacts. |
-|                                               | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Sort contacts : `sort`
+
+**Purpose**: Sorts contact based on specified field and order.
+
+##### Format
+```shell
+sort f/FIELD [o/ORDER]
+```
+
+##### Parameters & Validation Rules
+|                   Parameter                   | Validation Rules              |
+|:---------------------------------------------:|-------------------------------|
+| <span style="color: #e83f8b">**FIELD**</span> | Valid field: name, class, tag | 
+|                                               | Error if empty string         |
+| <span style="color: #e83f8b">**ORDER**</span> | Valid order: asc, desc        | 
+|                                               | Default to asc if empty       |
+
+##### Example Commands
+```shell
+sort f/name
+```
+```shell
+sort f/class o/desc
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                              |
+|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|-----------------------------------------|
+| <span style="color: green">**Success**</span> | Contacts sorted successfully | `Sorted successfully`                                        | Contact list updates with new ordering  |
+|  <span style="color: red">**Failure**</span>  | Missing required parameters  | `Invalid command format!` _(with correct format guidance)_   | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                              |
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Birthday reminders : `remind`
+
+**Purpose**
+
+* Automatically checks for birthdays **today** and **upcoming** (within the next 7 days/a week).
+* Runs automatically when the app starts and can be run manually to re-check at any time.
+
+##### Command Format
+
+```shell
+remind
+```
+
+[//]: # (COMMAND BREAK)
+<br>
+
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `remind` will be ignored (treated as `remind`).
+
+##### Possible Outputs
+
+|                                                                   Outcome Type                                                                    |                    Scenario                    |                                                      Message shown (exact/representative)                                                      |                             GUI Action                            |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------:| :--------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------: |
+|                                                   <span style="color: green">**Success**</span>                                                   | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!\n1) ...\n\nUpcoming birthdays in the next 7 days:\n1) ...\n\nDon't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
+|                                                   <span style="color: green">**Success**</span>                                                   |     No birthdays today, some are upcoming      |                                      `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                      |                          Reminder printed                         |
+|                             <span style="color: green">**Success**</span>                                                                         |   No birthdays today and none within 7 days    |                                                         `No upcoming birthdays found.`                                                         |                          Reminder printed                         |
+|                                                   <span style="color: green">**Success**</span>                                                   |             Address book is empty              |                                                         `No contacts in address book.`                                                         |                          Reminder printed                         |
+
+##### Formatting of the reminder list
+
+* Numbered list of matching contacts.
+* Each entry shows:
+
+    * `Name` — full name of person.
+    * `Birthday` — displayed in the same format used by the app.
+    * `Tags` — shown in square brackets if present (e.g., `[student]`).
+    * For today’s birthdays: appended `(TODAY!)`.
+    * For upcoming birthdays: appended `(in X day(s))`.
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Mark attendance : `attendance`
+
+**Purpose**: Marks attendance of student(s) with the specified status on a specified date. Only applies to contact with `student` tag.
+
+##### Format
+```shell
+attendance INDEX(es) s/STATUS [d/DATE]
+```
+
+##### Parameters & Validation Rules
+|                     Parameter                      | Validation Rules                                           |
+|:--------------------------------------------------:|------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
+|                                                    | Cannot be 0 or negative                                    |
+|                                                    | Must correspond to an existing contact in the current list |
+|                                                    | Accepts multiple inputs                                    |
+| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent            |
+|                                                    | Must be contiguous without spaces or symbols in between    |
+|                                                    | Error if empty                                             |
+|    <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
+|                                                    | Must be a valid date                                       |
+|                                                    | Default to current date if empty                           |
+
+##### Example Commands
+```shell
+attendance 1 s/present
+```
+```shell
+attendance 1,4,6 s/late d/29-01-2025
+```
+```shell
+attendance 1-3,7,9 s/sick d/29-01-2025
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                            |
+|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked  | `Attendance marked.`                                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter   | `Invalid command format!` _(with correct format guidance)_   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Download attendance report : `attendanceD`
+
+**Purpose**: Downloads attendance report of the specified student(s) or class(es) on a specific date or month. Only applies to contact with `student` tag.
+
+##### Format
+```shell
+attendanceD INDEX(es) [m/MONTH]
+```
+```shell
+attendanceD c/CLASS(es) [d/DATE]
+```
+```shell
+attendanceD c/CLASS(es) [m/MONTH]
+```
+<box type="warning">
+
+**Warning:**
+* You can only download monthly attendance report for individual (<code>INDEX(es)</code>).
+* You can download daily or monthly attendance report for class (<code>CLASS(es)</code>) but will default to monthly report if <code>DATE</code> or <code>MONTH</code> is not specified.
+</box>
+
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                                         |
+|:-------------------------------------------------:|--------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                | 
+|                                                   | Cannot be 0 or negative                                                  |
+|                                                   | Must correspond to an existing contact in the current list               |
+|                                                   | Accepts multiple inputs                                                  |
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
+|                                                   | Case-insensitive                                                         |
+|                                                   | Error if invalid class format                                            |                                           
+|   <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                                |
+|                                                   | Must be a valid date                                                     |
+|                                                   | Default to current date if empty                                         |
+|   <span style="color: #e83f8b">**MONTH**</span>   | Month in MM-yyyy format                                                  |
+|                                                   | Must be a valid month                                                    |
+|                                                   | Default to current month if empty                                        |
+
+<box type="info" seamless>
+
+**Notes about report saving:**
+* Individual attendance (<code>INDEX(es)</code>) will be saved into one file named: <code>student_attendance_[MONTH].csv</code>
+* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]_[MONTH].csv</code> or <code>[CLASS]\_attendance\_[DATE].csv</code>
+* All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
+</box>
+
+##### Example Commands
+```shell
+attendanceD 1
+```
+```shell
+attendanceD 1-4,6 m/01-2025
+```
+```shell
+attendanceD c/K1A
+```
+```shell
+attendanceD c/K1A d/29-01-2025
+```
+```shell
+attendanceD c/K1A m/01-2025
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario                         | Message                                                       | GUI Action                            |
+|:---------------------------------------------:|----------------------------------|---------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded     | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter       | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format         | _Parameter-specific validation error_                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report   | `Error saving attendance report: _error message_`             | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -485,7 +693,6 @@ fav 3 5 2 1
 ```shell
 list
 ```
-
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -541,6 +748,34 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 --------------------------------------------------------------------------------------------------------------------
 
+<h3 id="open-csv-guide">How to Open CSV Files</h3>
+
+**Using Microsoft Excel:**
+
+1. Launch Microsoft Excel
+2. Create a new blank workbook
+3. Go to **Data** and click the **Get Data** dropdown
+4. Select **From Text/CSV**
+5. Choose the CSV file you want to open
+6. In the import wizard, select **Delimited** and click **Next**
+7. Check only the **Comma** delimiter option and click **Next**
+8. Choose your desired cell location and click **Import**
+
+**Using Google Sheets:**
+
+1. Open Google Sheets in your browser
+2. Create a new blank spreadsheet
+3. Go to **File** → **Import**
+4. Select the **Upload** tab and upload your CSV file
+5. Configure the import settings:
+    - Choose your preferred import location
+    - Set **Separator type** to **Comma**
+    - Check **Convert text to numbers, dates, and formulas**
+6. Click **Import Data**
+7. Your CSV file will now be properly formatted in the spreadsheet
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
@@ -560,6 +795,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Find-p** | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
 | **Find-t** | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
 |  **Fav**   | `fav KEYWORD`                                                               | `fav 1 2`                                                                                                  |
+| **Remind** | `remind`                                                                    | `remind`                                                                                                   |
 |  **List**  | `list`                                                                      | `list`                                                                                                     |
 | **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
 |  **Help**  | `help`                                                                      | `help`                                                                                                     |

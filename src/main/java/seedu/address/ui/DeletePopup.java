@@ -11,11 +11,12 @@ import javafx.stage.Stage;
 import seedu.address.model.person.Person;
 
 /**
- * A popup window for confirmation after a person executes delete contact command.
+ * A popup window for confirmation after user executes delete contact command.
  */
 public class DeletePopup extends UiPart<Stage> {
 
     private static final String FXML = "DeletePopup.fxml";
+    private static final String ERROR_MESSAGE = "Please enter a valid index number or press ESC to cancel.";
 
     @FXML
     private Label headerLabel;
@@ -29,9 +30,9 @@ public class DeletePopup extends UiPart<Stage> {
     private Person selectedPerson = null;
 
     /**
-     * Creates a new Delete Pop up.
+     * Creates a new Delete popup window.
      *
-     * @param root Stage to use as the root of the Delete Pop up.
+     * @param root Stage to use as the root of the Delete popup window.
      */
     public DeletePopup(Stage root) {
         super(FXML, root);
@@ -41,17 +42,17 @@ public class DeletePopup extends UiPart<Stage> {
     }
 
     /**
-     * Creates a new Delete Pop up.
+     * Creates a new Delete popup window.
      */
     public DeletePopup() {
         this(new Stage());
     }
 
     /**
-     * Determines the information to be displayed in the Deletion Pop up.
+     * Displays a deletion confirmation popup window with the given information.
      *
-     * @param headerMessage indicates the result of delete command with the input name.
-     * @param matchingResults displays the list of possible matching persons, if any.
+     * @param headerMessage the message displayed at the top of the popup window.
+     * @param matchingResults the list of {@code Person} entries displayed for the user to choose from.
      */
     public void show(String headerMessage, List<Person> matchingResults) {
         this.matchingResults = matchingResults;
@@ -79,31 +80,25 @@ public class DeletePopup extends UiPart<Stage> {
         getRoot().showAndWait();
     }
 
+    /**
+     * Defines how keyboard inputs interact with the deletion popup window,
+     * enabling selection, confirmation, and cancellation using keys.
+     */
     private void setUpKeyboardHandlers() {
         inputField.setOnKeyPressed(event -> {
             switch (event.getCode()) {
             case ENTER -> handleEnter();
             case ESCAPE -> handleEscape();
-            // allow scrolling person list using up and down
-            case UP -> {
-                int prevIndex = personListView.getSelectionModel().getSelectedIndex() - 1;
-                if (prevIndex >= 0) {
-                    personListView.getSelectionModel().select(prevIndex);
-                    personListView.scrollTo(prevIndex);
-                }
-            }
-            case DOWN -> {
-                int nextIndex = personListView.getSelectionModel().getSelectedIndex() + 1;
-                if (nextIndex < personListView.getItems().size()) {
-                    personListView.getSelectionModel().select(nextIndex);
-                    personListView.scrollTo(nextIndex);
-                }
-            }
+            case UP -> handleUp();
+            case DOWN -> handleDown();
             default -> { }
             }
         });
     }
 
+    /**
+     * Handles the ENTER key action to confirm the selected person for deletion.
+     */
     private void handleEnter() {
         String input = inputField.getText().trim();
         int index;
@@ -111,7 +106,7 @@ public class DeletePopup extends UiPart<Stage> {
         try {
             index = Integer.parseInt(input) - 1;
         } catch (NumberFormatException e) {
-            showError("Please enter a valid index number or press ESC to cancel.");
+            showError(ERROR_MESSAGE);
             return;
         }
 
@@ -120,29 +115,61 @@ public class DeletePopup extends UiPart<Stage> {
             isConfirmed = true;
             getRoot().hide();
         } else {
-            showError("Invalid index. Try again or press ESC to cancel.");
+            showError(ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Handles the ESC key action to cancel the deletion and close the popup window.
+     */
     private void handleEscape() {
         isConfirmed = false;
         selectedPerson = null;
         getRoot().hide();
     }
 
+    /**
+     * Handles the UP key action to select the previous person listed
+     * and scroll upwards in the popup window.
+     */
+    private void handleUp() {
+        int prevIndex = personListView.getSelectionModel().getSelectedIndex() - 1;
+        if (prevIndex >= 0) {
+            personListView.getSelectionModel().select(prevIndex);
+            personListView.scrollTo(prevIndex);
+        }
+    }
+
+    /**
+     * Handles the DOWN key action to select the next person listed
+     * and scroll downwards in the popup window.
+     */
+    private void handleDown() {
+        int nextIndex = personListView.getSelectionModel().getSelectedIndex() + 1;
+        if (nextIndex < personListView.getItems().size()) {
+            personListView.getSelectionModel().select(nextIndex);
+            personListView.scrollTo(nextIndex);
+        }
+    }
+
+    /**
+     * Displays an error message in the popup window header.
+     *
+     * @param message the error message to display.
+     */
     private void showError(String message) {
         headerLabel.setText(message);
     }
 
     /**
-     * Check if the user confirms deletion.
+     * Checks if the user confirms deletion.
      * */
     public boolean isConfirmed() {
         return isConfirmed;
     }
 
     /**
-     * Get the person selected for deletion.
+     * Returns the {@code Person} selected by the user for deletion.
      * */
     public Person getSelectedPerson() {
         return selectedPerson;

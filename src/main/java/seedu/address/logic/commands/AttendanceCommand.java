@@ -6,8 +6,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
@@ -36,7 +39,8 @@ public class AttendanceCommand extends Command {
             + PREFIX_STATUS + "present "
             + PREFIX_DATE + "29-12-2025";
 
-    public static final String MESSAGE_SUCCESS = "Attendance marked.";
+    public static final String MESSAGE_SUCCESS = "Marked %d out of %d contacts as %s on %s."
+            + "Below are the marked students: ";
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
@@ -64,7 +68,8 @@ public class AttendanceCommand extends Command {
         requireNonNull(date);
         requireNonNull(status);
 
-        this.indexes = indexes;
+        this.indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        this.indexes.addAll(indexes);
         this.date = date;
         this.status = status;
     }
@@ -74,10 +79,39 @@ public class AttendanceCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        // Defensive check: list cannot be empty
+        // Early termination when list is empty
         if (lastShownList.isEmpty()) {
             throw new CommandException("No contacts available to mark attendance.");
         }
+
+        StringBuilder studentsMarked = new StringBuilder();
+
+        int totalMarked = markAll(lastShownList, studentsMarked);
+
+        if (totalMarked > 0) {
+            logger.info("Successfully marked attendance for " + totalMarked + " students");
+            String dateMsg = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+            return new CommandResult(String.format(
+                    MESSAGE_SUCCESS, totalMarked, indexes.size(), status, dateMsg) + studentsMarked);
+        } else {
+            String unsuccessfulMsg = "Marked 0 out of " + indexes.size() + " contacts.";
+            logger.info(unsuccessfulMsg);
+            throw new CommandException(unsuccessfulMsg + " \nReminder: Attendance will only apply to student.");
+        }
+    }
+
+    /**
+     * Marks all specified indexes (if they are a student) and returns the
+     * number of contacts actually marked.
+     *
+     * @param lastShownList The current contact list being shown.
+     * @param studentsMarked The string of contacts who got marked.
+     * @return The total number of marked contacts that is a student.
+     * @throws CommandException If an error occurs during command execution.
+     */
+    private int markAll(List<Person> lastShownList, StringBuilder studentsMarked) throws CommandException {
+        int totalMarked = 0;
 
         for (Index i : indexes) {
             int zeroBasedIndex = i.getZeroBased();
@@ -90,13 +124,17 @@ public class AttendanceCommand extends Command {
             }
 
             Person personToEdit = lastShownList.get(zeroBasedIndex);
-            logger.fine("Marking attendance for " + personToEdit.getName() + " on " + date + " as " + status);
 
-            personToEdit.markAttendance(date, status);
+            // Ensure person is a student
+            if (personToEdit.isStudent()) {
+                logger.fine("Marking attendance for " + personToEdit.getName() + " on " + date + " as " + status);
+
+                personToEdit.markAttendance(date, status);
+                studentsMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
+                totalMarked++;
+            }
         }
-
-        logger.info("Successfully marked attendance for " + indexes.size() + " students");
-        return new CommandResult(MESSAGE_SUCCESS);
+        return totalMarked;
     }
 
 

@@ -32,7 +32,6 @@ public class ListCommandTest {
 
     @Test
     public void execute_listHasFavourites_showsFavouritesOnTop() {
-        //showPersonAtIndex(model, INDEX_FIRST_PERSON);
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
