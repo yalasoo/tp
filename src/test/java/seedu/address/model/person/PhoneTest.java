@@ -56,7 +56,6 @@ public class PhoneTest {
         assertFalse(Phone.isValidPhone("34567890")); // starts with 3
         assertFalse(Phone.isValidPhone("45678901")); // starts with 4
         assertFalse(Phone.isValidPhone("56789012")); // starts with 5
-        assertFalse(Phone.isValidPhone("67890123")); // starts with 6
         assertFalse(Phone.isValidPhone("78901234")); // starts with 7
         assertFalse(Phone.isValidPhone("01234567")); // starts with 0
 
@@ -79,6 +78,12 @@ public class PhoneTest {
         assertTrue(Phone.isValidPhone("97654321"));
         assertTrue(Phone.isValidPhone("90000000"));
         assertTrue(Phone.isValidPhone("99999999"));
+
+        // valid phone numbers - 8 digits starting with 6 (landline)
+        assertTrue(Phone.isValidPhone("61234567"));
+        assertTrue(Phone.isValidPhone("67654321"));
+        assertTrue(Phone.isValidPhone("60000000"));
+        assertTrue(Phone.isValidPhone("69999999"));
 
         // valid phone numbers with normalization (spaces and dashes ignored)
         assertTrue(Phone.isValidPhone("9876 5432")); // with space

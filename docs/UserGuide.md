@@ -159,29 +159,31 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                         |
-|:-----------------------------------------------------:|--------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                 |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
-|                                                       | Case-insensitive for duplicates                                          |
-|                                                       | Error if empty or contains numbers/symbols                               |
-|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers only                                           |
-|                                                       | Spaces/dashes ignored                                                    |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
-|                                                       | Case-insensitive                                                         |
-|                                                       | Error if invalid format                                                  |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                       |
-|                                                       | Error if empty or contains only whitespace                               |
+|                       Parameter                       | Validation Rules                                                  |
+|:-----------------------------------------------------:|-------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only          |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed        |
+|                                                       | Case-insensitive for duplicates                                   |
+|                                                       | Error if empty or contains numbers/symbols                        |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile) |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile) |
+|                                                       | Examples: 61234567, 81234567, 91234567                            |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)              |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit     |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                 |
+|                                                       | Case-insensitive                                                  |
+|                                                       | Error if invalid format                                           |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                |
+|                                                       | Error if empty or contains only whitespace                        |
 |  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
-|                                                       | Case-insensitive                                                         |
-|                                                       | Error if invalid class format                                            |
-| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
-|                                                       | Must be a valid date                                                     |
-|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
-|                                                       | Leading/trailing spaces trimmed                                          |
+|                                                       | Case-insensitive                                                  |
+|                                                       | Error if invalid class format                                     |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                         |
+|                                                       | Must be a valid date                                              |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                   |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)        |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                |
+|                                                       | Leading/trailing spaces trimmed                                   |
 
 <box type="warning">
 
@@ -566,12 +568,13 @@ remind
 * Any extraneous text after `remind` will be ignored (treated as `remind`).
 
 ##### Possible Outputs
-|                 Outcome Type                  |                    Scenario                    |                                                      Message shown (exact/representative)                                                      |                             GUI Action                            |
-|:---------------------------------------------:|:----------------------------------------------:| :--------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------: |
-| <span style="color: green">**Success**</span> | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!\n1) ...\n\nUpcoming birthdays in the next 7 days:\n1) ...\n\nDon't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
-| <span style="color: green">**Success**</span> |     No birthdays today, some are upcoming      |                                      `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                      |                          Reminder printed                         |
-| <span style="color: green">**Success**</span> |   No birthdays today and none within 7 days    |                                                         `No upcoming birthdays found.`                                                         |                          Reminder printed                         |
-| <span style="color: green">**Success**</span> |             Address book is empty              |                                                         `No contacts in address book.`                                                         |                          Reminder printed                         |
+
+|                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                             GUI Action                            |
+|:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| :---------------------------------------------------------------: |
+|                          <span style="color: green">**Success**</span>                           | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!`<br/>`1) ...`<br/><br/>`Upcoming birthdays in the next 7 days:`<br/>`1) ...`<br/><br/>`Don't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
+|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                       `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                               |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                      `No contacts in address book.`                                                                      |                          Reminder printed                         |
 
 ##### Formatting of the reminder list
 

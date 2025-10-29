@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.FindNameCommandParser.MESSAGE_CONSTRAINTS;
 
 import java.util.Arrays;
 
@@ -19,6 +20,14 @@ public class FindNameCommandParserTest {
     public void parse_emptyArg_throwsParseException() {
         assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FindNameCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() {
+        assertParseFailure(parser, "ani 1", MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "Bob @", MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "+", MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "?", MESSAGE_CONSTRAINTS);
     }
 
     @Test
