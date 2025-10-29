@@ -100,7 +100,6 @@ public class DeleteCommand extends Command {
 
         // delete by index
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            infoPopupHandler.showMessage(Messages.MESSAGE_INVALID_INDEX);
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 

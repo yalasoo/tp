@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seedu.address.model.person.Person;
 
@@ -39,6 +40,8 @@ public class DeletePopup extends UiPart<Stage> {
         setUpKeyboardHandlers();
         root.setWidth(500);
         root.setHeight(500);
+        root.initModality(Modality.APPLICATION_MODAL);
+        root.setAlwaysOnTop(true);
     }
 
     /**
