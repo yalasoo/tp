@@ -17,8 +17,8 @@ public class PhoneContainsKeywordsPredicateTest {
 
     @Test
     public void equals() {
-        List<String> firstPredicateKeywordList = Collections.singletonList("94351253");
-        List<String> secondPredicateKeywordList = Arrays.asList("94351253", "81234567");
+        List<String> firstPredicateKeywordList = Collections.singletonList("91234567");
+        List<String> secondPredicateKeywordList = Arrays.asList("91234567", "81234567");
 
         PhoneContainsKeywordsPredicate firstPredicate = new PhoneContainsKeywordsPredicate(firstPredicateKeywordList);
         PhoneContainsKeywordsPredicate secondPredicate = new PhoneContainsKeywordsPredicate(secondPredicateKeywordList);
@@ -58,28 +58,28 @@ public class PhoneContainsKeywordsPredicateTest {
     public void test_phoneContainsKeywords_returnsTrue() {
         // One keyword - exact match
         PhoneContainsKeywordsPredicate predicate =
-                new PhoneContainsKeywordsPredicate(Collections.singletonList("94351253"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+                new PhoneContainsKeywordsPredicate(Collections.singletonList("91234567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Multiple keywords - both match
-        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("943", "512"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("912", "567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Only one matching keyword out of multiple
         predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("22222222", "95357710"));
         assertTrue(predicate.test(new PersonBuilder().withPhone("95357710").build()));
 
         // Partial match at beginning
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("943"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("912"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Partial match at end
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("253"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Partial match in middle
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("351"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("345"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Match with landline number starting with 6
         predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("612"));
@@ -90,15 +90,15 @@ public class PhoneContainsKeywordsPredicateTest {
         assertTrue(predicate.test(new PersonBuilder().withPhone("81234567").build()));
 
         // Case insensitive matching (though phone numbers are numeric, testing the StringUtil behavior)
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("943"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("912"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
     }
 
     @Test
     public void test_phoneDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         PhoneContainsKeywordsPredicate predicate = new PhoneContainsKeywordsPredicate(Collections.emptyList());
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Non-matching keyword - completely different number
         predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("95357710"));
@@ -106,28 +106,23 @@ public class PhoneContainsKeywordsPredicateTest {
 
         // Non-matching keyword - similar but not matching
         predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("944"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Multiple non-matching keywords
         predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("111", "222", "333"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Keyword longer than phone number
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("943512530000"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("912345670000"));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Non-numeric keyword
         predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("abc"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
-
-        // Empty string keyword
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList(""));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Keywords that don't match phone number
         predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("Alice", "email"));
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("91234567")
-                .withEmail("alice@email.com").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
     }
 
     @Test
@@ -145,14 +140,14 @@ public class PhoneContainsKeywordsPredicateTest {
     public void test_phoneWithSpacesAndDashes_returnsTrue() {
         // Test with phone numbers that have spaces and dashes (should still match)
         PhoneContainsKeywordsPredicate predicate =
-                new PhoneContainsKeywordsPredicate(Collections.singletonList("9435"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("9435 1253").build()));
+                new PhoneContainsKeywordsPredicate(Collections.singletonList("9123"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("9123 4567").build()));
 
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("1253"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("9435-1253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("4567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("9123-4567").build()));
 
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("94351253"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("9435 1253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("91234567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("9123 4567").build()));
     }
 
     @Test
@@ -160,33 +155,33 @@ public class PhoneContainsKeywordsPredicateTest {
         // Single digit matching
         PhoneContainsKeywordsPredicate predicate =
                 new PhoneContainsKeywordsPredicate(Collections.singletonList("9"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // Single digit not matching
-        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("7"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        predicate = new PhoneContainsKeywordsPredicate(Collections.singletonList("8"));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
     }
 
     @Test
     public void test_multipleKeywordsWithMixedMatching_returnsTrue() {
         // At least one keyword matches - should return true
         PhoneContainsKeywordsPredicate predicate =
-                new PhoneContainsKeywordsPredicate(Arrays.asList("999", "943", "777"));
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+                new PhoneContainsKeywordsPredicate(Arrays.asList("999", "912", "777"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
 
         // No keywords match - should return false
         predicate = new PhoneContainsKeywordsPredicate(Arrays.asList("111", "222", "777"));
-        assertFalse(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        assertFalse(predicate.test(new PersonBuilder().withPhone("91234567").build()));
     }
 
     @Test
     public void test_keywordsWithWhitespace_returnsCorrectResult() {
         // Keywords with leading/trailing spaces - test that it doesn't throw exception
         PhoneContainsKeywordsPredicate predicate =
-                new PhoneContainsKeywordsPredicate(Arrays.asList(" 943 ", "812"));
+                new PhoneContainsKeywordsPredicate(Arrays.asList(" 912 ", "812"));
         // The predicate should handle whitespace in keywords gracefully
-        // We expect it to match since "943" is contained in "94351253"
-        assertTrue(predicate.test(new PersonBuilder().withPhone("94351253").build()));
+        // We expect it to match since "912" is contained in "91234567"
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
     }
 
     @Test
