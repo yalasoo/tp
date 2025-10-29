@@ -3,12 +3,14 @@ package seedu.address.ui;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seedu.address.logic.Messages;
 import seedu.address.model.person.Person;
 
 /**
@@ -17,7 +19,7 @@ import seedu.address.model.person.Person;
 public class DeletePopup extends UiPart<Stage> {
 
     private static final String FXML = "DeletePopup.fxml";
-    private static final String ERROR_MESSAGE = "Please enter a valid index number or press ESC to cancel.";
+    public static final String ERROR_STYLE_CLASS = "error-text";
 
     @FXML
     private Label headerLabel;
@@ -38,6 +40,8 @@ public class DeletePopup extends UiPart<Stage> {
     public DeletePopup(Stage root) {
         super(FXML, root);
         setUpKeyboardHandlers();
+        inputField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+
         root.setWidth(500);
         root.setHeight(500);
         root.initModality(Modality.APPLICATION_MODAL);
@@ -109,16 +113,17 @@ public class DeletePopup extends UiPart<Stage> {
         try {
             index = Integer.parseInt(input) - 1;
         } catch (NumberFormatException e) {
-            showError(ERROR_MESSAGE);
+            showError(Messages.MESSAGE_INVALID_INDEX_IN_POPUP);
             return;
         }
 
         if (index >= 0 && index < matchingResults.size()) {
+            setStyleToDefault();
             selectedPerson = matchingResults.get(index);
             isConfirmed = true;
             getRoot().hide();
         } else {
-            showError(ERROR_MESSAGE);
+            showError(Messages.MESSAGE_INVALID_INDEX_IN_POPUP);
         }
     }
 
@@ -162,6 +167,27 @@ public class DeletePopup extends UiPart<Stage> {
      */
     private void showError(String message) {
         headerLabel.setText(message);
+        setStyleToIndicateError();
+    }
+
+    /**
+     * Sets the input field style to use the default style.
+     */
+    private void setStyleToDefault() {
+        inputField.getStyleClass().remove(ERROR_STYLE_CLASS);
+    }
+
+    /**
+     * Sets the input field style to indicate a invalid index.
+     */
+    private void setStyleToIndicateError() {
+        ObservableList<String> styleClass = inputField.getStyleClass();
+
+        if (styleClass.contains(ERROR_STYLE_CLASS)) {
+            return;
+        }
+
+        styleClass.add(ERROR_STYLE_CLASS);
     }
 
     /**
