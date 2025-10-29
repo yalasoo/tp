@@ -1,12 +1,15 @@
 package seedu.address.ui;
 
+import java.util.Objects;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 /**
- * A popup window for error message when a person executes delete contact command.
- * Applicable for invalid index and no matches.
+ * A popup window that displays error message when a user executes the delete contact command.
+ * This is used for invalid indexes or when no matching contacts are found.
  */
 public class InfoPopup extends UiPart<Stage> {
 
@@ -18,9 +21,9 @@ public class InfoPopup extends UiPart<Stage> {
     private boolean isClosed = false;
 
     /**
-     * Creates a new Information Pop up.
+     * Creates a new Information popup window.
      *
-     * @param root Stage to use as the root of the Information Pop up.
+     * @param root Stage to use as the root of the Information popup window.
      */
     public InfoPopup(Stage root) {
         super(FXML, root);
@@ -30,14 +33,14 @@ public class InfoPopup extends UiPart<Stage> {
     }
 
     /**
-     * Creates a new Information Pop up.
+     * Creates a new Information popup window.
      */
     public InfoPopup() {
         this(new Stage());
     }
 
     /**
-     * Determines the information to be displayed in the Information Pop up.
+     * Determines the information to be displayed in the Information popup window.
      *
      * @param message indicates the result of the invalid delete command.
      */
@@ -48,15 +51,21 @@ public class InfoPopup extends UiPart<Stage> {
         getRoot().show();
     }
 
+    /**
+     * Defines how keyboard inputs interact with the information popup window.
+     * Pressing the ENTER key allows the user to proceed and close the popup window.
+     */
     private void setUpKeyboardHandlers() {
         getRoot().getScene().setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-            case ENTER -> handleEnter();
-            default -> { }
+            if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
+                handleEnter();
             }
         });
     }
 
+    /**
+     * Handles the ENTER key action by closing the popup window.
+     */
     private void handleEnter() {
         isClosed = true;
         getRoot().hide();

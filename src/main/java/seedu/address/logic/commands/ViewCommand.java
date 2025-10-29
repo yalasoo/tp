@@ -19,11 +19,11 @@ public class ViewCommand extends Command {
     public static final String COMMAND_WORD = "view";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Displays full information of a contact "
-            + " (including notes, attendance).\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "view [INDEX]\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + ": Displays full information of a contact (including attendance, if person is student).\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 1\n"
+            + "Note: Only one contact can be viewed at a time.\n"
+            + "Press ESC to exit the view window.";
 
     public static final String MESSAGE_SUCCESS = "Viewing information of %1$s";
 

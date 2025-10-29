@@ -70,6 +70,7 @@ public class TypicalPersons {
             .withTags(VALID_TAG_COLLEAGUE).withNote("").build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
+    public static final String INVALID_NAME = "Random Name";
 
     private TypicalPersons() {} // prevents instantiation
 
