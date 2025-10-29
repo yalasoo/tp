@@ -523,6 +523,50 @@ sort f/class o/desc
 [//]: # (COMMAND BREAK)
 <br>
 
+### Birthday reminders : `remind`
+
+**Purpose**
+
+* Automatically checks for birthdays **today** and **upcoming** (within the next 7 days/a week).
+* Runs automatically when the app starts and can be run manually to re-check at any time.
+
+##### Command Format
+
+```shell
+remind
+```
+
+[//]: # (COMMAND BREAK)
+<br>
+
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `remind` will be ignored (treated as `remind`).
+
+##### Possible Outputs
+
+|                                                                   Outcome Type                                                                    |                    Scenario                    |                                                      Message shown (exact/representative)                                                      |                             GUI Action                            |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------:| :--------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------: |
+|                                                   <span style="color: green">**Success**</span>                                                   | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!\n1) ...\n\nUpcoming birthdays in the next 7 days:\n1) ...\n\nDon't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
+|                                                   <span style="color: green">**Success**</span>                                                   |     No birthdays today, some are upcoming      |                                      `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                      |                          Reminder printed                         |
+|                             <span style="color: green">**Success**</span>                                                                         |   No birthdays today and none within 7 days    |                                                         `No upcoming birthdays found.`                                                         |                          Reminder printed                         |
+|                                                   <span style="color: green">**Success**</span>                                                   |             Address book is empty              |                                                         `No contacts in address book.`                                                         |                          Reminder printed                         |
+
+##### Formatting of the reminder list
+
+* Numbered list of matching contacts.
+* Each entry shows:
+
+    * `Name` — full name of person.
+    * `Birthday` — displayed in the same format used by the app.
+    * `Tags` — shown in square brackets if present (e.g., `[student]`).
+    * For today’s birthdays: appended `(TODAY!)`.
+    * For upcoming birthdays: appended `(in X day(s))`.
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Listing all contacts : `list`
 
 **Purpose**: Shows a list of all contacts in LittleLogBook with those set as favourite shown on top.
@@ -531,7 +575,6 @@ sort f/class o/desc
 ```shell
 list
 ```
-
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -606,6 +649,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Find-p** | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
 | **Find-t** | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
 |  **Fav**   | `fav KEYWORD`                                                               | `fav 1 2`                                                                                                  |
+| **Remind** | `remind`                                                                    | `remind`                                                                                                   |
 |  **List**  | `list`                                                                      | `list`                                                                                                     |
 | **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
 |  **Help**  | `help`                                                                      | `help`                                                                                                     |
