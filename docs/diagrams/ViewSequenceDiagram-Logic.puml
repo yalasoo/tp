@@ -18,7 +18,6 @@ end box
 
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
-participant ":ViewWindow" as ViewWindow UI_COLOR
 end box
 
 user -> LogicManager : execute("view 1")
@@ -68,12 +67,6 @@ deactivate ViewCommand
 
 LogicManager -> MainWindow : handleCommandResult(r)
 activate MainWindow
-
-MainWindow -> ViewWindow : new ViewWindow\n(personData)
-activate ViewWindow
-
-ViewWindow --> MainWindow
-deactivate ViewWindow
 
 MainWindow --> user
 deactivate MainWindow

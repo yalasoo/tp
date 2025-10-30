@@ -39,8 +39,7 @@ loop for each person in personList
     Person --> RemindCommand : birthday
     deactivate Person
 
-    RemindCommand -> RemindCommand : calculateDaysUntilBirthday(birthday, today)
-    RemindCommand -> RemindCommand : categorise into today/upcoming lists
+    RemindCommand -> RemindCommand : calculateDaysUntilBirthday\n(birthday, today)
 end
 
 RemindCommand -> RemindCommand : buildReminderString(todayBirthdays, upcomingBirthdays)
