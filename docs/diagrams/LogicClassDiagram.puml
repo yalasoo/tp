@@ -9,18 +9,7 @@ package Logic as LogicPackage {
 package "Parser Classes" as ParserClasses{
     Class "<<interface>>\nParser" as Parser
     Class AddressBookParser
-    Class AddCommandParser
-    Class DeleteCommandParser
-    Class EditCommandParser
-    Class AttendanceCommandParser
-    Class FavouriteCommandParser
-    Class FindNameCommandParser
-    Class FindClassCommandParser
-    Class FindPhoneCommandParser
-    Class FindTagCommandParser
-    Class NoteCommandParser
-    Class SortCommandParser
-    Class ViewCommandParser
+    Class XYZCommandParser
     Class ArgumentMultimap
     Class ArgumentTokenizer
     Class CliSyntax
@@ -31,23 +20,7 @@ package "Parser Classes" as ParserClasses{
 package "Command Classes" as CommandClasses{
     Class "{abstract}\nCommand" as Command
     Class CommandResult
-    Class AddCommand
-    Class DeleteCommand
-    Class EditCommand
-    Class AttendanceCommand
-    Class ClearCommand
-    Class ExitCommand
-    Class FavouriteCommand
-    Class FindNameCommand
-    Class FindClassCommand
-    Class FindPhoneCommand
-    Class FindTagCommand
-    Class HelpCommand
-    Class ListCommand
-    Class NoteCommand
-    Class RemindCommand
-    Class SortCommand
-    Class ViewCommand
+    Class XYZCommand
 }
 
 package "Exception Classes" as ExceptionClasses{
@@ -79,36 +52,9 @@ LogicManager --> Storage
 AddressBookParser --> ParserClasses : <<uses>>
 ParserClasses ..> CommandClasses : <<create>>
 
-AddCommand -up-|> Command
-DeleteCommand -up-|> Command
-EditCommand -up-|> Command
-AttendanceCommand -up-|> Command
-ClearCommand -up-|> Command
-ExitCommand -up-|> Command
-FavouriteCommand -up-|> Command
-FindNameCommand -up-|> Command
-FindClassCommand -up-|> Command
-FindPhoneCommand -up-|> Command
-FindTagCommand -up-|> Command
-HelpCommand -up-|> Command
-ListCommand -up-|> Command
-NoteCommand -up-|> Command
-RemindCommand -up-|> Command
-SortCommand -up-|> Command
-ViewCommand -up-|> Command
+XYZCommand -up-|> Command
 
-AddCommandParser ..|> Parser
-DeleteCommandParser ..|> Parser
-EditCommandParser ..|> Parser
-AttendanceCommandParser ..|> Parser
-FavouriteCommandParser ..|> Parser
-FindNameCommandParser ..|> Parser
-FindClassCommandParser ..|> Parser
-FindPhoneCommandParser ..|> Parser
-FindTagCommandParser ..|> Parser
-NoteCommandParser ..|> Parser
-SortCommandParser ..|> Parser
-ViewCommandParser ..|> Parser
+XYZCommandParser ..|> Parser
 
 LogicManager .left.> Command : <<executes>>
 Command .right.> Model : <<accesses>>
