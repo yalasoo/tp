@@ -156,12 +156,8 @@ public class ViewWindow extends UiPart<Stage> {
         classLabel.setText(person.getStudentClass().value);
         birthdayLabel.setText(person.getBirthday().value);
 
-        // Tags
-        boolean isStudent = person.getTags().stream()
-                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
-
         // Update layout based on whether it's a student or not
-        if (isStudent) {
+        if (person.isStudent()) {
             // Student layout: Separate sections
             setupStudentLayout(person);
             classText.setText("Class:");
@@ -178,7 +174,7 @@ public class ViewWindow extends UiPart<Stage> {
                 .forEach(tag -> {
                     Label tagLabel = new Label(tag.tagName);
                     // Apply different CSS classes based on tag type
-                    if (isStudent) {
+                    if (person.isStudent()) {
                         tagLabel.getStyleClass().add("student-tag");
                     } else {
                         tagLabel.getStyleClass().add("colleague-tag");
@@ -194,10 +190,10 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance - Only show for students
-        attendanceSection.setVisible(isStudent);
-        attendanceSection.setManaged(isStudent); // This affects layout
+        attendanceSection.setVisible(person.isStudent());
+        attendanceSection.setManaged(person.isStudent()); // This affects layout
 
-        if (isStudent) {
+        if (person.isStudent()) {
             attendancePanel.setAttendance(person.getAttendance());
         } else {
             attendancePanel.setAttendance(null);

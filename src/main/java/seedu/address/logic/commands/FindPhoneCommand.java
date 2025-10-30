@@ -17,8 +17,8 @@ public class FindPhoneCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose phone number contain any of "
             + "the specified keywords and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " 84123578";
+            + "Parameters: PHONE(s) (can be partial numeric characters only)\n"
+            + "Example: " + COMMAND_WORD + " 84123 6781";
 
     private final PhoneContainsKeywordsPredicate predicate;
 

@@ -36,12 +36,12 @@ public class RemindCommandTest {
 
     @Test
     public void execute_noUpcomingBirthdays_showsNoBirthdaysMessage() {
-        // Create persons with birthdays far in the future
+        // Create persons with birthdays far in the past (not upcoming)
         Model testModel = new ModelManager();
-        Person futurePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
-                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-2030"),
+        Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-1990"),
                 ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(pastPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -50,7 +50,7 @@ public class RemindCommandTest {
 
     @Test
     public void execute_todayBirthday_showsTodayBirthday() {
-        // Create a person with today's birthday
+        // Create a person with today's birthday (use a past date that falls today)
         String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
@@ -69,16 +69,20 @@ public class RemindCommandTest {
 
     @Test
     public void execute_upcomingBirthday_showsUpcomingBirthday() {
-        // Create a person with birthday in 3 days
-        LocalDate futureDate = LocalDate.now().plusDays(3);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday that is in 3 days
+        // Use a past date that will have their birthday in 3 days from now
+        LocalDate birthdayIn3Days = LocalDate.now().plusDays(3);
+        int birthdayYear = LocalDate.now().getYear() - 1; // Use last year's date
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn3Days.getMonth(),
+                birthdayIn3Days.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(pastBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -96,16 +100,19 @@ public class RemindCommandTest {
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
                 ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
 
-        // Create a person with birthday in 2 days
-        LocalDate futureDate = LocalDate.now().plusDays(2);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        // Create a person with birthday that is in 2 days
+        LocalDate birthdayIn2Days = LocalDate.now().plusDays(2);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn2Days.getMonth(),
+                birthdayIn2Days.getDayOfMonth());
+        String upcomingBirthday = pastBirthdayDate.format(DATE_FORMATTER);
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(upcomingBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
         testModel.addPerson(todayPerson);
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -119,16 +126,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_birthdayExactlySevenDays_showsUpcomingBirthday() {
-        // Create a person with birthday exactly 7 days from now (boundary case)
-        LocalDate futureDate = LocalDate.now().plusDays(7);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday whose birthday is exactly 7 days from now
+        LocalDate birthdayIn7Days = LocalDate.now().plusDays(7);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn7Days.getMonth(),
+                birthdayIn7Days.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(pastBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -140,9 +150,12 @@ public class RemindCommandTest {
 
     @Test
     public void execute_pastBirthday_doesNotShow() {
-        // Create a person with birthday that passed 10 days ago
-        LocalDate pastDate = LocalDate.now().minusDays(10);
-        String pastBirthday = pastDate.format(DATE_FORMATTER);
+        // Create a person with birthday that passed 10 days ago (birthday already passed)
+        LocalDate passedBirthday = LocalDate.now().minusDays(10);
+        int birthdayYear = LocalDate.now().getYear();
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear - 1,
+                passedBirthday.getMonth(), passedBirthday.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
         Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(pastBirthday),
                 ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
@@ -216,7 +229,7 @@ public class RemindCommandTest {
 
     @Test
     public void execute_personWithoutTags_showsWithoutBrackets() {
-        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        String today = LocalDate.now().format(DATE_FORMATTER);
         Person todayPersonWithoutTags = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
                 ALICE.getNote(), new java.util.HashSet<>(), ALICE.getAttendance(), null);
@@ -234,15 +247,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_upcomingBirthdayOneDay_showsSingularDay() {
-        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(1);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday that is in 1 day
+        LocalDate birthdayIn1Day = LocalDate.now().plusDays(1);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn1Day.getMonth(),
+                birthdayIn1Day.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(pastBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -253,15 +270,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_upcomingBirthdayMultipleDays_showsPluralDays() {
-        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(2);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday that is in 2 days
+        LocalDate birthdayIn2Days = LocalDate.now().plusDays(2);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn2Days.getMonth(),
+                birthdayIn2Days.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(pastBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -271,15 +292,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_birthdayEightDaysAway_doesNotShow() {
-        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(8);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday that is in 8 days (beyond reminder window)
+        LocalDate birthdayIn8Days = LocalDate.now().plusDays(8);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn8Days.getMonth(),
+                birthdayIn8Days.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(pastBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -290,7 +315,7 @@ public class RemindCommandTest {
 
     @Test
     public void execute_multiplePersonsSameBirthday_showsAll() {
-        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        String today = LocalDate.now().format(DATE_FORMATTER);
 
         Person person1 = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
@@ -314,16 +339,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_emptyTodayList_returnsNoBirthdaysTodayMessage() {
-        // Only add persons with future birthdays, no today birthdays
-        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(3);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Only add persons with upcoming birthdays, no today birthdays
+        LocalDate birthdayIn3Days = LocalDate.now().plusDays(3);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn3Days.getMonth(),
+                birthdayIn3Days.getDayOfMonth());
+        String upcomingBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(upcomingBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -334,8 +362,8 @@ public class RemindCommandTest {
 
     @Test
     public void execute_emptyUpcomingList_returnsNoUpcomingBirthdaysMessage() {
-        // Only add persons with today birthdays, no upcoming birthdays
-        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        // Only add persons with today's birthdays, no upcoming birthdays
+        String today = LocalDate.now().format(DATE_FORMATTER);
 
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
@@ -355,9 +383,12 @@ public class RemindCommandTest {
 
     @Test
     public void execute_bothListsEmpty_returnsNoUpcomingBirthdaysMessage() {
-        // Add persons with birthdays far in the future (beyond 7 days)
-        java.time.LocalDate farFutureDate = java.time.LocalDate.now().plusDays(10);
-        String farFutureBirthday = farFutureDate.format(DATE_FORMATTER);
+        // Add persons with birthdays that are beyond 7 days
+        LocalDate birthdayIn10Days = LocalDate.now().plusDays(10);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, birthdayIn10Days.getMonth(),
+                birthdayIn10Days.getDayOfMonth());
+        String farFutureBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
         Person farFuturePerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(farFutureBirthday),
@@ -375,9 +406,12 @@ public class RemindCommandTest {
 
     @Test
     public void execute_pastBirthdaysOnly_returnsNoUpcomingBirthdaysMessage() {
-        // Add persons with birthdays that already passed this year
-        java.time.LocalDate pastDate = java.time.LocalDate.now().minusDays(5);
-        String pastBirthday = pastDate.format(DATE_FORMATTER);
+        // Add persons with birthdays that is already passed this year
+        LocalDate passedBirthday = LocalDate.now().minusDays(5);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear, passedBirthday.getMonth(),
+                passedBirthday.getDayOfMonth());
+        String pastBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
         Person pastPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(pastBirthday),
@@ -395,7 +429,7 @@ public class RemindCommandTest {
 
     @Test
     public void execute_personWithMultipleTags_showsAllTags() {
-        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        String today = LocalDate.now().format(DATE_FORMATTER);
 
         java.util.Set<seedu.address.model.tag.Tag> multipleTags = new java.util.HashSet<>();
         multipleTags.add(new seedu.address.model.tag.Tag("student"));
@@ -415,7 +449,7 @@ public class RemindCommandTest {
 
     @Test
     public void execute_onlyTodayBirthdays_noUpcomingSection() {
-        String today = java.time.LocalDate.now().format(DATE_FORMATTER);
+        String today = LocalDate.now().format(DATE_FORMATTER);
 
         Person todayPerson = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
                 ALICE.getAddress(), ALICE.getStudentClass(), new Birthday(today),
@@ -434,15 +468,19 @@ public class RemindCommandTest {
 
     @Test
     public void execute_onlyUpcomingBirthdays_noTodaySection() {
-        java.time.LocalDate futureDate = java.time.LocalDate.now().plusDays(3);
-        String futureBirthday = futureDate.format(DATE_FORMATTER);
+        // Create a person with birthday whose birthday is in 3 days
+        LocalDate birthdayIn3Days = LocalDate.now().plusDays(3);
+        int birthdayYear = LocalDate.now().getYear() - 1;
+        LocalDate pastBirthdayDate = LocalDate.of(birthdayYear,
+                birthdayIn3Days.getMonth(), birthdayIn3Days.getDayOfMonth());
+        String upcomingBirthday = pastBirthdayDate.format(DATE_FORMATTER);
 
-        Person futurePerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
-                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(futureBirthday),
+        Person upcomingPerson = new Person(BENSON.getName(), BENSON.getPhone(), BENSON.getEmail(),
+                BENSON.getAddress(), BENSON.getStudentClass(), new Birthday(upcomingBirthday),
                 BENSON.getNote(), BENSON.getTags(), BENSON.getAttendance(), null);
 
         Model testModel = new ModelManager();
-        testModel.addPerson(futurePerson);
+        testModel.addPerson(upcomingPerson);
 
         RemindCommand remindCommand = new RemindCommand();
         CommandResult result = remindCommand.execute(testModel);
@@ -451,6 +489,9 @@ public class RemindCommandTest {
         assertTrue(result.getFeedbackToUser().contains(BENSON.getName().toString()));
         assertTrue(result.getFeedbackToUser().contains("No birthdays today"));
     }
+
+    // The rest of your test methods (calculateDaysUntilBirthday tests and equals) remain the same
+    // since they don't create Birthday objects with future dates
 
     @Test
     public void calculateDaysUntilBirthday_normalBirthdayThisYear_returnsCorrectDays() {
@@ -571,10 +612,10 @@ public class RemindCommandTest {
         // Since it's private, we'll test through the public execute method
         // This case is covered when there are no birthdays but persons exist
         Model testModel = new ModelManager();
-        Person personWithFarFutureBirthday = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
-                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-2030"),
+        Person personWithPastBirthday = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getStudentClass(), new Birthday("01-01-1990"),
                 ALICE.getNote(), ALICE.getTags(), ALICE.getAttendance(), null);
-        testModel.addPerson(personWithFarFutureBirthday);
+        testModel.addPerson(personWithPastBirthday);
 
         CommandResult result = remindCommand.execute(testModel);
         // Should show no upcoming birthdays message, not crash
