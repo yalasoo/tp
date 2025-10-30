@@ -427,12 +427,12 @@ find-t TAG(s)
 ```
 
 ##### Parameters & Validation Rules
-|                    Parameter                    | Validation Rules                                        |
-|:-----------------------------------------------:|---------------------------------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphabetic string only                                  |
-|                                                 | Matches partial tag names                               |
-|                                                 | Accepts multiple inputs (use spaces to separate inputs) |
-|                                                 | Error if empty string                                   |
+|                   Parameter                    | Validation Rules                                        |
+|:----------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**TAG(s)**</span> | Alphabetic string only                                  |
+|                                                | Matches partial tag names                               |
+|                                                | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                | Error if empty string                                   |
 
 ##### Sample Commands
 ```shell
