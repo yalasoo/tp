@@ -159,36 +159,36 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                  |
-|:-----------------------------------------------------:|-------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only          |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed        |
-|                                                       | Case-insensitive for duplicates                                   |
-|                                                       | Error if empty or contains numbers/symbols                        |
-|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile) |
-|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile) |
-|                                                       | Examples: 61234567, 81234567, 91234567                            |
-|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)              |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit     |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                 |
-|                                                       | Case-insensitive                                                  |
-|                                                       | Error if invalid format                                           |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                |
-|                                                       | Error if empty or contains only whitespace                        |
+|                       Parameter                       | Validation Rules                                                         |
+|:-----------------------------------------------------:|--------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                 |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
+|                                                       | Case-insensitive for duplicates                                          |
+|                                                       | Error if empty or contains numbers/symbols                               |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)   |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)        |
+|                                                       | Examples: 61234567, 81234567, 91234567                                   |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                     |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
+|                                                       | Case-insensitive                                                         |
+|                                                       | Error if invalid format                                                  |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                       |
+|                                                       | Error if empty or contains only whitespace                               |
 |  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
-|                                                       | Case-insensitive                                                  |
-|                                                       | Error if invalid class format                                     |
-| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                         |
-|                                                       | Must be a valid date                                              |
-|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                   |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)        |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                |
-|                                                       | Leading/trailing spaces trimmed                                   |
+|                                                       | Case-insensitive                                                         |
+|                                                       | Error if invalid class format                                            |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
+|                                                       | Must be a valid date (from 01-01-1900 to today's date)                   |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
+|                                                       | Leading/trailing spaces trimmed                                          |
 
 <box type="warning">
-
-<strong>Warning:</strong>
-Duplicate contacts are detected when <strong>name (case-insensitive) and phone number</strong> both match.
+<strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
+If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected. Please use a different name or phone number to make it unique.</code><br>
+<strong>Note:</strong> To resolve duplicates, you only need to change <strong>either</strong> the name <strong>or</strong> the phone number (not both).
 </box>
 
 ##### Sample Commands
@@ -373,16 +373,17 @@ note 1
 
 ##### Format 
 ```shell
-find-n KEYWORD
+find-n NAME(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules          |
-|:-----------------------------------------------:|---------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
-|                                                 | Case-insensitive matching |
-|                                                 | Matches partial names     |
-|                                                 | Error if empty string     |
+|                    Parameter                    | Validation Rules                                                                   |
+|:-----------------------------------------------:|------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**NAME(s)**</span> | Must be an alphabetic string (may contain  <br/> spaces, hyphens, and apostrophes) |
+|                                                 | Case-insensitive matching                                                          |
+|                                                 | Matches partial names                                                              |
+|                                                 | Accepts multiple inputs (use spaces to separate inputs)                            |
+|                                                 | Error if empty string                                                              |
 
 ##### Sample Commands
 ```shell
@@ -393,11 +394,11 @@ find-n Tan
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!`  _(with guidance on next possible steps)_  | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 
 [//]: # (COMMAND BREAK)
@@ -408,19 +409,20 @@ find-n Tan
 
 ##### Format 
 ```shell
-find-p KEYWORD
+find-p PHONE(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules              |
-|:-----------------------------------------------:|-------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string only           |
-|                                                 | Matches partial phone numbers |
-|                                                 | Error if empty string         |
+|                    Parameter                     | Validation Rules                                        |
+|:------------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**PHONE(s)**</span> | Numeric string only                                     |
+|                                                  | Matches partial phone numbers                           |
+|                                                  | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                  | Error if empty string                                   |
 
 ##### Sample Commands
 ```shell
-find-p 8431 967
+find-p 431 967
 ```
 ```shell
 find-p 84313390
@@ -430,29 +432,30 @@ find-p 3133
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
 
 ### Finding contacts by tags : `find-t`
-**Purpose**: Allows teachers to find contacts quickly with tags (contiguous).
+**Purpose**: Allows teachers to find contacts quickly with partial tags (contiguous).
 
 ##### Format
 ```shell
-find-t KEYWORD
+find-t TAG(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules          |
-|:-----------------------------------------------:|---------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
-|                                                 | Matches partial tag names |
-|                                                 | Error if empty string     |
+|                    Parameter                    | Validation Rules                                        |
+|:-----------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Alphabetic string only                                  |
+|                                                 | Matches partial tag names                               |
+|                                                 | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                 | Error if empty string                                   |
 
 ##### Sample Commands
 ```shell
@@ -466,11 +469,11 @@ find-t ague
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>

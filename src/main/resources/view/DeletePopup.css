@@ -25,6 +25,17 @@
     -fx-padding: 5 14 5 14;
 }
 
+#inputField.invalid-input {
+    -fx-background-color: white;
+    -fx-background-radius: 100;
+    -fx-border-width: 2;
+    -fx-border-radius: 100;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 12pt;
+    -fx-text-fill: #D86A56; /* Red for invalid input */
+    -fx-padding: 5 14 5 14;
+}
+
 #personListView {
     -fx-background-insets: 0;
     -fx-padding: 0;
@@ -63,6 +74,18 @@
 
 .list-cell .label {
     -fx-text-fill: #005074;
+}
+
+.cell_big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #010504;
+}
+
+.cell_small_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: #010504;
 }
 
 .scroll-bar {
@@ -114,4 +137,3 @@
     -fx-font-size: 11px;
     -fx-font-weight: bold;
 }
-

@@ -36,7 +36,9 @@ public class Tag {
     /**
      * Returns true if this is a student tag.
      */
-    public boolean isStudent() { return tagName.equals("student"); }
+    public boolean isStudent() {
+        return tagName.equals("student");
+    }
 
     @Override
     public boolean equals(Object other) {
