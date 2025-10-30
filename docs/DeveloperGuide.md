@@ -199,7 +199,7 @@ The `remind` command shows upcoming birthdays and events that require attention.
 <puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
 
 **Sequence Flow for Automated Remind on start:**
-<puml src="diagrams/ViewSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+<puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
 
 ### \[Proposed\] Undo/redo feature
 
