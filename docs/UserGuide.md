@@ -33,7 +33,7 @@ manage students' and parents' contact information efficiently.
    <a href="https://se-education.org/guides/tutorials/javaInstallationMac.html">here</a>.
    </box>
 
-1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F14B-1/tp).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F14B-1/tp/releases/download/v1.5/littlelogbook.jar).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your LittleLogBook.
 
