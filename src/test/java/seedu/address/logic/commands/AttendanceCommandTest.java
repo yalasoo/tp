@@ -7,7 +7,6 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDE
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +20,6 @@ import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
@@ -199,8 +197,8 @@ public class AttendanceCommandTest {
         model.addPerson(student1);
         model.addPerson(colleague1);
 
-        LocalDate date = LocalDate.of(2024, 1 ,1);
-        Set<Index> indexes =  Set.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
+        LocalDate date = LocalDate.of(2024, 1, 1);
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
 
         AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.SICK);
         CommandResult result = command.execute(model);
