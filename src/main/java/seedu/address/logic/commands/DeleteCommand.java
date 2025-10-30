@@ -68,7 +68,7 @@ public class DeleteCommand extends Command {
 
         // delete by name
         if (isDeletedByName) {
-            logger.log(Level.INFO, "Deleting by name");
+            logger.log(Level.INFO, "Deleting by name.");
             assert targetName != null;
             List<Person> exactMatches = lastShownList.stream()
                     .filter(p -> p.getName().fullName.equalsIgnoreCase(targetName))
