@@ -186,9 +186,22 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 |                                                       | Leading/trailing spaces trimmed                                          |
 
 <box type="warning">
-<strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
-If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected. Please use a different name or phone number to make it unique.</code><br>
-<strong>Note:</strong> To resolve duplicates, you only need to change <strong>either</strong> the name <strong>or</strong> the phone number (not both).
+<strong>Duplicate Contact Detection:</strong><br>
+The system uses different rules for detecting duplicates based on contact type:<br><br>
+
+<strong>For Colleagues (t/colleague):</strong><br>
+• Duplicate if: same phone number OR same email address<br>
+• Colleagues can have the same name but must have unique phone numbers and email addresses<br><br>
+
+<strong>For Students (t/student):</strong><br>
+• Duplicate if: same name AND phone number<br>
+• Allows different students to share the same phone (e.g., siblings with same emergency contact)<br><br>
+
+<strong>Error Message:</strong> <code>Duplicate contact detected. For colleagues: ensure unique phone numbers and email addresses. For students: ensure unique name-phone combinations.</code><br>
+
+<strong>Resolution:</strong><br>
+• **For Colleagues:** Ensure unique phone numbers and email addresses<br>
+• **For Students:** Ensure unique name-phone combinations
 </box>
 
 ##### Sample Commands
@@ -205,7 +218,13 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 | <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
 |  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Duplicate contact detected     | `Duplicate contact detected.`                              | No changes                            |
+
+<box type="info">
+<strong>Why Different Duplicate Rules?</strong><br>
+• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each should have their own unique phone number and email address<br>
+• <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
+</box>
 
 [//]: # (COMMAND BREAK)
 <br>

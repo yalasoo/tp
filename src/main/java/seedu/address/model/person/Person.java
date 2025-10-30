@@ -211,16 +211,33 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name and phone.
-     * This defines duplicate detection as per MVP requirements (case-insensitive name comparison).
+     * Returns true if both persons are considered the same based on their contact type.
+     * For colleagues: Same name and phone, OR same phone number (different names with same phone not allowed)
+     * For students: Same name and phone (allows different names with same phone for emergency contacts)
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
+        if (otherPerson == null) {
+            return false;
+        }
+
+        // For colleagues: Check phone number conflict and email conflict only
+        // Colleagues can have the same name but must have unique phone numbers and emails
+        if (this.isColleague() && otherPerson.isColleague()) {
+            // Same phone (not allowed for colleagues - each should have unique phone)
+            boolean samePhone = otherPerson.getPhone().equals(getPhone());
+
+            // Same email (not allowed for colleagues - each should have unique email)
+            boolean sameEmail = otherPerson.getEmail().equals(getEmail());
+
+            return samePhone || sameEmail;
+        }
+
+        // For students: Only check name and phone (allows different names with same phone)
+        return otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
                 && otherPerson.getPhone().equals(getPhone());
     }
 
@@ -229,6 +246,13 @@ public class Person {
      */
     public boolean isStudent() {
         return tags.stream().anyMatch(tag -> tag.isStudent());
+    }
+
+    /**
+     * Returns true if person has a colleague tag.
+     */
+    public boolean isColleague() {
+        return tags.stream().anyMatch(tag -> tag.isColleague());
     }
 
     /**
