@@ -182,16 +182,38 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name and phone.
-     * This defines duplicate detection as per MVP requirements (case-insensitive name comparison).
+     * Returns true if both persons are considered the same based on their contact type.
+     * For colleagues: Same name and phone, OR same phone number (different names with same phone not allowed)
+     * For students: Same name and phone (allows different names with same phone for emergency contacts)
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
+        if (otherPerson == null) {
+            return false;
+        }
+
+        // For colleagues: Check phone number conflict and email conflict
+        if (this.isColleague() && otherPerson.isColleague()) {
+            // Same name and phone (standard duplicate)
+            boolean sameNameAndPhone = otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
+                    && otherPerson.getPhone().equals(getPhone());
+
+            // Different name but same phone (not allowed for colleagues)
+            boolean differentNameSamePhone = !otherPerson.getName().getNormalizedName()
+                    .equals(getName().getNormalizedName())
+                    && otherPerson.getPhone().equals(getPhone());
+
+            // Same email (not allowed for colleagues as everyone should have their own email)
+            boolean sameEmail = otherPerson.getEmail().equals(getEmail());
+
+            return sameNameAndPhone || differentNameSamePhone || sameEmail;
+        }
+
+        // For students: Only check name and phone (allows different names with same phone)
+        return otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
                 && otherPerson.getPhone().equals(getPhone());
     }
 
@@ -200,6 +222,13 @@ public class Person {
      */
     public boolean isStudent() {
         return tags.stream().anyMatch(tag -> tag.isStudent());
+    }
+
+    /**
+     * Returns true if person has a colleague tag.
+     */
+    public boolean isColleague() {
+        return tags.stream().anyMatch(tag -> tag.isColleague());
     }
 
     /**

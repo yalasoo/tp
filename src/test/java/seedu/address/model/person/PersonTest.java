@@ -8,10 +8,14 @@ import static seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_BIRTHDAY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CLASS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_COLLEAGUE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
@@ -75,6 +79,67 @@ public class PersonTest {
         assertTrue(BOB.isSamePerson(editedBob));
         // Additionally verify that the normalized name matches
         assertEquals(VALID_NAME_BOB, editedBob.getName().fullName);
+    }
+
+    @Test
+    public void isSamePerson_colleagueDuplicateDetection() {
+        // Test colleague duplicate detection logic
+
+        // Two colleagues with same name and phone -> same person (standard duplicate)
+        Person colleague1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(colleague1.isSamePerson(colleague2));
+
+        // Two colleagues with different names but same phone -> same person (not allowed for colleagues)
+        Person colleague3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(colleague1.isSamePerson(colleague3)); // Should detect as duplicate
+
+        // Two colleagues with same email -> same person (not allowed for colleagues)
+        Person colleague4 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(colleague1.isSamePerson(colleague4)); // Should detect as duplicate due to same email
+
+        // Two colleagues with different names, phones, and emails -> different persons
+        Person colleague5 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(colleague1.isSamePerson(colleague5));
+    }
+
+    @Test
+    public void isSamePerson_studentDuplicateDetection() {
+        // Test student duplicate detection logic (should allow different names with same phone)
+
+        // Two students with same name and phone -> same person
+        Person student1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_STUDENT).build();
+        Person student2 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertTrue(student1.isSamePerson(student2));
+
+        // Two students with different names but same phone -> different persons (allowed for emergency contacts)
+        Person student3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertFalse(student1.isSamePerson(student3)); // Different names allowed for students
+
+        // Two students with different names and phones -> different persons
+        Person student4 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertFalse(student1.isSamePerson(student4));
+    }
+
+    @Test
+    public void isSamePerson_mixedContactTypes() {
+        // Test mixed contact type scenarios
+
+        // Student and colleague with same details -> same persons (same name and phone)
+        Person student = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_STUDENT).build();
+        Person colleague = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(student.isSamePerson(colleague)); // Same name and phone, falls back to student logic
     }
 
     @Test
