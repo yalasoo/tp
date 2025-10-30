@@ -51,8 +51,8 @@
         "storage-component": "Storage component",
         "common-classes": "Common classes",
         "implementation": "Implementation",
-        "proposed-undo-redo-feature": "[Proposed] Undo/redo feature",
-        "proposed-data-archiving": "[Proposed] Data archiving",
+        "view-command": "View Command",
+        "remind-command": "Remind Command",
         "documentation-logging-testing-configuration-dev-ops": "Documentation, logging, testing, configuration, dev-ops",
         "appendix-requirements": "Appendix: Requirements",
         "product-scope": "Product scope",
@@ -115,12 +115,14 @@
         "features": "Features",
         "viewing-help-help": "Viewing help : help",
         "adding-a-contact-add": "Adding a contact: add",
+        "adding-a-contact-edit": "Adding a contact: edit",
         "deleting-a-contact-delete": "Deleting a contact: delete",
         "viewing-contact-details-view": "Viewing contact details: view",
         "adding-editing-notes-note": "Adding/Editing notes: note",
         "finding-contacts-by-name-find-n": "Finding contacts by name : find-n",
         "finding-contacts-by-phone-number-find-p": "Finding contacts by phone number : find-p",
         "finding-contacts-by-tags-find-t": "Finding contacts by tags : find-t",
+        "finding-contacts-by-classes-find-c": "Finding contacts by classes : find-c",
         "favourite-unfavourite-contacts-fav": "Favourite/Unfavourite contacts : fav",
         "sort-contacts-sort": "Sort contacts : sort",
         "birthday-reminders-remind": "Birthday reminders : remind",
@@ -143,14 +145,6 @@
       "title": "",
       "headings": {
         "littlelogbook": "LittleLogBook"
-      },
-      "headingKeywords": {}
-    },
-    {
-      "src": "team/johndoe.md",
-      "title": "John Doe's Project Portfolio Page",
-      "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
       "headingKeywords": {}
     },

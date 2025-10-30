@@ -1,0 +1,51 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+title Remind Command - Logic & Model
+
+actor User as user
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "r:RemindCommand" as RemindCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant ":Person" as Person MODEL_COLOR
+end box
+
+user -> LogicManager : execute("remind")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("remind")
+activate AddressBookParser
+
+AddressBookParser --> LogicManager : RemindCommand
+deactivate AddressBookParser
+
+LogicManager -> RemindCommand : execute()
+activate RemindCommand
+
+RemindCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> RemindCommand : personList
+deactivate Model
+
+loop for each person in personList
+    RemindCommand -> Person : getBirthday()
+    activate Person
+    Person --> RemindCommand : birthday
+    deactivate Person
+
+    RemindCommand -> RemindCommand : calculateDaysUntilBirthday\n(birthday, today)
+end
+
+RemindCommand -> RemindCommand : buildReminderString(todayBirthdays, upcomingBirthdays)
+RemindCommand --> LogicManager : CommandResult with reminder message
+deactivate RemindCommand
+
+LogicManager --> user : CommandResult (ready for display)
+deactivate LogicManager
+@enduml

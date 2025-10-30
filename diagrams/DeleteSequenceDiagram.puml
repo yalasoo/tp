@@ -14,6 +14,10 @@ box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
 end box
 
+box UI UI_COLOR_T1
+participant "ui:UI" as UI UI_COLOR
+end box
+
 [-> LogicManager : execute("delete 1")
 activate LogicManager
 
@@ -33,6 +37,11 @@ activate DeleteCommandParser
 create DeleteCommand
 DeleteCommandParser -> DeleteCommand
 activate DeleteCommand
+
+DeleteCommand -> UI : showDeletePopup()
+activate UI
+UI --> DeleteCommand : isConfirmed()
+deactivate UI
 
 DeleteCommand --> DeleteCommandParser :
 deactivate DeleteCommand
