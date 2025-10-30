@@ -83,24 +83,24 @@ public class PersonTest {
 
     @Test
     public void isSamePerson_colleagueDuplicateDetection() {
-        // Test colleague duplicate detection logic
+        // Test colleague duplicate detection logic - colleagues can have same names
 
-        // Two colleagues with same name and phone -> same person (standard duplicate)
+        // Two colleagues with same phone -> duplicate (not allowed)
         Person colleague1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
-        Person colleague2 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
-        assertTrue(colleague1.isSamePerson(colleague2));
+        assertTrue(colleague1.isSamePerson(colleague2)); // Same phone, should be duplicate
 
-        // Two colleagues with different names but same phone -> same person (not allowed for colleagues)
-        Person colleague3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
-                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
-        assertTrue(colleague1.isSamePerson(colleague3)); // Should detect as duplicate
-
-        // Two colleagues with same email -> same person (not allowed for colleagues)
-        Person colleague4 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        // Two colleagues with same email -> duplicate (not allowed)
+        Person colleague3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
-        assertTrue(colleague1.isSamePerson(colleague4)); // Should detect as duplicate due to same email
+        assertTrue(colleague1.isSamePerson(colleague3)); // Same email, should be duplicate
+
+        // Two colleagues with same name but different phone and email -> allowed
+        Person colleague4 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(colleague1.isSamePerson(colleague4)); // Same name allowed for colleagues
 
         // Two colleagues with different names, phones, and emails -> different persons
         Person colleague5 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)

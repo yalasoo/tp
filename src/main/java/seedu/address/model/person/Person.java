@@ -195,21 +195,16 @@ public class Person {
             return false;
         }
 
-        // For colleagues: Check phone number conflict and email conflict
+        // For colleagues: Check phone number conflict and email conflict only
+        // Colleagues can have the same name but must have unique phone numbers and emails
         if (this.isColleague() && otherPerson.isColleague()) {
-            // Same name and phone (standard duplicate)
-            boolean sameNameAndPhone = otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
-                    && otherPerson.getPhone().equals(getPhone());
+            // Same phone (not allowed for colleagues - each should have unique phone)
+            boolean samePhone = otherPerson.getPhone().equals(getPhone());
 
-            // Different name but same phone (not allowed for colleagues)
-            boolean differentNameSamePhone = !otherPerson.getName().getNormalizedName()
-                    .equals(getName().getNormalizedName())
-                    && otherPerson.getPhone().equals(getPhone());
-
-            // Same email (not allowed for colleagues as everyone should have their own email)
+            // Same email (not allowed for colleagues - each should have unique email)
             boolean sameEmail = otherPerson.getEmail().equals(getEmail());
 
-            return sameNameAndPhone || differentNameSamePhone || sameEmail;
+            return samePhone || sameEmail;
         }
 
         // For students: Only check name and phone (allows different names with same phone)

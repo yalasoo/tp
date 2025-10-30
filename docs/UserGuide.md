@@ -190,8 +190,8 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 The system uses different rules for detecting duplicates based on contact type:<br><br>
 
 <strong>For Colleagues (t/colleague):</strong><br>
-• Duplicate if: same name AND phone, OR same phone with different name, OR same email address<br>
-• This prevents multiple colleagues from sharing the same phone number or email<br><br>
+• Duplicate if: same phone number OR same email address<br>
+• Colleagues can have the same name but must have unique phone numbers and email addresses<br><br>
 
 <strong>For Students (t/student):</strong><br>
 • Duplicate if: same name AND phone number<br>
@@ -219,7 +219,7 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 
 <box type="info">
 <strong>Why Different Duplicate Rules?</strong><br>
-• <strong>Colleagues:</strong> In a professional setting, each colleague should have their own unique phone number and email address<br>
+• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each should have their own unique phone number and email address<br>
 • <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
 </box>
 

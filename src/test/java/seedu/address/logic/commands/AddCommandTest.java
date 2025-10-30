@@ -124,6 +124,25 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_colleaguesWithSameName_success() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person existingColleague = new PersonBuilder().withName("John Smith").withPhone("81111111")
+                .withEmail("john1@email.com").withTags("colleague").build();
+        Person newColleague = new PersonBuilder().withName("John Smith").withPhone("82222222")
+                .withEmail("john2@email.com").withTags("colleague").build();
+
+        // Add existing colleague first
+        new AddCommand(existingColleague).execute(modelStub);
+
+        // Adding colleague with same name but different phone and email should succeed
+        CommandResult commandResult = new AddCommand(newColleague).execute(modelStub);
+
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(newColleague)),
+                commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(existingColleague, newColleague), modelStub.personsAdded);
+    }
+
+    @Test
     public void execute_studentsWithSamePhone_success() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
         Person existingStudent = new PersonBuilder().withName("Tommy Lee").withPhone("98765432")

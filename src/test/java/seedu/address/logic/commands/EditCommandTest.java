@@ -147,21 +147,19 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_editToCreateDuplicateColleague_failure() {
-        // Create a fresh model to avoid interference from typical persons
+    public void execute_editColleagueToCreateExactDuplicate_failure() {
+        // Test editing a colleague to have identical details as another colleague
         Model freshModel = new ModelManager(new AddressBook(), new UserPrefs());
 
-        // Add one colleague to the model
         Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
                 .withEmail("alice@email.com").withTags("colleague").build();
         freshModel.addPerson(colleague1);
 
-        // Add another colleague with completely different details
         Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
                 .withEmail("bob@email.com").withTags("colleague").build();
         freshModel.addPerson(colleague2);
 
-        // Try to edit colleague2 to be identical to colleague1 (should trigger standard duplicate detection)
+        // Edit colleague2 to be identical to colleague1 (this should definitely fail)
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withName("Alice Smith")
                 .withPhone("81111111")
@@ -170,6 +168,59 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(Index.fromOneBased(2), descriptor);
 
         assertCommandFailure(editCommand, freshModel, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_editColleagueToHaveAllSameDetails_failure() {
+        // Test editing to create duplicate by changing all fields to match existing colleague
+        Model freshModel = new ModelManager(new AddressBook(), new UserPrefs());
+
+        Person colleague1 = new PersonBuilder().withName("John Smith").withPhone("98765432")
+                .withEmail("john@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague1);
+
+        Person colleague2 = new PersonBuilder().withName("Jane Doe").withPhone("87654321")
+                .withEmail("jane@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague2);
+
+        // Edit colleague2 to have same phone and email as colleague1 (should fail due to phone conflict)
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withPhone("98765432")
+                .withEmail("john@email.com").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(2), descriptor);
+
+        assertCommandFailure(editCommand, freshModel, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_editColleagueToHaveSameName_success() {
+        // Create a fresh model to avoid interference from typical persons
+        Model freshModel = new ModelManager(new AddressBook(), new UserPrefs());
+
+        // Add one colleague to the model
+        Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
+                .withEmail("alice@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague1);
+
+        // Add another colleague with different details
+        Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
+                .withEmail("bob@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague2);
+
+        // Edit colleague2 to have same name as colleague1 (should succeed)
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName("Alice Smith").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(2), descriptor);
+
+        Person editedColleague2 = new PersonBuilder(colleague2).withName("Alice Smith").build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(editedColleague2));
+
+        Model expectedModel = new ModelManager(new AddressBook(freshModel.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(colleague2, editedColleague2);
+
+        assertCommandSuccess(editCommand, freshModel, expectedMessage, expectedModel);
     }
 
     @Test
