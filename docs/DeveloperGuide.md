@@ -195,6 +195,12 @@ The `remind` command shows upcoming birthdays and events that require attention.
 - `Birthday` - Contains date logic for reminder calculations
 - `Person` - Stores birthday information
 
+**Sequence Flow Logic:**
+<puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
+
+**Sequence Flow for Automated Remind on start:**
+<puml src="diagrams/ViewSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation

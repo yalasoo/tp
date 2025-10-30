@@ -2,10 +2,15 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
+actor User as user
+box UI UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+participant ":ResultDisplay" as ResultDisplay UI_COLOR
+end box
+
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":RemindCommandParser" as RemindCommandParser LOGIC_COLOR
 participant "r:RemindCommand" as RemindCommand LOGIC_COLOR
 end box
 
@@ -14,24 +19,12 @@ participant ":Model" as Model MODEL_COLOR
 participant ":Person" as Person MODEL_COLOR
 end box
 
-actor User as user
-participant ":MainWindow" as MainWindow UI_COLOR
-participant ":ResultDisplay" as ResultDisplay UI_COLOR
-
 user -> LogicManager : execute("remind")
 activate LogicManager
 
 LogicManager -> AddressBookParser : parseCommand("remind")
 activate AddressBookParser
 
-AddressBookParser -> RemindCommandParser : parse("")
-activate RemindCommandParser
-
-RemindCommandParser -> RemindCommand : new RemindCommand()
-activate RemindCommand
-
-RemindCommandParser --> AddressBookParser : RemindCommand
-deactivate RemindCommandParser
 AddressBookParser --> LogicManager : RemindCommand
 deactivate AddressBookParser
 
