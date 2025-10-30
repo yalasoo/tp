@@ -19,11 +19,15 @@ activate LogicManager
 
 LogicManager --> MainWindow : CommandResult with reminder message
 deactivate LogicManager
+activate MainWindow
 
 MainWindow -> ResultDisplay : setFeedbackToUser(reminderMessage)
 activate ResultDisplay
 
-ResultDisplay --> user : displays reminder in main window
+ResultDisplay --> MainWindow : displays reminder in Main Window
 deactivate ResultDisplay
+
+MainWindow --> user
+deactivate MainWindow
 
 @enduml

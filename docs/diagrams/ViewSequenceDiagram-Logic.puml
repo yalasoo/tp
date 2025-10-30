@@ -62,15 +62,14 @@ deactivate Model
 
 ViewCommand -> ViewCommand : getPersonByIndex(1)
 
-ViewCommand --> LogicManager
+ViewCommand --> LogicManager : personToView
 deactivate ViewCommand
 
-LogicManager -> MainWindow : handleCommandResult(r)
+LogicManager -> MainWindow : handleCommandResult(personToView)
+deactivate LogicManager
 activate MainWindow
 
 MainWindow --> user
 deactivate MainWindow
 
-[<--LogicManager
-deactivate LogicManager
 @enduml
