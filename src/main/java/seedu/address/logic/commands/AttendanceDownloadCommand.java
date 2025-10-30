@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Class;
 
@@ -47,6 +48,9 @@ public class AttendanceDownloadCommand extends Command {
             + "• " + COMMAND_WORD + " " + PREFIX_CLASS + "K1A " + PREFIX_CLASS + "K2B " + PREFIX_MONTH + "12-2025";
 
     public static final String MESSAGE_SUCCESS = "Attendance report downloaded.";
+
+    public static final LocalDate EARLIEST_DATE = LocalDate.of(1900, 1, 1);
+    public static final YearMonth EARLIEST_MONTH = YearMonth.of(1900, 1);
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
@@ -80,8 +84,14 @@ public class AttendanceDownloadCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (userProvideDate) {
+            checkValidDate();
+        } else if (userProvideMonth) {
+            checkValidMonth();
+        }
 
         try {
             String filePath = "";
@@ -101,6 +111,36 @@ public class AttendanceDownloadCommand extends Command {
         } catch (IOException e) {
             logger.severe("Error saving attendance report: " + e.getMessage());
             return new CommandResult("Error saving attendance report: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Checks whether user's month is within 01-1900 to current month.
+     *
+     * @throws CommandException If an error occurs during command execution.
+     */
+    private void checkValidMonth() throws CommandException {
+        YearMonth thisMonth = YearMonth.now();
+        String thisMonthStr = thisMonth.format(DateTimeFormatter.ofPattern("MM-yyyy"));
+
+        if (month.isBefore(EARLIEST_MONTH) || month.isAfter(YearMonth.now())) {
+            logger.severe("Month provided before 01-01-1900 or after " + thisMonthStr + ".");
+            throw new CommandException("Month must be within 01-1900 until " + thisMonthStr + ".");
+        }
+    }
+
+    /**
+     * Checks whether user's date is within 01-01-1900 to current date.
+     *
+     * @throws CommandException If an error occurs during command execution.
+     */
+    private void checkValidDate() throws CommandException {
+        LocalDate today = LocalDate.now();
+        String todayStr = today.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        if (date.isBefore(EARLIEST_DATE) || date.isAfter(today)) {
+            logger.severe("Date provided before 01-01-1900 or after " + todayStr + ".");
+            throw new CommandException("Date must be within 01-01-1900 until " + todayStr + ".");
         }
     }
 
