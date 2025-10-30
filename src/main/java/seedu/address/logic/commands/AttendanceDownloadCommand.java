@@ -36,14 +36,15 @@ public class AttendanceDownloadCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Download an attendance report of a specific "
-            + "student or class on a specific date or month. "
-            + "Only applicable to contact with student tag.\n"
-            + "Parameters: INDEX(es) (must be a positive integer) "
-            + "[" + PREFIX_CLASS + "CLASS] "
-            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy) "
-            + "[" + PREFIX_MONTH + "MONTH] (MM-yyyy)\n"
-            + "Example: " + COMMAND_WORD + " 1-5,10,13 "
-            + PREFIX_DATE + "12-12-2025";
+            + "student or class on a specific date or month."
+            + "\nParameters can be in one of these formats:\n"
+            + "1. " + COMMAND_WORD + " INDEX(es) [m/MONTH]\n"
+            + "2. " + COMMAND_WORD + " c/CLASS(es) [d/DATE]\n"
+            + "3. " + COMMAND_WORD + " c/CLASS(es) [m/MONTH]\n"
+            + "Examples:\n"
+            + "• " + COMMAND_WORD + " 1-5,10,13 " + PREFIX_MONTH + "12-2025\n"
+            + "• " + COMMAND_WORD + " " + PREFIX_CLASS + "K1A " + PREFIX_DATE + "12-12-2025\n"
+            + "• " + COMMAND_WORD + " " + PREFIX_CLASS + "K1A " + PREFIX_CLASS + "K2B " + PREFIX_MONTH + "12-2025";
 
     public static final String MESSAGE_SUCCESS = "Attendance report downloaded.";
 

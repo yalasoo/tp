@@ -46,14 +46,14 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
         Set<Index> indexes = IndexParser.parseIndexes(strIndexes);
 
         if (strStatus.trim().isEmpty()) {
-            throw new ParseException("Status cannot be empty. Use: present, late, sick, absent");
+            throw new ParseException("Status cannot be empty. Use: present, late, sick, absent, or remove");
         }
 
         AttendanceStatus status;
         try {
             status = AttendanceStatus.valueOf(strStatus.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ParseException("Invalid status. Valid status: present, late, sick, absent");
+            throw new ParseException("Invalid status. Valid status: present, late, sick, absent, or remove");
         }
 
         LocalDate date;

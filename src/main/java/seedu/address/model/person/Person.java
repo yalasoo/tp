@@ -14,6 +14,7 @@ import javafx.beans.property.BooleanProperty;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -118,19 +119,64 @@ public class Person {
     }
 
     /**
-     * Marks the attendance of this person object
-     * @param date when does this attendance apply
-     * @param status what is the status of this attendance
+     * Marks the attendance of this person object.
+     *
+     * @param date When does this attendance apply.
+     * @param status What is the status of this attendance.
+     * @return False if date is not a valid attendance date, true otherwise.
      */
-    public void markAttendance(LocalDate date, AttendanceStatus status) {
+    public Boolean markAttendance(LocalDate date, AttendanceStatus status)
+            throws CommandException {
         assert date != null;
         assert status != null;
 
-        if (attendance != null) {
-            attendance.markAttendance(date, status);
+        if (!validAttendanceDate(date) || attendance == null) {
+            return false;
         }
+
+        attendance.markAttendance(date, status);
+        return true;
     }
 
+    /**
+     * Unmarks the attendance of this person object.
+     *
+     * @param date When does this attendance apply.
+     * @return False if date is not a valid attendance date, true otherwise.
+     */
+    public Boolean unmarkAttendance(LocalDate date) {
+        assert date != null;
+
+        if (!validAttendanceDate(date) || attendance == null) {
+            return false;
+        }
+
+        attendance.unmarkAttendance(date);
+        return true;
+    }
+
+    /**
+     * Checks whether the given date is a valid attendance date.
+     * A valid attendance date must be within person's born date and today's date.
+     *
+     * @param date
+     * @return False if date before born date or after born date.
+     */
+    private boolean validAttendanceDate(LocalDate date) {
+        int afterToday = date.compareTo(LocalDate.now());
+
+        if (birthday.isBeforeBirthday(date) || afterToday > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the attendance record of caller if they are
+     * a student (attendance != null).
+     *
+     * @return The attendance record of caller.
+     */
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
     }
@@ -149,7 +195,7 @@ public class Person {
     /**
      * Retrieves the boolean value of favourite attribute.
      *
-     * @return whether Person is in favourites or not.
+     * @return Whether Person is in favourites or not.
      */
     public boolean getIsFavBoolean() {
         return favourite.getIsFavouriteBoolean();

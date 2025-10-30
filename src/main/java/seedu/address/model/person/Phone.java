@@ -10,9 +10,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Phone {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers must be 8-digit Singapore numbers (spaces and dashes are ignored)";
+            "Phone numbers must be exactly 8 digits starting with 6 (landline), 8 or 9 (mobile). "
+            + "Examples: 61234567, 81234567, 91234567. Spaces and dashes are allowed but ignored.";
 
-    public static final String VALIDATION_REGEX = "^[89]\\d{7}$";
+    public static final String VALIDATION_REGEX = "^[689]\\d{7}$";
 
     public final String value;
 
