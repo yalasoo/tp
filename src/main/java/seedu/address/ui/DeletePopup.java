@@ -1,6 +1,8 @@
 package seedu.address.ui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 
 /**
@@ -15,6 +18,7 @@ import seedu.address.model.person.Person;
  */
 public class DeletePopup extends UiPart<Stage> {
 
+    private static final Logger logger = LogsCenter.getLogger(DeletePopup.class);
     private static final String FXML = "DeletePopup.fxml";
     private static final String ERROR_MESSAGE = "Please enter a valid index number or press ESC to cancel.";
 
@@ -36,9 +40,11 @@ public class DeletePopup extends UiPart<Stage> {
      */
     public DeletePopup(Stage root) {
         super(FXML, root);
+        assert root != null;
         setUpKeyboardHandlers();
         root.setWidth(500);
         root.setHeight(500);
+        logger.log(Level.INFO, "DeletePopup is initialized.");
     }
 
     /**
@@ -55,6 +61,9 @@ public class DeletePopup extends UiPart<Stage> {
      * @param matchingResults the list of {@code Person} entries displayed for the user to choose from.
      */
     public void show(String headerMessage, List<Person> matchingResults) {
+        assert headerMessage != null;
+        assert matchingResults != null;
+
         this.matchingResults = matchingResults;
         this.isConfirmed = false;
         this.selectedPerson = null;
@@ -77,6 +86,7 @@ public class DeletePopup extends UiPart<Stage> {
         inputField.clear();
         inputField.requestFocus();
         getRoot().centerOnScreen();
+        logger.log(Level.INFO, "Showing delete popup with possible matches.");
         getRoot().showAndWait();
     }
 
@@ -107,15 +117,18 @@ public class DeletePopup extends UiPart<Stage> {
             index = Integer.parseInt(input) - 1;
         } catch (NumberFormatException e) {
             showError(ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Invalid number format.");
             return;
         }
 
         if (index >= 0 && index < matchingResults.size()) {
             selectedPerson = matchingResults.get(index);
             isConfirmed = true;
+            logger.log(Level.INFO, "User confirmed deletion.");
             getRoot().hide();
         } else {
             showError(ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Invalid index.");
         }
     }
 
@@ -125,6 +138,7 @@ public class DeletePopup extends UiPart<Stage> {
     private void handleEscape() {
         isConfirmed = false;
         selectedPerson = null;
+        logger.log(Level.INFO, "User cancelled deletion.");
         getRoot().hide();
     }
 

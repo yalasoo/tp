@@ -3,7 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -18,11 +21,13 @@ import seedu.address.ui.InfoPopupHandler;
  */
 public class DeleteCommand extends Command {
 
+    private static final Logger logger = LogsCenter.getLogger(DeleteCommand.class);
+
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person identified by the index number used in the displayed person list or his name.\n"
-            + "Parameters: INDEX (must be a positive integer) or NAME\n"
+            + "Parameters: INDEX (must be a positive integer) or n/NAME\n"
             + "Example: " + COMMAND_WORD + " 1 or " + COMMAND_WORD + " n/John ";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
@@ -59,9 +64,11 @@ public class DeleteCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
+        logger.log(Level.INFO, "Executing DeleteCommand.");
 
         // delete by name
         if (isDeletedByName) {
+            logger.log(Level.INFO, "Deleting by name");
             assert targetName != null;
             List<Person> exactMatches = lastShownList.stream()
                     .filter(p -> p.getName().fullName.equalsIgnoreCase(targetName))
@@ -99,6 +106,7 @@ public class DeleteCommand extends Command {
         }
 
         // delete by index
+        logger.log(Level.INFO, "Deleting by index.");
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             infoPopupHandler.showMessage(Messages.MESSAGE_INVALID_INDEX);
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
