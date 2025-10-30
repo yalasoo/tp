@@ -22,7 +22,7 @@ public class RemindCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Birthday reminders displayed.";
     public static final String MESSAGE_NO_UPCOMING_BIRTHDAYS = "No upcoming birthdays found.";
     public static final String MESSAGE_NO_BIRTHDAYS_TODAY = "No birthdays today!";
-    public static final String MESSAGE_NO_PERSONS = "No contacts in address book.";
+    public static final String MESSAGE_NO_PERSONS = "No contacts in LittleLogBook.";
 
     // Number of days to look ahead for upcoming birthdays
     private static final int UPCOMING_DAYS = 7; // One week before will start reminding.
