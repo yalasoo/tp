@@ -216,60 +216,62 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 
 ##### Command Format 
 ```shell
-delete n/NAME
+delete INDEX
 ```
 ```shell
-delete INDEX
+delete n/NAME
 ```
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                           |
-|:-------------------------------------------------:|------------------------------------------------------------|
-| <span style="color: #e83f8b">**NAME (n/)**</span> | Alphabetic characters, spaces, hyphens, apostrophes only   |
-|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed |
-|                                                   | Case-insensitive match                                     |
-|                                                   | Error if empty or contains numbers/symbols                 |
-|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                  |
-|                                                   | Cannot be 0 or negative                                    |
-|                                                   | Must correspond to an existing contact in the current list |
+|                     Parameter                     | Validation Rules                                                           |
+|:-------------------------------------------------:|----------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
+|                                                   | Cannot be 0 or negative                                                    |
+|                                                   | Must correspond to an existing contact in the current list                 |
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may containspaces, hyphens, and apostrophes) |
+|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
+|                                                   | Case-insensitive match                                                     |
+|                                                   | Matches partial names                                                      |
 
 ##### Sample Commands
 ```shell
-delete n/John Doe
+delete 3
 ```
 ```shell
-delete 3
+delete n/John Doe
 ```
 
 ##### Outputs
 
 **1. Delete by INDEX**
 
-|                                      Outcome Type                                       | Scenario                            | Message                                                                     | GUI Action                                     |
-|:---------------------------------------------------------------------------------------:|-------------------------------------|-----------------------------------------------------------------------------|------------------------------------------------|
-|                      <span style="color: green">**Success**</span>                      | Contact deleted                     | `Deleted Person: <Person>`                                                  | Contact list refreshes without deleted entry   |
-|                       <span style="color: red">**Failure**</span>                       | Invalid index                       | `The person index provided is invalid`                                      | Pop-up window appears                          |
-|                       <span style="color: red">**Failure**</span>                       | No index provided                   | `Invalid command format!` _(with correct format guidance)_                  | No changes                                     |
-|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                                | Pop-up window appears with the selected person |
+|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                                 |
+|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|------------------------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry               |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | No changes                                                 |
+|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                                 |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`  | Pop-up window with the selected person information appears |
 
 **2. Delete by NAME**
 
-|                         Outcome Type                         | Scenario                            | Message                                                                   | GUI Action                                         |
-|:------------------------------------------------------------:|-------------------------------------|---------------------------------------------------------------------------|----------------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Exact match found                   | `Deleted Person: <Person>`                                                | Contact list refreshes without deleted entry       |
-|         <span style="color: red">**Failure**</span>          | No matches found                    | `No matches found. Please try again`                                      | Pop-up window appears                              |
-| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found              | `Multiple matches found. Type index and ENTER to delete or ESC to cancel` | Pop-up window appears with list of matches appears |
-| <span style="color: orange">**Confirmation Required**</span> | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window appears with the selected person     |
+|                         Outcome Type                         | Scenario                                                               | Message                                                                                              | GUI Action                                                 |
+|:------------------------------------------------------------:|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Contact deleted                                                        | `Deleted Person: <Person>`                                                                           | Contact list refreshes without deleted entry               |
+|         <span style="color: red">**Failure**</span>          | No matches found                                                       | `No matches found. Please try again`                                                                 | Pop-up window appears                                      |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                 | `Multiple matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
+| <span style="color: orange">**Confirmation Required**</span> | Exact one match found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                            | Pop-up window with the selected person information appears |
+
+<box type="warning">
+<strong>Note:</strong> When a popup window appears, you must respond to it before continuing. 
+The main window will not respond until you either confirm or cancel the deletion.
+</box>
 
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
-  <div style="text-align: center;">
-    <strong>Invalid index</strong><br>
-    <img src="images/invalid_index.png" width="300px">
-  </div>
   <div style="text-align: center;">
     <strong>No matches found</strong><br>
     <img src="images/no_matches.png" width="300px">
   </div>
+<div style="display: flex; justify-content: center; flex-wrap: wrap;">
   <div style="text-align: center;">
     <strong>Multiple matches found</strong><br>
     <img src="images/multiple_matches.png" width="400px">
@@ -278,6 +280,7 @@ delete 3
     <strong>Delete confirmation</strong><br>
     <img src="images/delete_confirmation.png" width="400px">
   </div>
+</div>
 </div>
 
 [//]: # (COMMAND BREAK)
@@ -842,21 +845,18 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|     Action      | Command Format                                                                 | Example Commands                                                                                           |
-|:---------------:|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`    | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-|   **Delete**    | `delete n/NAME`<br>`delete INDEX`                                              | `delete n/John Doe`<br>`delete 1`                                                                          |
-|    **View**     | `view INDEX`                                                                   | `view 1`                                                                                                   |
-|    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                    | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-|   **Find-n**    | `find-n KEYWORD`                                                               | `find-n John`                                                                                              |
-|   **Find-p**    | `find-p KEYWORD`                                                               | `find-p 84871234`                                                                                          |
-|   **Find-t**    | `find-t KEYWORD`                                                               | `find-t student`                                                                                           |
-|     **Fav**     | `fav KEYWORD`                                                                  | `fav 1 2`                                                                                                  |
-|    **Sort**     | `Sort f/FIELD [o/ORDER]`                                                       | `Sort f/name o/asc`                                                                                        |
-|   **Remind**    | `remind`                                                                       | `remind`                                                                                                   |
-| **Attendance**  | `attendance INDEX s/STATUS [d/DATE]`                                           | `attendance 1 s/present d/29-01-2025`                                                                      |
-| **AttendanceD** | `attendanceD INDEX [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE] [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025`                                     |
-|    **List**     | `list`                                                                         | `list`                                                                                                     |
-|    **Clear**    | `clear`                                                                        | `clear`                                                                                                    |
-|    **Help**     | `help`                                                                         | `help`                                                                                                     |
-|    **Exit**     | `exit`                                                                         | `exit`                                                                                                     |
+|   Action   | Command Format                                                              | Example Commands                                                                                         |
+|:----------:|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
+| **Delete** | `delete INDEX`<br>`delete n/NAME`                                           | `delete 1`<br>`delete n/John Doe`                                                                        |
+|  **View**  | `view INDEX`                                                                | `view 1`                                                                                                 |
+|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                            |
+| **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                            |
+| **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                        |
+| **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                         |
+|  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                |
+| **Remind** | `remind`                                                                    | `remind`                                                                                                 |
+|  **List**  | `list`                                                                      | `list`                                                                                                   |
+| **Clear**  | `clear`                                                                     | `clear`                                                                                                  |
+|  **Help**  | `help`                                                                      | `help`                                                                                                   |
+|  **Exit**  | `exit`                                                                      | `exit`                                                                                                   |

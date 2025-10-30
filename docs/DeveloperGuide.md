@@ -410,7 +410,9 @@ Use case ends.
 1.  User opens LittleLogBook.
 2.  LittleLogBook shows list of all the contacts added.
 3.  User requests to delete a specific contact in the list.
-4.  LittleLogBook deletes the person.
+4.  LittleLogBook displays a confirmation popup asking the user to confirm the deletion.
+5.  Users confirms the deletion.
+6.  LittleLogBook deletes the person and updates the list.
 
     Use case ends.
 
@@ -419,6 +421,9 @@ Use case ends.
 * 3a. The contact does not exist.
   *    3a.1 LittleLogBook requests for valid input.
        Use case resumes at step 3.
+* 5a. User cancels the deletion.
+  *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
+       Use case resumes at step 2.
 
 
 **Use case: Searches a contact**
@@ -510,7 +515,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: Popup window appears for confirmation. After the user confirms to proceed with the deletion, first contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
