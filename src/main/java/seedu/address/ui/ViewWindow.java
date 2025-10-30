@@ -74,6 +74,7 @@ public class ViewWindow extends UiPart<Stage> {
 
     /**
      * Creates a new ViewWindow.
+     *
      * @param root Stage to use as the root of the ViewWindow.
      */
     public ViewWindow(Stage root) {

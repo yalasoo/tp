@@ -20,7 +20,7 @@ public class Birthday {
 
     public static final String VALIDATION_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
-            .withResolverStyle(ResolverStyle.STRICT);;
+            .withResolverStyle(ResolverStyle.STRICT);
 
     public static final LocalDate MIN_VALID_DATE = LocalDate.of(1900, 1, 1);
     public static final LocalDate MAX_VALID_DATE = LocalDate.now();
