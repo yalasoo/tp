@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.Class;
@@ -59,9 +60,9 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_studentMonthlyReport_success() {
+    void execute_studentMonthlyReport_success() throws CommandException {
         Set<Index> indexes = Set.of(Index.fromOneBased(1));
-        LocalDate date = LocalDate.of(2025, 12, 29);
+        LocalDate date = LocalDate.now();
         YearMonth month = YearMonth.of(2025, 1);
 
         AttendanceDownloadCommand command = new AttendanceDownloadCommand(
@@ -75,9 +76,50 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classMonthlyReport_success() {
+    void execute_studentMonthlyReportInvaidMonth_throwsCommandException() {
+        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        LocalDate date = LocalDate.now();
+        YearMonth before1900 = YearMonth.of(1899, 1);
+        YearMonth nextMonth = YearMonth.now().plusMonths(1);
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                indexes, null, date, before1900, false, true);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                indexes, null, date, nextMonth, false, true);
+
+        Person student = new PersonBuilder().withTags("student").build();
+        model.addPerson(student);
+
+        assertThrows(CommandException.class, () -> command1.execute(model));
+        assertThrows(CommandException.class, () -> command2.execute(model));
+    }
+
+    @Test
+    void execute_studentMonthlyReportOnBorderMonth_throwsCommandException() throws CommandException {
+        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        LocalDate date = LocalDate.now();
+        YearMonth month1900 = YearMonth.of(1900, 1);
+        YearMonth currentMonth = YearMonth.now();
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                indexes, null, date, month1900, false, true);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                indexes, null, date, currentMonth, false, true);
+
+        Person student = new PersonBuilder().withTags("student").build();
+        model.addPerson(student);
+
+        CommandResult result1 = command1.execute(model);
+        CommandResult result2 = command2.execute(model);
+
+        assertTrue(result1.getFeedbackToUser().contains("Saved to:"));
+        assertTrue(result2.getFeedbackToUser().contains("Saved to:"));
+    }
+
+    @Test
+    void execute_classMonthlyReport_success() throws CommandException {
         List<Class> classes = List.of(new Class("K1A"));
-        LocalDate date = LocalDate.of(2025, 12, 29);
+        LocalDate date = LocalDate.now();
         YearMonth month = YearMonth.of(2025, 1);
 
         // With user month
@@ -99,10 +141,51 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classDailyReport_success() {
+    void execute_classMonthlyReportInvalidMonth_throwsCommandException() {
         List<Class> classes = List.of(new Class("K1A"));
-        LocalDate date = LocalDate.of(2025, 12, 29);
-        YearMonth month = YearMonth.of(2025, 1);
+        LocalDate date = LocalDate.now();
+        YearMonth month1900 = YearMonth.of(1899, 1);
+        YearMonth nextMonth = YearMonth.now().plusMonths(1);
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, date, month1900, false, true);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                null, classes, date, nextMonth, false, true);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
+        model.addPerson(student);
+
+        assertThrows(CommandException.class, () -> command1.execute(model));
+        assertThrows(CommandException.class, () -> command2.execute(model));
+    }
+
+    @Test
+    void execute_classMonthlyReportBorderMonth_throwsCommandException() throws CommandException {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date = LocalDate.now();
+        YearMonth month1900 = YearMonth.of(1900, 1);
+        YearMonth currentMonth = YearMonth.now();
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, date, month1900, false, true);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                null, classes, date, currentMonth, false, true);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
+        model.addPerson(student);
+
+        CommandResult result1 = command1.execute(model);
+        CommandResult result2 = command2.execute(model);
+
+        assertTrue(result1.getFeedbackToUser().contains("Saved to:"));
+        assertTrue(result2.getFeedbackToUser().contains("Saved to:"));
+    }
+
+    @Test
+    void execute_classDailyReport_success() throws CommandException {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date = LocalDate.of(2024, 12, 29);
+        YearMonth month = YearMonth.of(2024, 1);
 
         AttendanceDownloadCommand command = new AttendanceDownloadCommand(
                 null, classes, date, month, true, true);
@@ -111,7 +194,49 @@ public class AttendanceDownloadCommandTest {
         model.addPerson(student);
 
         CommandResult result = command.execute(model);
+
         assertTrue(result.getFeedbackToUser().contains("Saved to:"));
+    }
+
+    @Test
+    void execute_classDailyReportInvalidDate_throwsCommandException() {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate before1900 = LocalDate.of(1899, 1, 1);
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        YearMonth month = YearMonth.now();
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, before1900, month, true, false);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                null, classes, tomorrow, month, true, false);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
+        model.addPerson(student);
+
+        assertThrows(CommandException.class, () -> command1.execute(model));
+        assertThrows(CommandException.class, () -> command2.execute(model));
+    }
+
+    @Test
+    void execute_classDailyReportBorderDate_throwsCommandException() throws CommandException {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date1900 = LocalDate.of(1900, 1, 1);
+        LocalDate today = LocalDate.now();
+        YearMonth month = YearMonth.now();
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, date1900, month, true, false);
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                null, classes, date1900, month, true, false);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
+        model.addPerson(student);
+
+        CommandResult result1 = command1.execute(model);
+        CommandResult result2 = command2.execute(model);
+
+        assertTrue(result1.getFeedbackToUser().contains("Saved to:"));
+        assertTrue(result2.getFeedbackToUser().contains("Saved to:"));
     }
 
     @Test

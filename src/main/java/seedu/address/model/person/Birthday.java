@@ -20,7 +20,7 @@ public class Birthday {
 
     public static final String VALIDATION_REGEX = "^\\d{2}-\\d{2}-\\d{4}$";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
-            .withResolverStyle(ResolverStyle.STRICT);;
+            .withResolverStyle(ResolverStyle.STRICT);
 
     public static final LocalDate MIN_VALID_DATE = LocalDate.of(1900, 1, 1);
     public static final LocalDate MAX_VALID_DATE = LocalDate.now();
@@ -61,6 +61,22 @@ public class Birthday {
             return formatted.equals(test);
 
         } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether incoming date is earlier than birthday date.
+     *
+     * @param otherDate The other date to be compared to.
+     * @return True if other date is earlier than birthday, else false.
+     */
+    public boolean isBeforeBirthday(LocalDate otherDate) {
+        int result = otherDate.compareTo(date);
+
+        if (result < 0) {
+            return true;
+        } else {
             return false;
         }
     }

@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -37,7 +38,19 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STATUS, PREFIX_DATE);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return getAttendanceCommand(argMultimap);
+    }
+
+    /**
+     * Does a validation check for each given parameters.
+     * And warn users for any missing mandatory parameters.
+     *
+     * @param argMultimap The arguments given by user.
+     * @return An AttendanceCommand object.
+     * @throws ParseException If error occurs during parsing.
+     */
+    private static AttendanceCommand getAttendanceCommand(ArgumentMultimap argMultimap) throws ParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT);
 
         String strIndexes = argMultimap.getPreamble();
         String strStatus = argMultimap.getValue(PREFIX_STATUS).get();
@@ -46,21 +59,21 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
         Set<Index> indexes = IndexParser.parseIndexes(strIndexes);
 
         if (strStatus.trim().isEmpty()) {
-            throw new ParseException("Status cannot be empty. Use: present, late, sick, absent");
+            throw new ParseException("Status cannot be empty. Use: present, late, sick, absent, or remove");
         }
 
         AttendanceStatus status;
         try {
             status = AttendanceStatus.valueOf(strStatus.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ParseException("Invalid status. Valid status: present, late, sick, absent");
+            throw new ParseException("Invalid status. Valid status: present, late, sick, absent, or remove");
         }
 
         LocalDate date;
         try {
             date = LocalDate.parse(strDate, formatter);
         } catch (DateTimeParseException e) {
-            throw new ParseException("Invalid date format. Please use dd-MM-yyyy (e.g. 29-12-2025).");
+            throw new ParseException("Invalid date format/input. Please use dd-MM-yyyy (e.g. 29-12-2025).");
         }
 
         return new AttendanceCommand(indexes, date, status);

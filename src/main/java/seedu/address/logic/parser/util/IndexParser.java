@@ -57,6 +57,10 @@ public class IndexParser {
             throw new ParseException("Index range must contain positive numbers only.");
         }
 
+        if (end < start) {
+            throw new ParseException("Invalid index range: start must be <= end.");
+        }
+
         for (int i = start; i <= end; i++) {
             indexes.add(Index.fromOneBased(i));
         }

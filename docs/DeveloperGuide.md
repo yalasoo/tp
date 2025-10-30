@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+_No third party libraries were used in the development of LittleLogBook_
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -158,103 +158,71 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### View Command
 
-#### Proposed Implementation
+#### Implementation
+The `view` command displays detailed information about a specific person in a pop-up window.
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+**Operation:** `view INDEX`
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+**How it works:**
+1. Parses the user-provided index using ViewCommandParser 
+2. Validates that the index is within bounds of the current filtered list 
+3. Retrieves the corresponding person from the filtered person list using Model#getFilteredPersonList()
+4. Creates a ViewCommand object with the target index 
+5. When executed, opens a pop-up window (ViewWindow) displaying all person details 
+6. The main window remains accessible while the view window is open
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+**Overall Sequence Diagram for View:**
+<puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+<puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
 
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
+<puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+### Remind Command
 
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
+#### Implementation
+The `remind` command shows current and upcoming birthdays.
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+**Operation:** `remind`
 
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
+**How it works:**
+1. User launch the program
+2. Remind command is automatically called
+3. Get list of persons whose birthdays is today or in the upcoming 7 days. 
+4. Displays a list of upcoming events/birthdays 
+5. Can show both students and colleagues with upcoming dates
 
-<box type="info" seamless>
+**Sequence Diagram for Automated Remind on start:**
+<puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+**Key Classes:**
+- `RemindCommand` - Handles the command execution
+- `Birthday` - Contains date logic for reminder calculations
+- `Person` - Stores birthday information
 
-</box>
+**Validation for Birthday:**
+- The Birthday class implements comprehensive date validation with the following constraints:
+- Format Validation 
+  - Required Format: `dd-MM-yyyy` (e.g., 24-12-2005)
+  - Regex Pattern: `^\d{2}-\d{2}-\d{4}$` ensures exactly 2 digits for day, 2 for month, and 4 for year 
+  - Strict Parsing: Uses `ResolverStyle.STRICT` to reject invalid dates like 31-04-2023 (April has only 30 days)
+- Temporal Constraints 
+  - Minimum Date: 01-01-1900 - Prevents unrealistically old birth dates 
+  - Maximum Date: Current date - Prevents future birth dates 
+  - Range Validation: Ensures birthday falls between January 1, 1900 and today
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+**Overall Sequence Diagram for Remind:**
+<puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
 
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
+Below is the more in depth breakdown of the Logic, Model and UI Sequence diagrams.
 
+<puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
 
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</box>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
-
-<box type="info" seamless>
-
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</box>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
+<puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -323,6 +291,8 @@ _{Explain here how the data archiving feature will be implemented}_
 
 (For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise)
 
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
 **Use case: Add a contact**
 
 **MSS**
@@ -341,6 +311,9 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: View a contact**
 
@@ -348,17 +321,45 @@ Use case ends.
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User enters a specific contact name.
-4. LittleLogBook validates input information and finds the matching contact.
-5. LittleLogBook displays the contact information.
+3. User requests to view a specific contact.
+4. LittleLogBook finds the matching contact.
+5. LittleLogBook displays the contact's full information in a pop-up window.
+Use case ends.
+
+**Extensions**
+
+* 4a. The requested contact to be viewed is invalid.
+    * 4a1. LittleLogBook shows an error message and request for a valid input.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Check birthday reminders**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook automatically checks for birthdays and shows reminder notification.
+3. User requests to manually check for birthday reminders.
+4. LittleLogBook looks through all contacts for birthdays today and within the next 7 days.
+5. LittleLogBook displays formatted birthday reminders.
 
 Use case ends.
 
 **Extensions**
 
-* 4a. The input information is invalid.
-    * 4a1. LittleLogBook shows an error message.
-      Use case resumes at step 3.
+* 5a. There are birthdays today.
+    * 5a1. LittleLogBook shows a list of people whose birthday is today.
+* 5b. There are upcoming birthdays within 7 days.
+    * 5b1. LittleLogBook shows a list of people whose birthday is upcoming.
+* 5c. No birthdays today or within 7 days.
+    * 5c1. LittleLogBook tells the user that there is no upcoming birthdays. 
+* 5d. LittleLogBook is empty.
+    * 5d1. LittleLogBook tells the user that there is no contacts in LittleLogBook
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Delete a contact**
 
@@ -367,7 +368,9 @@ Use case ends.
 1.  User opens LittleLogBook.
 2.  LittleLogBook shows list of all the contacts added.
 3.  User requests to delete a specific contact in the list.
-4.  LittleLogBook deletes the person.
+4.  LittleLogBook displays a confirmation popup asking the user to confirm the deletion.
+5.  Users confirms the deletion.
+6.  LittleLogBook deletes the person and updates the list.
 
     Use case ends.
 
@@ -376,24 +379,12 @@ Use case ends.
 * 3a. The contact does not exist.
   *    3a.1 LittleLogBook requests for valid input.
        Use case resumes at step 3.
+* 5a. User cancels the deletion.
+  *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
+       Use case resumes at step 2.
+</div>
 
-
-**Use case: Searches a contact**
-
-**MSS**
-
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to search a contact in the list with partial information.
-4.  LittleLogBook shows list of all contacts matching the information.
-
-    Use case ends.
-
-**Extensions**
-
-* 3a. No contact matches the information.
-    *    3a.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Marks attendance**
 
@@ -401,8 +392,8 @@ Use case ends.
 
 1.  User opens LittleLogBook.
 2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to mark attendance of a specific student.
-4.  LittleLogBook succesfully marks student's attendance.
+3.  User requests to mark attendance of a specific contact.
+4.  LittleLogBook successfully marks contact's attendance.
 
     Use case ends.
 
@@ -411,6 +402,62 @@ Use case ends.
 * 3a. No contact matches the information.
     *    3a.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
+* 3b. Contact is a colleague.
+    *    3b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3c. Date provided is before student's born date.
+    *    3c.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3d. Date provided is beyond today's date.
+    *    3d.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+
+**Use case: Find a contact based on partial name**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User enters the command with partial name(s).
+4. LittleLogBook validates input information.
+5. LittleLogBook filters contacts matching partial name(s) and updates contact list.
+6. LittleLogBook displays the result.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. The input information is invalid.
+    * 4a1. LittleLogBook shows an error message.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+
+**Use case: Favourite a contact**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User enters the command with index(es).
+4. LittleLogBook validates input information.
+5. LittleLogBook updates contact list by updating the favourites contacts.
+6. LittleLogBook displays the result.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. The input information is invalid.
+    * 4a1. LittleLogBook shows an error message.
+      Use case resumes at step 3.
+</div>
 
 
 *{More to be added}*
@@ -420,9 +467,6 @@ Use case ends.
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4.  Only authenticated users (teachers) can access the app.
-
-*{More to be added}*
 
 ### Glossary
 
@@ -467,7 +511,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: Popup window appears for confirmation. After the user confirms to proceed with the deletion, first contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.

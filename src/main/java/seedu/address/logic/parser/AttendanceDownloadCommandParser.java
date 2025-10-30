@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -103,14 +104,14 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
      * @throws ParseException If the date format is invalid when explicitly provided.
      */
     private LocalDate parseDate(Optional<String> dateOpt, boolean userProvided) throws ParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT);
         String strDate = dateOpt.orElse(LocalDate.now().format(formatter));
 
         if (userProvided) {
             try {
                 return LocalDate.parse(strDate, formatter);
             } catch (DateTimeParseException e) {
-                throw new ParseException("Invalid date format. Please use dd-MM-yyyy (e.g. 29-12-2025).");
+                throw new ParseException("Invalid date format/input. Please use dd-MM-yyyy (e.g. 29-12-2025).");
             }
         }
         return LocalDate.parse(strDate, formatter);
@@ -126,14 +127,14 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
      * @throws ParseException If the month format is invalid when explicitly provided.
      */
     private YearMonth parseMonth(Optional<String> monthOpt, boolean userProvided) throws ParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-uuuu").withResolverStyle(ResolverStyle.STRICT);
         String strMonth = monthOpt.orElse(YearMonth.now().format(formatter));
 
         if (userProvided) {
             try {
                 return YearMonth.parse(strMonth, formatter);
             } catch (DateTimeParseException e) {
-                throw new ParseException("Invalid month format. Please use MM-yyyy (e.g. 12-2025).");
+                throw new ParseException("Invalid month format/input. Please use MM-yyyy (e.g. 12-2025).");
             }
         }
         return YearMonth.parse(strMonth, formatter);

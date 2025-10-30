@@ -11,6 +11,11 @@ Participant ":Storage" as storage STORAGE_COLOR
 user -[USER_COLOR]> ui : "delete 1"
 activate ui UI_COLOR
 
+ui -[UI_COLOR]> ui : confirmation deletePopup
+activate ui #lightgreen
+ui --[UI_COLOR]> ui : user confirms
+deactivate ui
+
 ui -[UI_COLOR]> logic : execute("delete 1")
 activate logic LOGIC_COLOR
 

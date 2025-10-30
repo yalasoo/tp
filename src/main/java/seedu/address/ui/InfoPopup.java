@@ -5,6 +5,7 @@ import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -30,6 +31,8 @@ public class InfoPopup extends UiPart<Stage> {
         setUpKeyboardHandlers();
         root.setWidth(300);
         root.setHeight(200);
+        root.initModality(Modality.APPLICATION_MODAL);
+        root.setAlwaysOnTop(true);
     }
 
     /**
