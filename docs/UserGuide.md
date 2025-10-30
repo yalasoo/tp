@@ -453,12 +453,12 @@ find-t TAG(s)
 ```
 
 ##### Parameters & Validation Rules
-|                    Parameter                    | Validation Rules                                        |
-|:-----------------------------------------------:|---------------------------------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphabetic string only                                  |
-|                                                 | Matches partial tag names                               |
-|                                                 | Accepts multiple inputs (use spaces to separate inputs) |
-|                                                 | Error if empty string                                   |
+|                   Parameter                    | Validation Rules                                        |
+|:----------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**TAG(s)**</span> | Alphabetic string only                                  |
+|                                                | Matches partial tag names                               |
+|                                                | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                | Error if empty string                                   |
 
 ##### Sample Commands
 ```shell
@@ -481,21 +481,59 @@ find-t ague
 [//]: # (COMMAND BREAK)
 <br>
 
+### Finding contacts by classes : `find-c`
+**Purpose**: Allows teachers to find contacts quickly with partial classes (contiguous).
+
+##### Format
+```shell
+find-c CLASS(es)
+```
+
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                        |
+|:-------------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Can only contain alphanumeric string and hyphens        |
+|                                                   | Matches partial class names                             |
+|                                                   | Case insensitive                                        |
+|                                                   | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                   | Error if empty string                                   |
+
+##### Sample Commands
+```shell
+find-c k1A nur
+```
+```shell
+find-c nursery -
+```
+```shell
+find-c 2 A
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Favourite/Unfavourite contacts : `fav`
 
 **Purpose**: Indicates contacts as favourites.
 
 ##### Format
 ```shell
-fav KEYWORD
+fav INDEX(es)
 ```
 
 ##### Parameters & Validation Rules
-|                    Parameter                    | Validation Rules                                                                                                                              |
-|:-----------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string                                                                                                                                | 
-|                                                 | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
-|                                                 | Error if empty string                                                                                                                         |
+|                     Parameter                     | Validation Rules                                                                                                                              |
+|:-------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string                                                                                                                                | 
+|                                                   | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
+|                                                   | Error if empty string                                                                                                                         |
 
 ##### Sample Commands
 ```shell
@@ -509,12 +547,12 @@ fav 3 5 2 1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                                             | GUI Action                                                                                                                      |
-|:---------------------------------------------:|--------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                           | Contact list updates with star icon next to contacts of specified index(es)                                                     |
-| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                         | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites) | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                          | No changes                                                                                                                      |
+|                 Outcome Type                  | Scenario                                   | Message                                                                                              | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -862,15 +900,16 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 |   Action   | Command Format                                                              | Example Commands                                                                                         |
 |:----------:|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 |  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-| **Delete** | `delete INDEX`<br>`delete n/NAME`                                           | `delete 1`<br>`delete n/John Doe`                                                                        |
-|  **View**  | `view INDEX`                                                                | `view 1`                                                                                                 |
-|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                            |
-| **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                            |
-| **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                        |
-| **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                         |
-|  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                |
-| **Remind** | `remind`                                                                    | `remind`                                                                                                 |
-|  **List**  | `list`                                                                      | `list`                                                                                                   |
-| **Clear**  | `clear`                                                                     | `clear`                                                                                                  |
-|  **Help**  | `help`                                                                      | `help`                                                                                                   |
-|  **Exit**  | `exit`                                                                      | `exit`                                                                                                   |
+| **Delete** | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
+|  **View**  | `view INDEX`                                                                | `view 1`                                                                                                   |
+|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
+| **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                              |
+| **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                          |
+| **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                           |
+|  **Find-c**| `find-c CLASS(es)`                                                          | `find-c K1A nursery`                                                                                       |
+|  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                  |
+| **Remind** | `remind`                                                                    | `remind`                                                                                                   |
+|  **List**  | `list`                                                                      | `list`                                                                                                     |
+| **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
+|  **Help**  | `help`                                                                      | `help`                                                                                                     |
+|  **Exit**  | `exit`                                                                      | `exit`                                                                                                     |
