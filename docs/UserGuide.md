@@ -352,18 +352,19 @@ note 1
 
 ##### Format 
 ```shell
-find-n KEYWORD
+find-n NAME(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules          |
-|:-----------------------------------------------:|---------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
-|                                                 | Case-insensitive matching |
-|                                                 | Matches partial names     |
-|                                                 | Error if empty string     |
+|                    Parameter                    | Validation Rules                                                                   |
+|:-----------------------------------------------:|------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**NAME(s)**</span> | Must be an alphabetic string (may contain  <br/> spaces, hyphens, and apostrophes) |
+|                                                 | Case-insensitive matching                                                          |
+|                                                 | Matches partial names                                                              |
+|                                                 | Accepts multiple inputs (use spaces to separate inputs)                            |
+|                                                 | Error if empty string                                                              |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 find-n John ecka
 ```
@@ -372,11 +373,11 @@ find-n Tan
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!`  _(with guidance on next possible steps)_  | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 
 [//]: # (COMMAND BREAK)
@@ -387,19 +388,20 @@ find-n Tan
 
 ##### Format 
 ```shell
-find-p KEYWORD
+find-p PHONE(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules              |
-|:-----------------------------------------------:|-------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string only           |
-|                                                 | Matches partial phone numbers |
-|                                                 | Error if empty string         |
+|                    Parameter                     | Validation Rules                                        |
+|:------------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**PHONE(s)**</span> | Numeric string only                                     |
+|                                                  | Matches partial phone numbers                           |
+|                                                  | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                  | Error if empty string                                   |
 
-##### Example Commands
+##### Sample Commands
 ```shell
-find-p 8431 967
+find-p 431 967
 ```
 ```shell
 find-p 84313390
@@ -409,31 +411,32 @@ find-p 3133
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
 
 ### Finding contacts by tags : `find-t`
-**Purpose**: Allows teachers to find contacts quickly with tags (contiguous).
+**Purpose**: Allows teachers to find contacts quickly with partial tags (contiguous).
 
 ##### Format
 ```shell
-find-t KEYWORD
+find-t TAG(s)
 ```
 
 ##### Parameters & Validation Rules
-|                   Parameter                     | Validation Rules          |
-|:-----------------------------------------------:|---------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Alphanumeric string       |
-|                                                 | Matches partial tag names |
-|                                                 | Error if empty string     |
+|                    Parameter                    | Validation Rules                                        |
+|:-----------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Alphabetic string only                                  |
+|                                                 | Matches partial tag names                               |
+|                                                 | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                 | Error if empty string                                   |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 find-t student
 ```
@@ -445,11 +448,11 @@ find-t ague
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario         | Message                                                    | GUI Action                                  |
-|:---------------------------------------------:|------------------|------------------------------------------------------------|---------------------------------------------|
-| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!`                                      | Contact list updates with matching contacts |
-|  <span style="color: red">**Failure**</span>  | No matches found | `0 persons listed!`                                        | Contact list shows empty results            |
-|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_ | No changes                                  |
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -793,10 +796,10 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Delete** | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
 |  **View**  | `view INDEX`                                                                | `view 1`                                                                                                   |
 |  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-| **Find-n** | `find-n KEYWORD`                                                            | `find-n John`                                                                                              |
-| **Find-p** | `find-p KEYWORD`                                                            | `find-p 84871234`                                                                                          |
-| **Find-t** | `find-t KEYWORD`                                                            | `find-t student`                                                                                           |
-|  **Fav**   | `fav KEYWORD`                                                               | `fav 1 2`                                                                                                  |
+| **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                              |
+| **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                          |
+| **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                           |
+|  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                  |
 | **Remind** | `remind`                                                                    | `remind`                                                                                                   |
 |  **List**  | `list`                                                                      | `list`                                                                                                     |
 | **Clear**  | `clear`                                                                     | `clear`                                                                                                    |

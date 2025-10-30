@@ -17,8 +17,8 @@ public class FindTagCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose tag contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " friend colleague";
+            + "Parameters: TAG(s) (can be partial alphabetic characters only)\n"
+            + "Example: " + COMMAND_WORD + " student colleague";
 
     private final TagContainsKeywordsPredicate predicate;
 
