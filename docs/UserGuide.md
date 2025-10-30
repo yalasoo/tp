@@ -455,6 +455,44 @@ find-t ague
 [//]: # (COMMAND BREAK)
 <br>
 
+### Finding contacts by classes : `find-c`
+**Purpose**: Allows teachers to find contacts quickly with partial classes (contiguous).
+
+##### Format
+```shell
+find-c CLASS(es)
+```
+
+##### Parameters & Validation Rules
+|                     Parameter                     | Validation Rules                                        |
+|:-------------------------------------------------:|---------------------------------------------------------|
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Can only contain alphanumeric string and hyphens        |
+|                                                   | Matches partial class names                             |
+|                                                   | Case insensitive                                        |
+|                                                   | Accepts multiple inputs (use spaces to separate inputs) |
+|                                                   | Error if empty string                                   |
+
+##### Sample Commands
+```shell
+find-c k1A nur
+```
+```shell
+find-c nursery -
+```
+```shell
+find-c 2 A
+```
+
+##### Outputs
+|                 Outcome Type                  | Scenario         | Message                                                        | GUI Action                                  |
+|:---------------------------------------------:|------------------|----------------------------------------------------------------|---------------------------------------------|
+| <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
+| <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
+|  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
+
+[//]: # (COMMAND BREAK)
+<br>
+
 ### Favourite/Unfavourite contacts : `fav`
 
 **Purpose**: Indicates contacts as favourites.
@@ -483,12 +521,12 @@ fav 3 5 2 1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                                             | GUI Action                                                                                                                      |
-|:---------------------------------------------:|--------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                           | Contact list updates with star icon next to contacts of specified index(es)                                                     |
-| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                         | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites) | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                          | No changes                                                                                                                      |
+|                 Outcome Type                  | Scenario                                   | Message                                                                                              | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -799,6 +837,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                              |
 | **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                          |
 | **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                           |
+|  **Find-c**| `find-c CLASS(es)`                                                          | `find-c K1A nursery`                                                                                       |
 |  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                  |
 | **Remind** | `remind`                                                                    | `remind`                                                                                                   |
 |  **List**  | `list`                                                                      | `list`                                                                                                     |
