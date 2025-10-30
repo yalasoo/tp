@@ -33,7 +33,7 @@ manage students' and parents' contact information efficiently.
    <a href="https://se-education.org/guides/tutorials/javaInstallationMac.html">here</a>.
    </box>
 
-1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F14B-1/tp).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F14B-1/tp/releases/download/v1.5/littlelogbook.jar).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your LittleLogBook.
 
@@ -206,6 +206,62 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 |  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `Duplicate contact detected.`                              | No changes                            |
+
+[//]: # (COMMAND BREAK)
+<br>
+
+### Adding a contact: `edit`
+
+**Purpose**: Allows teachers to edit a contact.
+
+##### Command Format
+```shell
+edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]
+```
+
+##### Parameters & Validation Rules
+|                       Parameter                       | Validation Rules                                                           |
+|:-----------------------------------------------------:|----------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>       | Must be a positive integer (1, 2, 3, ...)                                  |
+|                                                       | Cannot be 0 or negative                                                    |
+|                                                       | Must correspond to an existing contact in the current list                 |
+|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                   |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
+|                                                       | Case-insensitive for duplicates                                            |
+|                                                       | Error if empty or contains numbers/symbols                                 |
+|  <span style="color: #6b7280">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)     |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)          |
+|                                                       | Examples: 61234567, 81234567, 91234567                                     |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                       |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit              |
+|  <span style="color: #6b7280">**EMAIL (e/)**</span>   | Must follow standard email format                                          |
+|                                                       | Case-insensitive                                                           |
+|                                                       | Error if invalid format                                                    |
+| <span style="color: #6b7280">**ADDRESS (a/)**</span>  | Any non-blank text                                                         |
+|                                                       | Error if empty or contains only whitespace                                 |
+|  <span style="color: #6b7280">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K   |
+|                                                       | Case-insensitive                                                           |
+|                                                       | Error if invalid class format                                              |
+| <span style="color: #6b7280">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                  |
+|                                                       | Must be a valid date (from 01-01-1900 to today's date)                     |
+|   <span style="color: #6b7280">**TAG (t/)**</span>    | Exactly one tag                                                            |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)                 |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                         |
+|                                                       | Leading/trailing spaces trimmed                                            |
+
+##### Sample Commands
+```shell
+edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague
+```
+
+
+##### Outputs
+|                Outcome Type                   | Scenario                   | Message                                                                                                            | GUI Action                            |
+|:---------------------------------------------:|----------------------------|--------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Contact edited             | `Edited Person: <contact>`                                                                                         | Contact list refreshes with new entry |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_                                                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                                                                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `This person already exists in the address book. Please change either the name or phone number to make it unique.` | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -897,19 +953,20 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|   Action   | Command Format                                                              | Example Commands                                                                                         |
-|:----------:|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]` | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-| **Delete** | `delete n/NAME`<br>`delete INDEX`                                           | `delete n/John Doe`<br>`delete 1`                                                                          |
-|  **View**  | `view INDEX`                                                                | `view 1`                                                                                                   |
-|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                 | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-| **Find-n** | `find-n NAME(s)`                                                            | `find-n John`                                                                                              |
-| **Find-p** | `find-p PHONE(s)`                                                           | `find-p 84871234`                                                                                          |
-| **Find-t** | `find-t TAG(s)`                                                             | `find-t student`                                                                                           |
-|  **Find-c**| `find-c CLASS(es)`                                                          | `find-c K1A nursery`                                                                                       |
-|  **Fav**   | `fav INDEX(es)`                                                             | `fav 1 2`                                                                                                  |
-| **Remind** | `remind`                                                                    | `remind`                                                                                                   |
-|  **List**  | `list`                                                                      | `list`                                                                                                     |
-| **Clear**  | `clear`                                                                     | `clear`                                                                                                    |
-|  **Help**  | `help`                                                                      | `help`                                                                                                     |
-|  **Exit**  | `exit`                                                                      | `exit`                                                                                                     |
+|   Action   | Command Format                                                                                    | Example Commands                                                                                           |
+|:----------:|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                       | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
+|  **Edit**  | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`  | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`  |
+| **Delete** | `delete INDEX`<br>`delete n/NAME`                                                                 | `delete 1`<br>`delete n/John Doe`                                                                          |
+|  **View**  | `view INDEX`                                                                                      | `view 1`                                                                                                   |
+|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                       | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
+| **Find-n** | `find-n NAME(s)`                                                                                  | `find-n John`                                                                                              |
+| **Find-p** | `find-p PHONE(s)`                                                                                 | `find-p 84871234`                                                                                          |
+| **Find-t** | `find-t TAG(s)`                                                                                   | `find-t student`                                                                                           |
+|  **Find-c**| `find-c CLASS(es)`                                                                                | `find-c K1A nursery`                                                                                       |
+|  **Fav**   | `fav INDEX(es)`                                                                                   | `fav 1 2`                                                                                                  |
+| **Remind** | `remind`                                                                                          | `remind`                                                                                                   |
+|  **List**  | `list`                                                                                            | `list`                                                                                                     |
+| **Clear**  | `clear`                                                                                           | `clear`                                                                                                    |
+|  **Help**  | `help`                                                                                            | `help`                                                                                                     |
+|  **Exit**  | `exit`                                                                                            | `exit`                                                                                                     |
