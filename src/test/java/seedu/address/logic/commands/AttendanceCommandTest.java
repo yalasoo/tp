@@ -164,15 +164,13 @@ public class AttendanceCommandTest {
         String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         for (AttendanceStatus status : AttendanceStatus.values()) {
-            if (status != AttendanceStatus.REMOVE) { // Skip REMOVE as it's not for marking
-                AttendanceCommand command = new AttendanceCommand(indexes, date, status);
-                CommandResult result = command.execute(model);
+            AttendanceCommand command = new AttendanceCommand(indexes, date, status);
+            CommandResult result = command.execute(model);
 
-                assertTrue(result.getFeedbackToUser().contains("Modified"));
-                assertTrue(result.getFeedbackToUser().contains("out of"));
-                assertTrue(result.getFeedbackToUser().contains(status.toString()));
-                assertTrue(result.getFeedbackToUser().contains(dateStr));
-            }
+            assertTrue(result.getFeedbackToUser().contains("Modified"));
+            assertTrue(result.getFeedbackToUser().contains("out of"));
+            assertTrue(result.getFeedbackToUser().contains(status.toString()));
+            assertTrue(result.getFeedbackToUser().contains(dateStr));
         }
     }
 

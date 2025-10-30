@@ -134,6 +134,46 @@ public class PersonTest {
     }
 
     @Test
+    public void unmarkAttendance_nullDate_throwsAssertionError() {
+        Person student = new PersonBuilder().withTags("student").build();
+
+        assertThrows(AssertionError.class, () ->
+                student.unmarkAttendance(null));
+    }
+
+    @Test
+    public void unmarkAttendance_beforeBirthday_failure() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2023, 1, 1);
+
+        assertFalse(student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_futureDate_failure() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        assertFalse(student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_colleague_failure() {
+        Person student = new PersonBuilder().withTags("colleague").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        assertFalse(student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_studentValidDate_success() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        assertTrue(student.unmarkAttendance(date));
+    }
+
+    @Test
     public void getAttendanceRecords_studentWithAttendance_returnsRecords() throws CommandException {
         Person student = new PersonBuilder().withTags("student").build();
         LocalDate date1 = LocalDate.of(2024, 1, 15);
