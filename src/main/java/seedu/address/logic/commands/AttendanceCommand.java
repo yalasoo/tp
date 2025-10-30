@@ -40,7 +40,7 @@ public class AttendanceCommand extends Command {
             + PREFIX_DATE + "29-12-2025";
 
     public static final String MESSAGE_SUCCESS = "Marked %d out of %d contacts as %s on %s."
-            + "Below are the marked students: ";
+            + "\nBelow are the marked students: ";
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
@@ -85,19 +85,42 @@ public class AttendanceCommand extends Command {
         }
 
         StringBuilder studentsMarked = new StringBuilder();
+        StringBuilder contactsNotMarked = new StringBuilder();
 
-        int totalMarked = markAll(lastShownList, studentsMarked);
+        int totalMarked = markAll(lastShownList, studentsMarked, contactsNotMarked);
 
+        return getCommandResult(totalMarked, studentsMarked, contactsNotMarked);
+    }
+
+    /**
+     * Returns a CommandResult object based on the number of marked students and
+     * display the details of both marked and unmarked contacts.
+     *
+     * @param totalMarked The number of students successfully marked.
+     * @param studentsMarked String of students who are marked.
+     * @param contactsNotMarked String of contacts who are not marked and the details.
+     * @return A CommandResult object.
+     * @throws CommandException If an error occurs during command execution.
+     */
+    private CommandResult getCommandResult(
+            int totalMarked, StringBuilder studentsMarked, StringBuilder contactsNotMarked) throws CommandException {
         if (totalMarked > 0) {
             logger.info("Successfully marked attendance for " + totalMarked + " students");
             String dateMsg = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
+            contactsNotMarked = contactsNotMarked.isEmpty()
+                    ? contactsNotMarked
+                    : new StringBuilder("\n\nBelow are the unmarked contacts:").append(contactsNotMarked);
+
             return new CommandResult(String.format(
-                    MESSAGE_SUCCESS, totalMarked, indexes.size(), status, dateMsg) + studentsMarked);
+                    MESSAGE_SUCCESS, totalMarked, indexes.size(), status, dateMsg)
+                    + studentsMarked.append(contactsNotMarked));
         } else {
             String unsuccessfulMsg = "Marked 0 out of " + indexes.size() + " contacts.";
             logger.info(unsuccessfulMsg);
-            throw new CommandException(unsuccessfulMsg + " \nReminder: Attendance will only apply to student.");
+            throw new CommandException(unsuccessfulMsg + " Please remember:"
+                    + "\nAttendance will only apply to student."
+                    + "\nProvide a date between the student's birthday and today's date.");
         }
     }
 
@@ -110,7 +133,8 @@ public class AttendanceCommand extends Command {
      * @return The total number of marked contacts that is a student.
      * @throws CommandException If an error occurs during command execution.
      */
-    private int markAll(List<Person> lastShownList, StringBuilder studentsMarked) throws CommandException {
+    private int markAll(List<Person> lastShownList, StringBuilder studentsMarked, StringBuilder contactsNotMarked)
+            throws CommandException {
         int totalMarked = 0;
 
         for (Index i : indexes) {
@@ -129,9 +153,20 @@ public class AttendanceCommand extends Command {
             if (personToEdit.isStudent()) {
                 logger.fine("Marking attendance for " + personToEdit.getName() + " on " + date + " as " + status);
 
-                personToEdit.markAttendance(date, status);
-                studentsMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
-                totalMarked++;
+                // Ensure marking was successful
+                // Guarantees unsuccessful to only be because of date error
+                if (personToEdit.markAttendance(date, status, contactsNotMarked)) {
+                    studentsMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
+                    totalMarked++;
+                } else {
+                    logger.warning("Date provided before birthday or after today: " + i.getOneBased());
+                    contactsNotMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
+                            .append(" [Date before birthday or after today]");
+                }
+            } else {
+                logger.warning("Contact is not a student: " + i.getOneBased());
+                contactsNotMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
+                        .append(" [Not a student]");
             }
         }
         return totalMarked;

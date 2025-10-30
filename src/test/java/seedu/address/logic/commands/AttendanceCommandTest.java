@@ -51,7 +51,7 @@ public class AttendanceCommandTest {
     @Test
     public void execute_validSingleIndex_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
-        LocalDate date = LocalDate.of(2025, 12, 12);
+        LocalDate date = LocalDate.of(2024, 12, 12);
         AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
 
         CommandResult result = command.execute(model);
@@ -59,13 +59,13 @@ public class AttendanceCommandTest {
         assertTrue(result.getFeedbackToUser().contains("Marked"));
         assertTrue(result.getFeedbackToUser().contains("out of"));
         assertTrue(result.getFeedbackToUser().contains("PRESENT"));
-        assertTrue(result.getFeedbackToUser().contains("12-12-2025"));
+        assertTrue(result.getFeedbackToUser().contains("12-12-2024"));
     }
 
     @Test
     public void execute_validMultipleIndexes_success() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
-        LocalDate date = LocalDate.of(2025, 12, 12);
+        LocalDate date = LocalDate.of(2024, 12, 12);
 
         AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.ABSENT);
 
@@ -74,24 +74,42 @@ public class AttendanceCommandTest {
         assertTrue(result.getFeedbackToUser().contains("Marked"));
         assertTrue(result.getFeedbackToUser().contains("out of"));
         assertTrue(result.getFeedbackToUser().contains("ABSENT"));
-        assertTrue(result.getFeedbackToUser().contains("12-12-2025"));
+        assertTrue(result.getFeedbackToUser().contains("12-12-2024"));
     }
 
-    // THIS IS NOT SUPPOSED TO WORK IN FUTURE IMPLEMENTATION
-    // SINCE WE DON'T WANT TO ALLOW MARKING OF FUTURE DATES!
-    // REMOVE AND FIX!!!
     @Test
-    public void execute_validFutureDate_success() throws Exception {
+    public void execute_futureDate_failure() throws Exception {
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
-        LocalDate futureDate = LocalDate.of(2025, 12, 12).plusDays(1);
+        LocalDate futureDate = LocalDate.now().plusDays(1);
         AttendanceCommand command = new AttendanceCommand(indexes, futureDate, AttendanceStatus.LATE);
 
-        CommandResult result = command.execute(model);
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
 
-        assertTrue(result.getFeedbackToUser().contains("Marked"));
-        assertTrue(result.getFeedbackToUser().contains("out of"));
-        assertTrue(result.getFeedbackToUser().contains("LATE"));
-        assertTrue(result.getFeedbackToUser().contains("13-12-2025"));
+    @Test
+    public void execute_beforeBirthday_failure() throws Exception {
+        Model newModel = new ModelManager();
+        Person person = new PersonBuilder().withBirthday("01-01-2025").build();
+        newModel.addPerson(person);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate beforeBirthday = LocalDate.of(2024, 01, 01);
+        AttendanceCommand command = new AttendanceCommand(indexes, beforeBirthday, AttendanceStatus.LATE);
+
+        assertThrows(CommandException.class, () -> command.execute(newModel));
+    }
+
+    @Test
+    public void execute_birthdayBoundaryDate_failure() throws Exception {
+        Model newModel = new ModelManager();
+        Person person = new PersonBuilder().withBirthday("01-01-1900").build();
+        newModel.addPerson(person);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate beforeBirthday = LocalDate.of(1899, 01, 01);
+        AttendanceCommand command = new AttendanceCommand(indexes, beforeBirthday, AttendanceStatus.LATE);
+
+        assertThrows(CommandException.class, () -> command.execute(model));
     }
 
     @Test
