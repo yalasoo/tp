@@ -461,15 +461,15 @@ find-t ague
 
 ##### Format
 ```shell
-fav KEYWORD
+fav INDEX(es)
 ```
 
 ##### Parameters & Validation Rules
-|                    Parameter                    | Validation Rules                                                                                                                              |
-|:-----------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string                                                                                                                                | 
-|                                                 | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
-|                                                 | Error if empty string                                                                                                                         |
+|                     Parameter                     | Validation Rules                                                                                                                              |
+|:-------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string                                                                                                                                | 
+|                                                   | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
+|                                                   | Error if empty string                                                                                                                         |
 
 ##### Sample Commands
 ```shell
