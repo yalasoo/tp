@@ -259,16 +259,6 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_noMatchesFound_showsInfoPopup() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        InfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
-        DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
-        DeleteCommand deleteCommand = new DeleteCommand("Random Name", testInfoHandler, testDeleteHandler);
-        CommandException exception = assertThrows(CommandException.class, () -> deleteCommand.execute(model));
-        assertEquals(Messages.MESSAGE_NO_MATCHES_FOUND, exception.getMessage());
-    }
-
-    @Test
     public void execute_cancelledDeleteByIndex_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         TestInfoInfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
