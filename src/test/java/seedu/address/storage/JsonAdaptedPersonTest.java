@@ -60,12 +60,11 @@ public class JsonAdaptedPersonTest {
     public void constructor_personWithAttendance_populatesAttendanceMap() throws IllegalValueException {
         // Create a person with attendance records
         Person person = new PersonBuilder().withTags("student").build();
-        StringBuilder contactsNotMarked = new StringBuilder();
 
         // Add attendance records to the person
         try {
-            person.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT, contactsNotMarked);
-            person.markAttendance(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE, contactsNotMarked);
+            person.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT);
+            person.markAttendance(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE);
         } catch (CommandException e) {
             throw new RuntimeException(e);
         }

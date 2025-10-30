@@ -33,14 +33,14 @@ public class AttendanceCommand extends Command {
             + "with the specified STATUS. "
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
-            + PREFIX_STATUS + "STATUS (present/late/sick/absent) "
+            + PREFIX_STATUS + "STATUS (present/late/sick/absent/remove) "
             + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy) (Must be between student's born date and today's date)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
             + PREFIX_STATUS + "present "
             + PREFIX_DATE + "29-12-2025";
 
-    public static final String MESSAGE_SUCCESS = "Marked %d out of %d contacts as %s on %s."
-            + "\nBelow are the marked students: ";
+    public static final String MESSAGE_SUCCESS = "Modified %d out of %d contacts as %s on %s."
+            + "\nStudents with updated attendance:";
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
@@ -48,12 +48,15 @@ public class AttendanceCommand extends Command {
      * Represents the status that can be used for marking attendance.
      */
     public enum AttendanceStatus {
-        PRESENT, LATE, SICK, ABSENT, UNRECORDED
+        PRESENT, LATE, SICK, ABSENT, REMOVE
     }
 
     private final Set<Index> indexes;
     private final LocalDate date;
     private final AttendanceStatus status;
+
+    private final StringBuilder studentsModified = new StringBuilder();
+    private final StringBuilder contactsNotMarked = new StringBuilder();
 
     /**
      * Creates a AttendanceCommand to mark attendance of the
@@ -84,39 +87,33 @@ public class AttendanceCommand extends Command {
             throw new CommandException("No contacts available to mark attendance.");
         }
 
-        StringBuilder studentsMarked = new StringBuilder();
-        StringBuilder contactsNotMarked = new StringBuilder();
+        int totalModified = markAll(lastShownList);
 
-        int totalMarked = markAll(lastShownList, studentsMarked, contactsNotMarked);
-
-        return getCommandResult(totalMarked, studentsMarked, contactsNotMarked);
+        return getCommandResult(totalModified);
     }
 
     /**
      * Returns a CommandResult object based on the number of marked students and
      * display the details of both marked and unmarked contacts.
      *
-     * @param totalMarked The number of students successfully marked.
-     * @param studentsMarked String of students who are marked.
-     * @param contactsNotMarked String of contacts who are not marked and the details.
+     * @param totalModified The number of students successfully marked.
      * @return A CommandResult object.
      * @throws CommandException If an error occurs during command execution.
      */
-    private CommandResult getCommandResult(
-            int totalMarked, StringBuilder studentsMarked, StringBuilder contactsNotMarked) throws CommandException {
-        if (totalMarked > 0) {
-            logger.info("Successfully marked attendance for " + totalMarked + " students");
+    private CommandResult getCommandResult(int totalModified) throws CommandException {
+        if (totalModified > 0) {
+            logger.info("Successfully modified attendance for " + totalModified + " students");
             String dateMsg = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-            contactsNotMarked = contactsNotMarked.isEmpty()
-                    ? contactsNotMarked
-                    : new StringBuilder("\n\nBelow are the unmarked contacts:").append(contactsNotMarked);
+            if (!contactsNotMarked.isEmpty()) {
+                contactsNotMarked.insert(0, "\n\nBelow are the unmarked contacts:");
+            }
 
             return new CommandResult(String.format(
-                    MESSAGE_SUCCESS, totalMarked, indexes.size(), status, dateMsg)
-                    + studentsMarked.append(contactsNotMarked));
+                    MESSAGE_SUCCESS, totalModified, indexes.size(), status, dateMsg)
+                    + studentsModified.append(contactsNotMarked));
         } else {
-            String unsuccessfulMsg = "Marked 0 out of " + indexes.size() + " contacts.";
+            String unsuccessfulMsg = "Modified 0 out of " + indexes.size() + " contacts.";
             logger.info(unsuccessfulMsg);
             throw new CommandException(unsuccessfulMsg + " Please remember:"
                     + "\nAttendance will only apply to student."
@@ -128,14 +125,11 @@ public class AttendanceCommand extends Command {
      * Marks all specified indexes (if they are a student) and returns the
      * number of contacts actually marked.
      *
-     * @param lastShownList The current contact list being shown.
-     * @param studentsMarked The string of contacts who got marked.
      * @return The total number of marked contacts that is a student.
      * @throws CommandException If an error occurs during command execution.
      */
-    private int markAll(List<Person> lastShownList, StringBuilder studentsMarked, StringBuilder contactsNotMarked)
-            throws CommandException {
-        int totalMarked = 0;
+    private int markAll(List<Person> lastShownList) throws CommandException {
+        int totalModified = 0;
 
         for (Index i : indexes) {
             int zeroBasedIndex = i.getZeroBased();
@@ -153,11 +147,18 @@ public class AttendanceCommand extends Command {
             if (personToEdit.isStudent()) {
                 logger.fine("Marking attendance for " + personToEdit.getName() + " on " + date + " as " + status);
 
+                if (status.equals(AttendanceStatus.REMOVE)) {
+                    personToEdit.unmarkAttendance(date);
+                    studentsModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
+                    totalModified++;
+                    continue;
+                }
+
                 // Ensure marking was successful
                 // Guarantees unsuccessful to only be because of date error
-                if (personToEdit.markAttendance(date, status, contactsNotMarked)) {
-                    studentsMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
-                    totalMarked++;
+                if (personToEdit.markAttendance(date, status)) {
+                    studentsModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
+                    totalModified++;
                 } else {
                     logger.warning("Date provided before birthday or after today: " + i.getOneBased());
                     contactsNotMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
@@ -169,7 +170,7 @@ public class AttendanceCommand extends Command {
                         .append(" [Not a student]");
             }
         }
-        return totalMarked;
+        return totalModified;
     }
 
 
