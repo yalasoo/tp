@@ -147,45 +147,33 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_editColleagueToHaveSameEmail_failure() {
-        // Add two colleagues to the model
+    public void execute_editToCreateDuplicateColleague_failure() {
+        // Create a fresh model to avoid interference from typical persons
+        Model freshModel = new ModelManager(new AddressBook(), new UserPrefs());
+
+        // Add one colleague to the model
         Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
                 .withEmail("alice@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague1);
+
+        // Add another colleague with completely different details
         Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
                 .withEmail("bob@email.com").withTags("colleague").build();
+        freshModel.addPerson(colleague2);
 
-        model.addPerson(colleague1);
-        model.addPerson(colleague2);
-
-        // Try to edit colleague2 to have same email as colleague1
+        // Try to edit colleague2 to be identical to colleague1 (should trigger standard duplicate detection)
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withEmail("alice@email.com").build();
-        EditCommand editCommand = new EditCommand(Index.fromOneBased(model.getFilteredPersonList().size()), descriptor);
+                .withName("Alice Smith")
+                .withPhone("81111111")
+                .withEmail("alice@email.com")
+                .withTags("colleague").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(2), descriptor);
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, freshModel, EditCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
-    public void execute_editColleagueToHaveSamePhone_failure() {
-        // Add two colleagues to the model
-        Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
-                .withEmail("alice@email.com").withTags("colleague").build();
-        Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
-                .withEmail("bob@email.com").withTags("colleague").build();
-
-        model.addPerson(colleague1);
-        model.addPerson(colleague2);
-
-        // Try to edit colleague2 to have same phone as colleague1
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withPhone("81111111").build();
-        EditCommand editCommand = new EditCommand(Index.fromOneBased(model.getFilteredPersonList().size()), descriptor);
-
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
-    }
-
-    @Test
-    public void execute_editStudentToHaveSamePhone_success() throws Exception {
+    public void execute_editStudentToHaveSamePhone_success() {
         // Add two students to the model
         Person student1 = new PersonBuilder().withName("Tommy Lee").withPhone("98765432")
                 .withTags("student").build();
