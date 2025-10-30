@@ -14,7 +14,7 @@
 <?import javafx.stage.Stage?>
 
 <fx:root title="View Contact" type="javafx.stage.Stage"
-         minWidth="500" minHeight="600" maxWidth="800"
+         minWidth="500" minHeight="600" maxWidth="800" maxHeight="800"
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <icons>
         <Image url="@/images/view_window_icon.png" />
