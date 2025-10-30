@@ -16,6 +16,7 @@ end box
 
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
+participant ":ViewWindow" as ViewWindow UI_COLOR
 end box
 
 user -> LogicManager : execute("view 1")
@@ -24,6 +25,13 @@ activate LogicManager
 LogicManager -> AddressBookParser : parseCommand("view 1")
 activate AddressBookParser
 
+create ViewCommandParser
+AddressBookParser -> ViewCommandParser
+activate ViewCommandParser
+
+ViewCommandParser --> AddressBookParser
+deactivate ViewCommandParser
+
 AddressBookParser -> ViewCommandParser : parse("1")
 activate ViewCommandParser
 
@@ -31,12 +39,19 @@ ViewCommandParser --> ViewCommandParser : validate index
 ViewCommandParser -> ViewCommand : new ViewCommand(index)
 activate ViewCommand
 
-ViewCommandParser --> AddressBookParser : ViewCommand
+ViewCommand --> ViewCommandParser
+deactivate ViewCommand
+
+ViewCommandParser --> AddressBookParser : v
 deactivate ViewCommandParser
-AddressBookParser --> LogicManager : ViewCommand
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ViewCommandParser -[hidden]-> AddressBookParser
+destroy ViewCommandParser
+
+AddressBookParser --> LogicManager : v
 deactivate AddressBookParser
 
-LogicManager -> ViewCommand : execute()
+LogicManager -> ViewCommand : execute(m)
 activate ViewCommand
 
 ViewCommand -> Model : getFilteredPersonList()
@@ -46,13 +61,28 @@ deactivate Model
 
 ViewCommand -> ViewCommand : getPersonByIndex(1)
 
-ViewCommand --> LogicManager : CommandResult\nwith person data
+create CommandResult
+ViewCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ViewCommand
+deactivate CommandResult
+
+ViewCommand --> LogicManager : r
 deactivate ViewCommand
 
-LogicManager --> MainWindow : CommandResult\nwith showViewWindow flag
+LogicManager -> MainWindow : handleCommandResult(r)
+activate MainWindow
+
+MainWindow -> ViewWindow : new ViewWindow(personData)
+activate ViewWindow
+
+ViewWindow --> MainWindow
+deactivate ViewWindow
+
+MainWindow --> user
+deactivate MainWindow
+
+[<--LogicManager
 deactivate LogicManager
-
-MainWindow --> MainWindow : openViewWindow(personData)
-
-user <-- MainWindow
 @enduml

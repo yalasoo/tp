@@ -26,13 +26,4 @@ activate ResultDisplay
 ResultDisplay --> user : displays reminder in main window
 deactivate ResultDisplay
 
-' NOTE:
-note over ResultDisplay
-Today's Birthdays:
-- John Doe
-
-Upcoming Birthdays (next 7 days):
-- Jane Smith (in 2 days)
-- Bob Wilson (in 5 days)
-end note
 @enduml

@@ -7,11 +7,6 @@ participant ":MainWindow" as MainWindow UI_COLOR
 participant ":ResultDisplay" as ResultDisplay UI_COLOR
 end box
 
-box Logic LOGIC_COLOR_T1
-participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":RemindCommand" as RemindCommand LOGIC_COLOR
-end box
-
 box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
@@ -22,27 +17,14 @@ activate MainWindow
 MainWindow -> MainWindow : autoShowReminders()
 activate MainWindow
 
-MainWindow -> LogicManager : execute("remind")
-activate LogicManager
-
-LogicManager -> RemindCommand : execute()
-activate RemindCommand
-
-RemindCommand -> Model : getFilteredPersonList()
+MainWindow -> Model : getReminderData()
 activate Model
-Model --> RemindCommand : personList
+Model --> MainWindow : reminderMessage
 deactivate Model
-
-RemindCommand -> RemindCommand : generateReminderMessage()
-RemindCommand --> LogicManager : CommandResult with reminders
-deactivate RemindCommand
-
-LogicManager --> MainWindow : CommandResult
-deactivate LogicManager
 
 MainWindow -> ResultDisplay : setFeedbackToUser(reminderMessage)
 activate ResultDisplay
-ResultDisplay --> ResultDisplay : shows reminders on startup
+ResultDisplay --> MainWindow : shows reminders on startup
 deactivate ResultDisplay
 
 MainWindow --> MainWindow
