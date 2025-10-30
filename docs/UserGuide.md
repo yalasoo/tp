@@ -465,12 +465,13 @@ fav KEYWORD
 ```
 
 ##### Parameters & Validation Rules
-|                    Parameter                     | Validation Rules         |
-|:------------------------------------------------:|--------------------------|
-| <span style="color: #e83f8b">**KEYWORD**</span>  | Numeric string           | 
-|                                                  | Error if empty string    |
+|                    Parameter                    | Validation Rules                                                                                                                              |
+|:-----------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**KEYWORD**</span> | Numeric string                                                                                                                                | 
+|                                                 | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
+|                                                 | Error if empty string                                                                                                                         |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 fav 1 
 ```
@@ -482,11 +483,12 @@ fav 3 5 2 1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                              | GUI Action                                                                                                     |
-|:---------------------------------------------:|--------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.`                                                   | Contact list updates with star icon next to favourite contacts                                                 |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully. These people were removed from favourites: <names>` | Contact list shows updates with star icon next to favourite contacts and no star next to unfavourite contacts. |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                           | No changes                                                                                                     |
+|                 Outcome Type                  | Scenario                                   | Message                                                                                             | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                           | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                         | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites) | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                          | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
