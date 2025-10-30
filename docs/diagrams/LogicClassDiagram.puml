@@ -49,24 +49,23 @@ LogicManager -right->"1" AddressBookParser
 LogicManager --> Model
 LogicManager --> Storage
 
-AddressBookParser --> ParserClasses : <<uses>>
-ParserClasses ..> CommandClasses : <<create>>
+AddressBookParser -down-> XYZCommandParser : <<uses>>
+XYZCommandParser -down-> XYZCommand : <<creates>>
 
 XYZCommand -up-|> Command
+XYZCommandParser .up.|> Parser
 
-XYZCommandParser ..|> Parser
+LogicManager -left-> Command : <<executes>>
+Command -right-> Model : <<accesses>>
+Command -up-> CommandResult : <<creates>>
+Command -down-> CommandException : <<throws>>
+XYZCommandParser -down-> ParseException : <<throws>>
 
-LogicManager .left.> Command : <<executes>>
-Command .right.> Model : <<accesses>>
-Command .up.> CommandResult : <<creates>>
-Command .down.> CommandException : <<throws>>
-ParserClasses .down.> ParseException : <<throws>>
-
-Logic ..> CommandResult
-LogicManager .down.> CommandResult
+Logic -down-> CommandResult
+LogicManager -down-> CommandResult
 Storage --[hidden] Model
 Command .[hidden]up.> Storage
 
-note right of CommandClasses: Concrete command implementations\nhandle specific user actions
-note left of ParserClasses: Parser classes convert user input\ninto executable commands
+note right of XYZCommand: Concrete command implementations\nhandle specific user actions
+note right of XYZCommandParser: Parser classes convert user input\ninto executable commands
 @enduml
