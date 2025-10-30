@@ -27,6 +27,9 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.model.person.Person;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
@@ -144,6 +147,71 @@ public class EditCommandTest {
                 new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_editColleagueToHaveSameEmail_failure() {
+        // Add two colleagues to the model
+        Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
+                .withEmail("alice@email.com").withTags("colleague").build();
+        Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
+                .withEmail("bob@email.com").withTags("colleague").build();
+
+        model.addPerson(colleague1);
+        model.addPerson(colleague2);
+
+        // Try to edit colleague2 to have same email as colleague1
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withEmail("alice@email.com").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(model.getFilteredPersonList().size()), descriptor);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_editColleagueToHaveSamePhone_failure() {
+        // Add two colleagues to the model
+        Person colleague1 = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
+                .withEmail("alice@email.com").withTags("colleague").build();
+        Person colleague2 = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
+                .withEmail("bob@email.com").withTags("colleague").build();
+
+        model.addPerson(colleague1);
+        model.addPerson(colleague2);
+
+        // Try to edit colleague2 to have same phone as colleague1
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withPhone("81111111").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(model.getFilteredPersonList().size()), descriptor);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_editStudentToHaveSamePhone_success() throws Exception {
+        // Add two students to the model
+        Person student1 = new PersonBuilder().withName("Tommy Lee").withPhone("98765432")
+                .withTags("student").build();
+        Person student2 = new PersonBuilder().withName("Jimmy Lee").withPhone("87654321")
+                .withTags("student").build();
+
+        model.addPerson(student1);
+        model.addPerson(student2);
+
+        // Edit student2 to have same phone as student1 (should succeed for emergency contact scenario)
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withPhone("98765432").build();
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(model.getFilteredPersonList().size()), descriptor);
+
+        Person editedStudent2 = new PersonBuilder(student2).withPhone("98765432").build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(editedStudent2));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(student2, editedStudent2);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test

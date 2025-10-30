@@ -100,6 +100,49 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_colleagueWithSameEmail_throwsCommandException() {
+        Person existingColleague = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
+                .withEmail("shared@email.com").withTags("colleague").build();
+        Person newColleague = new PersonBuilder().withName("Bob Johnson").withPhone("82222222")
+                .withEmail("shared@email.com").withTags("colleague").build();
+        AddCommand addCommand = new AddCommand(newColleague);
+        ModelStub modelStub = new ModelStubWithPerson(existingColleague);
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_colleagueWithSamePhone_throwsCommandException() {
+        Person existingColleague = new PersonBuilder().withName("Alice Smith").withPhone("81111111")
+                .withEmail("alice@email.com").withTags("colleague").build();
+        Person newColleague = new PersonBuilder().withName("Bob Johnson").withPhone("81111111")
+                .withEmail("bob@email.com").withTags("colleague").build();
+        AddCommand addCommand = new AddCommand(newColleague);
+        ModelStub modelStub = new ModelStubWithPerson(existingColleague);
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_studentsWithSamePhone_success() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person existingStudent = new PersonBuilder().withName("Tommy Lee").withPhone("98765432")
+                .withTags("student").build();
+        Person newStudent = new PersonBuilder().withName("Jimmy Lee").withPhone("98765432")
+                .withTags("student").build();
+
+        // Add existing student first
+        new AddCommand(existingStudent).execute(modelStub);
+
+        // Adding student with same phone but different name should succeed (emergency contact scenario)
+        CommandResult commandResult = new AddCommand(newStudent).execute(modelStub);
+
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(newStudent)),
+                commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(existingStudent, newStudent), modelStub.personsAdded);
+    }
+
+    @Test
     public void execute_sameNameDifferentPhone_success() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
         Person existingPerson = new PersonBuilder().withName("John Doe").withPhone("98765432").build();
