@@ -198,7 +198,10 @@ The system uses different rules for detecting duplicates based on contact type:<
 • Allows different students to share the same phone (e.g., siblings with same emergency contact)<br><br>
 
 <strong>Error Message:</strong> <code>Duplicate contact detected. For colleagues: ensure unique phone numbers and email addresses. For students: ensure unique name-phone combinations.</code><br>
-<strong>Resolution:</strong> For colleagues, ensure unique phone numbers and email addresses. For students, ensure unique name-phone combinations.
+
+<strong>Resolution:</strong><br>
+• **For Colleagues:** Ensure unique phone numbers and email addresses<br>
+• **For Students:** Ensure unique name-phone combinations
 </box>
 
 ##### Sample Commands
