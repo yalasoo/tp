@@ -22,7 +22,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person identified by the index number used in the displayed person list or his name.\n"
-            + "Parameters: INDEX (must be a positive integer) or NAME\n"
+            + "Parameters: INDEX (must be exactly one positive integer) or n/NAME\n"
             + "Example: " + COMMAND_WORD + " 1 or " + COMMAND_WORD + " n/John ";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
@@ -86,21 +86,19 @@ public class DeleteCommand extends Command {
 
             if (possibleMatches.isEmpty()) {
                 infoPopupHandler.showMessage(Messages.MESSAGE_NO_MATCHES_FOUND);
-                throw new CommandException(Messages.MESSAGE_NO_MATCHES_FOUND);
+            } else {
+                Person selectedPerson = showDeletePopup(possibleMatches);
+                if (isDeletionCancelled(selectedPerson)) {
+                    throw new CommandException(Messages.MESSAGE_DELETION_CANCELLED);
+                }
+                model.deletePerson(selectedPerson);
+                return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
+                        Messages.format(selectedPerson)));
             }
-
-            Person selectedPerson = showDeletePopup(possibleMatches);
-            if (isDeletionCancelled(selectedPerson)) {
-                throw new CommandException(Messages.MESSAGE_DELETION_CANCELLED);
-            }
-            model.deletePerson(selectedPerson);
-            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
-                    Messages.format(selectedPerson)));
         }
 
         // delete by index
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            infoPopupHandler.showMessage(Messages.MESSAGE_INVALID_INDEX);
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 

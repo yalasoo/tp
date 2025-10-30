@@ -100,6 +100,9 @@ manage students' and parents' contact information efficiently.
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
+* Items followed by ellipsis `...` accept more than one value.<br>
+  e.g `c/CLASS...` can be used as `c/K1A` or as `c/K1A c/K2B`.
+
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
@@ -123,14 +126,25 @@ manage students' and parents' contact information efficiently.
 
 **Purpose**: Shows a message explaining how to access the help page.
 
-<div style="text-align: center;">
-    <img src="images/help_message.png" width="600px">
-</div>
-
 ##### Command Format
 ```shell
 help
 ```
+
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `help` will be ignored (treated as `help`).
+
+##### Outputs
+|                Outcome Type                   | Scenario            | Message                    | GUI Action                                           |
+|:---------------------------------------------:|---------------------|----------------------------|------------------------------------------------------|
+| <span style="color: green">**Success**</span> | Help window appears | `Opened help window.`      | Pop-up window appears with the link to the help page |
+
+<div style="text-align: center;">
+    <strong>Help window appears</strong><br>
+    <img src="images/help_message.png" width="600px">
+</div>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -173,10 +187,11 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 
 <box type="warning">
 <strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
-If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected.</code>
+If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected. Please use a different name or phone number to make it unique.</code><br>
+<strong>Note:</strong> To resolve duplicates, you only need to change <strong>either</strong> the name <strong>or</strong> the phone number (not both).
 </box>
 
-##### Example Commands
+##### Sample Commands
 ```shell
 add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student
 ```
@@ -218,7 +233,7 @@ delete n/NAME
 |                                                   | Case-insensitive match                                                     |
 |                                                   | Matches partial names                                                      |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 delete 3
 ```
@@ -287,21 +302,27 @@ view INDEX
 |                                               | Cannot be zero or negative                                 |
 |                                               | Must correspond to an existing contact in the current list |
 
-##### Example Commands:
+##### Sample Commands:
 ```shell
 view 1
 ````
 
 ##### Outputs
-|                Outcome Type                   | Scenario               | Message                                                    | GUI Action                                                                |
-|:---------------------------------------------:|------------------------|------------------------------------------------------------|---------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Popup displays: Full name, Personal Info, Contact Info, Notes, Attendance |
-|  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                                |
-|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                                |
+|                Outcome Type                   | Scenario               | Message                                                    | GUI Action                                                        |
+|:---------------------------------------------:|------------------------|------------------------------------------------------------|-------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Pop-up windows appears displaying the contact's full information. |
+|  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                        |
+|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                        |
 
-<div style="text-align: center;">
-    <strong>Valid index provided</strong><br>
-    <img src="images/view_contact_window.png" width="500px">
+<div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
+  <div style="text-align: center;">
+    <strong>Valid index provided - Student</strong><br>
+    <img src="images/view_contact_window_student.png" width="450px">
+  </div>
+  <div style="text-align: center;">
+    <strong>Valid index provided - Colleague</strong><br>
+    <img src="images/view_contact_window_colleague.png" width="450px">
+  </div>
 </div>
   
 [//]: # (COMMAND BREAK)
@@ -331,7 +352,7 @@ note INDEX
 |                                                   | Leading/trailing spaces trimmed                            |
 |                                                   | Remove current note if omitted or left empty               |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 note 1 desc/Allergic to peanuts
 ```
@@ -475,7 +496,7 @@ fav KEYWORD
 | <span style="color: #e83f8b">**KEYWORD**</span>  | Numeric string           | 
 |                                                  | Error if empty string    |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 fav 1 
 ```
@@ -513,7 +534,7 @@ sort f/FIELD [o/ORDER]
 | <span style="color: #e83f8b">**ORDER**</span> | Valid order: asc, desc        | 
 |                                               | Default to asc if empty       |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 sort f/name
 ```
@@ -598,7 +619,7 @@ attendance INDEX(es) s/STATUS [d/DATE]
 |                                                    | Must be a valid date                                       |
 |                                                    | Default to current date if empty                           |
 
-##### Example Commands
+##### Sample Commands
 ```shell
 attendance 1 s/present
 ```
@@ -628,34 +649,35 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 attendanceD INDEX(es) [m/MONTH]
 ```
 ```shell
-attendanceD c/CLASS(es) [d/DATE]
+attendanceD c/CLASS... [d/DATE]
 ```
 ```shell
-attendanceD c/CLASS(es) [m/MONTH]
+attendanceD c/CLASS... [m/MONTH]
 ```
 <box type="warning">
 
 **Warning:**
-* You can only download monthly attendance report for individual (<code>INDEX(es)</code>).
-* You can download daily or monthly attendance report for class (<code>CLASS(es)</code>) but will default to monthly report if <code>DATE</code> or <code>MONTH</code> is not specified.
+* **Individual reports** (<code>INDEX(es)</code>) are **monthly only**.
+* **Class reports** (<code>CLASS</code>) can be **daily or monthly**, defaulting to monthly if no timeframe is specified.
 </box>
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                                         |
-|:-------------------------------------------------:|--------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                | 
-|                                                   | Cannot be 0 or negative                                                  |
-|                                                   | Must correspond to an existing contact in the current list               |
-|                                                   | Accepts multiple inputs                                                  |
-| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
-|                                                   | Case-insensitive                                                         |
-|                                                   | Error if invalid class format                                            |                                           
-|   <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                                |
-|                                                   | Must be a valid date                                                     |
-|                                                   | Default to current date if empty                                         |
-|   <span style="color: #e83f8b">**MONTH**</span>   | Month in MM-yyyy format                                                  |
-|                                                   | Must be a valid month                                                    |
-|                                                   | Default to current month if empty                                        |
+|                     Parameter                     | Validation Rules                                                          |
+|:-------------------------------------------------:|---------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                 | 
+|                                                   | Cannot be 0 or negative                                                   |
+|                                                   | Must correspond to an existing contact in the current list                |
+|                                                   | Accepts multiple inputs                                                   |
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K  |
+|                                                   | Case-insensitive                                                          |
+|                                                   | Accepts multiple inputs and must start with `c/`                          |
+|                                                   | Error if invalid class format                                             |                                           
+|   <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                                 |
+|                                                   | Must be a valid date                                                      |
+|                                                   | Default to current date if empty                                          |
+|   <span style="color: #e83f8b">**MONTH**</span>   | Month in MM-yyyy format                                                   |
+|                                                   | Must be a valid month                                                     |
+|                                                   | Default to current month if empty                                         |
 
 <box type="info" seamless>
 
@@ -665,7 +687,7 @@ attendanceD c/CLASS(es) [m/MONTH]
 * All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
 </box>
 
-##### Example Commands
+##### Sample Commands
 ```shell
 attendanceD 1
 ```
@@ -679,7 +701,7 @@ attendanceD c/K1A
 attendanceD c/K1A d/29-01-2025
 ```
 ```shell
-attendanceD c/K1A m/01-2025
+attendanceD c/K1A c/K2B m/01-2025
 ```
 
 ##### Outputs
@@ -702,6 +724,16 @@ attendanceD c/K1A m/01-2025
 list
 ```
 
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `list` will be ignored (treated as `list`).
+
+##### Outputs
+|                 Outcome Type                  | Scenario           | Message                                                       | GUI Action                             |
+|:---------------------------------------------:|--------------------|---------------------------------------------------------------|----------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts shown | `Listed all persons. The favourites are shown at the top!`    | Contact list updates with all contacts |
+
 [//]: # (COMMAND BREAK)
 <br>
 
@@ -714,6 +746,16 @@ list
 clear
 ```
 
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `clear` will be ignored (treated as `clear`).
+
+##### Outputs
+|                 Outcome Type                  | Scenario             | Message                               | GUI Action                          |
+|:---------------------------------------------:|----------------------|---------------------------------------|-------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts cleared | `Address book has been cleared!`      | Contact list updates with 0 contact |
+
 [//]: # (COMMAND BREAK)
 <br>
 
@@ -725,6 +767,16 @@ clear
 ```shell
 exit
 ```
+
+##### Parameters & Validation Rules
+
+* **No parameters accepted.**
+* Any extraneous text after `exit` will be ignored (treated as `exit`).
+
+##### Outputs
+|                 Outcome Type                  | Scenario      | Message | GUI Action                                       |
+|:---------------------------------------------:|---------------|---------|--------------------------------------------------|
+| <span style="color: green">**Success**</span> | Exits program | None    | All windows will be closed and program will stop |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -756,7 +808,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 --------------------------------------------------------------------------------------------------------------------
 
-<h3 id="open-csv-guide">How to Open CSV Files</h3>
+<h2 id="open-csv-guide">How to Open CSV Files</h2>
 
 **Using Microsoft Excel:**
 
