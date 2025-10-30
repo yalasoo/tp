@@ -2,6 +2,8 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
+Title View Command - UI
+
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
 participant ":ViewWindow" as ViewWindow UI_COLOR

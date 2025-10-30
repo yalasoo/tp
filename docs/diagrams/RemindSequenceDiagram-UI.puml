@@ -2,7 +2,7 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
-title Remind Command - UI Display
+title Remind Command - UI
 
 actor User as user
 box UI UI_COLOR_T1

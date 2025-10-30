@@ -2,6 +2,8 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
+Title Remind Command - autoShowReminders()
+
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
 participant ":ResultDisplay" as ResultDisplay UI_COLOR

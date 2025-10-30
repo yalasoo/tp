@@ -3,6 +3,8 @@
 skinparam ArrowFontStyle plain
 actor User as user
 
+Title View Command - Logic
+
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
@@ -22,7 +24,7 @@ end box
 user -> LogicManager : execute("view 1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("view 1")
+LogicManager -> AddressBookParser : parseCommand\n("view 1")
 activate AddressBookParser
 
 create ViewCommandParser
@@ -42,13 +44,13 @@ activate ViewCommand
 ViewCommand --> ViewCommandParser
 deactivate ViewCommand
 
-ViewCommandParser --> AddressBookParser : v
+ViewCommandParser --> AddressBookParser
 deactivate ViewCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
 ViewCommandParser -[hidden]-> AddressBookParser
 destroy ViewCommandParser
 
-AddressBookParser --> LogicManager : v
+AddressBookParser --> LogicManager
 deactivate AddressBookParser
 
 LogicManager -> ViewCommand : execute(m)
@@ -67,7 +69,7 @@ deactivate ViewCommand
 LogicManager -> MainWindow : handleCommandResult(r)
 activate MainWindow
 
-MainWindow -> ViewWindow : new ViewWindow(personData)
+MainWindow -> ViewWindow : new ViewWindow\n(personData)
 activate ViewWindow
 
 ViewWindow --> MainWindow

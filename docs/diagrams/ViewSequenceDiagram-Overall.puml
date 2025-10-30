@@ -2,7 +2,7 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
-Title View Command - Overall Flow
+Title View Command - Overall Diagram
 
 Actor User as user USER_COLOR
 Participant ":UI" as ui UI_COLOR

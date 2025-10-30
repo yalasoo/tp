@@ -2,7 +2,7 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
-title Remind Command - Overview
+Title Remind Command - Overall Diagram
 
 actor User as user
 participant ":UI" as ui UI_COLOR

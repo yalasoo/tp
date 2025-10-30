@@ -177,10 +177,9 @@ The `view` command displays detailed information about a specific person in a po
 <puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
 
 Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
-**Sequence Diagram for Logic:**
+
 <puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
 
-**Sequence Diagram for UI:**
 <puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
 
 ### Remind Command
@@ -219,11 +218,10 @@ The `remind` command shows current and upcoming birthdays.
 **Overall Sequence Diagram for Remind:**
 <puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
 
-Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
-**Sequence Diagram for Logic:**
+Below is the more in depth breakdown of the Logic, Model and UI Sequence diagrams.
+
 <puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
 
-**Sequence Diagram for Logic:**
 <puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
 
 
