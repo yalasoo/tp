@@ -390,6 +390,8 @@ _{Explain here how the data archiving feature will be implemented}_
 
 (For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise)
 
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
 **Use case: Add a contact**
 
 **MSS**
@@ -408,6 +410,9 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: View a contact**
 
@@ -426,6 +431,9 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Delete a contact**
 
@@ -448,7 +456,9 @@ Use case ends.
 * 5a. User cancels the deletion.
   *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
        Use case resumes at step 2.
+</div>
 
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Searches a contact**
 
@@ -466,6 +476,9 @@ Use case ends.
 * 3a. No contact matches the information.
     *    3a.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Marks attendance**
 
@@ -473,8 +486,8 @@ Use case ends.
 
 1.  User opens LittleLogBook.
 2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to mark attendance of a specific student.
-4.  LittleLogBook succesfully marks student's attendance.
+3.  User requests to mark attendance of a specific contact.
+4.  LittleLogBook successfully marks contact's attendance.
 
     Use case ends.
 
@@ -483,7 +496,16 @@ Use case ends.
 * 3a. No contact matches the information.
     *    3a.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
-
+* 3b. Contact is a colleague.
+    *    3b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3c. Date provided is before student's born date.
+    *    3c.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3d. Date provided is beyond today's date.
+    *    3d.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
 
 *{More to be added}*
 
