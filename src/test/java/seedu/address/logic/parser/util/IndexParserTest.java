@@ -49,12 +49,19 @@ public class IndexParserTest {
     }
 
     @Test
+    public void parseRange_endLessThanStart_throwsParseException() {
+        assertThrows(ParseException.class, () -> IndexParser.parseRange("2-1"));
+        assertThrows(ParseException.class, () -> IndexParser.parseRange("3-1"));
+        assertThrows(ParseException.class, () -> IndexParser.parseRange("3-1-"));
+    }
+
+    @Test
     public void parseSingleIndex_zeroIndex_throwsParseException() {
         assertThrows(ParseException.class, () -> IndexParser.parseSingleIndex("0"));
     }
 
     @Test
-    public void parseSingleIndexe_negativeIndex_throwsParseException() {
+    public void parseSingleIndex_negativeIndex_throwsParseException() {
         assertThrows(ParseException.class, () -> IndexParser.parseSingleIndex("-1"));
     }
 }
