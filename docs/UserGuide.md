@@ -246,6 +246,11 @@ delete n/John Doe
 | <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                 | `Multiple matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
 | <span style="color: orange">**Confirmation Required**</span> | Exact one match found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                            | Pop-up window with the selected person information appears |
 
+<box type="warning">
+<strong>Note:</strong> When a popup window appears, you must respond to it before continuing. 
+The main window will not respond until you either confirm or cancel the deletion.
+</box>
+
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
     <strong>No matches found</strong><br>
