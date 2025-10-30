@@ -33,6 +33,11 @@ public class Tag {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if this is a student tag.
+     */
+    public boolean isStudent() { return tagName.equals("student"); }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

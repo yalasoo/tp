@@ -56,7 +56,6 @@ public class AttendanceCommandParser implements Parser<AttendanceCommand> {
             throw new ParseException("Invalid status. Valid status: present, late, sick, absent");
         }
 
-
         LocalDate date;
         try {
             date = LocalDate.parse(strDate, formatter);
