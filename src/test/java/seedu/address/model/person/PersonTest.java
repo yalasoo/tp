@@ -97,16 +97,12 @@ public class PersonTest {
     }
 
     @Test
-    public void markAttendance_validDateAndStatus_success() {
+    public void markAttendance_validDateAndStatus_success() throws CommandException {
         LocalDate today = LocalDate.of(2025, 10, 9);
         Person person = new PersonBuilder().withTags("student").build();
         StringBuilder contactsNotMarked = new StringBuilder();
 
-        try {
-            person.markAttendance(today, AttendanceStatus.PRESENT, contactsNotMarked);
-        } catch (CommandException e) {
-            throw new RuntimeException(e);
-        }
+        person.markAttendance(today, AttendanceStatus.PRESENT, contactsNotMarked);
 
         Map<LocalDate, AttendanceStatus> records = person.getAttendanceRecords();
         assertEquals(1, records.size());
@@ -114,18 +110,44 @@ public class PersonTest {
     }
 
     @Test
-    public void getAttendanceRecords_studentWithAttendance_returnsRecords() {
+    public void markAttendance_dateBeforeBirthday_failure() throws CommandException {
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        StringBuilder contactsNotMarked = new StringBuilder();
+
+        LocalDate date = LocalDate.of(2023, 1, 1);
+
+        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT, contactsNotMarked));
+    }
+
+    @Test
+    public void markAttendance_dateAfterToday_failure() throws CommandException {
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        StringBuilder contactsNotMarked = new StringBuilder();
+
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT, contactsNotMarked));
+    }
+
+    @Test
+    public void markAttendance_colleague_failure() throws CommandException {
+        Person person = new PersonBuilder().withTags("colleague").withBirthday("01-01-2024").build();
+        StringBuilder contactsNotMarked = new StringBuilder();
+
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT, contactsNotMarked));
+    }
+
+    @Test
+    public void getAttendanceRecords_studentWithAttendance_returnsRecords() throws CommandException {
         Person student = new PersonBuilder().withTags("student").build();
         LocalDate date1 = LocalDate.of(2024, 1, 15);
         LocalDate date2 = LocalDate.of(2024, 1, 16);
         StringBuilder contactsNotMarked = new StringBuilder();
 
-        try {
-            student.markAttendance(date1, AttendanceStatus.PRESENT, contactsNotMarked);
-            student.markAttendance(date2, AttendanceStatus.LATE, contactsNotMarked);
-        } catch (CommandException e) {
-            throw new RuntimeException(e);
-        }
+        student.markAttendance(date1, AttendanceStatus.PRESENT, contactsNotMarked);
+        student.markAttendance(date2, AttendanceStatus.LATE, contactsNotMarked);
 
         Map<LocalDate, AttendanceStatus> records = student.getAttendanceRecords();
         assertEquals(2, records.size());

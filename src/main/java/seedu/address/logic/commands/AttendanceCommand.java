@@ -34,7 +34,7 @@ public class AttendanceCommand extends Command {
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
             + PREFIX_STATUS + "STATUS (present/late/sick/absent) "
-            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy)\n"
+            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy) (Must be between student's born date and today's date)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
             + PREFIX_STATUS + "present "
             + PREFIX_DATE + "29-12-2025";
