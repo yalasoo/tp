@@ -52,7 +52,9 @@ The bulk of the app's work is done by the following four components:
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
-<puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
+<div align="center">
+    <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="600" />
+</div>
 
 Each of the four main components (also shown in the diagram above),
 
@@ -61,7 +63,9 @@ Each of the four main components (also shown in the diagram above),
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
-<puml src="diagrams/ComponentManagers.puml" width="300" />
+<div align="center">
+    <puml src="diagrams/ComponentManagers.puml" width="300" />
+</div>
 
 The sections below give more details of each component.
 
@@ -69,7 +73,9 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
-<puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+<div align="center">
+    <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+</div>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
@@ -88,11 +94,15 @@ The `UI` component,
 
 Here's a (partial) class diagram of the `Logic` component:
 
-<puml src="diagrams/LogicClassDiagram.puml" width="550"/>
+<div align="center">
+    <puml src="diagrams/LogicClassDiagram.puml" width="maxwidth"/>
+</div>
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<div align="center">
+    <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" width="maxwidth"/>
+</div>
 
 <box type="info" seamless>
 
@@ -108,8 +118,9 @@ How the `Logic` component works:
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
-
-<puml src="diagrams/ParserClasses.puml" width="600"/>
+<div align="center">
+    <puml src="diagrams/ParserClasses.puml" width="600"/>
+</div>
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
@@ -118,7 +129,9 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<div align="center">
+    <puml src="diagrams/ModelClassDiagram.puml" width="800"/>
+</div>
 
 
 The `Model` component,
@@ -132,7 +145,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="700" />
 
 </box>
 
@@ -141,7 +154,9 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<div align="center">
+    <puml src="diagrams/StorageClassDiagram.puml" width="700" />
+</div>
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
@@ -174,13 +189,18 @@ The `view` command displays detailed information about a specific person in a po
 6. The main window remains accessible while the view window is open
 
 **Overall Sequence Diagram for View:**
-<puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
+</div>
 
 Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
 
-<puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
-
-<puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
+</div>
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
+</div>
 
 ### Remind Command
 
@@ -197,7 +217,9 @@ The `remind` command shows current and upcoming birthdays.
 5. Can show both students and colleagues with upcoming dates
 
 **Sequence Diagram for Automated Remind on start:**
-<puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+</div>
 
 **Key Classes:**
 - `RemindCommand` - Handles the command execution
@@ -216,13 +238,18 @@ The `remind` command shows current and upcoming birthdays.
   - Range Validation: Ensures birthday falls between January 1, 1900 and today
 
 **Overall Sequence Diagram for Remind:**
-<puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
+</div>
 
 Below is the more in depth breakdown of the Logic, Model and UI Sequence diagrams.
 
-<puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
-
-<puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
+</div>
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
+</div>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -289,7 +316,7 @@ Below is the more in depth breakdown of the Logic, Model and UI Sequence diagram
 
 ### Use cases
 
-(For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise)
+[//]: # (&#40;For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise&#41;)
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
@@ -321,9 +348,10 @@ Use case ends.
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User requests to view a specific contact.
-4. LittleLogBook finds the matching contact.
-5. LittleLogBook displays the contact's full information in a pop-up window.
+3. User requests to view a specific contact. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook finds the matching contact. 
+6. LittleLogBook displays the contact's full information in a pop-up window.
 Use case ends.
 
 **Extensions**
@@ -335,6 +363,32 @@ Use case ends.
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
+**Use case: Delete a contact**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to delete a specific contact in the list. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook displays a confirmation popup asking the user to confirm the deletion.
+6. Users confirms the deletion. 
+7. LittleLogBook deletes the person and updates the list.
+
+    Use case ends.
+
+**Extensions**
+
+* 3a. The contact does not exist.
+    *    3a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 5a. User cancels the deletion.
+    *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
+         Use case resumes at step 2.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
 **Use case: Check birthday reminders**
 
 **MSS**
@@ -342,8 +396,9 @@ Use case ends.
 1. User opens LittleLogBook.
 2. LittleLogBook automatically checks for birthdays and shows reminder notification.
 3. User requests to manually check for birthday reminders.
-4. LittleLogBook looks through all contacts for birthdays today and within the next 7 days.
-5. LittleLogBook displays formatted birthday reminders.
+4. LittleLogBook validates input information. 
+5. LittleLogBook looks through all contacts for birthdays today and within the next 7 days. 
+6. LittleLogBook displays formatted birthday reminders.
 
 Use case ends.
 
@@ -357,60 +412,6 @@ Use case ends.
     * 5c1. LittleLogBook tells the user that there is no upcoming birthdays. 
 * 5d. LittleLogBook is empty.
     * 5d1. LittleLogBook tells the user that there is no contacts in LittleLogBook
-</div>
-
-<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
-
-**Use case: Delete a contact**
-
-**MSS**
-
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to delete a specific contact in the list.
-4.  LittleLogBook displays a confirmation popup asking the user to confirm the deletion.
-5.  Users confirms the deletion.
-6.  LittleLogBook deletes the person and updates the list.
-
-    Use case ends.
-
-**Extensions**
-
-* 3a. The contact does not exist.
-  *    3a.1 LittleLogBook requests for valid input.
-       Use case resumes at step 3.
-* 5a. User cancels the deletion.
-  *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
-       Use case resumes at step 2.
-</div>
-
-<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
-
-**Use case: Marks attendance**
-
-**MSS**
-
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to mark attendance of a specific contact.
-4.  LittleLogBook successfully marks contact's attendance.
-
-    Use case ends.
-
-**Extensions**
-
-* 3a. No contact matches the information.
-    *    3a.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
-* 3b. Contact is a colleague.
-    *    3b.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
-* 3c. Date provided is before student's born date.
-    *    3c.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
-* 3d. Date provided is beyond today's date.
-    *    3d.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
 </div>
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
@@ -459,6 +460,101 @@ Use case ends.
       Use case resumes at step 3.
 </div>
 
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Marks attendance**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to mark attendance of a specific contact. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully marks contact's attendance.
+
+    Use case ends.
+
+**Extensions**
+
+* 4a. No contact matches the information.
+    *    4a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4b. Contact is a colleague.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4c. Date provided is before student's born date.
+    *    4c.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4d. Date provided is beyond today's date.
+    *    4d.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads student monthly attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to Download monthly attendance report of a student.
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully downloads student's attendance.
+
+    Use case ends.
+
+**Extensions**
+
+* 4a. Student is not inside contact.
+    *    4a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads class daily attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User requests to Download daily attendance report of a class.
+4. LittleLogBook validates input information.
+5. LittleLogBook successfully downloads student's attendance.
+
+   Use case ends.
+
+**Extensions**
+
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads class monthly attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User requests to Download monthly attendance report of a class.
+4. LittleLogBook validates input information.
+5. LittleLogBook successfully downloads student's attendance.
+
+   Use case ends.
+
+**Extensions**
+
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
 
 *{More to be added}*
 
@@ -502,8 +598,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -523,8 +617,29 @@ testers are expected to do more *exploratory* testing.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+##### Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+1. **Simulating missing data file:**
+    - Navigate to the `data/` folder in your LittleLogBook directory
+    - Delete or rename the `addressbook.json` file
+    - Launch LittleLogBook
+    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `addressbook.json` file automatically
 
-1. _{ more test cases …​ }_
+<br>
+
+2. **Simulating corrupted data file:**
+    - Open the `data/addressbook.json` file in a text editor
+    - Manually modify the JSON structure to be invalid, for example:
+        - Remove essential fields like `"name"`, `"phone"`, etc. from a contact
+        - Change field types (e.g., change a phone number to an array: `"phone": [12345678]`)
+        - Introduce JSON syntax errors (remove closing braces, add extra commas)
+        - Add invalid date formats in birthday/attendance fields
+        - Remove the entire `"persons"` array or make it null
+    - Save the file and launch LittleLogBook
+    - **Expected behavior:** LittleLogBook should detect the corruption and start with an empty address book.
+
+<br>
+
+3. **Testing with invalid birthday formats:**
+    - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
+    - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
