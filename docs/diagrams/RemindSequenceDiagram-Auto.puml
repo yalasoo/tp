@@ -1,7 +1,6 @@
 @startuml
 !include style.puml
 skinparam ArrowFontStyle plain
-actor User as user
 
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
@@ -49,6 +48,6 @@ deactivate ResultDisplay
 MainWindow --> MainWindow
 deactivate MainWindow
 
-MainWindow -->
+[<-- MainWindow
 deactivate MainWindow
 @enduml

@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+title Remind Command - UI Display
+
+actor User as user
+box UI UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+participant ":ResultDisplay" as ResultDisplay UI_COLOR
+end box
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+end box
+
+user -> LogicManager : execute("remind")
+activate LogicManager
+
+LogicManager --> MainWindow : CommandResult with reminder message
+deactivate LogicManager
+
+MainWindow -> ResultDisplay : setFeedbackToUser(reminderMessage)
+activate ResultDisplay
+
+ResultDisplay --> user : displays reminder in main window
+deactivate ResultDisplay
+
+' NOTE:
+note over ResultDisplay
+Today's Birthdays:
+- John Doe
+
+Upcoming Birthdays (next 7 days):
+- Jane Smith (in 2 days)
+- Bob Wilson (in 5 days)
+end note
+@enduml

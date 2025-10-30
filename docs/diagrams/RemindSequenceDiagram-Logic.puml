@@ -2,12 +2,9 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
-actor User as user
-box UI UI_COLOR_T1
-participant ":MainWindow" as MainWindow UI_COLOR
-participant ":ResultDisplay" as ResultDisplay UI_COLOR
-end box
+title Remind Command - Processing Logic
 
+actor User as user
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
@@ -50,11 +47,6 @@ RemindCommand -> RemindCommand : buildReminderString(todayBirthdays, upcomingBir
 RemindCommand --> LogicManager : CommandResult with reminder message
 deactivate RemindCommand
 
-LogicManager --> MainWindow : CommandResult
+LogicManager --> user : CommandResult (ready for display)
 deactivate LogicManager
-
-MainWindow -> ResultDisplay : setFeedbackToUser(reminderMessage)
-activate ResultDisplay
-ResultDisplay --> user : displays reminder in main window
-deactivate ResultDisplay
 @enduml

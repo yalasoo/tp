@@ -1,0 +1,33 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+title Remind Command - Overview
+
+actor User as user
+participant ":UI" as ui UI_COLOR
+participant ":Logic" as logic LOGIC_COLOR
+participant ":Model" as model MODEL_COLOR
+
+user -[UI_COLOR]> ui : "remind" command
+activate ui UI_COLOR
+
+ui -[UI_COLOR]> logic : execute("remind")
+activate logic LOGIC_COLOR
+
+logic -[LOGIC_COLOR]> model : get person list
+activate model MODEL_COLOR
+model -[MODEL_COLOR]-> logic : personList
+deactivate model
+
+logic -[LOGIC_COLOR]> logic : process birthdays\n(see detailed diagram)
+activate logic LOGIC_COLOR_T1
+logic -[LOGIC_COLOR]-> logic
+deactivate logic
+
+logic -[LOGIC_COLOR]-> ui : reminder message
+deactivate logic
+
+ui --> user : display birthdays reminder
+deactivate ui
+@enduml
