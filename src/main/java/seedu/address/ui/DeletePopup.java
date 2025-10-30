@@ -1,6 +1,8 @@
 package seedu.address.ui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Messages;
 import seedu.address.model.person.Person;
 
@@ -19,6 +22,9 @@ import seedu.address.model.person.Person;
 public class DeletePopup extends UiPart<Stage> {
 
     public static final String ERROR_STYLE_CLASS = "invalid-input";
+
+    private static final Logger logger = LogsCenter.getLogger(DeletePopup.class);
+
     private static final String FXML = "DeletePopup.fxml";
 
     @FXML
@@ -39,11 +45,13 @@ public class DeletePopup extends UiPart<Stage> {
      */
     public DeletePopup(Stage root) {
         super(FXML, root);
+        assert root != null;
         setUpKeyboardHandlers();
         inputField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
 
         root.setWidth(500);
         root.setHeight(500);
+        logger.log(Level.INFO, "DeletePopup is initialized.");
         root.initModality(Modality.APPLICATION_MODAL);
         root.setAlwaysOnTop(true);
     }
@@ -62,6 +70,9 @@ public class DeletePopup extends UiPart<Stage> {
      * @param matchingResults the list of {@code Person} entries displayed for the user to choose from.
      */
     public void show(String headerMessage, List<Person> matchingResults) {
+        assert headerMessage != null;
+        assert matchingResults != null;
+
         this.matchingResults = matchingResults;
         this.isConfirmed = false;
         this.selectedPerson = null;
@@ -84,6 +95,7 @@ public class DeletePopup extends UiPart<Stage> {
         inputField.clear();
         inputField.requestFocus();
         getRoot().centerOnScreen();
+        logger.log(Level.INFO, "Showing delete popup with possible matches.");
         getRoot().showAndWait();
     }
 
@@ -114,6 +126,7 @@ public class DeletePopup extends UiPart<Stage> {
             index = Integer.parseInt(input) - 1;
         } catch (NumberFormatException e) {
             showError(Messages.MESSAGE_INVALID_INDEX_IN_POPUP);
+            logger.log(Level.WARNING, "Invalid number format.");
             return;
         }
 
@@ -121,9 +134,11 @@ public class DeletePopup extends UiPart<Stage> {
             setStyleToDefault();
             selectedPerson = matchingResults.get(index);
             isConfirmed = true;
+            logger.log(Level.INFO, "User confirms deletion.");
             getRoot().hide();
         } else {
             showError(Messages.MESSAGE_INVALID_INDEX_IN_POPUP);
+            logger.log(Level.WARNING, "Invalid index.");
         }
     }
 
@@ -133,6 +148,7 @@ public class DeletePopup extends UiPart<Stage> {
     private void handleEscape() {
         isConfirmed = false;
         selectedPerson = null;
+        logger.log(Level.INFO, "User cancels deletion.");
         getRoot().hide();
     }
 
