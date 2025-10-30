@@ -420,17 +420,42 @@ Use case ends.
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User enters a specific contact name.
-4. LittleLogBook validates input information and finds the matching contact.
-5. LittleLogBook displays the contact information.
+3. User enters `view INDEX` command to view a specific contact.
+4. LittleLogBook validates the index and finds the matching contact.
+5. LittleLogBook displays the contact's full information in a pop-up window.
+Use case ends.
+
+**Extensions**
+
+* 4a. The index is invalid (non-numeric, zero, negative, or out of bounds).
+    * 4a1. LittleLogBook shows an error message and request for a valid input.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Check birthday reminders**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook automatically checks for birthdays and shows reminder notification.
+3. User enters `remind` command to manually check for birthday reminders.
+4. LittleLogBook looks through all contacts for birthdays today and within the next 7 days.
+5. LittleLogBook displays formatted birthday reminders.
 
 Use case ends.
 
 **Extensions**
 
-* 4a. The input information is invalid.
-    * 4a1. LittleLogBook shows an error message.
-      Use case resumes at step 3.
+* 5a. There are birthdays today.
+    * 5a1. LittleLogBook shows "Happy Birthday to these people today!" with numbered list.
+* 5b. There are upcoming birthdays within 7 days.
+    * 5b1. LittleLogBook shows "Upcoming birthdays in the next 7 days:" with numbered list.
+* 5c. No birthdays today or within 7 days.
+    * 5c1. LittleLogBook shows "No upcoming birthdays found."
+* 5d. Address book is empty.
+    * 5d1. LittleLogBook shows "No contacts in address book."
 </div>
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
