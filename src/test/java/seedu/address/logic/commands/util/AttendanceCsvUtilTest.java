@@ -65,7 +65,6 @@ public class AttendanceCsvUtilTest {
      void generateClassDailyAttendanceReport_validClass_generatesCsv() {
         Class studentClass = new Class("K1A");
         LocalDate date = LocalDate.of(2024, 12, 29);
-        StringBuilder contactsNotMarked = new StringBuilder();
 
         Person student1 = new PersonBuilder().withName("Bob").withTags("student").withClass("K1A").build();
         Person student2 = new PersonBuilder().withName("Tim").withTags("student").withClass("K1A").build();
@@ -77,9 +76,9 @@ public class AttendanceCsvUtilTest {
 
 
         try {
-            student1.markAttendance(date, AttendanceStatus.PRESENT, contactsNotMarked);
-            student2.markAttendance(date, AttendanceStatus.LATE, contactsNotMarked);
-            student2.markAttendance(date.plusDays(1), AttendanceStatus.SICK, contactsNotMarked);
+            student1.markAttendance(date, AttendanceStatus.PRESENT);
+            student2.markAttendance(date, AttendanceStatus.LATE);
+            student2.markAttendance(date.plusDays(1), AttendanceStatus.SICK);
         } catch (CommandException e) {
             throw new RuntimeException(e);
         }
@@ -101,7 +100,6 @@ public class AttendanceCsvUtilTest {
         Class studentClass = new Class("K1A");
         YearMonth month = YearMonth.of(2024, 12);
         LocalDate date = LocalDate.of(2024, 12, 29);
-        StringBuilder contactsNotMarked = new StringBuilder();
 
         Person student1 = new PersonBuilder().withName("Bob").withTags("student").withClass("K1A").build();
         Person student2 = new PersonBuilder().withName("Tim").withTags("student").withClass("K1A").build();
@@ -112,10 +110,10 @@ public class AttendanceCsvUtilTest {
         model.addPerson(student3);
 
         try {
-            student1.markAttendance(date, AttendanceStatus.PRESENT, contactsNotMarked);
-            student2.markAttendance(date, AttendanceStatus.LATE, contactsNotMarked);
-            student1.markAttendance(date.plusDays(1), AttendanceStatus.SICK, contactsNotMarked);
-            student2.markAttendance(date.minusDays(10), AttendanceStatus.ABSENT, contactsNotMarked);
+            student1.markAttendance(date, AttendanceStatus.PRESENT);
+            student2.markAttendance(date, AttendanceStatus.LATE);
+            student1.markAttendance(date.plusDays(1), AttendanceStatus.SICK);
+            student2.markAttendance(date.minusDays(10), AttendanceStatus.ABSENT);
         } catch (CommandException e) {
             throw new RuntimeException(e);
         }

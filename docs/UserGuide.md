@@ -600,12 +600,18 @@ remind
 
 ### Mark attendance : `attendance`
 
-**Purpose**: Marks attendance of student(s) with the specified status on a specified date. Only applies to contact with `student` tag.
+**Purpose**: Marks attendance of student(s) with the specified status on a specified date.
 
 ##### Format
 ```shell
 attendance INDEX(es) s/STATUS [d/DATE]
 ```
+<box type="warning">
+
+**Warning:** 
+* Only applies to contact with `student` tag.
+* You can only mark attendance between student's born date and today's date.
+  </box>
 
 ##### Parameters & Validation Rules
 |                     Parameter                      | Validation Rules                                           |
@@ -614,7 +620,7 @@ attendance INDEX(es) s/STATUS [d/DATE]
 |                                                    | Cannot be 0 or negative                                    |
 |                                                    | Must correspond to an existing contact in the current list |
 |                                                    | Accepts multiple inputs                                    |
-| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent            |
+| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
 |                                                    | Must be contiguous without spaces or symbols in between    |
 |                                                    | Error if empty                                             |
 |    <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
@@ -626,6 +632,9 @@ attendance INDEX(es) s/STATUS [d/DATE]
 attendance 1 s/present
 ```
 ```shell
+attendance 1 s/remove
+```
+```shell
 attendance 1,4,6 s/late d/29-01-2025
 ```
 ```shell
@@ -633,18 +642,20 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                            |
-|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Student's attendance marked  | `Attendance marked.`                                         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter   | `Invalid command format!` _(with correct format guidance)_   | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                            |
+|                 Outcome Type                  | Scenario                                 | Message                                                                      | GUI Action                            |
+|:---------------------------------------------:|------------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS`  | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
+| <span style="color: green">**Success**</span> | Student's attendance removed             | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance           | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter               | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                 | _Parameter-specific validation error_                                        | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
 
 ### Download attendance report : `attendanceD`
 
-**Purpose**: Downloads attendance report of the specified student(s) or class(es) on a specific date or month. Only applies to contact with `student` tag.
+**Purpose**: Downloads attendance report of the specified student(s) or class(es) on a specific date or month.
 
 ##### Format
 ```shell
@@ -659,6 +670,7 @@ attendanceD c/CLASS... [m/MONTH]
 <box type="warning">
 
 **Warning:**
+* Only applies to contact with `student` tag.
 * **Individual reports** (<code>INDEX(es)</code>) are **monthly only**.
 * **Class reports** (<code>CLASS</code>) can be **daily or monthly**, defaulting to monthly if no timeframe is specified.
 </box>

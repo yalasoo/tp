@@ -58,12 +58,14 @@ public class AttendanceCommandParserTest {
 
     @Test
     public void parse_emptyStatus_throwsParseException() {
-        assertParseFailure(parser, "1 s/", "Status cannot be empty. Use: present, late, sick, absent");
+        assertParseFailure(parser, "1 s/", "Status cannot be empty."
+                + " Use: present, late, sick, absent, or remove");
     }
 
     @Test
     public void parse_invalidStatus_throwsParseException() {
-        assertParseFailure(parser, "1 s/invalid", "Invalid status. Valid status: present, late, sick, absent");
+        assertParseFailure(parser, "1 s/invalid", "Invalid status."
+                + " Valid status: present, late, sick, absent, or remove");
     }
 
     @Test

@@ -119,26 +119,55 @@ public class Person {
     }
 
     /**
-     * Marks the attendance of this person object and returns
-     * false if {@code date} is before birthday or after today
-     * or if attendance is null, otherwise return true.
+     * Marks the attendance of this person object.
      *
      * @param date When does this attendance apply.
      * @param status What is the status of this attendance.
+     * @return False if date is not a valid attendance date, true otherwise.
      */
-    public Boolean markAttendance(LocalDate date, AttendanceStatus status, StringBuilder contactsNotMarked)
+    public Boolean markAttendance(LocalDate date, AttendanceStatus status)
             throws CommandException {
         assert date != null;
         assert status != null;
-        assert contactsNotMarked != null;
 
-        int afterToday = date.compareTo(LocalDate.now());
-
-        if (birthday.isBeforeBirthday(date) || afterToday > 0 || attendance == null) {
+        if (!validAttendanceDate(date) || attendance == null) {
             return false;
         }
 
         attendance.markAttendance(date, status);
+        return true;
+    }
+
+    /**
+     * Unmarks the attendance of this person object.
+     *
+     * @param date When does this attendance apply.
+     * @return False if date is not a valid attendance date, true otherwise.
+     */
+    public Boolean unmarkAttendance(LocalDate date) {
+        assert date != null;
+
+        if (!validAttendanceDate(date) || attendance == null) {
+            return false;
+        }
+
+        attendance.unmarkAttendance(date);
+        return true;
+    }
+
+    /**
+     * Checks whether the given date is a valid attendance date.
+     * A valid attendance date must be within person's born date and today's date.
+     *
+     * @param date
+     * @return False if date before born date or after born date.
+     */
+    private boolean validAttendanceDate(LocalDate date) {
+        int afterToday = date.compareTo(LocalDate.now());
+
+        if (birthday.isBeforeBirthday(date) || afterToday > 0) {
+            return false;
+        }
         return true;
     }
 

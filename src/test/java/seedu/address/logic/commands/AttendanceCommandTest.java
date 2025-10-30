@@ -74,7 +74,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("Modified"));
         assertTrue(result.getFeedbackToUser().contains("out of"));
         assertTrue(result.getFeedbackToUser().contains("PRESENT"));
         assertTrue(result.getFeedbackToUser().contains("01-01-2024"));
@@ -94,7 +94,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("Modified"));
         assertTrue(result.getFeedbackToUser().contains("out of"));
         assertTrue(result.getFeedbackToUser().contains("ABSENT"));
         assertTrue(result.getFeedbackToUser().contains("01-01-2024"));
@@ -148,7 +148,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Marked"));
+        assertTrue(result.getFeedbackToUser().contains("Modified"));
         assertTrue(result.getFeedbackToUser().contains("out of"));
         assertTrue(result.getFeedbackToUser().contains("SICK"));
         assertTrue(result.getFeedbackToUser().contains(pastDateStr));
@@ -164,15 +164,13 @@ public class AttendanceCommandTest {
         String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         for (AttendanceStatus status : AttendanceStatus.values()) {
-            if (status != AttendanceStatus.UNRECORDED) { // Skip UNRECORDED as it's not for marking
-                AttendanceCommand command = new AttendanceCommand(indexes, date, status);
-                CommandResult result = command.execute(model);
+            AttendanceCommand command = new AttendanceCommand(indexes, date, status);
+            CommandResult result = command.execute(model);
 
-                assertTrue(result.getFeedbackToUser().contains("Marked"));
-                assertTrue(result.getFeedbackToUser().contains("out of"));
-                assertTrue(result.getFeedbackToUser().contains(status.toString()));
-                assertTrue(result.getFeedbackToUser().contains(dateStr));
-            }
+            assertTrue(result.getFeedbackToUser().contains("Modified"));
+            assertTrue(result.getFeedbackToUser().contains("out of"));
+            assertTrue(result.getFeedbackToUser().contains(status.toString()));
+            assertTrue(result.getFeedbackToUser().contains(dateStr));
         }
     }
 
@@ -204,7 +202,7 @@ public class AttendanceCommandTest {
         CommandResult result = command.execute(model);
         System.out.println(result.getFeedbackToUser());
 
-        assertTrue(result.getFeedbackToUser().contains("Marked 1 out of 2 contacts as "
+        assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 2 contacts as "
                 + AttendanceStatus.SICK
                 + " on " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
 
