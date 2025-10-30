@@ -201,29 +201,29 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 
 ##### Command Format 
 ```shell
-delete n/NAME
+delete INDEX
 ```
 ```shell
-delete INDEX
+delete n/NAME
 ```
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                           |
-|:-------------------------------------------------:|------------------------------------------------------------|
-| <span style="color: #e83f8b">**NAME (n/)**</span> | Alphabetic characters, spaces, hyphens, apostrophes only   |
-|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed |
-|                                                   | Case-insensitive match                                     |
-|                                                   | Error if empty or contains numbers/symbols                 |
-|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                  |
-|                                                   | Cannot be 0 or negative                                    |
-|                                                   | Must correspond to an existing contact in the current list |
+|                     Parameter                     | Validation Rules                                                           |
+|:-------------------------------------------------:|----------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
+|                                                   | Cannot be 0 or negative                                                    |
+|                                                   | Must correspond to an existing contact in the current list                 |
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may containspaces, hyphens, and apostrophes) |
+|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
+|                                                   | Case-insensitive match                                                     |
+|                                                   | Matches partial names                                                      |
 
 ##### Example Commands
 ```shell
-delete n/John Doe
+delete 3
 ```
 ```shell
-delete 3
+delete n/John Doe
 ```
 
 ##### Outputs
@@ -233,7 +233,7 @@ delete 3
 |                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                   |
 |:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|----------------------------------------------|
 |                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry |
-|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | Pop-up window appears                        |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | No changes                                   |
 |                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                   |
 |              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete <Person> ?`                              | Pop-up window with the selected person       |
 
