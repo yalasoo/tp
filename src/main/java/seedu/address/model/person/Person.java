@@ -212,8 +212,9 @@ public class Person {
 
     /**
      * Returns true if both persons are considered the same based on their contact type.
-     * For colleagues: Same name and phone, OR same phone number (different names with same phone not allowed)
-     * For students: Same name and phone (allows different names with same phone for emergency contacts)
+     * Contacts with different tags (student vs colleague) are never considered duplicates.
+     * For colleagues: Same phone number OR same email address (different names allowed)
+     * For students: Same name AND phone number (allows different names with same phone for emergency contacts)
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
@@ -221,6 +222,13 @@ public class Person {
         }
 
         if (otherPerson == null) {
+            return false;
+        }
+
+        // Different contact types are never considered duplicates
+        // This allows a student and colleague to have the same information
+        if (this.isStudent() != otherPerson.isStudent()
+                || this.isColleague() != otherPerson.isColleague()) {
             return false;
         }
 
@@ -237,8 +245,13 @@ public class Person {
         }
 
         // For students: Only check name and phone (allows different names with same phone)
-        return otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
-                && otherPerson.getPhone().equals(getPhone());
+        if (this.isStudent() && otherPerson.isStudent()) {
+            return otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
+                    && otherPerson.getPhone().equals(getPhone());
+        }
+
+        // Should not reach here, but return false as safe default
+        return false;
     }
 
     /**

@@ -54,9 +54,14 @@ public class PersonTest {
         // null -> returns false
         assertFalse(ALICE.isSamePerson(null));
 
-        // same name and phone, all other attributes different -> returns true
+        // same name and phone, but different contact type -> returns false (different tags never duplicates)
         Person editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB)
                 .withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(ALICE.isSamePerson(editedAlice));
+
+        // same name and phone, same contact type -> returns true
+        editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB).withTags(VALID_TAG_STUDENT).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
         // different name, all other attributes same -> returns false
@@ -132,22 +137,25 @@ public class PersonTest {
 
     @Test
     public void isSamePerson_mixedContactTypes() {
-        // Test mixed contact type scenarios
+        // Test mixed contact type scenarios - different tags are never considered duplicates
 
-        // Student and colleague with same details -> same persons (same name and phone)
+        // Student and colleague with identical details -> NOT duplicates (different tags)
         Person student = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_STUDENT).build();
         Person colleague = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
-        assertTrue(student.isSamePerson(colleague)); // Same name and phone, falls back to student logic
+        assertFalse(student.isSamePerson(colleague)); // Different tags -> never duplicates
 
-        // Student and colleague with different names, same phone -> not duplicates (student logic applies)
+        // Student and colleague with different names, same phone -> not duplicates (different tags)
         Person student2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
         assertFalse(student.isSamePerson(student2)); // Different names, student logic allows same phone
+        assertFalse(colleague.isSamePerson(student2)); // Different tags -> never duplicates
 
-        // Colleague and student with different names, same phone -> not duplicates (student logic applies)
-        assertFalse(colleague.isSamePerson(student2)); // Mixed types, falls back to student logic
+        // Colleague and student with same phone and email -> not duplicates (different tags)
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(student.isSamePerson(colleague2)); // Different tags -> never duplicates
     }
 
     @Test
@@ -433,5 +441,40 @@ public class PersonTest {
                 + ", class=" + ALICE.getStudentClass() + ", birthday=" + ALICE.getBirthday()
                 + ", note=" + ALICE.getNote() + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());
+    }
+
+    @Test
+    public void isSamePerson_separateContactTypes() {
+        // Test the core feature: students and colleagues with identical info are NOT duplicates
+
+        // Create a student
+        Person student = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .withAddress("123 Main St")
+                .withClass("K1A")
+                .withBirthday("15-03-2018")
+                .withTags(VALID_TAG_STUDENT)
+                .build();
+
+        // Create a colleague with identical information
+        Person colleague = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .withAddress("123 Main St")
+                .withClass("K1A")
+                .withBirthday("15-03-2018")
+                .withTags(VALID_TAG_COLLEAGUE)
+                .build();
+
+        // They should NOT be considered duplicates despite having identical information
+        assertFalse(student.isSamePerson(colleague));
+        assertFalse(colleague.isSamePerson(student));
+
+        // This allows real-world scenarios like:
+        // - A student and their parent (colleague) having the same contact details
+        // - Someone who is both a student's parent and works at the school
     }
 }

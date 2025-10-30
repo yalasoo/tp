@@ -187,7 +187,7 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 
 <box type="warning">
 <strong>Duplicate Contact Detection:</strong><br>
-The system uses different rules for detecting duplicates based on contact type:<br><br>
+The system uses different rules for detecting duplicates based on contact type. **Contacts with different tags (student vs colleague) are never considered duplicates**, allowing you to have a student and colleague with the same information.<br><br>
 
 <strong>For Colleagues (t/colleague):</strong><br>
 • Duplicate if: same phone number OR same email address<br>
@@ -197,11 +197,16 @@ The system uses different rules for detecting duplicates based on contact type:<
 • Duplicate if: same name AND phone number<br>
 • Allows different students to share the same phone (e.g., siblings with same emergency contact)<br><br>
 
+<strong>Mixed Contact Types:</strong><br>
+• A student and colleague can have identical information (name, phone, email, etc.) without being detected as duplicates<br>
+• This allows scenarios like having a student and their parent (as a colleague) with the same contact details<br><br>
+
 <strong>Error Message:</strong> <code>Duplicate contact detected. For colleagues: ensure unique phone numbers and email addresses. For students: ensure unique name-phone combinations.</code><br>
 
 <strong>Resolution:</strong><br>
 • **For Colleagues:** Ensure unique phone numbers and email addresses<br>
-• **For Students:** Ensure unique name-phone combinations
+• **For Students:** Ensure unique name-phone combinations<br>
+• **Mixed Types:** No conflicts - students and colleagues can share the same information
 </box>
 
 ##### Sample Commands
