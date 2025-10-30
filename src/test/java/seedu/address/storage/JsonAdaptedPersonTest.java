@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Email;
@@ -59,10 +60,15 @@ public class JsonAdaptedPersonTest {
     public void constructor_personWithAttendance_populatesAttendanceMap() throws IllegalValueException {
         // Create a person with attendance records
         Person person = new PersonBuilder().withTags("student").build();
+        StringBuilder contactsNotMarked = new StringBuilder();
 
         // Add attendance records to the person
-        person.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT);
-        person.markAttendance(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE);
+        try {
+            person.markAttendance(LocalDate.of(2024, 1, 15), AttendanceStatus.PRESENT, contactsNotMarked);
+            person.markAttendance(LocalDate.of(2024, 1, 16), AttendanceStatus.LATE, contactsNotMarked);
+        } catch (CommandException e) {
+            throw new RuntimeException(e);
+        }
 
         JsonAdaptedPerson jsonPerson = new JsonAdaptedPerson(person);
         Person samePerson = jsonPerson.toModelType();

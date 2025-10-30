@@ -65,6 +65,22 @@ public class Birthday {
         }
     }
 
+    /**
+     * Checks whether incoming date is earlier than birthday date.
+     *
+     * @param otherDate The other date to be compared to.
+     * @return True if other date is earlier than birthday, else false.
+     */
+    public boolean isBeforeBirthday(LocalDate otherDate) {
+        int result = otherDate.compareTo(date);
+
+        if (result < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         return value;

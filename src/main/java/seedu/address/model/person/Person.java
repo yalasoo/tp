@@ -14,6 +14,7 @@ import javafx.beans.property.BooleanProperty;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -118,19 +119,35 @@ public class Person {
     }
 
     /**
-     * Marks the attendance of this person object
-     * @param date when does this attendance apply
-     * @param status what is the status of this attendance
+     * Marks the attendance of this person object and returns
+     * false if {@code date} is before birthday or after today
+     * or if attendance is null, otherwise return true.
+     *
+     * @param date When does this attendance apply.
+     * @param status What is the status of this attendance.
      */
-    public void markAttendance(LocalDate date, AttendanceStatus status) {
+    public Boolean markAttendance(LocalDate date, AttendanceStatus status, StringBuilder contactsNotMarked)
+            throws CommandException {
         assert date != null;
         assert status != null;
+        assert contactsNotMarked != null;
 
-        if (attendance != null) {
-            attendance.markAttendance(date, status);
+        int afterToday = date.compareTo(LocalDate.now());
+
+        if (birthday.isBeforeBirthday(date) || afterToday > 0 || attendance == null) {
+            return false;
         }
+
+        attendance.markAttendance(date, status);
+        return true;
     }
 
+    /**
+     * Returns the attendance record of caller if they are
+     * a student (attendance != null).
+     *
+     * @return The attendance record of caller.
+     */
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
     }
@@ -149,7 +166,7 @@ public class Person {
     /**
      * Retrieves the boolean value of favourite attribute.
      *
-     * @return whether Person is in favourites or not.
+     * @return Whether Person is in favourites or not.
      */
     public boolean getIsFavBoolean() {
         return favourite.getIsFavouriteBoolean();
