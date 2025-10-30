@@ -22,12 +22,16 @@ public class Messages {
             + "\nso that you can use the non-find commands on all contacts!" + "\nOtherwise you can continue using "
             + "find commands in this view.";
     public static final String MESSAGE_NO_MATCHES_FOUND = "No matches found. Please try again.";
-    public static final String MESSAGE_INVALID_INDEX = "Invalid index. Please try again.";
     public static final String MESSAGE_DELETION_CANCELLED = "Deletion cancelled.";
-    public static final String MESSAGE_DELETE_CONFIRMATION =
-            "Are you sure you want to delete this contact (%s)?\nType INDEX and ENTER to confirm or ESC to cancel.";
     public static final String MESSAGE_POSSIBLE_MATCHES_FOUND =
-            "Possible matches found below.\nType INDEX and ENTER to delete or ESC to cancel:";
+            "Possible matches found below.\nType INDEX and ENTER to select the person"
+                    + "\nor ESC to cancel and return to main window:";
+    public static final String MESSAGE_DELETE_CONFIRMATION =
+            "Are you sure you want to delete this contact (%s)?\nType INDEX and ENTER to confirm this deletion"
+                    + "\nor ESC to cancel and return to main window.";
+    public static final String MESSAGE_INVALID_INDEX_IN_POPUP =
+            "Please enter a valid index number\nor press ESC to cancel and go back to main window.";
+
 
 
     /**
