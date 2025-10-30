@@ -419,8 +419,8 @@ Use case ends.
 
 1.  User opens LittleLogBook.
 2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to mark attendance of a specific student.
-4.  LittleLogBook succesfully marks student's attendance.
+3.  User requests to mark attendance of a specific contact.
+4.  LittleLogBook successfully marks contact's attendance.
 
     Use case ends.
 
@@ -428,6 +428,15 @@ Use case ends.
 
 * 3a. No contact matches the information.
     *    3a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3b. Contact is a colleague.
+    *    3b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3c. Date provided is before student's born date.
+    *    3c.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 3d. Date provided is beyond today's date.
+    *    3d.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
 </div>
 
