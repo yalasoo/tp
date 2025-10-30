@@ -173,7 +173,8 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 
 <box type="warning">
 <strong>Warning:</strong> Duplicate persons are identified by <strong>both name (case-insensitive) and phone number</strong> matching an existing contact.<br>
-If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected.</code>
+If you attempt to create a duplicate person, the system will show: <code>Duplicate contact detected. Please use a different name or phone number to make it unique.</code><br>
+<strong>Note:</strong> To resolve duplicates, you only need to change <strong>either</strong> the name <strong>or</strong> the phone number (not both).
 </box>
 
 ##### Example Commands
