@@ -158,6 +158,73 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### View Command
+
+#### Implementation
+The `view` command displays detailed information about a specific person in a pop-up window.
+
+**Operation:** `view INDEX`
+
+**How it works:**
+1. Parses the user-provided index using ViewCommandParser 
+2. Validates that the index is within bounds of the current filtered list 
+3. Retrieves the corresponding person from the filtered person list using Model#getFilteredPersonList()
+4. Creates a ViewCommand object with the target index 
+5. When executed, opens a pop-up window (ViewWindow) displaying all person details 
+6. The main window remains accessible while the view window is open
+
+**Overall Sequence Diagram for View:**
+<puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
+
+Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
+
+<puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
+
+<puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
+
+### Remind Command
+
+#### Implementation
+The `remind` command shows current and upcoming birthdays.
+
+**Operation:** `remind`
+
+**How it works:**
+1. User launch the program
+2. Remind command is automatically called
+3. Get list of persons whose birthdays is today or in the upcoming 7 days. 
+4. Displays a list of upcoming events/birthdays 
+5. Can show both students and colleagues with upcoming dates
+
+**Sequence Diagram for Automated Remind on start:**
+<puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+
+**Key Classes:**
+- `RemindCommand` - Handles the command execution
+- `Birthday` - Contains date logic for reminder calculations
+- `Person` - Stores birthday information
+
+**Validation for Birthday:**
+- The Birthday class implements comprehensive date validation with the following constraints:
+- Format Validation 
+  - Required Format: `dd-MM-yyyy` (e.g., 24-12-2005)
+  - Regex Pattern: `^\d{2}-\d{2}-\d{4}$` ensures exactly 2 digits for day, 2 for month, and 4 for year 
+  - Strict Parsing: Uses `ResolverStyle.STRICT` to reject invalid dates like 31-04-2023 (April has only 30 days)
+- Temporal Constraints 
+  - Minimum Date: 01-01-1900 - Prevents unrealistically old birth dates 
+  - Maximum Date: Current date - Prevents future birth dates 
+  - Range Validation: Ensures birthday falls between January 1, 1900 and today
+
+**Overall Sequence Diagram for Remind:**
+<puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
+
+Below is the more in depth breakdown of the Logic, Model and UI Sequence diagrams.
+
+<puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
+
+<puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
+
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
