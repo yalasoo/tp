@@ -61,14 +61,7 @@ deactivate Model
 
 ViewCommand -> ViewCommand : getPersonByIndex(1)
 
-create CommandResult
-ViewCommand -> CommandResult
-activate CommandResult
-
-CommandResult --> ViewCommand
-deactivate CommandResult
-
-ViewCommand --> LogicManager : r
+ViewCommand --> LogicManager
 deactivate ViewCommand
 
 LogicManager -> MainWindow : handleCommandResult(r)
