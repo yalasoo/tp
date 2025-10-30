@@ -95,7 +95,7 @@ public class AttendanceCommandParserTest {
     @Test
     public void parse_invalidDate_throwsParseException() {
         assertParseFailure(parser, "1 s/present d/invalid",
-                "Invalid date format. Please use dd-MM-yyyy (e.g. 29-12-2025).");
+                "Invalid date format/input. Please use dd-MM-yyyy (e.g. 29-12-2025).");
     }
 
     @Test

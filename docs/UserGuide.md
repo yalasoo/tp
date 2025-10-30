@@ -721,9 +721,7 @@ attendance INDEX(es) s/STATUS [d/DATE]
 ```
 <box type="warning">
 
-**Warning:** 
-* Only applies to contact with `student` tag.
-* You can only mark attendance between student's born date and today's date.
+**Warning:** Only applies to contact with `student` tag.
   </box>
 
 ##### Parameters & Validation Rules
@@ -736,8 +734,9 @@ attendance INDEX(es) s/STATUS [d/DATE]
 | <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
 |                                                    | Must be contiguous without spaces or symbols in between    |
 |                                                    | Error if empty                                             |
-|    <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
+|    <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
 |                                                    | Must be a valid date                                       |
+|                                                    | Must between student's born date to today's date           |
 |                                                    | Default to current date if empty                           |
 
 ##### Sample Commands
@@ -755,13 +754,14 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                 | Message                                                                      | GUI Action                            |
-|:---------------------------------------------:|------------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS`  | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
-| <span style="color: green">**Success**</span> | Student's attendance removed             | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance           | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter               | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format                 | _Parameter-specific validation error_                                        | No changes                            |
+|                 Outcome Type                  | Scenario                                | Message                                                                      | GUI Action                            |
+|:---------------------------------------------:|-----------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS` | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
+| <span style="color: green">**Success**</span> | Student's attendance removed            | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance          | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound              | `Modified 0 out of <x> contacts.` _(reminder on attendance rules)_           | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter              | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                | _Parameter-specific validation error_                                        | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -789,22 +789,24 @@ attendanceD c/CLASS... [m/MONTH]
 </box>
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                                          |
-|:-------------------------------------------------:|---------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                 | 
-|                                                   | Cannot be 0 or negative                                                   |
-|                                                   | Must correspond to an existing contact in the current list                |
-|                                                   | Accepts multiple inputs                                                   |
-| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K  |
-|                                                   | Case-insensitive                                                          |
-|                                                   | Accepts multiple inputs and must start with `c/`                          |
-|                                                   | Error if invalid class format                                             |                                           
-|   <span style="color: #e83f8b">**DATE**</span>    | Date in dd-MM-yyyy format                                                 |
-|                                                   | Must be a valid date                                                      |
-|                                                   | Default to current date if empty                                          |
-|   <span style="color: #e83f8b">**MONTH**</span>   | Month in MM-yyyy format                                                   |
-|                                                   | Must be a valid month                                                     |
-|                                                   | Default to current month if empty                                         |
+|                     Parameter                     | Validation Rules                                                         |
+|:-------------------------------------------------:|--------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Must be a positive integer (1, 2, 3, ...)                                | 
+|                                                   | Cannot be 0 or negative                                                  |
+|                                                   | Must correspond to an existing contact in the current list               |
+|                                                   | Accepts multiple inputs                                                  |
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
+|                                                   | Case-insensitive                                                         |
+|                                                   | Accepts multiple inputs and must start with `c/`                         |
+|                                                   | Error if invalid class format                                            |                                           
+|   <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                                |
+|                                                   | Must be a valid date                                                     |
+|                                                   | Must between 01-01-1900 to today's date                                  |
+|                                                   | Default to current date if empty                                         |
+|   <span style="color: #6b7280">**MONTH**</span>   | Month in MM-yyyy format                                                  |
+|                                                   | Must be a valid month                                                    |
+|                                                   | Must be between 01-1900 to today's month                                 |
+|                                                   | Default to current month if empty                                        |
 
 <box type="info" seamless>
 
@@ -832,12 +834,14 @@ attendanceD c/K1A c/K2B m/01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                         | Message                                                       | GUI Action                            |
-|:---------------------------------------------:|----------------------------------|---------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Attendance report downloaded     | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter       | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format         | _Parameter-specific validation error_                         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Error saving attendance report   | `Error saving attendance report: _error message_`             | No changes                            |
+|                 Outcome Type                  | Scenario                       | Message                                                       | GUI Action                            |
+|:---------------------------------------------:|--------------------------------|---------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded   | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound     | `Date must be within 01-01-1900 until <current date>.`        | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Month out of accepted bound    | `Month must be within 01-1900 until <current month>.`         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter     | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format       | _Parameter-specific validation error_                         | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report | `Error saving attendance report: _error message_`             | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
