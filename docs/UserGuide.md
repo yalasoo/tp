@@ -161,7 +161,7 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ##### Parameters & Validation Rules
 |                       Parameter                       | Validation Rules                                                         |
 |:-----------------------------------------------------:|--------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                 |
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
 |                                                       | Case-insensitive for duplicates                                          |
 |                                                       | Error if empty or contains numbers/symbols                               |
@@ -170,10 +170,12 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 |                                                       | Examples: 61234567, 81234567, 91234567                                   |
 |                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                     |
 |                                                       | Error if not numeric, wrong length, or invalid starting digit            |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format                                        |
-|                                                       | Case-insensitive                                                         |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period |
+|                                                       | Case-insensitive (automatically converted to lowercase)                  |
+|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗) |
 |                                                       | Error if invalid format                                                  |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Any non-blank text                                                       |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc. |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces |
 |                                                       | Error if empty or contains only whitespace                               |
 |  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
 |                                                       | Case-insensitive                                                         |
@@ -244,34 +246,37 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                           |
-|:-----------------------------------------------------:|----------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**INDEX**</span>       | Must be a positive integer (1, 2, 3, ...)                                  |
-|                                                       | Cannot be 0 or negative                                                    |
-|                                                       | Must correspond to an existing contact in the current list                 |
-|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only                   |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
-|                                                       | Case-insensitive for duplicates                                            |
-|                                                       | Error if empty or contains numbers/symbols                                 |
-|  <span style="color: #6b7280">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)     |
-|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)          |
-|                                                       | Examples: 61234567, 81234567, 91234567                                     |
-|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                       |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit              |
-|  <span style="color: #6b7280">**EMAIL (e/)**</span>   | Must follow standard email format                                          |
-|                                                       | Case-insensitive                                                           |
-|                                                       | Error if invalid format                                                    |
-| <span style="color: #6b7280">**ADDRESS (a/)**</span>  | Any non-blank text                                                         |
-|                                                       | Error if empty or contains only whitespace                                 |
-|  <span style="color: #6b7280">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K   |
-|                                                       | Case-insensitive                                                           |
-|                                                       | Error if invalid class format                                              |
-| <span style="color: #6b7280">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                  |
-|                                                       | Must be a valid date (from 01-01-1900 to today's date)                     |
-|   <span style="color: #6b7280">**TAG (t/)**</span>    | Exactly one tag                                                            |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)                 |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                         |
-|                                                       | Leading/trailing spaces trimmed                                            |
+|                       Parameter                       | Validation Rules                                                                                                                                              |
+|:-----------------------------------------------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>       | Must be a positive integer (1, 2, 3, ...)                                                                                                                     |
+|                                                       | Cannot be 0 or negative                                                                                                                                       |
+|                                                       | Must correspond to an existing contact in the current list                                                                                                    |
+|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗)  |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                    |
+|                                                       | Case-insensitive for duplicates                                                                                                                               |
+|                                                       | Error if empty or contains numbers/symbols                                                                                                                    |
+|  <span style="color: #6b7280">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)                                                                                        |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)                                                                                             |
+|                                                       | Examples: 61234567, 81234567, 91234567                                                                                                                        |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                                                                                                          |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit                                                                                                 |
+|  <span style="color: #6b7280">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period                                                                                  |
+|                                                       | Case-insensitive (automatically converted to lowercase)                                                                                                       |
+|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗)                                                                                  |
+|                                                       | Case-insensitive                                                                                                                                              |
+|                                                       | Error if invalid format                                                                                                                                       |
+| <span style="color: #6b7280">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc.    |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces                                                                                   |
+|                                                       | Error if empty or contains only whitespace                                                                                                                    |
+|  <span style="color: #6b7280">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K                                                                                      |
+|                                                       | Case-insensitive                                                                                                                                              |
+|                                                       | Error if invalid class format                                                                                                                                 |
+| <span style="color: #6b7280">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                                                                                                     |
+|                                                       | Must be a valid date (from 01-01-1900 to today's date)                                                                                                        |
+|   <span style="color: #6b7280">**TAG (t/)**</span>    | Exactly one tag                                                                                                                                               |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)                                                                                                    |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                                                                                                            |
+|                                                       | Leading/trailing spaces trimmed                                                                                                                               |
 
 ##### Sample Commands
 ```shell
@@ -308,7 +313,7 @@ delete n/NAME
 |   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
 |                                                   | Cannot be 0 or negative                                                    |
 |                                                   | Must correspond to an existing contact in the current list                 |
-| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may containspaces, hyphens, and apostrophes) |
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
 |                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
 |                                                   | Case-insensitive match                                                     |
 |                                                   | Matches partial names                                                      |

@@ -59,8 +59,10 @@ public class NameTest {
         assertTrue(Name.isValidName("John")); // single word
         assertTrue(Name.isValidName("John Doe")); // two words
         assertTrue(Name.isValidName("Mary Jane Smith")); // three words
-        assertTrue(Name.isValidName("a")); // single character
-        assertTrue(Name.isValidName("Z")); // single uppercase character
+
+        // single characters are now invalid (need at least 2 letters)
+        assertFalse(Name.isValidName("a")); // single character
+        assertFalse(Name.isValidName("Z")); // single uppercase character
 
         // valid names - with hyphens
         assertTrue(Name.isValidName("Mary-Jane")); // hyphenated first name
@@ -84,6 +86,82 @@ public class NameTest {
         assertTrue(Name.isValidName("Mary-Jane O'Connor Smith")); // all special characters
         assertTrue(Name.isValidName("Jean-Baptiste D'Artagnan")); // French-style name
         assertTrue(Name.isValidName("Anna-Maria José-Carlos")); // Spanish-style name
+    }
+
+    @Test
+    public void isValidName_problematicPunctuation_invalid() {
+        // Names consisting only of punctuation should be invalid
+        assertFalse(Name.isValidName("-"));
+        assertFalse(Name.isValidName("'"));
+        assertFalse(Name.isValidName("--"));
+        assertFalse(Name.isValidName("''"));
+        assertFalse(Name.isValidName("-'"));
+        assertFalse(Name.isValidName("'-"));
+        assertFalse(Name.isValidName("---"));
+        assertFalse(Name.isValidName("'''"));
+        assertFalse(Name.isValidName("----"));
+        assertFalse(Name.isValidName("''''"));
+        assertFalse(Name.isValidName("-'-'-'"));
+        assertFalse(Name.isValidName("'-'-'-"));
+
+        // Names with only punctuation and spaces should be invalid
+        assertFalse(Name.isValidName(" - "));
+        assertFalse(Name.isValidName(" ' "));
+        assertFalse(Name.isValidName(" -- "));
+        assertFalse(Name.isValidName(" '' "));
+        assertFalse(Name.isValidName(" - ' - ' "));
+
+        // Names with insufficient alphabetic content (less than 2 letters) should be invalid
+        assertFalse(Name.isValidName("a")); // Only 1 letter
+        assertFalse(Name.isValidName("a-")); // 1 letter + punctuation
+        assertFalse(Name.isValidName("a'")); // 1 letter + punctuation
+        assertFalse(Name.isValidName("-a")); // punctuation + 1 letter
+        assertFalse(Name.isValidName("'a")); // punctuation + 1 letter
+        assertFalse(Name.isValidName("-a-")); // punctuation + 1 letter + punctuation
+        assertFalse(Name.isValidName("'a'")); // punctuation + 1 letter + punctuation
+
+        // Names with consecutive punctuation (2+ consecutive) should be invalid
+        assertFalse(Name.isValidName("abc--def")); // 2 consecutive hyphens
+        assertFalse(Name.isValidName("abc''def")); // 2 consecutive apostrophes
+        assertFalse(Name.isValidName("abc---def")); // 3 consecutive hyphens
+        assertFalse(Name.isValidName("abc'''def")); // 3 consecutive apostrophes
+        assertFalse(Name.isValidName("--abc")); // leading double punctuation
+        assertFalse(Name.isValidName("abc--")); // trailing double punctuation
+        assertFalse(Name.isValidName("---abc")); // leading excessive punctuation
+        assertFalse(Name.isValidName("abc---")); // trailing excessive punctuation
+        assertFalse(Name.isValidName("''abc''")); // double punctuation on both ends
+        assertFalse(Name.isValidName("'''abc'''")); // excessive punctuation on both ends
+        assertFalse(Name.isValidName("abc----def")); // 4 consecutive hyphens
+        assertFalse(Name.isValidName("abc''''def")); // 4 consecutive apostrophes
+        assertFalse(Name.isValidName("a-'-'-'-'-'-'-'-'b")); // excessive mixed punctuation
+
+        // Names with predominantly punctuation should be invalid
+        assertFalse(Name.isValidName("ab-'-'-'-'-'-'-'-'")); // too much punctuation
+        assertFalse(Name.isValidName("a'b'c'd'e'f'g'h'i'j'k'l'm'n'o'p'q'r's't'u'v'w'x'y'z'")); // excessive apostrophes
+    }
+
+    @Test
+    public void isValidName_acceptablePunctuation_valid() {
+        // Now only single punctuation is allowed
+        assertTrue(Name.isValidName("Mary-Jane")); // single hyphen
+        assertTrue(Name.isValidName("O'Connor")); // single apostrophe
+        assertTrue(Name.isValidName("Jean-Luc D'Artagnan")); // realistic complex name
+
+        // Names with minimum 2 letters should be valid
+        assertTrue(Name.isValidName("Jo")); // exactly 2 letters
+        assertTrue(Name.isValidName("Li")); // exactly 2 letters
+        assertTrue(Name.isValidName("Wu")); // exactly 2 letters
+        assertTrue(Name.isValidName("Al-Mahmoud")); // 2+ letters with punctuation
+
+        // Realistic names should remain valid
+        assertTrue(Name.isValidName("Mary-Jane Smith"));
+        assertTrue(Name.isValidName("Jean-Claude Van Damme"));
+        assertTrue(Name.isValidName("Anna-Maria José-Carlos"));
+        assertTrue(Name.isValidName("O'Brien-McConnell"));
+
+        // Double punctuation should now be invalid
+        assertFalse(Name.isValidName("Smith--Jones")); // double hyphen now invalid
+        assertFalse(Name.isValidName("O''Connor")); // double apostrophe now invalid
     }
 
     @Test
