@@ -324,11 +324,11 @@ Below is the more in depth breakdown of the Logic, Model and UI Sequence diagram
 
 **MSS**
 
-1. User opens LittleLogBook.
-2. LittleLogBook shows list of all the contacts added.
-3. User enters the contact information.
-4. LittleLogBook validates input information.
-5. LittleLogBook saves contact and updates contact list.
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User enters the contact information. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook saves contact and updates contact list. 
 6. LittleLogBook displays success confirmation.
 
 Use case ends.
@@ -352,6 +352,7 @@ Use case ends.
 4. LittleLogBook validates input information. 
 5. LittleLogBook finds the matching contact. 
 6. LittleLogBook displays the contact's full information in a pop-up window.
+
 Use case ends.
 
 **Extensions**
@@ -375,15 +376,15 @@ Use case ends.
 6. Users confirms the deletion. 
 7. LittleLogBook deletes the person and updates the list.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 3a. The contact does not exist.
-    *    3a.1 LittleLogBook requests for valid input.
+* 3a. The contact does not exist. 
+    * 3a.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
 * 5a. User cancels the deletion.
-    *    5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
+   * 5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
          Use case resumes at step 2.
 </div>
 
@@ -439,6 +440,30 @@ Use case ends.
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
+**Use case: Sort contacts**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to sort contacts by a specific field and order. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully sorts contacts and displays them in the new order.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. Missing parameters.
+    * 4a.1 LittleLogBook requests for valid input.
+      Use case resumes at step 3.
+* 4b. The input information is invalid.
+    * 4b.1 LittleLogBook requests for valid input.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
 
 **Use case: Favourite a contact**
 
@@ -472,7 +497,7 @@ Use case ends.
 4. LittleLogBook validates input information. 
 5. LittleLogBook successfully marks contact's attendance.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -502,7 +527,7 @@ Use case ends.
 4. LittleLogBook validates input information. 
 5. LittleLogBook successfully downloads student's attendance.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -526,7 +551,7 @@ Use case ends.
 4. LittleLogBook validates input information.
 5. LittleLogBook successfully downloads student's attendance.
 
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -547,7 +572,7 @@ Use case ends.
 4. LittleLogBook validates input information.
 5. LittleLogBook successfully downloads student's attendance.
 
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
@@ -603,16 +628,16 @@ testers are expected to do more *exploratory* testing.
 
 ##### Adding a valid contact
 
-1. **Adding a student contact with all required fields**
-    - Prerequisites: No existing contact with same name and phone number
-    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: New student contact added. Success message shown.
+1. **Adding a student contact with all fields**
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/student desc/Allergic to peanuts`
+    - **Expected:** New student contact added successfully with all specified fields.
 
 1. **Adding a colleague contact with optional note**
     - Test case: `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts`<br>**Expected**: New colleague contact added with note.
 
-1. **Adding duplicate contact (same tag)**
-    - Prerequisites: Contact with same name and phone already exists (for student) OR same phone/email (for colleague)
-    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Error message about duplicate contact.
+2. **Adding a colleague contact with mandatory fields only**
+    - Test case: `add n/Marie p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/colleague`
+    - **Expected:** New colleague contact added with only required fields.
 
 1. **Adding contact with mixed tags (same info)**
     - Prerequisites: Student contact "John Doe" exists
@@ -632,8 +657,9 @@ testers are expected to do more *exploratory* testing.
    - Test case: `edit 1 n/New Name p/87654321 e/new.email@school.edu`
    - **Expected:** Contact details updated successfully.
 
-2. **Editing contact with duplicate detection**
-   - Test case: `edit 2 n/John Doe p/98765432` (assuming this creates a duplicate)
+2. **Editing contact with duplicate detection** 
+   - Prerequisites: Add 2 contacts with the same details for every field EXCEPT name. Assume they are at index `x` and `y`
+   - Test case: `edit x n/{y's name}` (e.g., If y's name is `Bob` then run `edit x n/Bob`)
    - **Expected:** Appropriate duplicate detection error message.
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -650,7 +676,8 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 2. **Deleting a contact by name with multiple matches**
-   - Test case: `delete n/John`
+   - Prerequisites: List all persons. Multiple persons in the list with `a` in their name.
+   - Test case: `delete n/a`
    - **Expected:** Popup shows multiple matches for selection.
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -709,6 +736,7 @@ testers are expected to do more *exploratory* testing.
 ### Sorting contacts
 
 ##### Sorting by different fields
+- All sort comparison is done alphabetically.
 
 1. **Sorting contacts by name**
    - Test case: `sort f/name`
@@ -815,12 +843,27 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 2. **Marking attendance for multiple students with specific date**
+    - Prerequisites: Ensure contact at index 1, 2, 3 is a student.
     - Test case: `attendance 1,2,3 s/late d/15-03-2024`
     - **Expected:** Attendance marked for all specified students on given date.
 
 <br>
 
-3. **Marking attendance with invalid date**
+3. **Marking attendance for multiple contacts (student and colleague)**
+    - Prerequisites: Ensure you have at least one student and one colleague at index 1, 2, 3. 
+    - Test case: `attendance 1,2,3 s/late`
+    - **Expected:** Attendance marked ONLY for students.
+
+<br>
+
+4. **Marking attendance for a colleague**
+    - Prerequisites: Ensure contact at index 1 is a colleague.
+    - Test case: `attendance 1 s/sick`
+    - **Expected:** Error message and attendance rule reminder.
+
+<br>
+
+5. **Marking attendance with invalid date**
     - Test case: `attendance 1 s/present d/29-02-2023`
     - **Expected:** Error message for invalid date.
 
@@ -837,9 +880,41 @@ testers are expected to do more *exploratory* testing.
 
 <br>
 
-2. **Downloading class-based daily report**
+2. **Downloading multiple individual students monthly report**
+    - Prerequisites: Ensure contact at index 1, 2, 3 is a student with attendance records.
+    - Test case: `attendanceD 1-3 m/03-2024`
+    - **Expected:** CSV report downloaded successfully.
+
+<br>
+
+3. **Downloading individual student daily report**
+    - Prerequisites: Ensure contact at index 1 is a student with attendance records.
+    - Test case: `attendanceD 1 d/01-03-2024`
+    - **Expected:** Error message. Individual report are monthly only.
+
+<br>
+
+4. **Downloading class-based daily report**
     - Test case: `attendanceD c/K1A d/15-03-2024`
     - **Expected:** Class attendance report downloaded for specified date.
+    
+<br>
+
+5. **Downloading multiple class-based daily report**
+    - Test case: `attendanceD c/K1A c/K2B d/15-03-2024`
+    - **Expected:** Class attendance reports downloaded for specified date.
+
+<br>
+
+6. **Downloading class-based monthly report**
+    - Test case: `attendanceD c/K1A`
+    - **Expected:** Class attendance report downloaded for current month.
+
+<br>
+
+7. **Downloading multiple class-based monthly report**
+    - Test case: `attendanceD c/K1A c/K2B`
+    - **Expected:** Class attendance reports downloaded for current month.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
