@@ -603,22 +603,23 @@ testers are expected to do more *exploratory* testing.
 
 ##### Adding a valid contact
 
-1. **Adding a student contact with all fields**
-    - Prerequisites: List all persons using the `list` command. Multiple persons in the list.
-    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/student desc/Allergic to peanuts`
-    - **Expected:** New student contact added successfully with all specified fields.
+1. **Adding a student contact with all required fields**
+    - Prerequisites: No existing contact with same name and phone number
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: New student contact added. Success message shown.
 
-<br>
+1. **Adding a colleague contact with optional note**
+    - Test case: `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts`<br>**Expected**: New colleague contact added with note.
 
-2. **Adding a colleague contact with minimal fields**
-    - Test case: `add n/Mary Tan p/91234567 e/marytan@school.edu t/colleague`
-    - **Expected:** New colleague contact added with only required fields.
+1. **Adding duplicate contact (same tag)**
+    - Prerequisites: Contact with same name and phone already exists (for student) OR same phone/email (for colleague)
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Error message about duplicate contact.
 
-<br>
+1. **Adding contact with mixed tags (same info)**
+    - Prerequisites: Student contact "John Doe" exists
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/colleague`<br>**Expected**: Success - different tags allow identical info.
 
-3. **Adding contact with invalid parameters**
-    - Test case: `add n/John Doe p/123 e/invalid-email a/ c/InvalidClass b/32-13-2020 t/invalidtag`
-    - **Expected:** Appropriate error messages for each invalid parameter.
+1. **Invalid parameter formats**
+    - Test case: `add n/John123 p/123 e/invalid-email a/ c/InvalidClass b/32-13-2020 t/invalidtag`<br>**Expected**: Multiple validation errors shown.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -706,9 +707,48 @@ testers are expected to do more *exploratory* testing.
 
 ##### Checking birthday notifications
 
-1. **Manual birthday reminder check**
-   - Test case: `remind`
-   - **Expected:** Display of today's birthdays and upcoming birthdays in next 7 days.
+1. **Manual reminder check with birthdays today and upcoming**
+    - Prerequisites: At least one contact has birthday today, and at least one has birthday within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows two sections: "Happy Birthday to these people today!" and "Upcoming birthdays in the next 7 days:" with numbered lists.
+
+1. **Manual reminder with only upcoming birthdays**
+    - Prerequisites: No contacts have birthday today, but some have birthdays within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No birthdays today!" followed by "Upcoming birthdays in the next 7 days:" section.
+
+1. **Manual reminder with no upcoming birthdays**
+    - Prerequisites: No contacts have birthdays today or within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No upcoming birthdays found." message.
+
+1. **Manual reminder with empty address book**
+    - Prerequisites: Clear all contacts using `clear` command
+    - Test case: `remind`<br>**Expected**: Shows "No contacts in LittleLogBook." message.
+
+1. **Automatic reminder on startup**
+    - Prerequisites: Contacts with birthdays today and/or upcoming exist
+    - Action: Close and reopen the app<br>**Expected**: Birthday reminders shown automatically in the result display when app starts.
+
+1. **Reminder formatting verification**
+    - Prerequisites: Contacts with various birthday scenarios exist
+    - Test case: `remind`<br>**Expected**: Each entry shows:
+        - Name in correct format
+        - Birthday in dd-MM-yyyy format
+        - Tags in square brackets (if present)
+        - "(TODAY!)" for today's birthdays
+        - "(in X day(s))" for upcoming birthdays
+
+1. **Reminder with extraneous parameters**
+    - Test case: `remind extra parameter`<br>**Expected**: Command works normally (extraneous parameters ignored).
+
+1. **Cross-year birthday handling**
+    - Prerequisites: Test in late December with contacts having January birthdays
+    - Test case: `remind`<br>**Expected**: Correctly shows upcoming birthdays that cross into next year.
+
+**Testing Tips for `remind` command:**
+- Use system date changes to simulate different scenarios
+- Test across month and year boundaries
+- Verify the "in X days" calculation is accurate
+- Check that both automatic (startup) and manual execution work
+- Ensure the output is helpful and actionable for kindergarten teachers
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -732,9 +772,15 @@ testers are expected to do more *exploratory* testing.
 
 ##### Detailed contact viewing
 
-1. **Viewing full contact details**
-   - Test case: `view 1`
-   - **Expected:** Popup window displays complete contact information including attendance and notes.
+1. **Viewing valid contact**
+    - Prerequisites: Multiple contacts in list
+    - Test case: `view 1`<br>**Expected**: Popup window shows full contact details.
+
+1. **Viewing student vs colleague**
+    - Test cases: `view 1` (student), `view 2` (colleague)<br>**Expected**: Different layouts shown (student shows attendance, colleague does not).
+
+1. **Viewing with invalid index**
+    - Test case: `view 0`<br>**Expected**: Error message about invalid index.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -827,10 +873,16 @@ testers are expected to do more *exploratory* testing.
 
 3. **Viewing help**
    - Test case: `help`
-   - **Expected:** Help window opens with user guide link.
+   - **Expected:** Help window opens with link to our user guide.
 
 <br>
 
 4. **Exiting application**
    - Test case: `exit`
    - **Expected:** Application closes gracefully.
+
+**Note:** These instructions provide a starting point for testers. Testers should perform additional *exploratory* testing beyond these specified cases, including:
+- Testing concurrent operations
+- Testing boundary conditions
+- Testing error recovery
+- Testing UI responsiveness with different data volumes
