@@ -15,7 +15,7 @@ public class AddressTest {
     }
 
     @Test
-    public void constructor_invalidAddress_throwsIllegalArgumentException() {
+    public void constructor_emptyAddress_throwsIllegalArgumentException() {
         String invalidAddress = "";
         assertThrows(IllegalArgumentException.class, () -> new Address(invalidAddress));
     }
@@ -29,33 +29,70 @@ public class AddressTest {
         address = new Address("Blk 456, Den Road, #01-355");
         assertEquals("Blk 456, Den Road, #01-355", address.value);
 
-        address = new Address("Leng Inc; 1234 Market St");
-        assertEquals("Leng Inc; 1234 Market St", address.value);
+        // Address with leading/trailing spaces should be trimmed
+        address = new Address("  123 Main Street  ");
+        assertEquals("123 Main Street", address.value);
 
-        // Address with leading/trailing spaces should be trimmed during parsing
-        address = new Address("123 Main Street");
+        // Multiple spaces should be normalized to single spaces
+        address = new Address("123   Main    Street");
+        assertEquals("123 Main Street", address.value);
+    }
+
+    @Test
+    public void constructor_invalidAddress_throwsIllegalArgumentException() {
+        // Invalid addresses with problematic symbols
+        assertThrows(IllegalArgumentException.class, () -> new Address("Leng Inc; 1234 Market St")); // semicolon
+        assertThrows(IllegalArgumentException.class, () -> new Address("123 Main St @ Center")); // @ symbol
+        assertThrows(IllegalArgumentException.class, () -> new Address("123*456 Main Street")); // asterisk
+        assertThrows(IllegalArgumentException.class, () -> new Address("Unit $123 Main St")); // dollar sign
+        assertThrows(IllegalArgumentException.class, () -> new Address("123 Main St!")); // exclamation
+        assertThrows(IllegalArgumentException.class, () -> new Address("123 Main St?")); // question mark
+        assertThrows(IllegalArgumentException.class, () -> new Address("123+456 Main Road")); // plus sign
+    }
+
+    @Test
+    public void constructor_spaceNormalization_success() {
+        // Test various space normalization scenarios
+
+        // Leading and trailing spaces
+        Address address = new Address("  123 Main Street  ");
+        assertEquals("123 Main Street", address.value);
+
+        // Multiple spaces between words
+        address = new Address("123    Main     Street");
+        assertEquals("123 Main Street", address.value);
+
+        // Mixed tabs and spaces (tabs are treated as whitespace)
+        address = new Address("123\t  Main\t\tStreet");
+        assertEquals("123 Main Street", address.value);
+
+        // Complex case with multiple types of spacing issues
+        address = new Address("  Blk   456,   Den    Road,   #01-355  ");
+        assertEquals("Blk 456, Den Road, #01-355", address.value);
+
+        // Single character addresses with spaces
+        address = new Address("  a  ");
+        assertEquals("a", address.value);
+
+        // Address with newlines (should be normalized to spaces)
+        address = new Address("123\nMain\nStreet");
         assertEquals("123 Main Street", address.value);
     }
 
     @Test
     public void isValidAddress() {
         // null address
-        assertThrows(NullPointerException.class, () -> Address.isValidAddress(null));
+        assertFalse(Address.isValidAddress(null));
 
         // blank address
         assertFalse(Address.isValidAddress("")); // empty string
         assertFalse(Address.isValidAddress(" ")); // spaces only
         assertFalse(Address.isValidAddress("  ")); // multiple spaces only
 
-        // invalid addresses - starting with whitespace
-        assertFalse(Address.isValidAddress(" 123 Main Street"));
-        assertFalse(Address.isValidAddress("\t123 Main Street"));
-        assertFalse(Address.isValidAddress("\n123 Main Street"));
-
-        // valid addresses
+        // valid addresses (spaces are handled by normalization)
+        assertTrue(Address.isValidAddress(" 123 Main Street ")); // leading/trailing spaces
         assertTrue(Address.isValidAddress("123 Main Street"));
         assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));
-        assertTrue(Address.isValidAddress("Leng Inc; 1234 Market St"));
         assertTrue(Address.isValidAddress("a")); // minimal valid address
         assertTrue(Address.isValidAddress("123")); // numbers only
         assertTrue(Address.isValidAddress("Block 123 Ang Mo Kio Avenue 3, #12-34"));
@@ -63,12 +100,36 @@ public class AddressTest {
         assertTrue(Address.isValidAddress("Singapore 123456"));
         assertTrue(Address.isValidAddress("Unit #01-01, 123 Main Street, Singapore 654321"));
 
-        // addresses with special characters
-        assertTrue(Address.isValidAddress("123 Main St. Apt #4B"));
-        assertTrue(Address.isValidAddress("P.O. Box 123"));
-        assertTrue(Address.isValidAddress("123-456 Main Street"));
-        assertTrue(Address.isValidAddress("123/456 Main Road"));
-        assertTrue(Address.isValidAddress("Flat 4B, Block 123, Main Street (West)"));
+        // addresses with allowed special characters
+        assertTrue(Address.isValidAddress("123-456 Main Street")); // dash
+        assertTrue(Address.isValidAddress("123/456 Main Road")); // slash
+        assertTrue(Address.isValidAddress("Flat 4B, Block 123, Main Street (West)")); // parentheses
+        assertTrue(Address.isValidAddress("123 Main St, Apt #4B")); // comma, hash
+        assertTrue(Address.isValidAddress("P.O. Box 123")); // period (allowed)
+        assertTrue(Address.isValidAddress("123 Main St.")); // period at end
+
+        // invalid addresses with prohibited symbols
+        assertFalse(Address.isValidAddress("Leng Inc; 1234 Market St")); // semicolon
+        assertFalse(Address.isValidAddress("123 Main St @ Center")); // @ symbol
+        assertFalse(Address.isValidAddress("123*456 Main Street")); // asterisk
+        assertFalse(Address.isValidAddress("Unit $123 Main St")); // dollar sign
+        assertFalse(Address.isValidAddress("123 Main St!")); // exclamation
+        assertFalse(Address.isValidAddress("123 Main St?")); // question mark
+        assertFalse(Address.isValidAddress("123+456 Main Road")); // plus sign
+    }
+
+    @Test
+    public void isValidAddress_spaceHandling() {
+        // Valid addresses with various spacing issues (handled by normalization)
+        assertTrue(Address.isValidAddress("  123 Main Street  "));
+        assertTrue(Address.isValidAddress("123    Main     Street"));
+        assertTrue(Address.isValidAddress("\t123\tMain\tStreet\t"));
+
+        // Invalid: only whitespace (even after normalization)
+        assertFalse(Address.isValidAddress("   "));
+        assertFalse(Address.isValidAddress("\t\t\t"));
+        assertFalse(Address.isValidAddress("\n\n"));
+        assertFalse(Address.isValidAddress("  \t  \n  "));
     }
 
     @Test

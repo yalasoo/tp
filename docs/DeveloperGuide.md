@@ -585,35 +585,212 @@ testers are expected to do more *exploratory* testing.
 
 ### Launch and shutdown
 
-1. Initial launch
+1. **Initial launch**
+   - Download the jar file and copy into an empty folder 
+   - Double-click the jar file<br>
+   - **Expected:** Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-   1. Download the jar file and copy into an empty folder
+<br>
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+2. **Saving window preferences**
+   - Resize the window to an optimum size. Move the window to a different location. Close the window. 
+   - Re-launch the app by double-clicking the jar file.<br>
+   - **Expected:** The most recent window size and location is retained.
 
-1. Saving window preferences
+----------------------------------------------------------------------------------------------------------------------------------
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+### Adding contacts
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+##### Adding a valid contact
 
-### Deleting a person
+1. **Adding a student contact with all required fields**
+    - Prerequisites: No existing contact with same name and phone number
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: New student contact added. Success message shown.
 
-1. Deleting a person while all persons are being shown
+1. **Adding a colleague contact with optional note**
+    - Test case: `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts`<br>**Expected**: New colleague contact added with note.
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+1. **Adding duplicate contact (same tag)**
+    - Prerequisites: Contact with same name and phone already exists (for student) OR same phone/email (for colleague)
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Error message about duplicate contact.
 
-   1. Test case: `delete 1`<br>
-      Expected: Popup window appears for confirmation. After the user confirms to proceed with the deletion, first contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+1. **Adding contact with mixed tags (same info)**
+    - Prerequisites: Student contact "John Doe" exists
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/colleague`<br>**Expected**: Success - different tags allow identical info.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+1. **Invalid parameter formats**
+    - Test case: `add n/John123 p/123 e/invalid-email a/ c/InvalidClass b/32-13-2020 t/invalidtag`<br>**Expected**: Multiple validation errors shown.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+----------------------------------------------------------------------------------------------------------------------------------
 
-1. _{ more test cases …​ }_
+### Editing contacts
+
+##### Editing contact fields
+
+1. **Editing a contact's basic information**
+   - Prerequisites: List all persons. Note the details of contact at index 1.
+   - Test case: `edit 1 n/New Name p/87654321 e/new.email@school.edu`
+   - **Expected:** Contact details updated successfully.
+
+2. **Editing contact with duplicate detection**
+   - Test case: `edit 2 n/John Doe p/98765432` (assuming this creates a duplicate)
+   - **Expected:** Appropriate duplicate detection error message.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Deleting contacts
+
+##### Deleting by index and name
+
+1. **Deleting a contact by valid index**
+   - Prerequisites: List all persons. Multiple persons in the list.
+   - Test case: `delete 1`
+   - **Expected:** Confirmation popup appears, then contact is deleted upon confirmation.
+
+<br>
+
+2. **Deleting a contact by name with multiple matches**
+   - Test case: `delete n/John`
+   - **Expected:** Popup shows multiple matches for selection.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Sorting contacts
+
+##### Sorting by different fields
+
+1. **Sorting contacts by name**
+   - Test case: `sort f/name`
+   - **Expected:** Contacts sorted alphabetically by name.
+
+<br>
+
+2. **Sorting contacts by class in descending order**
+   - Test case: `sort f/class o/desc`
+   - **Expected:** Contacts sorted by class in reverse alphabetical order.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Birthday reminders
+
+##### Checking birthday notifications
+
+1. **Manual reminder check with birthdays today and upcoming**
+    - Prerequisites: At least one contact has birthday today, and at least one has birthday within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows two sections: "Happy Birthday to these people today!" and "Upcoming birthdays in the next 7 days:" with numbered lists.
+
+1. **Manual reminder with only upcoming birthdays**
+    - Prerequisites: No contacts have birthday today, but some have birthdays within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No birthdays today!" followed by "Upcoming birthdays in the next 7 days:" section.
+
+1. **Manual reminder with no upcoming birthdays**
+    - Prerequisites: No contacts have birthdays today or within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No upcoming birthdays found." message.
+
+1. **Manual reminder with empty address book**
+    - Prerequisites: Clear all contacts using `clear` command
+    - Test case: `remind`<br>**Expected**: Shows "No contacts in LittleLogBook." message.
+
+1. **Automatic reminder on startup**
+    - Prerequisites: Contacts with birthdays today and/or upcoming exist
+    - Action: Close and reopen the app<br>**Expected**: Birthday reminders shown automatically in the result display when app starts.
+
+1. **Reminder formatting verification**
+    - Prerequisites: Contacts with various birthday scenarios exist
+    - Test case: `remind`<br>**Expected**: Each entry shows:
+        - Name in correct format
+        - Birthday in dd-MM-yyyy format
+        - Tags in square brackets (if present)
+        - "(TODAY!)" for today's birthdays
+        - "(in X day(s))" for upcoming birthdays
+
+1. **Reminder with extraneous parameters**
+    - Test case: `remind extra parameter`<br>**Expected**: Command works normally (extraneous parameters ignored).
+
+1. **Cross-year birthday handling**
+    - Prerequisites: Test in late December with contacts having January birthdays
+    - Test case: `remind`<br>**Expected**: Correctly shows upcoming birthdays that cross into next year.
+
+**Testing Tips for `remind` command:**
+- Use system date changes to simulate different scenarios
+- Test across month and year boundaries
+- Verify the "in X days" calculation is accurate
+- Check that both automatic (startup) and manual execution work
+- Ensure the output is helpful and actionable for kindergarten teachers
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Note management
+
+##### Adding and editing notes
+
+1. **Adding a note to a contact**
+   - Test case: `note 1 desc/Allergic to peanuts and dairy products`
+   - **Expected:** Note successfully added to contact.
+
+<br>
+
+2. **Removing a note from a contact**
+   - Test case: `note 1`
+   - **Expected:** Existing note removed from contact.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Viewing contacts
+
+##### Detailed contact viewing
+
+1. **Viewing valid contact**
+    - Prerequisites: Multiple contacts in list
+    - Test case: `view 1`<br>**Expected**: Popup window shows full contact details.
+
+1. **Viewing student vs colleague**
+    - Test cases: `view 1` (student), `view 2` (colleague)<br>**Expected**: Different layouts shown (student shows attendance, colleague does not).
+
+1. **Viewing with invalid index**
+    - Test case: `view 0`<br>**Expected**: Error message about invalid index.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance management
+
+##### Marking attendance
+
+1. **Marking attendance for a single student**
+    - Prerequisites: Ensure contact at index 1 is a student.
+    - Test case: `attendance 1 s/present`
+    - **Expected:** Attendance marked successfully for current date.
+
+<br>
+
+2. **Marking attendance for multiple students with specific date**
+    - Test case: `attendance 1,2,3 s/late d/15-03-2024`
+    - **Expected:** Attendance marked for all specified students on given date.
+
+<br>
+
+3. **Marking attendance with invalid date**
+    - Test case: `attendance 1 s/present d/29-02-2023`
+    - **Expected:** Error message for invalid date.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance reports
+
+##### Downloading reports
+
+1. **Downloading individual student monthly report**
+    - Prerequisites: Ensure contact at index 1 is a student with attendance records.
+    - Test case: `attendanceD 1 m/03-2024`
+    - **Expected:** CSV report downloaded successfully.
+
+<br>
+
+2. **Downloading class-based daily report**
+    - Test case: `attendanceD c/K1A d/15-03-2024`
+    - **Expected:** Class attendance report downloaded for specified date.
+
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Saving data
 
@@ -644,20 +821,29 @@ testers are expected to do more *exploratory* testing.
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
     - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
 
+----------------------------------------------------------------------------------------------------------------------------------
+
 ### Finding contacts
 ##### Similar process for the different find commands (`find-n`, `find-c`, `find-t`, `find-p` )
 
 1. **Simulating find for no-matches:**
-    - Add contacts to the LittleLogBook
+    - Add contacts to the LittleLogBook with no names containing z or y, no classes containing K1A
     - Input the find command with required parameter(s) to find for an information such as partial name that does not exist in your contacts
+        - Test case: `find-p 123456789 `
+        - Test case: `find-n zy z y`
+        - Test case: `find-c k1A`
     - Press enter
     - **Expected behavior:** LittleLogBook should show empty contact list with information on how to proceed.
 
 <br>
 
 2. **Simulating find for matches:**
-    - Add contacts to the LittleLogBook
+    - Add contacts to the LittleLogBook with class starting with K, names containing b and/or d
     - Input the find command with required parameter(s) to find for an information such as partial phone number that exists in your contacts
+        - Test case: `find-p 8 9`
+        - Test case: `find-c k`
+        - Test case: `find-n b d`
+        - Test case: `find-t stu coll`
     - Press enter
     - **Expected behavior:** LittleLogBook should show filtered contact list of only those that match the input string with information on how to proceed.
 
@@ -665,6 +851,7 @@ testers are expected to do more *exploratory* testing.
 
 3. **Simulating find with no parameter inputs:**
    - Input the find command with no parameter
+        - - Test case: `find-c `
    - **Expected behavior:** LittleLogBook should say `invalid command format` and guide users on next steps.
    
 <br>
@@ -672,7 +859,10 @@ testers are expected to do more *exploratory* testing.
 4. **Simulating find with wrong parameter inputs:**
    - Input the find command 
        - Example: passing in alphabetic string for find-p command
-       - Sample command: `find-p ala`
+       - Test case: `find-p ala`
+       - Test case: `find-t 1`
+       - Test case: `find-n @ !`
+       - Test case: `find-c !`
    - Press enter
    - **Expected behavior:** LittleLogBook should state the valid inputs that are allowed to guide user.
 
@@ -681,13 +871,15 @@ testers are expected to do more *exploratory* testing.
 **Note:** To continue testing other commands, use `list` command as guided by LittleLogBook GUI to escape the filtered view.
 
 </box>
-    
+
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Favourite contacts
 
 1. **Simulating adding a contact to favourites for the first time:**
-    - Add a new contact to LittleLogBook
+    - Add a new contact to a LittleLogBook
     - Input the `fav` command with index of newly added contact 
+        - Test case: `fav 1` assuming added contact is the first contact
     - Press enter
     - **Expected behavior:** LittleLogBook should show a successful message with the name of the added contact. There will be a star icon indicated next to that contact.
 
@@ -697,6 +889,7 @@ testers are expected to do more *exploratory* testing.
     - Add a new contact to the LittleLogBook
     - Do the process of adding that contact to favourites _(Refer to point 1 in this section)_
     - Input the favourite command with index of that specific contact
+        - Test case: `fav 1` assuming added contact is the first contact
     - Press enter
     - **Expected behavior:** LittleLogBook should show succesful message with information on the contact that is removed from favourites. The star icon next to the contact will disappear.
 
@@ -705,7 +898,53 @@ testers are expected to do more *exploratory* testing.
 3. **Checking `list` behaviour:**
     - Add two new contacts to the LittleLogBook
     - Do the process of adding one of the two contacts to favourites _(Refer to point 1 in this section)_
+        - Test case: `fav 2` assuming added contacts are the first and second respectively
     - Input `list` command
     - Press enter
     - **Expected behavior:** LittleLogBook should show those added to favourites on the top of the list
 
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Edge Cases and Error Handling
+1. **Command case sensitivity**
+    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-insensitive).
+
+1. **Parameter order variations**
+    - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+
+1. **Extra spaces in commands**
+    - Test: `add   n/John   Doe   p/98765432`<br>**Expected**: Should handle gracefully (trim spaces).
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### System commands
+
+##### Basic system operations
+
+1. **Listing all contacts**
+    - Test case: `list`
+    - **Expected:** All contacts displayed with favourites at top.
+
+<br>
+
+2. **Clearing all contacts**
+    - Test case: `clear`
+    - **Expected:** Confirmation and removal of all contacts.
+
+<br>
+
+3. **Viewing help**
+    - Test case: `help`
+    - **Expected:** Help window opens with link to our user guide.
+
+<br>
+
+4. **Exiting application**
+    - Test case: `exit`
+    - **Expected:** Application closes gracefully.
+
+**Note:** These instructions provide a starting point for testers. Testers should perform additional *exploratory* testing beyond these specified cases, including:
+- Testing concurrent operations
+- Testing boundary conditions
+- Testing error recovery
+- Testing UI responsiveness with different data volumes
