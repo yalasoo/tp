@@ -643,3 +643,69 @@ testers are expected to do more *exploratory* testing.
 3. **Testing with invalid birthday formats:**
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
     - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
+
+### Finding contacts
+##### Similar process for the different find commands (`find-n`, `find-c`, `find-t`, `find-p` )
+
+1. **Simulating find for no-matches:**
+    - Add contacts to the LittleLogBook
+    - Input the find command with required parameter(s) to find for an information such as partial name that does not exist in your contacts
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show empty contact list with information on how to proceed.
+
+<br>
+
+2. **Simulating find for matches:**
+    - Add contacts to the LittleLogBook
+    - Input the find command with required parameter(s) to find for an information such as partial phone number that exists in your contacts
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show filtered contact list of only those that match the input string with information on how to proceed.
+
+<br>
+
+3. **Simulating find with no parameter inputs:**
+   - Input the find command with no parameter
+   - **Expected behavior:** LittleLogBook should say `invalid command format` and guide users on next steps.
+   
+<br>
+   
+4. **Simulating find with wrong parameter inputs:**
+   - Input the find command 
+       - Example: passing in alphabetic string for find-p command
+       - Sample command: `find-p ala`
+   - Press enter
+   - **Expected behavior:** LittleLogBook should state the valid inputs that are allowed to guide user.
+
+<box type="info" seamless="true">
+
+**Note:** To continue testing other commands, use `list` command as guided by LittleLogBook GUI to escape the filtered view.
+
+</box>
+    
+
+### Favourite contacts
+
+1. **Simulating adding a contact to favourites for the first time:**
+    - Add a new contact to LittleLogBook
+    - Input the `fav` command with index of newly added contact 
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show a successful message with the name of the added contact. There will be a star icon indicated next to that contact.
+
+<br>
+
+2. **Simulating removing a contact from favourites:**
+    - Add a new contact to the LittleLogBook
+    - Do the process of adding that contact to favourites _(Refer to point 1 in this section)_
+    - Input the favourite command with index of that specific contact
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show succesful message with information on the contact that is removed from favourites. The star icon next to the contact will disappear.
+
+<br>
+   
+3. **Checking `list` behaviour:**
+    - Add two new contacts to the LittleLogBook
+    - Do the process of adding one of the two contacts to favourites _(Refer to point 1 in this section)_
+    - Input `list` command
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show those added to favourites on the top of the list
+
