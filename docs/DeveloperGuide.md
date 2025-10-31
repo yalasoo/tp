@@ -657,17 +657,36 @@ testers are expected to do more *exploratory* testing.
 
 ### Finding contacts
 
-##### Various search methods
+#### Find by Name: `find-n`
+1. **Single keyword search**
+    - Test case: `find-n John`<br>**Expected**: All contacts with "John" in name shown.
 
-1. **Finding contacts by partial name**
-   - Test case: `find-n John`
-   - **Expected:** All contacts with "John" in name are displayed.
+1. **Multiple keywords search**
+    - Test case: `find-n John Tan`<br>**Expected**: Contacts matching either "John" or "Tan" shown.
 
-<br>
+1. **No matches found**
+    - Test case: `find-n Nonexistent`<br>**Expected**: "0 persons listed" message.
 
-2. **Finding contacts by phone number**
-   - Test case: `find-p 9876`
-   - **Expected:** All contacts with phone numbers containing "9876" are displayed.
+#### Find by Phone: `find-p`
+1. **Partial phone number search**
+    - Test case: `find-p 431 967`<br>**Expected**: Contacts with these number sequences shown.
+
+1. **Full phone number search**
+    - Test case: `find-p 84313390`<br>**Expected**: Exact match contact shown.
+
+#### Find by Tag: `find-t`
+1. **Search by full tag**
+    - Test case: `find-t student`<br>**Expected**: All students shown.
+
+1. **Partial tag search**
+    - Test case: `find-t stu colle`<br>**Expected**: Both students and colleagues shown.
+
+#### Find by Class: `find-c`
+1. **Multiple class search**
+    - Test case: `find-c k1A nur`<br>**Expected**: Contacts in K1A or Nursery shown.
+
+1. **Partial class name**
+    - Test case: `find-c 2 A`<br>**Expected**: Contacts in classes containing "2" or "A" shown.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -852,6 +871,18 @@ testers are expected to do more *exploratory* testing.
 3. **Testing with invalid birthday formats:**
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
     - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Edge Cases and Error Handling
+1. **Command case sensitivity**
+    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-insensitive).
+
+1. **Parameter order variations**
+    - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+
+1. **Extra spaces in commands**
+    - Test: `add   n/John   Doe   p/98765432`<br>**Expected**: Should handle gracefully (trim spaces).
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
