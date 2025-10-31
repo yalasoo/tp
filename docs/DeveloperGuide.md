@@ -655,13 +655,27 @@ testers are expected to do more *exploratory* testing.
 1. **Editing a contact's basic information**
    - Prerequisites: List all persons. Note the details of contact at index 1.
    - Test case: `edit 1 n/New Name p/87654321 e/new.email@school.edu`
-   - **Expected:** Contact details updated successfully.
+   - **Expected:** The command box shows the edited information, and the contact list refreshes with the updated entry.
 
-2. **Editing contact with duplicate detection** 
+<br> 
+
+2. **Editing contact with duplicate detection**
    - Prerequisites: Add 2 contacts with the same details for every field EXCEPT name. Assume they are at index `x` and `y`
    - Test case: `edit x n/{y's name}` (e.g., If y's name is `Bob` then run `edit x n/Bob`)
-   - **Expected:** Appropriate duplicate detection error message.
+   - **Expected:** The command box shows a duplicate alert message. No changes are made to the contact list.
 
+<br>
+
+3. **Editing contact with missing parameters**
+    - Test case: `edit`, `edit 1` (assuming 1 is a valid index)
+    - **Expected:** No detail is edited. Error details shown in the status message. Status bar remains the same.
+
+<br>
+
+4. **Editing a contact with invalid parameter format**
+     - Test case: `edit 1 p/abc`, `edit 1 e/not-an-email` (assuming 1 is a valid index)
+     - **Expected:** No detail is edited. Error details shown in the status message. Status bar remains the same.
+   
 ----------------------------------------------------------------------------------------------------------------------------------
 
 ### Deleting contacts
@@ -671,14 +685,34 @@ testers are expected to do more *exploratory* testing.
 1. **Deleting a contact by valid index**
    - Prerequisites: List all persons. Multiple persons in the list.
    - Test case: `delete 1`
-   - **Expected:** Confirmation popup appears, then contact is deleted upon confirmation.
+   - **Expected:** A confirmation popup appears. The contact is deleted upon confirmation, otherwise, the app returns to the main window. The command box shows a success or cancellation message.
 
 <br>
 
-2. **Deleting a contact by name with multiple matches**
+2. **Deleting a contact by invalid index**
+   - Test case: `delete 1`, `delete`, `delete x`, `...` (where x is larger than the list size)
+   - **Expected:** No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+<br>
+
+3. **Deleting a contact by name with full name**
+   - Prerequisite: List all persons. Alex Yeoh is in the person list.
+   - Test case: `delete n/ALex Yeoh`
+   - **Expected:** If only one person has this name, a confirmation popup appears, and the contact is deleted upon confirmation. Otherwise, a popup showing multiple matches appears first, followed by a confirmation popup for the selected contact.
+
+<br>
+
+4. **Deleting a contact by name with partial name**
    - Prerequisites: List all persons. Multiple persons in the list with `a` in their name.
    - Test case: `delete n/a`
-   - **Expected:** Popup shows multiple matches for selection.
+   - **Expected:** A popup shows possible matches for selection. After the user makes a selection, a confirmation popup appears.
+
+<br>
+
+5. **Deleting a contact by name with a invalid name**
+    - Prerequisites: List all persons. No person in the list with `random name` in their name..
+    - Test case: `delete n/random name`
+    - **Expected:** A popup shows no matches found. Pressing Enter returns to the main window.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
