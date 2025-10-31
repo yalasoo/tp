@@ -236,7 +236,7 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 [//]: # (COMMAND BREAK)
 <br>
 
-### Adding a contact: `edit`
+### Editing a contact: `edit`
 
 **Purpose**: Allows teachers to edit a contact.
 
@@ -339,12 +339,12 @@ delete n/John Doe
 
 **2. Delete by NAME**
 
-|                         Outcome Type                         | Scenario                                                               | Message                                                                                              | GUI Action                                                 |
-|:------------------------------------------------------------:|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Contact deleted                                                        | `Deleted Person: <Person>`                                                                           | Contact list refreshes without deleted entry               |
-|         <span style="color: red">**Failure**</span>          | No matches found                                                       | `No matches found. Please try again`                                                                 | Pop-up window appears                                      |
-| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                 | `Multiple matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
-| <span style="color: orange">**Confirmation Required**</span> | Exact one match found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                            | Pop-up window with the selected person information appears |
+|                         Outcome Type                         | Scenario                                                                   | Message                                                                                             | GUI Action                                                 |
+|:------------------------------------------------------------:|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Contact deleted                                                            | `Deleted Person: <Person>`                                                                          | Contact list refreshes without deleted entry               |
+|         <span style="color: red">**Failure**</span>          | No matches found                                                           | `No matches found. Please try again`                                                                | Pop-up window appears                                      |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                     | `Possible matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
+| <span style="color: orange">**Confirmation Required**</span> | One exact same name found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                           | Pop-up window with the selected person information appears |
 
 <box type="warning">
 <strong>Note:</strong> When a popup window appears, you must respond to it before continuing. 
