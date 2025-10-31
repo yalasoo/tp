@@ -655,57 +655,6 @@ testers are expected to do more *exploratory* testing.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-### Finding contacts
-
-#### Find by Name: `find-n`
-1. **Single keyword search**
-    - Test case: `find-n John`<br>**Expected**: All contacts with "John" in name shown.
-
-1. **Multiple keywords search**
-    - Test case: `find-n John Tan`<br>**Expected**: Contacts matching either "John" or "Tan" shown.
-
-1. **No matches found**
-    - Test case: `find-n Nonexistent`<br>**Expected**: "0 persons listed" message.
-
-#### Find by Phone: `find-p`
-1. **Partial phone number search**
-    - Test case: `find-p 431 967`<br>**Expected**: Contacts with these number sequences shown.
-
-1. **Full phone number search**
-    - Test case: `find-p 84313390`<br>**Expected**: Exact match contact shown.
-
-#### Find by Tag: `find-t`
-1. **Search by full tag**
-    - Test case: `find-t student`<br>**Expected**: All students shown.
-
-1. **Partial tag search**
-    - Test case: `find-t stu colle`<br>**Expected**: Both students and colleagues shown.
-
-#### Find by Class: `find-c`
-1. **Multiple class search**
-    - Test case: `find-c k1A nur`<br>**Expected**: Contacts in K1A or Nursery shown.
-
-1. **Partial class name**
-    - Test case: `find-c 2 A`<br>**Expected**: Contacts in classes containing "2" or "A" shown.
-
-----------------------------------------------------------------------------------------------------------------------------------
-
-### Favourite management
-
-##### Managing favourite contacts
-
-1. **Adding contacts to favourites**
-   - Test case: `fav 1 2 3`
-   - **Expected:** Specified contacts are marked as favourites.
-
-<br>
-
-2. **Removing contacts from favourites**
-   - Test case: `fav 1 2` (assuming they were already favourites)
-   - **Expected:** Specified contacts are removed from favourites.
-
-----------------------------------------------------------------------------------------------------------------------------------
-
 ### Sorting contacts
 
 ##### Sorting by different fields
@@ -872,20 +821,29 @@ testers are expected to do more *exploratory* testing.
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
     - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
 
+----------------------------------------------------------------------------------------------------------------------------------
+
 ### Finding contacts
 ##### Similar process for the different find commands (`find-n`, `find-c`, `find-t`, `find-p` )
 
 1. **Simulating find for no-matches:**
-    - Add contacts to the LittleLogBook
+    - Add contacts to the LittleLogBook with no names containing z or y, no classes containing K1A
     - Input the find command with required parameter(s) to find for an information such as partial name that does not exist in your contacts
+        - Test case: `find-p 123456789 `
+        - Test case: `find-n zy z y`
+        - Test case: `find-c k1A`
     - Press enter
     - **Expected behavior:** LittleLogBook should show empty contact list with information on how to proceed.
 
 <br>
 
 2. **Simulating find for matches:**
-    - Add contacts to the LittleLogBook
+    - Add contacts to the LittleLogBook with class starting with K, names containing b and/or d
     - Input the find command with required parameter(s) to find for an information such as partial phone number that exists in your contacts
+        - Test case: `find-p 8 9`
+        - Test case: `find-c k`
+        - Test case: `find-n b d`
+        - Test case: `find-t stu coll`
     - Press enter
     - **Expected behavior:** LittleLogBook should show filtered contact list of only those that match the input string with information on how to proceed.
 
@@ -893,6 +851,7 @@ testers are expected to do more *exploratory* testing.
 
 3. **Simulating find with no parameter inputs:**
    - Input the find command with no parameter
+        - - Test case: `find-c `
    - **Expected behavior:** LittleLogBook should say `invalid command format` and guide users on next steps.
    
 <br>
@@ -900,7 +859,10 @@ testers are expected to do more *exploratory* testing.
 4. **Simulating find with wrong parameter inputs:**
    - Input the find command 
        - Example: passing in alphabetic string for find-p command
-       - Sample command: `find-p ala`
+       - Test case: `find-p ala`
+       - Test case: `find-t 1`
+       - Test case: `find-n @ !`
+       - Test case: `find-c !`
    - Press enter
    - **Expected behavior:** LittleLogBook should state the valid inputs that are allowed to guide user.
 
@@ -909,13 +871,15 @@ testers are expected to do more *exploratory* testing.
 **Note:** To continue testing other commands, use `list` command as guided by LittleLogBook GUI to escape the filtered view.
 
 </box>
-    
+
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Favourite contacts
 
 1. **Simulating adding a contact to favourites for the first time:**
-    - Add a new contact to LittleLogBook
+    - Add a new contact to a LittleLogBook
     - Input the `fav` command with index of newly added contact 
+        - Test case: `fav 1` assuming added contact is the first contact
     - Press enter
     - **Expected behavior:** LittleLogBook should show a successful message with the name of the added contact. There will be a star icon indicated next to that contact.
 
@@ -925,6 +889,7 @@ testers are expected to do more *exploratory* testing.
     - Add a new contact to the LittleLogBook
     - Do the process of adding that contact to favourites _(Refer to point 1 in this section)_
     - Input the favourite command with index of that specific contact
+        - Test case: `fav 1` assuming added contact is the first contact
     - Press enter
     - **Expected behavior:** LittleLogBook should show succesful message with information on the contact that is removed from favourites. The star icon next to the contact will disappear.
 
@@ -933,6 +898,7 @@ testers are expected to do more *exploratory* testing.
 3. **Checking `list` behaviour:**
     - Add two new contacts to the LittleLogBook
     - Do the process of adding one of the two contacts to favourites _(Refer to point 1 in this section)_
+        - Test case: `fav 2` assuming added contacts are the first and second respectively
     - Input `list` command
     - Press enter
     - **Expected behavior:** LittleLogBook should show those added to favourites on the top of the list
@@ -956,26 +922,26 @@ testers are expected to do more *exploratory* testing.
 ##### Basic system operations
 
 1. **Listing all contacts**
-   - Test case: `list`
-   - **Expected:** All contacts displayed with favourites at top.
+    - Test case: `list`
+    - **Expected:** All contacts displayed with favourites at top.
 
 <br>
 
 2. **Clearing all contacts**
-   - Test case: `clear`
-   - **Expected:** Confirmation and removal of all contacts.
+    - Test case: `clear`
+    - **Expected:** Confirmation and removal of all contacts.
 
 <br>
 
 3. **Viewing help**
-   - Test case: `help`
-   - **Expected:** Help window opens with link to our user guide.
+    - Test case: `help`
+    - **Expected:** Help window opens with link to our user guide.
 
 <br>
 
 4. **Exiting application**
-   - Test case: `exit`
-   - **Expected:** Application closes gracefully.
+    - Test case: `exit`
+    - **Expected:** Application closes gracefully.
 
 **Note:** These instructions provide a starting point for testers. Testers should perform additional *exploratory* testing beyond these specified cases, including:
 - Testing concurrent operations
