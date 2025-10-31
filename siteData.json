@@ -63,8 +63,19 @@
         "glossary": "Glossary",
         "appendix-instructions-for-manual-testing": "Appendix: Instructions for manual testing",
         "launch-and-shutdown": "Launch and shutdown",
-        "deleting-a-person": "Deleting a person",
-        "saving-data": "Saving data"
+        "adding-contacts": "Adding contacts",
+        "editing-contacts": "Editing contacts",
+        "deleting-contacts": "Deleting contacts",
+        "finding-contacts": "Finding contacts",
+        "favourite-management": "Favourite management",
+        "sorting-contacts": "Sorting contacts",
+        "birthday-reminders": "Birthday reminders",
+        "note-management": "Note management",
+        "viewing-contacts": "Viewing contacts",
+        "attendance-management": "Attendance management",
+        "attendance-reports": "Attendance reports",
+        "saving-data": "Saving data",
+        "system-commands": "System commands"
       },
       "headingKeywords": {}
     },

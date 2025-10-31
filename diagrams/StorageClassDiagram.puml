@@ -22,10 +22,13 @@ Class JsonAdaptedPerson
 Class JsonAdaptedTag
 }
 
+Class AttendanceCsvStorage
+
 }
 
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Storage
+HiddenOutside ..> AttendanceCsvStorage
 
 StorageManager .up.|> Storage
 StorageManager -up-> "1" UserPrefsStorage
