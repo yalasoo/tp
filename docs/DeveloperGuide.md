@@ -585,35 +585,198 @@ testers are expected to do more *exploratory* testing.
 
 ### Launch and shutdown
 
-1. Initial launch
+1. **Initial launch**
+   - Download the jar file and copy into an empty folder 
+   - Double-click the jar file<br>
+   - **Expected:** Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-   1. Download the jar file and copy into an empty folder
+<br>
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+2. **Saving window preferences**
+   - Resize the window to an optimum size. Move the window to a different location. Close the window. 
+   - Re-launch the app by double-clicking the jar file.<br>
+   - **Expected:** The most recent window size and location is retained.
 
-1. Saving window preferences
+----------------------------------------------------------------------------------------------------------------------------------
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+### Adding contacts
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+##### Adding a valid contact
 
-### Deleting a person
+1. **Adding a student contact with all fields**
+    - Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/student desc/Allergic to peanuts`
+    - **Expected:** New student contact added successfully with all specified fields.
 
-1. Deleting a person while all persons are being shown
+<br>
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+2. **Adding a colleague contact with minimal fields**
+    - Test case: `add n/Mary Tan p/91234567 e/marytan@school.edu t/colleague`
+    - **Expected:** New colleague contact added with only required fields.
 
-   1. Test case: `delete 1`<br>
-      Expected: Popup window appears for confirmation. After the user confirms to proceed with the deletion, first contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+<br>
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+3. **Adding contact with invalid parameters**
+    - Test case: `add n/John Doe p/123 e/invalid-email a/ c/InvalidClass b/32-13-2020 t/invalidtag`
+    - **Expected:** Appropriate error messages for each invalid parameter.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+----------------------------------------------------------------------------------------------------------------------------------
 
-1. _{ more test cases …​ }_
+### Editing contacts
+
+##### Editing contact fields
+
+1. **Editing a contact's basic information**
+   - Prerequisites: List all persons. Note the details of contact at index 1.
+   - Test case: `edit 1 n/New Name p/87654321 e/new.email@school.edu`
+   - **Expected:** Contact details updated successfully.
+
+2. **Editing contact with duplicate detection**
+   - Test case: `edit 2 n/John Doe p/98765432` (assuming this creates a duplicate)
+   - **Expected:** Appropriate duplicate detection error message.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Deleting contacts
+
+##### Deleting by index and name
+
+1. **Deleting a contact by valid index**
+   - Prerequisites: List all persons. Multiple persons in the list.
+   - Test case: `delete 1`
+   - **Expected:** Confirmation popup appears, then contact is deleted upon confirmation.
+
+<br>
+
+2. **Deleting a contact by name with multiple matches**
+   - Test case: `delete n/John`
+   - **Expected:** Popup shows multiple matches for selection.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Finding contacts
+
+##### Various search methods
+
+1. **Finding contacts by partial name**
+   - Test case: `find-n John`
+   - **Expected:** All contacts with "John" in name are displayed.
+
+<br>
+
+2. **Finding contacts by phone number**
+   - Test case: `find-p 9876`
+   - **Expected:** All contacts with phone numbers containing "9876" are displayed.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Favourite management
+
+##### Managing favourite contacts
+
+1. **Adding contacts to favourites**
+   - Test case: `fav 1 2 3`
+   - **Expected:** Specified contacts are marked as favourites.
+
+<br>
+
+2. **Removing contacts from favourites**
+   - Test case: `fav 1 2` (assuming they were already favourites)
+   - **Expected:** Specified contacts are removed from favourites.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Sorting contacts
+
+##### Sorting by different fields
+
+1. **Sorting contacts by name**
+   - Test case: `sort f/name`
+   - **Expected:** Contacts sorted alphabetically by name.
+
+<br>
+
+2. **Sorting contacts by class in descending order**
+   - Test case: `sort f/class o/desc`
+   - **Expected:** Contacts sorted by class in reverse alphabetical order.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Birthday reminders
+
+##### Checking birthday notifications
+
+1. **Manual birthday reminder check**
+   - Test case: `remind`
+   - **Expected:** Display of today's birthdays and upcoming birthdays in next 7 days.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Note management
+
+##### Adding and editing notes
+
+1. **Adding a note to a contact**
+   - Test case: `note 1 desc/Allergic to peanuts and dairy products`
+   - **Expected:** Note successfully added to contact.
+
+<br>
+
+2. **Removing a note from a contact**
+   - Test case: `note 1`
+   - **Expected:** Existing note removed from contact.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Viewing contacts
+
+##### Detailed contact viewing
+
+1. **Viewing full contact details**
+   - Test case: `view 1`
+   - **Expected:** Popup window displays complete contact information including attendance and notes.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance management
+
+##### Marking attendance
+
+1. **Marking attendance for a single student**
+    - Prerequisites: Ensure contact at index 1 is a student.
+    - Test case: `attendance 1 s/present`
+    - **Expected:** Attendance marked successfully for current date.
+
+<br>
+
+2. **Marking attendance for multiple students with specific date**
+    - Test case: `attendance 1,2,3 s/late d/15-03-2024`
+    - **Expected:** Attendance marked for all specified students on given date.
+
+<br>
+
+3. **Marking attendance with invalid date**
+    - Test case: `attendance 1 s/present d/29-02-2023`
+    - **Expected:** Error message for invalid date.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance reports
+
+##### Downloading reports
+
+1. **Downloading individual student monthly report**
+    - Prerequisites: Ensure contact at index 1 is a student with attendance records.
+    - Test case: `attendanceD 1 m/03-2024`
+    - **Expected:** CSV report downloaded successfully.
+
+<br>
+
+2. **Downloading class-based daily report**
+    - Test case: `attendanceD c/K1A d/15-03-2024`
+    - **Expected:** Class attendance report downloaded for specified date.
+
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Saving data
 
@@ -643,3 +806,31 @@ testers are expected to do more *exploratory* testing.
 3. **Testing with invalid birthday formats:**
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
     - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### System commands
+
+##### Basic system operations
+
+1. **Listing all contacts**
+   - Test case: `list`
+   - **Expected:** All contacts displayed with favourites at top.
+
+<br>
+
+2. **Clearing all contacts**
+   - Test case: `clear`
+   - **Expected:** Confirmation and removal of all contacts.
+
+<br>
+
+3. **Viewing help**
+   - Test case: `help`
+   - **Expected:** Help window opens with user guide link.
+
+<br>
+
+4. **Exiting application**
+   - Test case: `exit`
+   - **Expected:** Application closes gracefully.
