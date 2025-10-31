@@ -9,13 +9,19 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Address {
 
-    public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Addresses should contain only alphanumeric characters, spaces, and common punctuation "
+            + "(comma, period, dash, hash, slash, parentheses). It should not be blank and should not "
+            + "contain symbols like @, *, $, !, ?, +, ;, etc.";
 
     /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * Address validation:
+     * - Must not be blank or contain only whitespace
+     * - Can contain alphanumeric characters, spaces, and common address punctuation
+     * - Common punctuation includes: , . - # / ( )
+     * - Leading and trailing spaces are handled by trimming
      */
-    public static final String VALIDATION_REGEX = "[^\\s].*";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9\\s,.\\-#/()]+$";
 
     public final String value;
 
@@ -26,15 +32,27 @@ public class Address {
      */
     public Address(String address) {
         requireNonNull(address);
-        checkArgument(isValidAddress(address), MESSAGE_CONSTRAINTS);
-        value = address;
+        String normalizedAddress = normalizeAddress(address);
+        checkArgument(isValidAddress(normalizedAddress), MESSAGE_CONSTRAINTS);
+        value = normalizedAddress;
+    }
+
+    /**
+     * Normalizes the address by trimming and collapsing multiple spaces into single spaces.
+     */
+    private static String normalizeAddress(String address) {
+        return address.trim().replaceAll("\\s+", " ");
     }
 
     /**
      * Returns true if a given string is a valid address.
      */
     public static boolean isValidAddress(String test) {
-        return test.matches(VALIDATION_REGEX);
+        if (test == null) {
+            return false;
+        }
+        String trimmed = test.trim();
+        return !trimmed.isEmpty() && trimmed.matches(VALIDATION_REGEX);
     }
 
     @Override

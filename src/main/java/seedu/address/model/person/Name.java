@@ -10,8 +10,9 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphabetic characters, spaces, hyphens, and apostrophes, "
-            + "and it should not be blank";
+            "Names should only contain alphabetic characters, spaces, hyphens, and apostrophes. "
+            + "Names must contain at least 2 alphabetic characters, cannot consist only of punctuation, "
+            + "and should not have consecutive punctuation (e.g., 'Mary-Jane' ✓, 'Mary--Jane' ✗).";
 
     /*
      * The name must contain only letters, spaces, hyphens, and apostrophes.
@@ -44,7 +45,49 @@ public class Name {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidName(String test) {
-        return !test.trim().isEmpty() && test.matches(VALIDATION_REGEX);
+        if (test == null) {
+            throw new NullPointerException();
+        }
+
+        if (test.trim().isEmpty()) {
+            return false;
+        }
+
+        String trimmed = test.trim();
+
+        // Check basic character set
+        if (!trimmed.matches(VALIDATION_REGEX)) {
+            return false;
+        }
+
+        // Check for sufficient alphabetic content (at least 2 letters)
+        long letterCount = trimmed.chars()
+            .filter(Character::isLetter)
+            .count();
+        if (letterCount < 2) {
+            return false;
+        }
+
+        // Check for excessive consecutive punctuation (more than 1 consecutive hyphens or apostrophes)
+        if (trimmed.matches(".*[-']{2,}.*")) {
+            return false;
+        }
+
+        // Check that name doesn't consist only of punctuation and spaces
+        String withoutPunctuation = trimmed.replaceAll("[\\s\\-']+", "");
+        if (withoutPunctuation.isEmpty()) {
+            return false;
+        }
+
+        // Check for excessive punctuation - ratio of punctuation to letters should not exceed 1:1
+        long punctuationCount = trimmed.chars()
+            .filter(ch -> ch == '-' || ch == '\'')
+            .count();
+        if (punctuationCount >= letterCount) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

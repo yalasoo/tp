@@ -71,15 +71,10 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_noFieldSpecifiedUnfilteredList_success() {
+    public void execute_noFieldSpecifiedUnfilteredList_failure() {
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
-        Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
     }
 
     @Test
@@ -283,6 +278,35 @@ public class EditCommandTest {
         String expected = EditCommand.class.getCanonicalName() + "{index=" + index + ", editPersonDescriptor="
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
+    }
+
+    /**
+     * Test that invalid index error is shown before no fields error.
+     * This ensures users get the more specific error about the invalid index
+     * rather than being asked to provide fields first.
+     */
+    @Test
+    public void execute_invalidIndexNoFields_showsInvalidIndexError() {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        EditPersonDescriptor descriptor = new EditPersonDescriptor(); // No fields edited
+        EditCommand editCommand = new EditCommand(outOfBoundIndex, descriptor);
+
+        // Should show invalid index error, not "no fields" error
+        assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    /**
+     * Test that when index is valid but no fields are provided,
+     * the appropriate "no fields" error is shown.
+     */
+    @Test
+    public void execute_validIndexNoFields_showsNoFieldsError() {
+        Index validIndex = INDEX_FIRST_PERSON;
+        EditPersonDescriptor descriptor = new EditPersonDescriptor(); // No fields edited
+        EditCommand editCommand = new EditCommand(validIndex, descriptor);
+
+        // Should show no fields error
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
     }
 
 }
