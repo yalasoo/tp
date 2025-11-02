@@ -1016,7 +1016,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Edge Cases and Error Handling
 1. **Command case sensitivity**
-    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-insensitive).
+    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-sensitive).
 
 1. **Parameter order variations**
     - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
