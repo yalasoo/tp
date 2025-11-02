@@ -51,7 +51,7 @@ Person *--> Birthday
 Person *--> Class
 Person *--> Favourite
 Person *--> Note
-Person *--> "*" Tag
+Person *--> Tag
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
