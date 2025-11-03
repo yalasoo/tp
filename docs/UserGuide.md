@@ -690,11 +690,12 @@ sort f/class o/desc
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                              |
-|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|-----------------------------------------|
-| <span style="color: green">**Success**</span> | Contacts sorted successfully | `Sorted successfully`                                        | Contact list updates with new ordering  |
-|  <span style="color: red">**Failure**</span>  | Missing required parameters  | `Invalid command format!` _(with correct format guidance)_   | No changes                              |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                              |
+|                 Outcome Type                  | Scenario                         | Message                                                    | GUI Action                              |
+|:---------------------------------------------:|----------------------------------|------------------------------------------------------------|-----------------------------------------|
+| <span style="color: green">**Success**</span> | Contacts sorted successfully     | `Sorted successfully`                                      | Contact list updates with new ordering  |
+|  <span style="color: red">**Failure**</span>  | Sorting on an empty contact list | `No contacts available to sort.`                           | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Missing required parameters      | `Invalid command format!` _(with correct format guidance)_ | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format         | _Parameter-specific validation error_                      | No changes                              |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -725,9 +726,9 @@ remind
 |                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                             GUI Action                            |
 |:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| :---------------------------------------------------------------: |
 |                          <span style="color: green">**Success**</span>                           | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!`<br/>`1) ...`<br/><br/>`Upcoming birthdays in the next 7 days:`<br/>`1) ...`<br/><br/>`Don't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
-|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                       `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                               |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                      `No contacts in LittleLogBook.`                                                                      |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                                   `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                   |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                  `No upcoming birthdays found.`                                                                                                          |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                     `No contacts in LittleLogBook.`                                                                      |                          Reminder printed                         |
 
 ##### Formatting of the reminder list
 
@@ -757,20 +758,26 @@ attendance INDEX(es) s/STATUS [d/DATE]
   </box>
 
 ##### Parameters & Validation Rules
-|                     Parameter                      | Validation Rules                                           |
-|:--------------------------------------------------:|------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
-|                                                    | Cannot be 0 or negative                                    |
-|                                                    | Must correspond to an existing contact in the current list |
-|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)  |
-|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                       |
-| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
-|                                                    | Must be contiguous without spaces or symbols in between    |
-|                                                    | Error if empty                                             |
-|    <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
-|                                                    | Must be a valid date                                       |
-|                                                    | Must between student's born date to today's date           |
-|                                                    | Default to current date if empty                           |
+|                     Parameter                      | Validation Rules                                                                         |
+|:--------------------------------------------------:|------------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                                                | 
+|                                                    | Cannot be 0 or negative                                                                  |
+|                                                    | Must correspond to an existing contact in the current list                               |
+|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)                                |
+|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                                                     |
+| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove                                  |
+|                                                    | Must be contiguous without spaces or symbols in between                                  |
+|                                                    | Error if empty                                                                           |
+|    <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                                                |
+|                                                    | Must be a valid date                                                                     |
+|                                                    | Must be within 6 years of the student's birthdate and cannot be later than today's date. |
+|                                                    | Default to current date if empty                                                         |
+
+<box type="info" seamless>
+
+**Example on date validation:** <br>
+A student born in 01-01-2000 can have their attendance mark from 01-01-2000 until 01-01-2000. But assuming today is 01-01-1999, then their attendance could only be mark from 01-01-2000 until 01-01-1999.  
+  </box>
 
 ##### Sample Commands
 ```shell

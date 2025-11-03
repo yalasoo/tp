@@ -59,7 +59,7 @@ public class JsonAdaptedPersonTest {
     @Test
     public void constructor_personWithAttendance_populatesAttendanceMap() throws IllegalValueException {
         // Create a person with attendance records
-        Person person = new PersonBuilder().withTags("student").build();
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
 
         // Add attendance records to the person
         try {

@@ -117,7 +117,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
+        assertTrue(result.getFeedbackToUser().contains("Date not within six years of birthdate or is a future date"));
 
     }
 
@@ -127,12 +127,57 @@ public class AttendanceCommandTest {
         model.addPerson(student1);
 
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
-        LocalDate beforeBirthday = LocalDate.of(2023, 1, 1);
+        LocalDate beforeBirthday = LocalDate.of(2024, 1, 1).minusDays(1);
         AttendanceCommand command = new AttendanceCommand(indexes, beforeBirthday, AttendanceStatus.LATE);
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
+        assertTrue(result.getFeedbackToUser().contains("Date not within six years of birthdate or is a future date"));
+    }
+
+    @Test
+    public void execute_sixYearsWithinBirthday_success() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-1900").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate sixYearsAfterBirthday = LocalDate.of(1906, 1, 1);
+        String dateStr = sixYearsAfterBirthday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        AttendanceCommand command = new AttendanceCommand(indexes, sixYearsAfterBirthday, AttendanceStatus.ABSENT);
+
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 1 contacts as ABSENT on " + dateStr));
+    }
+
+    @Test
+    public void execute_oneDayAfterSixLimitBirthday_failure() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-1900").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate sixYearsAfterBirthday = LocalDate.of(1906, 1, 2);
+        String dateStr = sixYearsAfterBirthday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        AttendanceCommand command = new AttendanceCommand(indexes, sixYearsAfterBirthday, AttendanceStatus.ABSENT);
+
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Date not within six years of birthdate or is a future date"));
+    }
+
+    @Test
+    public void execute_sevenYearsAfterBirthday_failure() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-1900").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate sixYearsAfterBirthday = LocalDate.of(1907, 1, 1);
+        String dateStr = sixYearsAfterBirthday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        AttendanceCommand command = new AttendanceCommand(indexes, sixYearsAfterBirthday, AttendanceStatus.ABSENT);
+
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Date not within six years of birthdate or is a future date"));
     }
 
     @Test
@@ -146,7 +191,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
+        assertTrue(result.getFeedbackToUser().contains("Date not within six years of birthdate or is a future date"));
     }
 
     @Test
