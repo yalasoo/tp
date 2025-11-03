@@ -16,6 +16,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/deepa-m1)]
 
 * Role: Software Developer
+* Responsibilities: Eagle-eyed PR reviewer (and part-time grammar police)
 
 ### Theresia
 
@@ -33,7 +34,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/Hypovolemic)]
 
 * Role: Developer
-* Responsibilities: Data
+* Responsibilities: Becoming one of the girlies
 
 ### Yang Yatong
 
@@ -51,4 +52,4 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/zjaoyuki)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: Turning caffeine into code and bugs into features since Epoch

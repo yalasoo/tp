@@ -124,7 +124,7 @@ manage students' and parents' contact information efficiently.
 
 ### Viewing help : `help`
 
-**Purpose**: Shows a message explaining how to access the help page.
+**Purpose**: Shows a message with a link to access the user guide page which has full details on the different commands and how to use them.
 
 ##### Command Format
 ```shell
@@ -137,9 +137,9 @@ help
 * Any extraneous text after `help` will be ignored (treated as `help`).
 
 ##### Outputs
-|                Outcome Type                   | Scenario            | Message                    | GUI Action                                           |
-|:---------------------------------------------:|---------------------|----------------------------|------------------------------------------------------|
-| <span style="color: green">**Success**</span> | Help window appears | `Opened help window.`      | Pop-up window appears with the link to the help page |
+|                Outcome Type                   | Scenario            | Message                    | GUI Action                                                 |
+|:---------------------------------------------:|---------------------|----------------------------|------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | Help window appears | `Opened help window.`      | Pop-up window appears with the link to the user guide page |
 
 <div style="text-align: center;">
     <strong>Help window appears</strong><br>
