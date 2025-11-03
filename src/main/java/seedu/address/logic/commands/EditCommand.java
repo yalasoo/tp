@@ -64,7 +64,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This contact already exists in the address book.\n"
-            + "For colleagues: Phone numbers and email addresses must be unique.\n"
+            + "For colleagues: Both phone numbers and email addresses must be unique.\n"
             + "For students: Name-phone combinations must be unique.";
 
     private final Index index;

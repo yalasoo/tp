@@ -194,6 +194,9 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 |                                                       | Examples: K1A, K1D, Nursery, Harmony, Class123                          |
 | <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
 |                                                       | Must be a valid date (from 01-01-1900 to today's date)                   |
+|                                                       | Student's birthday must be 3, 4, 5 or 6 years old.                      |
+|                                                       | Colleague's birthday must be 18 years old or older.                      |
+|                                                       | Age is calculated using Singapore education system rules: Age = Current Year - Birth Year (Not by exact date) |
 |   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
 |                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
 | <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
@@ -215,7 +218,7 @@ The system uses different rules for detecting duplicates based on contact type. 
 • A student and colleague can have identical information (name, phone, email, etc.) without being detected as duplicates<br>
 • This allows scenarios like having a student and their parent (as a colleague) with the same contact details<br><br>
 
-<strong>Error Message:</strong> <code>This contact already exists in the address book.<br>For colleagues: Phone numbers and email addresses must be unique.<br>For students: Name-phone combinations must be unique.</code><br>
+<strong>Error Message:</strong> <code>This contact already exists in the address book.<br>For colleagues: Both phone numbers and email addresses must be unique.<br>For students: Name-phone combinations must be unique.</code><br>
 
 <strong>Resolution:</strong><br>
 • **For Colleagues:** Each colleague must have both a unique phone number and a unique email address<br>
@@ -225,10 +228,10 @@ The system uses different rules for detecting duplicates based on contact type. 
 
 ##### Sample Commands
 ```shell
-add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2018 t/student
+add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student
 ```
 ```shell
-add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts
+add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2006 t/colleague desc/Allergic to peanuts
 ```
 
 ##### Outputs
@@ -297,7 +300,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 
 ##### Sample Commands
 ```shell
-edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague
+edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2007 t/colleague
 ```
 
 
@@ -1065,8 +1068,8 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 |     Action      | Command Format                                                                                                   | Example Commands                                                                                                |
 |:---------------:|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2018 t/student`      |
-|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`       |
+|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student`      |
+|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2007 t/colleague`       |
 |   **Delete**    | `delete INDEX`<br>`delete n/NAME`                                                                                | `delete 1`<br>`delete n/John Doe`                                                                               |
 |    **View**     | `view INDEX`                                                                                                     | `view 1`                                                                                                        |
 |    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                                      | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                                   |
