@@ -17,8 +17,6 @@ import seedu.address.model.person.Person;
 public class ViewWindow extends UiPart<Stage> {
 
     private static final String FXML = "ViewWindow.fxml";
-    private static final double MIN_WIDTH = 500;
-    private static final double MIN_HEIGHT = 600;
 
     private javafx.event.EventHandler<javafx.scene.input.KeyEvent> keyEventHandler;
 
@@ -79,8 +77,23 @@ public class ViewWindow extends UiPart<Stage> {
      */
     public ViewWindow(Stage root) {
         super(FXML, root);
-        root.setMinWidth(MIN_WIDTH);
-        root.setMinHeight(MIN_HEIGHT);
+
+        Stage stage = getRoot();
+        stage.setMaxWidth(800);
+        stage.setMaxHeight(700);
+
+        // Ensure window fits on screen
+        stage.setOnShown(event -> {
+            // If window is larger than screen, adjust to fit
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+            if (stage.getWidth() > screenBounds.getWidth()) {
+                stage.setWidth(screenBounds.getWidth() * 0.9);
+            }
+            if (stage.getHeight() > screenBounds.getHeight()) {
+                stage.setHeight(screenBounds.getHeight() * 0.9);
+            }
+        });
+
         initializeAttendancePanel();
     }
 
