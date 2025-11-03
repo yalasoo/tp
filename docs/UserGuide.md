@@ -740,11 +740,12 @@ sort f/class o/desc
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                     | Message                                                      | GUI Action                              |
-|:---------------------------------------------:|------------------------------|--------------------------------------------------------------|-----------------------------------------|
-| <span style="color: green">**Success**</span> | Contacts sorted successfully | `Sorted successfully`                                        | Contact list updates with new ordering  |
-|  <span style="color: red">**Failure**</span>  | Missing required parameters  | `Invalid command format!` _(with correct format guidance)_   | No changes                              |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                        | No changes                              |
+|                 Outcome Type                  | Scenario                         | Message                                                    | GUI Action                              |
+|:---------------------------------------------:|----------------------------------|------------------------------------------------------------|-----------------------------------------|
+| <span style="color: green">**Success**</span> | Contacts sorted successfully     | `Sorted successfully`                                      | Contact list updates with new ordering  |
+|  <span style="color: red">**Failure**</span>  | Sorting on an empty contact list | `No contacts available to sort.`                           | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Missing required parameters      | `Invalid command format!` _(with correct format guidance)_ | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format         | _Parameter-specific validation error_                      | No changes                              |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -807,20 +808,26 @@ attendance INDEX(es) s/STATUS [d/DATE]
   </box>
 
 ##### Parameters & Validation Rules
-|                     Parameter                      | Validation Rules                                           |
-|:--------------------------------------------------:|------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
-|                                                    | Cannot be 0 or negative                                    |
-|                                                    | Must correspond to an existing contact in the current list |
-|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)  |
-|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                       |
-| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
-|                                                    | Must be contiguous without spaces or symbols in between    |
-|                                                    | Error if empty                                             |
-|    <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                  |
-|                                                    | Must be a valid date                                       |
-|                                                    | Must between student's born date to today's date           |
-|                                                    | Default to current date if empty                           |
+|                     Parameter                      | Validation Rules                                                                         |
+|:--------------------------------------------------:|------------------------------------------------------------------------------------------|
+| <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                                                | 
+|                                                    | Cannot be 0 or negative                                                                  |
+|                                                    | Must correspond to an existing contact in the current list                               |
+|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)                                |
+|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                                                     |
+| <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove                                  |
+|                                                    | Must be contiguous without spaces or symbols in between                                  |
+|                                                    | Error if empty                                                                           |
+|    <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                                                |
+|                                                    | Must be a valid date                                                                     |
+|                                                    | Must be within 6 years of the student's birthdate and cannot be later than today's date. |
+|                                                    | Default to current date if empty                                                         |
+
+<box type="info" seamless>
+
+**Example on date validation:** <br>
+A student born in 01-01-2000 can have their attendance mark from 01-01-2000 until 01-01-2000. But assuming today is 01-01-1999, then their attendance could only be mark from 01-01-2000 until 01-01-1999.  
+  </box>
 
 ##### Sample Commands
 ```shell
@@ -1106,23 +1113,22 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|     Action      | Command Format                                                                                                   | Example Commands                                                                                                |
-|:---------------:|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student`      |
-|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2007 t/colleague`       |
-|   **Delete**    | `delete INDEX`<br>`delete n/NAME`                                                                                | `delete 1`<br>`delete n/John Doe`                                                                               |
-|    **View**     | `view INDEX`                                                                                                     | `view 1`                                                                                                        |
-|    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                                      | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                                   |
-|   **Find-n**    | `find-n NAME(s)`                                                                                                 | `find-n John`                                                                                                   |
-|   **Find-p**    | `find-p PHONE(s)`                                                                                                | `find-p 84871234`                                                                                               |
-|   **Find-t**    | `find-t TAG(s)`                                                                                                  | `find-t student`                                                                                                |
-|   **Find-c**    | `find-c CLASS(es)`                                                                                               | `find-c K1A nursery`                                                                                            |
-|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1,2`                                                                                                       |
-|   **Remind**    | `remind`                                                                                                         | `remind`                                                                                                        |
-| **Attendance**  | `attendance INDEX(es) s/STATUS [d/DATE]`                                                                         |                                                                                                                 |
-| **AttendanceD** | `attendanceD INDEX(es) [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE]` <br> `attendanceD c/CLASS... [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A d/29-01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025`    |
-|    **List**     | `list`                                                                                                           | `list`                                                                                                          |
-|    **Clear**    | `clear`                                                                                                          | `clear`                                                                                                         |
-|    **Help**     | `help`                                                                                                           | `help`                                                                                                          |
-|    **Exit**     | `exit`                                                                                                           | `exit`                                                                                                          |
-
+|     Action      | Command Format                                                                                                   | Example Commands                                                                                             |
+|:---------------:|------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`   |
+|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`    |
+|   **Delete**    | `delete INDEX`<br>`delete n/NAME`                                                                                | `delete 1`<br>`delete n/John Doe`                                                                            |
+|    **View**     | `view INDEX`                                                                                                     | `view 1`                                                                                                     |
+|    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                                      | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                                |
+|   **Find-n**    | `find-n NAME(s)`                                                                                                 | `find-n John`                                                                                                |
+|   **Find-p**    | `find-p PHONE(s)`                                                                                                | `find-p 84871234`                                                                                            |
+|   **Find-t**    | `find-t TAG(s)`                                                                                                  | `find-t student`                                                                                             |
+|   **Find-c**    | `find-c CLASS(es)`                                                                                               | `find-c K1A nursery`                                                                                         |
+|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1,2`                                                                                                    |
+|   **Remind**    | `remind`                                                                                                         | `remind`                                                                                                     |
+| **Attendance**  | `attendance INDEX(es) s/STATUS [d/DATE]`                                                                         | `attendance 1-3,7,9 s/sick d/29-01-2025`                                                                     |
+| **AttendanceD** | `attendanceD INDEX(es) [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE]` <br> `attendanceD c/CLASS... [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A d/29-01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025` |
+|    **List**     | `list`                                                                                                           | `list`                                                                                                       |
+|    **Clear**    | `clear`                                                                                                          | `clear`                                                                                                      |
+|    **Help**     | `help`                                                                                                           | `help`                                                                                                       |
+|    **Exit**     | `exit`                                                                                                           | `exit`                                                                                                       |

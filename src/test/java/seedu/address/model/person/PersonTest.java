@@ -231,7 +231,7 @@ public class PersonTest {
     @Test
     public void markAttendance_validDateAndStatus_success() throws CommandException {
         LocalDate today = LocalDate.of(2025, 10, 9);
-        Person person = new PersonBuilder().withTags("student").build();
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
 
         person.markAttendance(today, AttendanceStatus.PRESENT);
 
@@ -276,11 +276,27 @@ public class PersonTest {
     }
 
     @Test
-    public void unmarkAttendance_beforeBirthday_throwsInvalidDateException() {
+    public void unmarkAttendance_beforeBirthdate_throwsInvalidDateException() {
         Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.of(2023, 1, 1);
 
-        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
+        assertThrows(InvalidDateException.class, () -> student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_sevenYearsAfterBirthdate_throwsInvalidDateException() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-1900").build();
+        LocalDate date = LocalDate.of(1907, 1, 1);
+
+        assertThrows(InvalidDateException.class, () -> student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_oneDayAfterValidLimitDate_throwsInvalidDateException() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-1900").build();
+        LocalDate date = LocalDate.of(1906, 1, 2);
+
+        assertThrows(InvalidDateException.class, () -> student.unmarkAttendance(date));
     }
 
     @Test
@@ -288,7 +304,7 @@ public class PersonTest {
         Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.now().plusDays(1);
 
-        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
+        assertThrows(InvalidDateException.class, () -> student.unmarkAttendance(date));
     }
 
     @Test
@@ -311,7 +327,7 @@ public class PersonTest {
 
     @Test
     public void getAttendanceRecords_studentWithAttendance_returnsRecords() throws CommandException {
-        Person student = new PersonBuilder().withTags("student").build();
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date1 = LocalDate.of(2024, 1, 15);
         LocalDate date2 = LocalDate.of(2024, 1, 16);
 

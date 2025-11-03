@@ -160,7 +160,8 @@ public class Person {
 
     /**
      * Checks whether the given date is a valid attendance date.
-     * A valid attendance date must be within person's born date and today's date.
+     * A valid attendance date must be within person's born date and today's date
+     * and must be within 6 years of person's born date.
      *
      * @param date When does this attendance apply.
      * @return False if date before born date or after born date.
@@ -168,7 +169,8 @@ public class Person {
     private boolean validAttendanceDate(LocalDate date) {
         int afterToday = date.compareTo(LocalDate.now());
 
-        if (birthday.isBeforeBirthday(date) || afterToday > 0) {
+        if (birthday.isBeforeBirthday(date) || afterToday > 0
+                || !getBirthday().isWithinSixYears(date)) {
             return false;
         }
         return true;

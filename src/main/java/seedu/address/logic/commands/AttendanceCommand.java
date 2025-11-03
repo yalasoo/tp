@@ -35,7 +35,8 @@ public class AttendanceCommand extends Command {
             + "Only applicable to contact with student tag.\n"
             + "Parameters: INDEX(es) (must be a positive integer) "
             + PREFIX_STATUS + "STATUS (present/late/sick/absent/remove) "
-            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy) (Must be between student's born date and today's date)\n"
+            + "[" + PREFIX_DATE + "DATE] (dd-MM-yyyy) "
+            + "(Must be within six years of the student's birth date and cannot be later than today's date.)\n"
             + "Example: " + COMMAND_WORD + " 1-5,10,13 "
             + PREFIX_STATUS + "present "
             + PREFIX_DATE + "29-12-2025";
@@ -163,7 +164,7 @@ public class AttendanceCommand extends Command {
                 } catch (InvalidDateException e) {
                     logger.warning("Invalid date for attendance: " + i.getOneBased());
                     contactsNotModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
-                            .append(" [Date before birthday or today]");
+                            .append(" [Date not within six years of birthdate or is a future date]");
                 }
             } else {
                 logger.warning("Contact is not a student: " + i.getOneBased());
