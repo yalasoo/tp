@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_OR_MISSING_COMMAS;
 
 import java.util.List;
 
@@ -26,10 +27,15 @@ public class FavouriteCommandParser implements Parser<FavouriteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FavouriteCommand.MESSAGE_USAGE));
         }
 
-        String[] indexStrKeywords = trimmedArgs.split("\\s+");
+        String[] indexStrKeywords = trimmedArgs.split("\\s*,\\s*");
         List<Index> indexKeywords = new java.util.ArrayList<>(List.of());
         for (String s: indexStrKeywords) {
-            Index i = ParserUtil.parseIndex(s);
+            Index i;
+            try {
+                i = ParserUtil.parseIndex(s);
+            } catch (ParseException e) {
+                throw new ParseException(MESSAGE_INVALID_INDEX_OR_MISSING_COMMAS);
+            }
             indexKeywords.add(i);
         }
 

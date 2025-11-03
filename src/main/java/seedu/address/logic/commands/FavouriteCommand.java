@@ -23,7 +23,7 @@ public class FavouriteCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Favourite chosen contacts based on index.\n"
             + "Parameters: INDEX(es) (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1 2";
+            + "Example: " + COMMAND_WORD + " 1,2";
 
     public static final String MESSAGE_FAVOURITE_UPDATE_SUCCESS = "Updated favourites successfully.";
 
