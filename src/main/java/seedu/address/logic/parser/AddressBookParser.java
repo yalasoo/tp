@@ -78,7 +78,8 @@ public class AddressBookParser {
             return new DeleteCommandParser(infoHandler, deleteHandler).parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+            InfoPopupHandler handler = new RealInfoInfoPopupHandler();
+            return new ClearCommand(handler);
 
         case FavouriteCommand.COMMAND_WORD:
             return new FavouriteCommandParser().parse(arguments);

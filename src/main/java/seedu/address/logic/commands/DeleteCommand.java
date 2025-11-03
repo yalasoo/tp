@@ -92,7 +92,7 @@ public class DeleteCommand extends Command {
                     : exactMatches;
 
             if (possibleMatches.isEmpty()) {
-                infoPopupHandler.showMessage(Messages.MESSAGE_NO_MATCHES_FOUND);
+                infoPopupHandler.showMessage(Messages.MESSAGE_NO_MATCHES_FOUND, Messages.MESSAGE_INSTRUCTION);
             } else {
                 Person selectedPerson = showDeletePopup(possibleMatches);
                 if (isDeletionCancelled(selectedPerson)) {
