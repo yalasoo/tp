@@ -1112,19 +1112,46 @@ testers are expected to do more *exploratory* testing.
 
 ## **Appendix: Planned Enhancements**
 
-### 1 Attendance
-- **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to do it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
+<span style="color: #6b7280">**Team Size: 5**</span>
 
-<br>
-
-### 2 Edit
+### 1. Edit
 - **Display a confirmation pop-up window when changing contact's tags**: Currently, users can change tags freely from student to colleague and vice versa. However, there is a possibility that the user did not intend to do this action in the first place. Having a confirmation window will also increase user experience and prevent accidental deletion of student's attendance history (although right now, we keep attendance record even if a contact's tag was edited form student to colleague).
 
 - **Add birthday validation to edit command**: Currently, the edit command accepts birthdays that would make a student younger than 3 or older than 6 years old or the colleague to be younger than 18. We will modify the edit command to apply the same age validation checks as the add command, preventing invalid birthdays from being set through editing.
-   - Example: edit 1 b/01-01-2024 would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
+   - Example: `edit 1 b/01-01-2024` would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
 
 <br>
 
-### 3 Birthday field
-- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students.
+### 2. Delete
+- **Allow bulk deletion**: Currently, our `delete` command only accept singular index (or partial name) as the parameter. However, this would be very tedious for user who wants to delete multiple contacts at once. In the future, we plan to use the same index parsing in `attendance` and `attendanceD` to allow multiple contacts to be deleted at once (after confirmation).
+
+<br>
+
+### 3. Find
+- **Unified search command**: Currently, our `find` commands uses cumulative filtering which may be hard for users to get to the contacts they want. In the future we plane to unify these `find` commands to allow multiple fields to be searched at once.
+
+### 4. Sort
+- **Increase sort parameter**: Currently, out `sort` command could only sort by name, class, and tag. However, it would be beneficial
+
+### 4. Attendance
+- **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to take it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
+
+- **Limit attendance calendar range in view window**: Currently, users can browse attendance records for dates far beyond the valid range (student's birth date to 6 years later, not exceeding today's date), creating confusion between viewing capability and actual marking permissions. We plan to limit calendar navigation to only display dates within the valid attendance marking range to maintain consistency between attendance marking and viewing.
+
+- **Class attendance marking command**: Currently, there is no command to mark the attendance of all students inside a class. In the future, we plan to make one command dedicated for this action to increase user experience and reduce user mistake.
+  - Note: We do have an alternative in the current version to use `find-c` and `attendance` together to achieve the same goal.
+  - Example: `find-c K1A` followed by `attendance x-y s/present` where x and y is the first and last index in the contact list respectively.
+
+<br>
+
+### 5. Birthday Field
+- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion.
+
+- **Add graduation reminder system**: Currently, there is no reminder for teachers to remove graduated students.
   - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."
+
+### 6. General
+- **Allow more flexible class input from user**: Currently, we restrict users to use pre-defined classes which might not may not accommodate the diverse naming conventions used across different Singaporean kindergartens. In the future, we plan to switch to a more flexible class validation that accepts user-defined class names.
+
+- **Smarter parsing for all parameter**: Currently, some parameter parser like `a/ADDRESS`, `b/BIRTHDAY`, `c/CLASS`, and `t/TAG` does not accept input which has multiple spaces inside. We plan to apply the same smart parsing detection to the rest of the command to reduce error and increase user experience.
+  - Example: User accidentally typed double space instead of one → should still allow the code to run if that is the only mistake.
