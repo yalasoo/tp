@@ -66,6 +66,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This contact already exists in the address book.\n"
             + "For colleagues: Both phone numbers and email addresses must be unique.\n"
             + "For students: Name-phone combinations must be unique.";
+    public static final String MESSAGE_NO_CHANGE = "Edited information is the same as the original.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -99,6 +100,10 @@ public class EditCommand extends Command {
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+
+        if (personToEdit.equals(editedPerson)) {
+            return new CommandResult(MESSAGE_NO_CHANGE);
+        }
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
