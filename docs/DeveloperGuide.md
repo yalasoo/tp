@@ -1131,7 +1131,7 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 ### 3. Find
-- **Unified search command**: Currently, our `find` commands uses cumulative filtering which may be hard for users to get to the contacts they want. In the future we plane to unify these `find` commands to allow multiple fields to be searched at once.
+- **Unified search command**: Currently, we have four find-commands whereby to cumulatively filter from class to names, users must do a `find-c` command first and then a `find-n` which may be inconvenient for users to get to the contacts they want. In the future we plan to unify these find commands to allow multiple different fields such as name(s) and class(es) to be searched at once.
 
 <br>
 
