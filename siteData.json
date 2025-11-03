@@ -76,7 +76,11 @@
         "finding-contacts": "Finding contacts",
         "favourite-contacts": "Favourite contacts",
         "edge-cases-and-error-handling": "Edge Cases and Error Handling",
-        "system-commands": "System commands"
+        "system-commands": "System commands",
+        "appendix-planned-enhancements": "Appendix: Planned Enhancements",
+        "1-attendance": "1 Attendance",
+        "2-edit": "2 Edit",
+        "3-birthday-field": "3 Birthday field"
       },
       "headingKeywords": {}
     },
@@ -146,6 +150,9 @@
         "saving-the-data": "Saving the data",
         "editing-the-data-file": "Editing the data file",
         "faq": "FAQ",
+        "general": "General",
+        "attendance": "Attendance",
+        "data": "Data",
         "open-csv-guide": "How to Open CSV Files",
         "known-issues": "Known issues",
         "command-summary": "Command summary"
