@@ -296,6 +296,16 @@ edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b
 |  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                                                                              | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `This person already exists in the address book. Please change either the name or phone number to make it unique.` | No changes                            |
 
+<box type="warning">
+<strong>No age validation is performed when editing</strong><br>
+• This may cause the student/colleague to become invalid in the system<br><br>
+
+<strong>Workaround:</strong><br>
+• Use the <code>add</code> command with proper age validation for new students<br>
+• Be cautious when editing existing students' birthdays<br>
+• Verify student ages before using the edit command
+</box>
+
 [//]: # (COMMAND BREAK)
 <br>
 
@@ -1032,6 +1042,8 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimise the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimised, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Age validation for Edit**: Age validation only applies when adding new students, not when editing existing ones.
+4. **No reminders for graduated students to be removed**: Students who are currently 6 years old will become invalid when they turn 7 next year. The system does not automatically remind you to remove graduated students.
 
 --------------------------------------------------------------------------------------------------------------------
 
