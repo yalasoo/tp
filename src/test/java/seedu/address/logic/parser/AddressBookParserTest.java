@@ -46,6 +46,7 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.TestDateUtil;
 import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.TestDeletePopupHandler;
@@ -58,20 +59,22 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_add() throws Exception {
         // Create expected person with known values
+        String validBirthday = TestDateUtil.getValidStudentBirthday();
+
         Person expectedPerson = new PersonBuilder()
                 .withName("Amy Bee")
                 .withPhone("81234567")
                 .withEmail("amy@example.com")
                 .withAddress("123, Jurong West Ave 6, #08-111")
                 .withClass("K1B")
-                .withBirthday("23-10-1995")
+                .withBirthday(validBirthday)
                 .withNote("")
                 .withTags("student") // Add mandatory tag
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
         String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
-                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995 t/student"; // Add tag parameter
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/" + validBirthday + " t/student";
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);

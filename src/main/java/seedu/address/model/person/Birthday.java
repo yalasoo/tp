@@ -81,6 +81,39 @@ public class Birthday {
         }
     }
 
+    /**
+     * Calculates the age based on year difference only (as per requirement).
+     * For example: born in 2024, in 2025 would be 1 year old.
+     *
+     * @return The age calculated by year difference.
+     */
+    int calculateAgeByYear() {
+        return LocalDate.now().getYear() - date.getYear();
+    }
+
+    /**
+     * Checks if this birthday belongs to a student.
+     * Students are defined as being 3, 4, 5, or 6 years old (by year difference).
+     *
+     * @return true if the age is between 3 and 6 years old (inclusive), false otherwise.
+     */
+    public boolean isStudentBirthday() {
+        int age = calculateAgeByYear();
+        return age >= 3 && age <= 6;
+    }
+
+    /**
+     * Checks if this birthday belongs to a colleague.
+     * Colleagues are defined as being 18 years or older (by year difference).
+     *
+     * @return true if the age is 18 or older, false otherwise.
+     */
+    public boolean isColleagueBirthday() {
+        int age = calculateAgeByYear();
+        return age >= 18;
+    }
+
+
     @Override
     public String toString() {
         return value;

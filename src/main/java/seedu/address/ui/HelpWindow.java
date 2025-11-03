@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
@@ -20,6 +21,8 @@ public class HelpWindow extends UiPart<Stage> {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
+
+    private javafx.event.EventHandler<javafx.scene.input.KeyEvent> keyEventHandler;
 
     @FXML
     private Button copyButton;
@@ -66,6 +69,8 @@ public class HelpWindow extends UiPart<Stage> {
         logger.fine("Showing help page about the application.");
         getRoot().show();
         getRoot().centerOnScreen();
+
+        setUpKeyboardNavigation();
     }
 
     /**
@@ -87,6 +92,24 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public void focus() {
         getRoot().requestFocus();
+    }
+
+    /**
+     * Add ESC key to exit the window easily.
+     */
+    public void setUpKeyboardNavigation() {
+        if (keyEventHandler != null) {
+            getRoot().getScene().removeEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, keyEventHandler);
+        }
+
+        keyEventHandler = event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                hide();
+                event.consume();
+            }
+        };
+
+        getRoot().getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, keyEventHandler);
     }
 
     /**
