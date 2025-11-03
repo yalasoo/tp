@@ -1130,17 +1130,10 @@ testers are expected to do more *exploratory* testing.
 ### 3. Find
 - **Unified search command**: Currently, our `find` commands uses cumulative filtering which may be hard for users to get to the contacts they want. In the future we plane to unify these `find` commands to allow multiple fields to be searched at once.
 
-### 4. Sort
-- **Increase sort parameter**: Currently, out `sort` command could only sort by name, class, and tag. However, it would be beneficial
-
 ### 4. Attendance
 - **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to take it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
 
 - **Limit attendance calendar range in view window**: Currently, users can browse attendance records for dates far beyond the valid range (student's birth date to 6 years later, not exceeding today's date), creating confusion between viewing capability and actual marking permissions. We plan to limit calendar navigation to only display dates within the valid attendance marking range to maintain consistency between attendance marking and viewing.
-
-- **Class attendance marking command**: Currently, there is no command to mark the attendance of all students inside a class. In the future, we plan to make one command dedicated for this action to increase user experience and reduce user mistake.
-  - Note: We do have an alternative in the current version to use `find-c` and `attendance` together to achieve the same goal.
-  - Example: `find-c K1A` followed by `attendance x-y s/present` where x and y is the first and last index in the contact list respectively.
 
 <br>
 
