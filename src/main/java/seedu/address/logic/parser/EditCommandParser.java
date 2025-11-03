@@ -90,7 +90,15 @@ public class EditCommandParser implements Parser<EditCommand> {
             return Optional.empty();
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        if (tagSet.isEmpty()) {
+            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+        }
+        for (String tag : tagSet) {
+            if (!tag.equalsIgnoreCase("student") && !tag.equalsIgnoreCase("colleague")) {
+                throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            }
+        }
+        return Optional.of(ParserUtil.parseTags(tags));
     }
 
 }
