@@ -58,14 +58,14 @@ public class EditCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com "
-            + PREFIX_BIRTHDAY + "15-03-2019 "
+            + PREFIX_BIRTHDAY + "15-03-2007 "
             + PREFIX_CLASS + "K2B";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book. "
-            + "For colleagues: ensure unique phone numbers and email addresses. "
-            + "For students: ensure unique name-phone combinations.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This contact already exists in the address book.\n"
+            + "For colleagues: Both phone numbers and email addresses must be unique.\n"
+            + "For students: Name-phone combinations must be unique.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;

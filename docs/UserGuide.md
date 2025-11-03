@@ -69,7 +69,6 @@ manage students' and parents' contact information efficiently.
       - Type `java -jar littlelogbook.jar` and press Enter
 
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-
 <div style="text-align: center;">
 <img src="images/Ui.png" width="500px">
 </div>
@@ -77,7 +76,7 @@ manage students' and parents' contact information efficiently.
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A` : Adds a contact named `John Doe` with class `K1A` to LittleLogBook.
+   * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D` : Adds a contact named `John Doe` with class `K1D` to LittleLogBook.
 
    * `edit 1 n/Bob` : Edit the first contact's name to `Bob`.
 
@@ -154,39 +153,54 @@ help
 
 **Purpose**: Allows teachers to create a new contact entry for students or colleagues.
 
+<box type="warning">
+<strong>Important Name Limitation:</strong><br>
+Names cannot contain command prefixes such as "s/o", "d/o", "a/l", etc. These patterns (letter + "/" + letter) are interpreted as command parameters and will cause parsing errors.<br><br>
+<strong>Examples:</strong><br>
+• ❌ "John Doe s/o Ahmad" → Will cause error (s/ is interpreted as status parameter)<br>
+• ❌ "Mary a/l Susan" → Will cause error (a/ is interpreted as address parameter)<br>
+• ✅ "John Doe son of Ahmad" → Use full words instead<br>
+• ✅ "Mary anak lelaki Susan" → Use alternative phrasing
+</box>
+
 ##### Command Format
 ```shell
 add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                                                                                                                                        |
-|:-----------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                              |
-|                                                       | Case-insensitive for duplicates                                                                                                                                                         |
-|                                                       | Error if empty or contains numbers/symbols                                                                                                                                              |
-|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)                                                                                                                  |
-|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)                                                                                                                       |
-|                                                       | Examples: 61234567, 81234567, 91234567                                                                                                                                                  |
-|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                                                                                                                                    |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit                                                                                                                           |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period                                                                                                            |
-|                                                       | Case-insensitive (automatically converted to lowercase)                                                                                                                                 |
-|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗)                                                                                                            |
-|                                                       | Error if invalid format                                                                                                                                                                 |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc.                              |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces                                                                                                             |
-|                                                       | Error if empty or contains only whitespace                                                                                                                                              |
-|  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K                                                                                                                |
-|                                                       | Case-insensitive                                                                                                                                                                        |
-|                                                       | Error if invalid class format                                                                                                                                                           |
-| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                                                                                                                               |
-|                                                       | Must be a valid date (from 01-01-1900 to today's date)                                                                                                                                  |
-|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                                                                                                                                         |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)                                                                                                                              |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Up to 500 characters                                                                                                                                                                    |
-|                                                       | Leading/trailing spaces trimmed                                                                                                                                                         |
+|                       Parameter                       | Validation Rules                                                         |
+|:-----------------------------------------------------:|--------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
+|                                                       | Case-insensitive for duplicates                                          |
+|                                                       | Cannot contain command prefixes (n/, p/, e/, a/, c/, t/, b/, desc/, d/, m/, s/, f/, o/) |
+|                                                       | Error if empty or contains numbers/symbols                               |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)   |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)        |
+|                                                       | Examples: 61234567, 81234567, 91234567                                   |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                     |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period |
+|                                                       | Case-insensitive (automatically converted to lowercase)                  |
+|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗) |
+|                                                       | Error if invalid format                                                  |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc. |
+|                                                       | Must be at least 15 characters long (after trimming and space normalization) |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces |
+|                                                       | Error if empty, contains only whitespace, or under 15 characters        |
+|  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Alphanumeric characters only (letters and numbers), 1-20 characters |
+|                                                       | Case-insensitive                                                         |
+|                                                       | Examples: K1A, K1D, Nursery, Harmony, Class123                          |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
+|                                                       | Must be a valid date (from 01-01-1900 to today's date)                   |
+|                                                       | Student's birthday must be 3, 4, 5 or 6 years old.                      |
+|                                                       | Colleague's birthday must be 18 years old or older.                      |
+|                                                       | Age is calculated using Singapore education system rules: Age = Current Year - Birth Year (Not by exact date) |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
+|                                                       | Leading/trailing spaces trimmed                                          |
 
 <box type="warning">
 <strong>Duplicate Contact Detection:</strong><br>
@@ -194,7 +208,7 @@ The system uses different rules for detecting duplicates based on contact type. 
 
 <strong>For Colleagues (t/colleague):</strong><br>
 • Duplicate if: same phone number OR same email address<br>
-• Colleagues can have the same name but must have unique phone numbers and email addresses<br><br>
+• Colleagues can have the same name but must each have both a unique phone number and a unique email address<br><br>
 
 <strong>For Students (t/student):</strong><br>
 • Duplicate if: same name AND phone number<br>
@@ -204,11 +218,11 @@ The system uses different rules for detecting duplicates based on contact type. 
 • A student and colleague can have identical information (name, phone, email, etc.) without being detected as duplicates<br>
 • This allows scenarios like having a student and their parent (as a colleague) with the same contact details<br><br>
 
-<strong>Error Message:</strong> <code>Duplicate contact detected. For colleagues: ensure unique phone numbers and email addresses. For students: ensure unique name-phone combinations.</code><br>
+<strong>Error Message:</strong> <code>This contact already exists in the address book.<br>For colleagues: Both phone numbers and email addresses must be unique.<br>For students: Name-phone combinations must be unique.</code><br>
 
 <strong>Resolution:</strong><br>
-• **For Colleagues:** Ensure unique phone numbers and email addresses<br>
-• **For Students:** Ensure unique name-phone combinations<br>
+• **For Colleagues:** Each colleague must have both a unique phone number and a unique email address<br>
+• **For Students:** Name-phone combinations must be unique<br>
 • **Mixed Types:** No conflicts - students and colleagues can share the same information
 </box>
 
@@ -220,19 +234,25 @@ The system uses different rules for detecting duplicates based on contact type. 
 
 ##### Sample Commands
 ```shell
-add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student
+add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student
 ```
 ```shell
-add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts
+add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2006 t/colleague desc/Allergic to peanuts
 ```
 
 ##### Outputs
-|                Outcome Type                   | Scenario                     | Message                                                    | GUI Action                              |
-|:---------------------------------------------:|------------------------------|------------------------------------------------------------|-----------------------------------------|
-| <span style="color: green">**Success**</span> | New contact added            | `New <contact> added`                                      | Contact list refreshes with new entry   |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter   | `Invalid command format!` _(with correct format guidance)_ | No changes                              |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                      | No changes                              |
-|  <span style="color: red">**Failure**</span>  | Duplicate contact detected   | `Duplicate contact detected.`                              | No changes                              |
+|                Outcome Type                   | Scenario                   | Message                                                    | GUI Action                            |
+|:---------------------------------------------:|----------------------------|------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Duplicate contact detected     | `Duplicate contact detected.`                              | No changes                            |
+
+<box type="info">
+<strong>Why Different Duplicate Rules?</strong><br>
+• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each must have both a unique phone number and a unique email address<br>
+• <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
+</box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -252,9 +272,10 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |   <span style="color: #e83f8b">**INDEX**</span>       | Must be a positive integer (1, 2, 3, ...)                                                                                                                                               |
 |                                                       | Cannot be 0 or negative                                                                                                                                                                 |
 |                                                       | Must correspond to an existing contact in the current list                                                                                                                              |
-|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
+|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                              |
 |                                                       | Case-insensitive for duplicates                                                                                                                                                         |
+|                                                       | Cannot contain command prefixes (n/, p/, e/, a/, c/, t/, b/, desc/, d/, m/, s/, f/, o/) |
 |                                                       | Error if empty or contains numbers/symbols                                                                                                                                              |
 |  <span style="color: #6b7280">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)                                                                                                                  |
 |                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)                                                                                                                       |
@@ -267,11 +288,12 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |                                                       | Case-insensitive                                                                                                                                                                        |
 |                                                       | Error if invalid format                                                                                                                                                                 |
 | <span style="color: #6b7280">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc.                              |
+|                                                       | Must be at least 15 characters long (after trimming and space normalization)                                                                                                           |
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces                                                                                                             |
-|                                                       | Error if empty or contains only whitespace                                                                                                                                              |
-|  <span style="color: #6b7280">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K                                                                                                                |
+|                                                       | Error if empty, contains only whitespace, or under 15 characters                                                                                                                       |
+|  <span style="color: #6b7280">**CLASS (c/)**</span>   | Alphanumeric characters only (letters and numbers), 1-20 characters                                                                                                                            |
 |                                                       | Case-insensitive                                                                                                                                                                        |
-|                                                       | Error if invalid class format                                                                                                                                                           |
+|                                                       | Examples: K1A, K1D, Nursery, Harmony, Class123                                                                                                                                         |
 | <span style="color: #6b7280">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                                                                                                                               |
 |                                                       | Must be a valid date (from 01-01-1900 to today's date)                                                                                                                                  |
 |                                                       | Student's birthday must be 3, 4, 5 or 6 years old.                                                                                                                                      |
@@ -284,7 +306,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 
 ##### Sample Commands
 ```shell
-edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague
+edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2007 t/colleague
 ```
 
 
@@ -322,15 +344,16 @@ delete n/NAME
 ```
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                                                                                                                                                                           |
-|:-------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                                                                                                                                                  |
-|                                                   | Cannot be 0 or negative                                                                                                                                                                                    |
-|                                                   | Must correspond to an existing contact in the current list                                                                                                                                                 |
-| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
-|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                                                 |
-|                                                   | Case-insensitive match                                                                                                                                                                                     |
-|                                                   | Matches partial names                                                                                                                                                                                      |
+|                     Parameter                     | Validation Rules                                                           |
+|:-------------------------------------------------:|----------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
+|                                                   | Cannot be 0 or negative                                                    |
+|                                                   | Must correspond to an existing contact in the current list                 |
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
+|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
+|                                                   | Case-insensitive match                                                     |
+|                                                   | Matches partial names                                                      |
+|                                                   | Cannot contain command prefixes (n/, p/, e/, a/, c/, t/, b/, desc/, d/, m/, s/, f/, o/) |
 
 ##### Sample Commands
 ```shell
@@ -863,10 +886,10 @@ attendanceD c/CLASS... [m/MONTH]
 |                                                   | Cannot be 0 or negative                                                  |
 |                                                   | Must correspond to an existing contact in the current list               |
 |                                                   | Accepts multiple inputs                                                  |
-| <span style="color: #e83f8b">**CLASS(es)**</span> | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
+| <span style="color: #e83f8b">**CLASS(es)**</span> | Alphanumeric characters only (letters and numbers), 1-20 characters per class |
 |                                                   | Case-insensitive                                                         |
 |                                                   | Accepts multiple inputs and must start with `c/`                         |
-|                                                   | Error if invalid class format                                            |                                           
+|                                                   | Examples: K1A, K1D, Nursery, Harmony, Class123                          |
 |   <span style="color: #6b7280">**DATE**</span>    | Date in dd-MM-yyyy format                                                |
 |                                                   | Must be a valid date                                                     |
 |                                                   | Must between 01-01-1900 to today's date                                  |
@@ -1023,7 +1046,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 ## FAQ
 
 ### General
-**Q**: Can I use both `INDEX` and `CLASS` together in commands?  
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?
 **A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
 
 <br>
