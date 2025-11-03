@@ -1,16 +1,12 @@
 package seedu.address.ui;
 
-import java.util.Objects;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * A popup window that displays error message when a user executes the delete contact command.
- * This is used for invalid indexes or when no matching contacts are found.
+ * A popup window that displays message when a user executes the delete or clear command.
  */
 public class InfoPopup extends UiPart<Stage> {
 
@@ -18,8 +14,11 @@ public class InfoPopup extends UiPart<Stage> {
 
     @FXML
     private Label msgLabel;
+    @FXML
+    private Label instrLabel;
 
     private boolean isClosed = false;
+    private boolean isConfirmed = false;
 
     /**
      * Creates a new Information popup window.
@@ -29,8 +28,8 @@ public class InfoPopup extends UiPart<Stage> {
     public InfoPopup(Stage root) {
         super(FXML, root);
         setUpKeyboardHandlers();
-        root.setWidth(300);
-        root.setHeight(200);
+        root.setWidth(400);
+        root.setHeight(300);
         root.initModality(Modality.APPLICATION_MODAL);
         root.setAlwaysOnTop(true);
     }
@@ -45,32 +44,44 @@ public class InfoPopup extends UiPart<Stage> {
     /**
      * Determines the information to be displayed in the Information popup window.
      *
-     * @param message indicates the result of the invalid delete command.
+     * @param message indicates the message related to the command.
+     * @param instruction indicates the guide for the user to either proceed or cancel the command.
      */
-    public void show(String message) {
+    public void show(String message, String instruction) {
         msgLabel.setText(message);
+        instrLabel.setText(instruction);
         isClosed = false;
         getRoot().centerOnScreen();
-        getRoot().show();
+        getRoot().showAndWait();
     }
 
     /**
      * Defines how keyboard inputs interact with the information popup window.
-     * Pressing the ENTER key allows the user to proceed and close the popup window.
      */
     private void setUpKeyboardHandlers() {
         getRoot().getScene().setOnKeyPressed(event -> {
-            if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
-                handleEnter();
+            switch (event.getCode()) {
+            case ENTER -> handleEnter();
+            case ESCAPE -> handleEscape();
+            default -> { }
             }
         });
     }
 
     /**
-     * Handles the ENTER key action by closing the popup window.
+     * Handles the ESCAPE key action by cancelling the command and closing the window.
      */
-    private void handleEnter() {
+    private void handleEscape() {
         isClosed = true;
         getRoot().hide();
+    }
+
+    private void handleEnter() {
+        isConfirmed = true;
+        getRoot().hide();
+    }
+
+    public boolean isConfirmed() {
+        return isConfirmed;
     }
 }

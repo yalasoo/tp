@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.model.person.Name;
 import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.TestDeletePopupHandler;
@@ -54,7 +55,13 @@ public class DeleteCommandParserTest {
     }
 
     @Test
-    public void parse_invalidName_throwsParseException() {
+    public void parse_emptyName_throwsParseException() {
         assertParseFailure(parser, "n/", String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidName_throwsParseException() {
+        assertParseFailure(parser, "n/A@", Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "n/A-", Name.MESSAGE_CONSTRAINTS);
     }
 }

@@ -58,7 +58,6 @@ public class DeleteCommandTest {
         InfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
         DeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex, testInfoHandler, testDeleteHandler);
-
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
@@ -246,9 +245,8 @@ public class DeleteCommandTest {
         assertEquals(Messages.MESSAGE_DELETION_CANCELLED, exception.getMessage());
     }
 
-
     @Test
-    public void execute_userCancelsDeletion_throwsCommandException() {
+    public void execute_cancelledOneMatch_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         TestInfoInfoPopupHandler testInfoHandler = new TestInfoInfoPopupHandler();
         TestDeletePopupHandler testDeleteHandler = new TestDeletePopupHandler();

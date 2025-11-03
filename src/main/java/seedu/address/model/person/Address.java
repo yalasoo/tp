@@ -11,12 +11,13 @@ public class Address {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Addresses should contain only alphanumeric characters, spaces, and common punctuation "
-            + "(comma, period, dash, hash, slash, parentheses). It should not be blank and should not "
-            + "contain symbols like @, *, $, !, ?, +, ;, etc.";
+            + "(comma, period, dash, hash, slash, parentheses). It should not be blank, must be at least "
+            + "15 characters long, and should not contain symbols like @, *, $, !, ?, +, ;, etc.";
 
     /*
      * Address validation:
      * - Must not be blank or contain only whitespace
+     * - Must be at least 15 characters long (after trimming)
      * - Can contain alphanumeric characters, spaces, and common address punctuation
      * - Common punctuation includes: , . - # / ( )
      * - Leading and trailing spaces are handled by trimming
@@ -52,7 +53,7 @@ public class Address {
             return false;
         }
         String trimmed = test.trim();
-        return !trimmed.isEmpty() && trimmed.matches(VALIDATION_REGEX);
+        return !trimmed.isEmpty() && trimmed.length() >= 15 && trimmed.matches(VALIDATION_REGEX);
     }
 
     @Override

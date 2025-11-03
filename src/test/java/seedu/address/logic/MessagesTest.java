@@ -69,7 +69,7 @@ public class MessagesTest {
         Name name = new Name("John Doe");
         Phone phone = new Phone("91234567"); // Valid Singapore phone number starting with 9
         Email email = new Email("john@example.com");
-        Address address = new Address("123 Main Street");
+        Address address = new Address("123 Main Street Avenue");
         Class studentClass = new Class("Nursery"); // Valid kindergarten class format
         Birthday birthday = new Birthday("23-04-1999");
         Note note = new Note("Test note");
@@ -83,7 +83,7 @@ public class MessagesTest {
         assertTrue(result.contains("John Doe"));
         assertTrue(result.contains("Phone: 91234567"));
         assertTrue(result.contains("Email: john@example.com"));
-        assertTrue(result.contains("Class: NURSERY")); // Class values are stored in uppercase
+        assertTrue(result.contains("Class: Nursery")); // Class values preserve original case
         assertTrue(result.contains("Tags:"));
         assertTrue(result.contains("student"));
     }
@@ -94,7 +94,7 @@ public class MessagesTest {
         Name name = new Name("Jane Doe");
         Phone phone = new Phone("87654321"); // Valid Singapore phone number starting with 8
         Email email = new Email("jane@example.com");
-        Address address = new Address("456 Oak Avenue");
+        Address address = new Address("456 Oak Avenue Street");
         Class studentClass = new Class("K1A"); // Valid kindergarten class format
         Birthday birthday = new Birthday("28-05-1998");
         Note note = new Note("");

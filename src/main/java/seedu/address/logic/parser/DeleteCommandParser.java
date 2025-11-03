@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Name;
 import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.InfoPopupHandler;
 
@@ -44,6 +45,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             if (name.isEmpty()) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            }
+            if (!Name.isValidName(name)) {
+                throw new ParseException(Name.MESSAGE_CONSTRAINTS);
             }
             return new DeleteCommand(name, infoPopupHandler, deletePopupHandler);
         }
