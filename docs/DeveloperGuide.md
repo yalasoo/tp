@@ -1149,7 +1149,5 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 ### 6. General
-- **Allow more flexible class input from user**: Currently, we restrict users to use pre-defined classes which might not may not accommodate the diverse naming conventions used across different Singaporean kindergartens. In the future, we plan to switch to a more flexible class validation that accepts user-defined class names.
-
 - **Smarter parsing for all parameter**: Currently, some parameter parser like `a/ADDRESS`, `b/BIRTHDAY`, `c/CLASS`, and `t/TAG` does not accept input which has multiple spaces inside. We plan to apply the same smart parsing detection to the rest of the command to reduce error and increase user experience.
   - Example: User accidentally typed double space instead of one → should still allow the code to run if that is the only mistake.
