@@ -730,8 +730,8 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 4. **Deleting a contact by name with partial name**
-   - Prerequisites: List all persons. Multiple persons in the list with `a` in their name.
-   - Test case: `delete n/a`
+   - Prerequisites: List all persons. Multiple persons in the list with `lex` in their name.
+   - Test case: `delete n/lex`
    - **Expected:** A popup shows possible matches for selection. After the user makes a selection, a confirmation popup appears.
 
 <br>
