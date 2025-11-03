@@ -1046,19 +1046,19 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 ## FAQ
 
 ### General
-**Q**: Can I use both `INDEX` and `CLASS` together in commands?
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?<br>
 **A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
 
 <br>
 
 ### Find commands
-**Q**: What happens if I call find commands consecutively?
-**A**: The contact list shown in GUI will be filtered further using the new find commands you input. So you can consecutively call teh various find commands to narrow down a contact.
+**Q**: What happens if I call find commands consecutively?<br>
+**A**: The contact list shown in GUI will be filtered further using the new find commands you input. So you can consecutively call the various find commands to narrow down a contact.
 
-**Q**: What happens if I call non-find commands after a find command?
-**A**: If you call `list` command, it will display all the contacts. If you call `add`, `edit`, `note` commands on the filtered contacts view, once executed the contact list will reset to showing all the contacts. Whereas if you call `fav`, `delete`, `view`, `remind`, `help`, `attendance`, `attendanceD` commands, the filtered view from find command will remain.
+**Q**: What happens if I call non-find commands after a find command?<br>
+**A**: If you call `list` command, it will display all the contacts. If you call `add`, `edit`, `note` commands on the filtered contacts view, once executed the contact list will reset to showing all the contacts. Whereas, if you call `fav`, `delete`, `view`, `remind`, `help`, `attendance`, `attendanceD` commands, the filtered view from find command will remain.
 
-**Q**: How do I go back to displaying all contacts after using find commands?
+**Q**: How do I go back to displaying all contacts after using find commands?<br>
 **A**: As guided by the GUI messages, you may call the `list` command to display all the contacts.
 
 ### Attendance
