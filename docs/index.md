@@ -15,7 +15,7 @@
 LittleLogBook allows teachers to conveniently track information about their students, parents, and colleagues, making communication and record-keeping easier.
 
 * If you are interested in using LittleLogBook, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
-* If you are interested about developing AddressBook, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
+* If you are interested about developing LittleLogBook, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
 
 
 **Acknowledgements**

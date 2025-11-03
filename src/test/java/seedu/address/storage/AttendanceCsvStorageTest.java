@@ -25,7 +25,9 @@ public class AttendanceCsvStorageTest {
 
         String filePath = AttendanceCsvStorage.saveAttendanceCsv(csvContent, fileName);
 
-        assertTrue(Files.exists(Path.of(filePath)));
-        assertEquals(csvContent, Files.readString(Path.of(filePath)));
+        Path path = Path.of(filePath).resolve(fileName);
+
+        assertTrue(Files.exists(path));
+        assertEquals(csvContent, Files.readString(path));
     }
 }

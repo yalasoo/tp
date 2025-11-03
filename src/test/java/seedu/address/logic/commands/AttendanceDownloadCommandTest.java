@@ -8,8 +8,10 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +41,8 @@ public class AttendanceDownloadCommandTest {
 
     @Test
     void constructor_nullDate_throwsNullPointerException() {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         List<Class> classes = List.of(new Class("K1A"));
         YearMonth month = YearMonth.of(2025, 1);
 
@@ -50,7 +53,8 @@ public class AttendanceDownloadCommandTest {
 
     @Test
     void constructor_nullMonth_throwsNullPointerException() {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.of(2025, 12, 29);
 
@@ -60,8 +64,54 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
+    public void execute_emptyContactList_throwsCommandException() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(2));
+        LocalDate date = LocalDate.now();
+        YearMonth month = YearMonth.of(2025, 1);
+
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                indexes, null, date, month, false, true);
+
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
+
+    @Test
+    public void execute_indexOutOfBounds_throwsCommandException() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(2));
+        LocalDate date = LocalDate.now();
+        YearMonth month = YearMonth.of(2025, 1);
+
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                indexes, null, date, month, false, true);
+
+        Person person = new PersonBuilder().build();
+        model.addPerson(person);
+
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
+
+    @Test
+    public void execute_colleagueMonthlyReport_throwsCommandException() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
+        LocalDate date = LocalDate.now();
+        YearMonth month = YearMonth.of(2025, 1);
+
+        AttendanceDownloadCommand command = new AttendanceDownloadCommand(
+                indexes, null, date, month, false, true);
+
+        Person colleague = new PersonBuilder().withTags("colleague").build();
+        model.addPerson(colleague);
+
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
+
+    @Test
     void execute_studentMonthlyReport_success() throws CommandException {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         LocalDate date = LocalDate.now();
         YearMonth month = YearMonth.of(2025, 1);
 
@@ -76,8 +126,9 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_studentMonthlyReportInvaidMonth_throwsCommandException() {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+    void execute_studentMonthlyReportInvalidMonth_throwsCommandException() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         LocalDate date = LocalDate.now();
         YearMonth before1900 = YearMonth.of(1899, 1);
         YearMonth nextMonth = YearMonth.now().plusMonths(1);
@@ -95,8 +146,9 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_studentMonthlyReportOnBorderMonth_throwsCommandException() throws CommandException {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+    void execute_studentMonthlyReportOnBorderMonth_success() throws CommandException {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         LocalDate date = LocalDate.now();
         YearMonth month1900 = YearMonth.of(1900, 1);
         YearMonth currentMonth = YearMonth.now();
@@ -117,7 +169,28 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classMonthlyReport_success() throws CommandException {
+    public void execute_classMonthlyReportNoStudent_throwsCommandException() {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date = LocalDate.now();
+        YearMonth month = YearMonth.of(2025, 1);
+
+        // With user month
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, date, month, false, true);
+
+        // Without user month
+        AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
+                null, classes, date, month, false, false);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1B").build();
+        model.addPerson(student);
+
+        assertThrows(CommandException.class, () -> command1.execute(model));
+        assertThrows(CommandException.class, () -> command2.execute(model));
+    }
+
+    @Test
+    void execute_classMonthlyReportWithStudent_success() throws CommandException {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.now();
         YearMonth month = YearMonth.of(2025, 1);
@@ -141,7 +214,7 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classMonthlyReportInvalidMonth_throwsCommandException() {
+    void execute_classMonthlyReportWithStudentInvalidMonth_throwsCommandException() {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.now();
         YearMonth month1900 = YearMonth.of(1899, 1);
@@ -160,7 +233,7 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classMonthlyReportBorderMonth_throwsCommandException() throws CommandException {
+    void execute_classMonthlyWithStudentReportBorderMonth_success() throws CommandException {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.now();
         YearMonth month1900 = YearMonth.of(1900, 1);
@@ -182,15 +255,30 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classDailyReport_success() throws CommandException {
+    public void execute_classDailyReportNoStudent_throwsCommandException() {
+        List<Class> classes = List.of(new Class("K1A"));
+        LocalDate date = LocalDate.now();
+        YearMonth month = YearMonth.of(2025, 1);
+
+        AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
+                null, classes, date, month, true, false);
+
+        Person student = new PersonBuilder().withTags("student").withClass("K1B").build();
+        model.addPerson(student);
+
+        assertThrows(CommandException.class, () -> command1.execute(model));
+    }
+
+    @Test
+    void execute_classDailyReportWithStudent_success() throws CommandException {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.of(2024, 12, 29);
         YearMonth month = YearMonth.of(2024, 1);
 
         AttendanceDownloadCommand command = new AttendanceDownloadCommand(
-                null, classes, date, month, true, true);
+                null, classes, date, month, true, false);
 
-        Person student = new PersonBuilder().withTags("student").build();
+        Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
         model.addPerson(student);
 
         CommandResult result = command.execute(model);
@@ -199,7 +287,7 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classDailyReportInvalidDate_throwsCommandException() {
+    void execute_classDailyReportWithStudentInvalidDate_throwsCommandException() {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate before1900 = LocalDate.of(1899, 1, 1);
         LocalDate tomorrow = LocalDate.now().plusDays(1);
@@ -218,7 +306,7 @@ public class AttendanceDownloadCommandTest {
     }
 
     @Test
-    void execute_classDailyReportBorderDate_throwsCommandException() throws CommandException {
+    void execute_classDailyWithStudentReportBorderDate_saved() throws CommandException {
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date1900 = LocalDate.of(1900, 1, 1);
         LocalDate today = LocalDate.now();
@@ -227,7 +315,7 @@ public class AttendanceDownloadCommandTest {
         AttendanceDownloadCommand command1 = new AttendanceDownloadCommand(
                 null, classes, date1900, month, true, false);
         AttendanceDownloadCommand command2 = new AttendanceDownloadCommand(
-                null, classes, date1900, month, true, false);
+                null, classes, today, month, true, false);
 
         Person student = new PersonBuilder().withTags("student").withClass("K1A").build();
         model.addPerson(student);
@@ -241,8 +329,11 @@ public class AttendanceDownloadCommandTest {
 
     @Test
     public void equals_sameObject_returnsTrue() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
+
         AttendanceDownloadCommand command = new AttendanceDownloadCommand(
-                Set.of(Index.fromOneBased(1)), null, LocalDate.now(), YearMonth.now(),
+                indexes, null, LocalDate.now(), YearMonth.now(),
                 false, false);
 
         assertEquals(command, command);
@@ -250,8 +341,11 @@ public class AttendanceDownloadCommandTest {
 
     @Test
     public void equals_differentType_returnsFalse() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
+
         AttendanceDownloadCommand command = new AttendanceDownloadCommand(
-                Set.of(Index.fromOneBased(1)), null, LocalDate.now(), YearMonth.now(),
+                indexes, null, LocalDate.now(), YearMonth.now(),
                 false, false);
 
         assertFalse(command.equals("not a command"));
@@ -260,7 +354,8 @@ public class AttendanceDownloadCommandTest {
 
     @Test
     public void toString_containsAllFields() {
-        Set<Index> indexes = Set.of(Index.fromOneBased(1));
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
         List<Class> classes = List.of(new Class("K1A"));
         LocalDate date = LocalDate.of(2025, 12, 29);
         YearMonth month = YearMonth.of(2025, 1);

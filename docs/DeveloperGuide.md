@@ -35,7 +35,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -71,7 +71,7 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
 <div align="center">
     <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
@@ -90,7 +90,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -127,7 +127,7 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
 <div align="center">
     <puml src="diagrams/ModelClassDiagram.puml" width="800"/>
@@ -152,7 +152,7 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
 <div align="center">
     <puml src="diagrams/StorageClassDiagram.puml" width="700" />
@@ -1107,3 +1107,24 @@ testers are expected to do more *exploratory* testing.
 - Testing boundary conditions
 - Testing error recovery
 - Testing UI responsiveness with different data volumes
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+### 1 Attendance
+- **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to do it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
+
+<br>
+
+### 2 Edit
+- **Display a confirmation pop-up window when changing contact's tags**: Currently, users can change tags freely from student to colleague and vice versa. However, there is a possibility that the user did not intend to do this action in the first place. Having a confirmation window will also increase user experience and prevent accidental deletion of student's attendance history (although right now, we keep attendance record even if a contact's tag was edited form student to colleague).
+
+- **Add birthday validation to edit command**: Currently, the edit command accepts birthdays that would make a student younger than 3 or older than 6 years old or the colleague to be younger than 18. We will modify the edit command to apply the same age validation checks as the add command, preventing invalid birthdays from being set through editing.
+   - Example: edit 1 b/01-01-2024 would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
+
+<br>
+
+### 3 Birthday field
+- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students.
+  - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."

@@ -160,33 +160,33 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ```
 
 ##### Parameters & Validation Rules
-|                       Parameter                       | Validation Rules                                                         |
-|:-----------------------------------------------------:|--------------------------------------------------------------------------|
+|                       Parameter                       | Validation Rules                                                                                                                                                                        |
+|:-----------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
-|                                                       | Case-insensitive for duplicates                                          |
-|                                                       | Error if empty or contains numbers/symbols                               |
-|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)   |
-|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)        |
-|                                                       | Examples: 61234567, 81234567, 91234567                                   |
-|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                     |
-|                                                       | Error if not numeric, wrong length, or invalid starting digit            |
-|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period |
-|                                                       | Case-insensitive (automatically converted to lowercase)                  |
-|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗) |
-|                                                       | Error if invalid format                                                  |
-| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc. |
-|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces |
-|                                                       | Error if empty or contains only whitespace                               |
-|  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K |
-|                                                       | Case-insensitive                                                         |
-|                                                       | Error if invalid class format                                            |
-| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                |
-|                                                       | Must be a valid date (from 01-01-1900 to today's date)                   |
-|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                          |
-|                                                       | Must be either 'student' or 'colleague' (case-insensitive)               |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                       |
-|                                                       | Leading/trailing spaces trimmed                                          |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                              |
+|                                                       | Case-insensitive for duplicates                                                                                                                                                         |
+|                                                       | Error if empty or contains numbers/symbols                                                                                                                                              |
+|  <span style="color: #e83f8b">**PHONE (p/)**</span>   | 8-digit Singapore numbers starting with 6 (landline), 8, or 9 (mobile)                                                                                                                  |
+|                                                       | Valid formats: 6XXXXXXX (landline), 8XXXXXXX or 9XXXXXXX (mobile)                                                                                                                       |
+|                                                       | Examples: 61234567, 81234567, 91234567                                                                                                                                                  |
+|                                                       | Spaces/dashes ignored (e.g., 9123-4567 or 9123 4567)                                                                                                                                    |
+|                                                       | Error if not numeric, wrong length, or invalid starting digit                                                                                                                           |
+|  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period                                                                                                            |
+|                                                       | Case-insensitive (automatically converted to lowercase)                                                                                                                                 |
+|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗)                                                                                                            |
+|                                                       | Error if invalid format                                                                                                                                                                 |
+| <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc.                              |
+|                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed to single spaces                                                                                                             |
+|                                                       | Error if empty or contains only whitespace                                                                                                                                              |
+|  <span style="color: #e83f8b">**CLASS (c/)**</span>   | Valid kindergarten classes: K1A, K1B, K1C, K2A, K2B, K2C, Nursery, Pre-K                                                                                                                |
+|                                                       | Case-insensitive                                                                                                                                                                        |
+|                                                       | Error if invalid class format                                                                                                                                                           |
+| <span style="color: #e83f8b">**BIRTHDAY (b/)**</span> | Date in dd-MM-yyyy format                                                                                                                                                               |
+|                                                       | Must be a valid date (from 01-01-1900 to today's date)                                                                                                                                  |
+|   <span style="color: #e83f8b">**TAG (t/)**</span>    | Exactly one tag                                                                                                                                                                         |
+|                                                       | Must be either 'student' or 'colleague' (case-insensitive)                                                                                                                              |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Up to 500 characters                                                                                                                                                                    |
+|                                                       | Leading/trailing spaces trimmed                                                                                                                                                         |
 
 <box type="warning">
 <strong>Duplicate Contact Detection:</strong><br>
@@ -212,6 +212,12 @@ The system uses different rules for detecting duplicates based on contact type. 
 • **Mixed Types:** No conflicts - students and colleagues can share the same information
 </box>
 
+<box type="info">
+<strong>Why Different Duplicate Rules?</strong><br>
+• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each should have their own unique phone number and email address<br>
+• <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
+</box>
+
 ##### Sample Commands
 ```shell
 add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student
@@ -221,18 +227,12 @@ add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24
 ```
 
 ##### Outputs
-|                Outcome Type                   | Scenario                   | Message                                                    | GUI Action                            |
-|:---------------------------------------------:|----------------------------|------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | New contact added          | `New <contact> added`                                      | Contact list refreshes with new entry |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_ | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                      | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Duplicate contact detected     | `Duplicate contact detected.`                              | No changes                            |
-
-<box type="info">
-<strong>Why Different Duplicate Rules?</strong><br>
-• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each should have their own unique phone number and email address<br>
-• <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
-</box>
+|                Outcome Type                   | Scenario                     | Message                                                    | GUI Action                              |
+|:---------------------------------------------:|------------------------------|------------------------------------------------------------|-----------------------------------------|
+| <span style="color: green">**Success**</span> | New contact added            | `New <contact> added`                                      | Contact list refreshes with new entry   |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter   | `Invalid command format!` _(with correct format guidance)_ | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format     | _Parameter-specific validation error_                      | No changes                              |
+|  <span style="color: red">**Failure**</span>  | Duplicate contact detected   | `Duplicate contact detected.`                              | No changes                              |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -279,7 +279,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |                                                       | Age is calculated using Singapore education system rules: Age = Current Year - Birth Year (Not by exact date)                                                                           |
 |   <span style="color: #6b7280">**TAG (t/)**</span>    | Exactly one tag                                                                                                                                                                         |
 |                                                       | Must be either 'student' or 'colleague' (case-insensitive)                                                                                                                              |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                                                                                                                                      |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Up to 500 characters                                                                                                                                                                    |
 |                                                       | Leading/trailing spaces trimmed                                                                                                                                                         |
 
 ##### Sample Commands
@@ -295,6 +295,16 @@ edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b
 |  <span style="color: red">**Failure**</span>  | Missing required parameter | `Invalid command format!` _(with correct format guidance)_                                                         | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Invalid parameter format   | _Parameter-specific validation error_                                                                              | No changes                            |
 |  <span style="color: red">**Failure**</span>  | Duplicate name & phone     | `This person already exists in the address book. Please change either the name or phone number to make it unique.` | No changes                            |
+
+<box type="warning">
+<strong>No age validation is performed when editing</strong><br>
+• This may cause the student/colleague to become invalid in the system<br><br>
+
+<strong>Workaround:</strong><br>
+• Use the <code>add</code> command with proper age validation for new students<br>
+• Be cautious when editing existing students' birthdays<br>
+• Verify student ages before using the edit command
+</box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -312,15 +322,15 @@ delete n/NAME
 ```
 
 ##### Parameters & Validation Rules
-|                     Parameter                     | Validation Rules                                                           |
-|:-------------------------------------------------:|----------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
-|                                                   | Cannot be 0 or negative                                                    |
-|                                                   | Must correspond to an existing contact in the current list                 |
+|                     Parameter                     | Validation Rules                                                                                                                                                                                           |
+|:-------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                                                                                                                                                  |
+|                                                   | Cannot be 0 or negative                                                                                                                                                                                    |
+|                                                   | Must correspond to an existing contact in the current list                                                                                                                                                 |
 | <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation (e.g., "Mary-Jane" ✓, "Mary--Jane" ✗) |
-|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
-|                                                   | Case-insensitive match                                                     |
-|                                                   | Matches partial names                                                      |
+|                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                                                 |
+|                                                   | Case-insensitive match                                                                                                                                                                                     |
+|                                                   | Matches partial names                                                                                                                                                                                      |
 
 ##### Sample Commands
 ```shell
@@ -334,21 +344,21 @@ delete n/John Doe
 
 **1. Delete by INDEX**
 
-|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                                 |
-|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|------------------------------------------------------------|
-|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry               |
-|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | No changes                                                 |
-|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                                 |
-|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`  | Pop-up window with the selected person information appears |
+|                                      Outcome Type                                       | Scenario                            | Message                                                        | GUI Action                                                 |
+|:---------------------------------------------------------------------------------------:|-------------------------------------|----------------------------------------------------------------|------------------------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted                     | `Deleted Person: <Person>`                                     | Contact list refreshes without deleted entry               |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index                       | `The person index provided is invalid`                         | No changes                                                 |
+|                       <span style="color: red">**Failure**</span>                       | No index provided                   | `Invalid command format!` _(with correct format guidance)_     | No changes                                                 |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`      | Pop-up window with the selected person information appears |
 
 **2. Delete by NAME**
 
-|                         Outcome Type                         | Scenario                                                                   | Message                                                                                             | GUI Action                                                 |
-|:------------------------------------------------------------:|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Contact deleted                                                            | `Deleted Person: <Person>`                                                                          | Contact list refreshes without deleted entry               |
-|         <span style="color: red">**Failure**</span>          | No matches found                                                           | `No matches found. Please try again`                                                                | Pop-up window appears                                      |
-| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                     | `Possible matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
-| <span style="color: orange">**Confirmation Required**</span> | One exact same name found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                           | Pop-up window with the selected person information appears |
+|                         Outcome Type                         | Scenario                                                                   | Message                                                                                               | GUI Action                                                 |
+|:------------------------------------------------------------:|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Contact deleted                                                            | `Deleted Person: <Person>`                                                                            | Contact list refreshes without deleted entry               |
+|         <span style="color: red">**Failure**</span>          | No matches found                                                           | `No matches found. Please try again`                                                                  | Pop-up window appears                                      |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                     | `Possible matches found. Type index and ENTER to delete or ESC to cancel and go back to main window`  | Pop-up window with list of matches appears                 |
+| <span style="color: orange">**Confirmation Required**</span> | One exact same name found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                             | Pop-up window with the selected person information appears |
 
 <box type="warning">
 <strong>Note:</strong> When a popup window appears, you must respond to it before continuing. 
@@ -623,7 +633,7 @@ fav INDEX(es)
 ##### Parameters & Validation Rules
 |                     Parameter                     | Validation Rules                                                                                                                              |
 |:-------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string                                                                                                                                | 
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string separated by commas (spaces before and after commas are ignored)                                                               | 
 |                                                   | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
 |                                                   | Error if empty string                                                                                                                         |
 
@@ -632,19 +642,24 @@ fav INDEX(es)
 fav 1 
 ```
 ```shell
-fav 1 2 3 4 5
+fav 1,2,3 
 ```
 ```shell
-fav 3 5 2 1
+fav 1, 2, 3, 4, 5
+```
+```shell
+fav 3 ,5 , 2 ,1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                                              | GUI Action                                                                                                                      |
-|:---------------------------------------------:|--------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
-| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|                 Outcome Type                  | Scenario                                                           | Message                                                                                              | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before                         | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before                             | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before                            | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                                                      | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|  <span style="color: red">**Failure**</span>  | Non-positive index(es) or multiple indexes not separated by commas | `Index(es) must be positive integers separated by commas.`                                           | No changes                                                                                                                      |    
+|  <span style="color: red">**Failure**</span>  | Out of bounds positive index(es)                                   | `You have passed in out of bound index(es).` _(with guidance on what index(es) are valid)_           | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -707,12 +722,12 @@ remind
 
 ##### Possible Outputs
 
-|                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                             GUI Action                            |
-|:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| :---------------------------------------------------------------: |
+|                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                            GUI Action                             |
+|:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------:|
 |                          <span style="color: green">**Success**</span>                           | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!`<br/>`1) ...`<br/><br/>`Upcoming birthdays in the next 7 days:`<br/>`1) ...`<br/><br/>`Don't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
-|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                       `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                               |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                      `No contacts in LittleLogBook.`                                                                      |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                                   `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                   |                         Reminder printed                          |
+|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                         Reminder printed                          |
+|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                     `No contacts in LittleLogBook.`                                                                      |                         Reminder printed                          |
 
 ##### Formatting of the reminder list
 
@@ -772,14 +787,15 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                | Message                                                                      | GUI Action                            |
-|:---------------------------------------------:|-----------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS` | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
-| <span style="color: green">**Success**</span> | Student's attendance removed            | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance          | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound              | `Modified 0 out of <x> contacts.` _(reminder on attendance rules)_           | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter              | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format                | _Parameter-specific validation error_                                        | No changes                            |
+|                 Outcome Type                  | Scenario                                    | Message                                                                      | GUI Action                            |
+|:---------------------------------------------:|---------------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS`     | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
+| <span style="color: green">**Success**</span> | Student's attendance removed                | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance              | `Modified 0 out of 1 contacts.` _(attendance details)_                       | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking attendance on an empty contact list | `No contacts available to download attendance.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                  | `Modified 0 out of <x> contacts.` _(attendance details)_                     | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                  | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                    | _Parameter-specific validation error_                                        | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -830,7 +846,7 @@ attendanceD c/CLASS... [m/MONTH]
 
 **Notes about report saving:**
 * Individual attendance (<code>INDEX(es)</code>) will be saved into one file named: <code>student_attendance_[MONTH].csv</code>
-* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]_[MONTH].csv</code> or <code>[CLASS]\_attendance\_[DATE].csv</code>
+* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]\_attendance\_[DATE].csv</code> or <code>[CLASS]\_attendance\_[MONTH].csv</code>
 * All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
 </box>
 
@@ -852,14 +868,17 @@ attendanceD c/K1A c/K2B m/01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                       | Message                                                       | GUI Action                            |
-|:---------------------------------------------:|--------------------------------|---------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Attendance report downloaded   | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound     | `Date must be within 01-01-1900 until <current date>.`        | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Month out of accepted bound    | `Month must be within 01-1900 until <current month>.`         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter     | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format       | _Parameter-specific validation error_                         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Error saving attendance report | `Error saving attendance report: _error message_`             | No changes                            |
+|                 Outcome Type                  | Scenario                                              | Message                                                                | GUI Action                            |
+|:---------------------------------------------:|-------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded                          | `Attendance report downloaded. Saved to:`<br>`<path/to/folder>`        | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading a class attendance report with 0 students | `No attendance report downloaded. Class(es) provided has no students.` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading colleagues' attendance report             | `No attendance report downloaded. No student in the index specified.`  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading on an empty contact list                  | `No contacts available to mark attendance.`                            | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                            | `Date must be within 01-01-1900 until <current date>.`                 | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Month out of accepted bound                           | `Month must be within 01-1900 until <current month>.`                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                            | `Invalid command format!` _(with correct format guidance)_             | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                              | _Parameter-specific validation error_                                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report                        | `Error saving attendance report: _error message_`                      | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -956,6 +975,36 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## FAQ
 
+### General
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?  
+**A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
+
+<br>
+
+### Attendance
+##### Marking
+**Q**: What happens if I accidentally include colleague indexes when marking student attendance?<br>
+**A**: LittleLogBook will automatically filter out colleagues and only mark attendance for students. You'll see a summary showing which students were successfully marked and which contacts were skipped (with reasons).
+
+**Q**: Can I mark attendance for future dates?<br>
+**A**: No, you can only mark attendance from a student's birthday up to today's date.
+
+**Q**: What happens if I try to mark attendance with an invalid date?<br>
+**A**: LittleLogBook will show an error and list the affected students with the reason "Date before birthday or after today".
+
+**Q**: How do I update a student's attendance if I made a mistake?<br>
+**A**: Use the same attendance command with the correct status, or use remove as status to clear the record for that date.
+
+##### Reports
+**Q**: What happens if I include colleague indexes when downloading attendance reports?<br>
+**A**: Colleagues are automatically excluded from attendance reports. You'll only receive CSV files containing student attendance records.
+
+**Q**: Where are attendance reports saved?<br>
+**A**: All CSV reports are saved in the data/ folder within your LittleLogBook directory.
+
+<br>
+
+### Data
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous LittleLogBook home folder.
 
@@ -993,6 +1042,8 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimise the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimised, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Age validation for Edit**: Age validation only applies when adding new students, not when editing existing ones.
+4. **No reminders for graduated students to be removed**: Students who are currently 6 years old will become invalid when they turn 7 next year. The system does not automatically remind you to remove graduated students.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1009,7 +1060,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 |   **Find-p**    | `find-p PHONE(s)`                                                                                                | `find-p 84871234`                                                                                               |
 |   **Find-t**    | `find-t TAG(s)`                                                                                                  | `find-t student`                                                                                                |
 |   **Find-c**    | `find-c CLASS(es)`                                                                                               | `find-c K1A nursery`                                                                                            |
-|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1 2`                                                                                                       |
+|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1,2`                                                                                                       |
 |   **Remind**    | `remind`                                                                                                         | `remind`                                                                                                        |
 | **Attendance**  | `attendance INDEX(es) s/STATUS [d/DATE]`                                                                         |                                                                                                                 |
 | **AttendanceD** | `attendanceD INDEX(es) [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE]` <br> `attendanceD c/CLASS... [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A d/29-01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025`    |
