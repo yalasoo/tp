@@ -12,6 +12,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -86,7 +87,16 @@ public class EditCommandParser implements Parser<EditCommand> {
         assert tags != null;
 
         if (tags.isEmpty()) {
-            throw new ParseException("Tag must be either student or colleague.");
+            return Optional.empty();
+        }
+        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        if (tagSet.isEmpty()) {
+            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+        }
+        for (String tag : tagSet) {
+            if (!tag.equalsIgnoreCase("student") && !tag.equalsIgnoreCase("colleague")) {
+                throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            }
         }
         return Optional.of(ParserUtil.parseTags(tags));
     }
