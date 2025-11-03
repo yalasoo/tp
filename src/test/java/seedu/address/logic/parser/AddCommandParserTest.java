@@ -123,17 +123,22 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_classNormalization_success() {
-        // Mixed case class should be normalized to uppercase
+        // Class case should be preserved as entered
         Person expectedNurseryPerson = new PersonBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB)
-                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass("NURSERY")
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass("Nursery")
                 .withBirthday(VALID_BIRTHDAY_BOB).withNote("").withTags(VALID_TAG_STUDENT).build();
 
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + " c/Nursery" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedNurseryPerson));
 
+        Person expectedNurseryPersonLowercase = new PersonBuilder().withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass("nursery")
+                .withBirthday(VALID_BIRTHDAY_BOB).withNote("").withTags(VALID_TAG_STUDENT).build();
+
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " c/nursery" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedNurseryPerson));
+                + " c/nursery" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedNurseryPersonLowercase));
 
         Person expectedK1APerson = new PersonBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB)
@@ -143,8 +148,13 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + " c/K1A" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK1APerson));
 
+        Person expectedK1APersonLowercase = new PersonBuilder().withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass("k1a")
+                .withBirthday(VALID_BIRTHDAY_BOB).withNote("").withTags(VALID_TAG_STUDENT).build();
+
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " c/k1a" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK1APerson));
+                + " c/k1a" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK1APersonLowercase));
 
         Person expectedK2CPerson = new PersonBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB)
@@ -154,8 +164,13 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + " c/K2C" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK2CPerson));
 
+        Person expectedK2CPersonLowercase = new PersonBuilder().withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass("k2c")
+                .withBirthday(VALID_BIRTHDAY_BOB).withNote("").withTags(VALID_TAG_STUDENT).build();
+
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " c/k2c" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK2CPerson));
+                + " c/k2c" + BIRTHDAY_DESC_BOB + TAG_DESC_STUDENT, new AddCommand(expectedK2CPersonLowercase));
     }
 
     @Test

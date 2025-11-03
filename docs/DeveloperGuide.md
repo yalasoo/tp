@@ -442,15 +442,15 @@ Use case ends.
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 
-**Use case: Find a contact based on partial name**
+**Use case: Find a contact based on partial field(s)**
 
 **MSS**
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User enters the command with partial name(s).
+3. User enters the command with partial field(s).
 4. LittleLogBook validates input information.
-5. LittleLogBook filters contacts matching partial name(s) and updates contact list.
+5. LittleLogBook filters contacts matching partial field(s) and updates contact list.
 6. LittleLogBook displays the result.
 
 Use case ends.
@@ -460,6 +460,10 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+
+<box type="info" markdown>
+This use case applies to all four find-commands whereby field(s) refers to the required input for the respective find commands.
+  </box>
 </div>
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
@@ -605,7 +609,6 @@ Use case ends.
          Use case resumes at step 3.
 </div>
 
-*{More to be added}*
 
 ### Non-Functional Requirements
 
@@ -727,8 +730,8 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 4. **Deleting a contact by name with partial name**
-   - Prerequisites: List all persons. Multiple persons in the list with `a` in their name.
-   - Test case: `delete n/a`
+   - Prerequisites: List all persons. Multiple persons in the list with `lex` in their name.
+   - Test case: `delete n/lex`
    - **Expected:** A popup shows possible matches for selection. After the user makes a selection, a confirmation popup appears.
 
 <br>
@@ -1130,6 +1133,8 @@ testers are expected to do more *exploratory* testing.
 ### 3. Find
 - **Unified search command**: Currently, our `find` commands uses cumulative filtering which may be hard for users to get to the contacts they want. In the future we plane to unify these `find` commands to allow multiple fields to be searched at once.
 
+<br>
+
 ### 4. Attendance
 - **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to take it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
 
@@ -1137,11 +1142,11 @@ testers are expected to do more *exploratory* testing.
 
 <br>
 
-### 5. Birthday Field
-- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion.
-
-- **Add graduation reminder system**: Currently, there is no reminder for teachers to remove graduated students.
+### 5 Birthday field
+- **Handle age-based expiration for existing students by creating graduated students reminder system**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Afterward, LittleLogBook will remind the teacher to remove graduated students.
   - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."
+
+<br>
 
 ### 6. General
 - **Allow more flexible class input from user**: Currently, we restrict users to use pre-defined classes which might not may not accommodate the diverse naming conventions used across different Singaporean kindergartens. In the future, we plan to switch to a more flexible class validation that accepts user-defined class names.

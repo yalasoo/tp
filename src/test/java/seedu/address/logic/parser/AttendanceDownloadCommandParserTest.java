@@ -118,9 +118,9 @@ public class AttendanceDownloadCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse(invalidMonthFormat));
         assertThrows(ParseException.class, () -> parser.parse(invalidMonth));
 
-        assertParseFailure(parser, " c/InvalidClass",
-                "Class must be one of the following (case-insensitive):"
-                        + " Nursery, Pre-K, K1A, K1B, K1C, K2A, K2B, K2C");
+        assertParseFailure(parser, " c/Invalid Class",
+                "Class names should only contain alphanumeric characters (letters and numbers), "
+                        + "with no spaces, and must be between 1 and 20 characters long.");
     }
 
 }

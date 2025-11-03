@@ -16,31 +16,31 @@ public class ClassTest {
 
     @Test
     public void constructor_invalidClass_throwsIllegalArgumentException() {
-        String invalidClass = "7E";
+        String invalidClass = "K1 A"; // contains space
         assertThrows(IllegalArgumentException.class, () -> new Class(invalidClass));
     }
 
     @Test
     public void constructor_classNormalization_success() {
-        // Mixed case should be normalized to uppercase
-        Class studentClass = new Class("k1a");
+        // Case should be preserved as entered
+        Class studentClass = new Class("K1A");
         assertEquals("K1A", studentClass.value);
 
-        studentClass = new Class("k2b");
-        assertEquals("K2B", studentClass.value);
+        studentClass = new Class("k1a");
+        assertEquals("k1a", studentClass.value);
 
-        studentClass = new Class("nursery");
-        assertEquals("NURSERY", studentClass.value);
+        studentClass = new Class("Harmony");
+        assertEquals("Harmony", studentClass.value);
 
-        studentClass = new Class("pre-k");
-        assertEquals("PRE-K", studentClass.value);
+        studentClass = new Class("Class123");
+        assertEquals("Class123", studentClass.value);
 
         // Leading and trailing spaces should be trimmed
-        studentClass = new Class("  K1A  ");
-        assertEquals("K1A", studentClass.value);
+        studentClass = new Class("  K1D  ");
+        assertEquals("K1D", studentClass.value);
 
-        studentClass = new Class("  nursery  ");
-        assertEquals("NURSERY", studentClass.value);
+        studentClass = new Class("  Nursery123  ");
+        assertEquals("Nursery123", studentClass.value);
     }
 
     @Test
@@ -51,31 +51,35 @@ public class ClassTest {
         // invalid classes
         assertFalse(Class.isValidClass("")); // empty string
         assertFalse(Class.isValidClass(" ")); // spaces only
-        assertFalse(Class.isValidClass("K3A")); // invalid kindergarten level (K3)
-        assertFalse(Class.isValidClass("K0A")); // invalid kindergarten level (K0)
-        assertFalse(Class.isValidClass("K1D")); // invalid section (D)
-        assertFalse(Class.isValidClass("K1A1")); // extra character
-        assertFalse(Class.isValidClass("teacher")); // word instead of class format
-        assertFalse(Class.isValidClass("1A")); // old primary school format
-        assertFalse(Class.isValidClass("Grade1")); // invalid format
-        assertFalse(Class.isValidClass("Reception")); // removed class type
-        assertFalse(Class.isValidClass("Foundation")); // removed class type
+        assertFalse(Class.isValidClass("K1 A")); // contains space
+        assertFalse(Class.isValidClass("K1-A")); // contains dash (not alphanumeric)
+        assertFalse(Class.isValidClass("Class@1")); // contains special character
+        assertFalse(Class.isValidClass("Pre-K")); // contains dash (not alphanumeric)
+        assertFalse(Class.isValidClass("Grade 1")); // contains space
+        assertFalse(Class.isValidClass("Class_A")); // contains underscore
+        assertFalse(Class.isValidClass("VeryLongClassNameThatExceedsTwentyCharacters")); // exceeds 20 characters
+        assertFalse(Class.isValidClass("!@#$%")); // special characters only
 
-        // valid kindergarten classes
-        assertTrue(Class.isValidClass("Nursery"));
-        assertTrue(Class.isValidClass("Pre-K"));
+        // valid classes (alphanumeric only, up to 20 characters)
         assertTrue(Class.isValidClass("K1A"));
         assertTrue(Class.isValidClass("K1B"));
         assertTrue(Class.isValidClass("K1C"));
+        assertTrue(Class.isValidClass("K1D")); // now valid
         assertTrue(Class.isValidClass("K2A"));
         assertTrue(Class.isValidClass("K2B"));
         assertTrue(Class.isValidClass("K2C"));
+        assertTrue(Class.isValidClass("Nursery"));
+        assertTrue(Class.isValidClass("PreK")); // without dash
+        assertTrue(Class.isValidClass("Harmony")); // example from requirements
+        assertTrue(Class.isValidClass("Class123"));
+        assertTrue(Class.isValidClass("A"));
+        assertTrue(Class.isValidClass("123"));
+        assertTrue(Class.isValidClass("MaxLengthClass20Char")); // exactly 20 characters
 
-        // case insensitive
-        assertTrue(Class.isValidClass("nursery"));
-        assertTrue(Class.isValidClass("PRE-K"));
+        // mixed case (all valid since we accept any alphanumeric)
         assertTrue(Class.isValidClass("k1a"));
-        assertTrue(Class.isValidClass("K2c"));
+        assertTrue(Class.isValidClass("HARMONY"));
+        assertTrue(Class.isValidClass("MixedCaseClass"));
     }
 
     @Test
@@ -95,7 +99,8 @@ public class ClassTest {
         assertFalse(studentClass.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(studentClass.equals(new Class("K2B")));
+        assertFalse(studentClass.equals(new Class("K1D")));
+        assertFalse(studentClass.equals(new Class("Harmony")));
     }
 
     @Test

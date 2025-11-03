@@ -10,10 +10,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Class {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Class must be one of the following (case-insensitive): "
-            + "Nursery, Pre-K, K1A, K1B, K1C, K2A, K2B, K2C";
+            "Class names should only contain alphanumeric characters (letters and numbers), "
+            + "with no spaces, and must be between 1 and 20 characters long.";
 
-    public static final String VALIDATION_REGEX = "^(?i)(Nursery|Pre-K|K[12][A-C])$";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9]{1,20}$";
 
     public final String value;
 
@@ -24,7 +24,7 @@ public class Class {
      */
     public Class(String studentClass) {
         requireNonNull(studentClass);
-        String trimmedClass = studentClass.trim().toUpperCase();
+        String trimmedClass = studentClass.trim();
         checkArgument(isValidClass(trimmedClass), MESSAGE_CONSTRAINTS);
         value = trimmedClass;
     }
