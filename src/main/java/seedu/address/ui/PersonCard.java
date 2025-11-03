@@ -103,10 +103,11 @@ public class PersonCard extends UiPart<Region> {
             // Check if newValue is true meaning property became true
             if (newValue) {
                 icon.setVisible(true);
-                logger.info("Manged to get favourite boolean true and set icon visibility");
+                logger.info("Manged to get favourite boolean true for " + person.getName()
+                        + " and set icon visibility");
             } else {
                 icon.setVisible(false);
-                logger.info("Favourite boolean was false for this person so icon visibility is false");
+                logger.info("Favourite boolean was false for " + person.getName() + " so icon visibility is false");
             }
 
         });

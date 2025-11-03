@@ -616,7 +616,7 @@ fav INDEX(es)
 ##### Parameters & Validation Rules
 |                     Parameter                     | Validation Rules                                                                                                                              |
 |:-------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string                                                                                                                                | 
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string separated by commas (spaces before and after commas are ignored)                                                               | 
 |                                                   | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
 |                                                   | Error if empty string                                                                                                                         |
 
@@ -625,19 +625,24 @@ fav INDEX(es)
 fav 1 
 ```
 ```shell
-fav 1 2 3 4 5
+fav 1,2,3 
 ```
 ```shell
-fav 3 5 2 1
+fav 1, 2, 3, 4, 5
+```
+```shell
+fav 3 ,5 , 2 ,1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                                              | GUI Action                                                                                                                      |
-|:---------------------------------------------:|--------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
-| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|                 Outcome Type                  | Scenario                                                           | Message                                                                                              | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before                         | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before                             | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before                            | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                                                      | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|  <span style="color: red">**Failure**</span>  | Non-positive index(es) or multiple indexes not separated by commas | `Index(es) must be positive integers separated by commas.`                                           | No changes                                                                                                                      |    
+|  <span style="color: red">**Failure**</span>  | Out of bounds positive index(es)                                   | `You have passed in out of bound index(es).` _(with guidance on what index(es) are valid)_           | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -997,7 +1002,7 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 | **Find-p** | `find-p PHONE(s)`                                                                                 | `find-p 84871234`                                                                                          |
 | **Find-t** | `find-t TAG(s)`                                                                                   | `find-t student`                                                                                           |
 |  **Find-c**| `find-c CLASS(es)`                                                                                | `find-c K1A nursery`                                                                                       |
-|  **Fav**   | `fav INDEX(es)`                                                                                   | `fav 1 2`                                                                                                  |
+|  **Fav**   | `fav INDEX(es)`                                                                                   | `fav 1,2`                                                                                                  |
 | **Remind** | `remind`                                                                                          | `remind`                                                                                                   |
 |  **List**  | `list`                                                                                            | `list`                                                                                                     |
 | **Clear**  | `clear`                                                                                           | `clear`                                                                                                    |
