@@ -506,7 +506,10 @@ find-n Tan
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 <box type="info" markdown>
-Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more!
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
 </box>
 
 [//]: # (COMMAND BREAK)
@@ -547,8 +550,11 @@ find-p 3133
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 <box type="info" markdown>
-Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more!
-</box>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -588,8 +594,11 @@ find-t ague
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 <box type="info" markdown>
-Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more!
-</box>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -630,8 +639,11 @@ find-c 2 A
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
 <box type="info" markdown>
-Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more!
-</box>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
 
 [//]: # (COMMAND BREAK)
 <br>
