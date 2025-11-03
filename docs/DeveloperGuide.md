@@ -442,15 +442,15 @@ Use case ends.
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 
-**Use case: Find a contact based on partial name**
+**Use case: Find a contact based on partial field(s)**
 
 **MSS**
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User enters the command with partial name(s).
+3. User enters the command with partial field(s).
 4. LittleLogBook validates input information.
-5. LittleLogBook filters contacts matching partial name(s) and updates contact list.
+5. LittleLogBook filters contacts matching partial field(s) and updates contact list.
 6. LittleLogBook displays the result.
 
 Use case ends.
@@ -460,6 +460,10 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+
+<box type="info" markdown>
+This use case applies to all four find-commands whereby field(s) refers to the required input for the respective find commands.
+  </box>
 </div>
 
 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
@@ -605,7 +609,6 @@ Use case ends.
          Use case resumes at step 3.
 </div>
 
-*{More to be added}*
 
 ### Non-Functional Requirements
 
