@@ -19,8 +19,8 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_SEE_UNFILTERED_CONTACTS = "\nUse list command to escape this filtered view "
-            + "\nso that you can use the non-find commands on all contacts!" + "\nOtherwise you can continue using "
-            + "find commands in this view.";
+            + "\nso that you can use the various commands on all contacts!" + "\nOtherwise you can continue using "
+            + "find commands in this view for cumulative filtering.";
     public static final String MESSAGE_NO_MATCHES_FOUND = "No matches found. Please try again.";
     public static final String MESSAGE_INVALID_INDEX = "Invalid index. Please try again.";
     public static final String MESSAGE_DELETION_CANCELLED = "Deletion cancelled.";
