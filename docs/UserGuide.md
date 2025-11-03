@@ -76,7 +76,7 @@ manage students' and parents' contact information efficiently.
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D` : Adds a contact named `John Doe` with class `K1D` to LittleLogBook.
+   * `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student` : Adds a contact named `John Doe` with class `K1D` to LittleLogBook.
 
    * `edit 1 n/Bob` : Edit the first contact's name to `Bob`.
 
@@ -157,10 +157,10 @@ help
 <strong>Important Name Limitation:</strong><br>
 Names cannot contain command prefixes such as "s/o", "d/o", "a/l", etc. These patterns (letter + "/" + letter) are interpreted as command parameters and will cause parsing errors.<br><br>
 <strong>Examples:</strong><br>
-• ❌ "John Doe s/o Ahmad" → Will cause error (s/ is interpreted as status parameter)<br>
-• ❌ "Mary a/l Susan" → Will cause error (a/ is interpreted as address parameter)<br>
-• ✅ "John Doe son of Ahmad" → Use full words instead<br>
-• ✅ "Mary anak lelaki Susan" → Use alternative phrasing
+• <code>John Doe s/o Ahmad</code> → <span style="color: red">Will cause error</span> (<code>s/</code> is interpreted as status parameter)<br>
+• <code>Mary a/l Susan</code> → <span style="color: red">Will cause error</span> (<code>a/</code> is interpreted as address parameter)<br>
+• <code>John Doe son of Ahmad</code> → <span style="color: green">Using full words as such will be valid</span><br>
+• <code>Mary anak lelaki Susan</code> → <span style="color: green">Using alternative phrasing as such will also be valid</span>
 </box>
 
 ##### Command Format
@@ -171,7 +171,7 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 ##### Parameters & Validation Rules
 |                       Parameter                       | Validation Rules                                                         |
 |:-----------------------------------------------------:|--------------------------------------------------------------------------|
-|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
+|   <span style="color: #e83f8b">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., `O'Connor` is <span style="color: green">valid</span>, `a'a'` is <span style="color: red">invalid</span>) |
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed               |
 |                                                       | Case-insensitive for duplicates                                          |
 |                                                       | Cannot contain command prefixes (n/, p/, e/, a/, c/, t/, b/, desc/, d/, m/, s/, f/, o/) |
@@ -183,7 +183,7 @@ add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]
 |                                                       | Error if not numeric, wrong length, or invalid starting digit            |
 |  <span style="color: #e83f8b">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period |
 |                                                       | Case-insensitive (automatically converted to lowercase)                  |
-|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗) |
+|                                                       | Domain must have at least one dot (e.g., `user@example.com` is <span style="color: green">valid</span>, `user@example` is <span style="color: red">invalid</span>) |
 |                                                       | Error if invalid format                                                  |
 | <span style="color: #e83f8b">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc. |
 |                                                       | Must be at least 15 characters long (after trimming and space normalization) |
@@ -272,7 +272,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |   <span style="color: #e83f8b">**INDEX**</span>       | Must be a positive integer (1, 2, 3, ...)                                                                                                                                               |
 |                                                       | Cannot be 0 or negative                                                                                                                                                                 |
 |                                                       | Must correspond to an existing contact in the current list                                                                                                                              |
-|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
+|   <span style="color: #6b7280">**NAME (n/)**</span>   | Alphabetic characters, spaces, hyphens, apostrophes only. Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., `O'Connor` is <span style="color: green">valid</span>, `a'a'` is <span style="color: red">invalid</span>) |
 |                                                       | Leading/trailing spaces trimmed, multiple spaces collapsed                                                                                                                              |
 |                                                       | Case-insensitive for duplicates                                                                                                                                                         |
 |                                                       | Cannot contain command prefixes (n/, p/, e/, a/, c/, t/, b/, desc/, d/, m/, s/, f/, o/) |
@@ -284,7 +284,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |                                                       | Error if not numeric, wrong length, or invalid starting digit                                                                                                                           |
 |  <span style="color: #6b7280">**EMAIL (e/)**</span>   | Must follow standard email format with domain containing at least one period                                                                                                            |
 |                                                       | Case-insensitive (automatically converted to lowercase)                                                                                                                                 |
-|                                                       | Domain must have at least one dot (e.g., user@example.com ✓, user@example ✗)                                                                                                            |
+|                                                       | Domain must have at least one dot (e.g., `user@example.com` is <span style="color: green">valid</span>, `user@example` is <span style="color: red">invalid</span>)                                                                                                            |
 |                                                       | Case-insensitive                                                                                                                                                                        |
 |                                                       | Error if invalid format                                                                                                                                                                 |
 | <span style="color: #6b7280">**ADDRESS (a/)**</span>  | Alphanumeric characters, spaces, and common address punctuation (comma, period, dash, hash, slash, parentheses). No symbols like @, *, $, !, ?, +, ;, etc.                              |
@@ -349,7 +349,7 @@ delete n/NAME
 |   <span style="color: #e83f8b">**INDEX**</span>   | Must be a positive integer (1, 2, 3, ...)                                  |
 |                                                   | Cannot be 0 or negative                                                    |
 |                                                   | Must correspond to an existing contact in the current list                 |
-| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., "O'Connor" ✓, "a'a'" ✗) |
+| <span style="color: #e83f8b">**NAME (n/)**</span> | Must be an alphabetic string (may contain spaces, hyphens, and apostrophes). Must contain at least 2 letters, cannot be only punctuation. No consecutive punctuation. Must have more letters than punctuation marks (e.g., `O'Connor` is <span style="color: green">valid</span>, `a'a'` is <span style="color: red">invalid</span>) |
 |                                                   | Leading/trailing spaces trimmed, multiple spaces collapsed                 |
 |                                                   | Case-insensitive match                                                     |
 |                                                   | Matches partial names                                                      |
