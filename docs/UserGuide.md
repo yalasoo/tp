@@ -920,9 +920,15 @@ clear
 * Any extraneous text after `clear` will be ignored (treated as `clear`).
 
 ##### Outputs
-|                 Outcome Type                  | Scenario             | Message                               | GUI Action                          |
-|:---------------------------------------------:|----------------------|---------------------------------------|-------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts cleared | `Address book has been cleared!`      | Contact list updates with 0 contact |
+|                         Outcome Type                         | Scenario                            | Message                                                                     | GUI Action                                  |
+|:------------------------------------------------------------:|-------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------|
+|        <span style="color: green">**Success**</span>         | All contacts cleared                | `Address book has been cleared!`                                            | Contact list updates with 0 contact         |
+| <span style="color: orange">**Confirmation Required**</span> | Double confirmation before clearing | `Are you sure you want to clear all contacts? This action is irreversible!` | Pop-up window appears for user confirmation |
+
+  <div style="text-align: center;">
+    <strong>Clear command confirmation</strong><br>
+    <img src="images/clear_confirm.png" width="400px">
+  </div>
 
 [//]: # (COMMAND BREAK)
 <br>
