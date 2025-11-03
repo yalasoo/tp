@@ -62,9 +62,9 @@ public class SortCommand extends Command {
         Comparator<Person> comparator = null;
 
         switch (field) {
-        case NAME -> comparator = Comparator.comparing(p -> p.getName().toString());
-        case CLASS -> comparator = Comparator.comparing(p -> p.getStudentClass().toString());
-        case TAG -> comparator = Comparator.comparing(p -> p.getTags().toString());
+        case NAME -> comparator = Comparator.comparing(p -> p.getName().toString().toLowerCase());
+        case CLASS -> comparator = Comparator.comparing(p -> p.getStudentClass().toString().toLowerCase());
+        case TAG -> comparator = Comparator.comparing(p -> p.getTags().toString().toLowerCase());
         default -> throw new AssertionError("Unexpected sort field: " + field);
         }
 
