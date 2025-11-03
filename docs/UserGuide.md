@@ -7,18 +7,19 @@
 # LittleLogBook
 
 ## Product description
-LittleLogBook helps **kindergarten teachers** keep track of **students' and parents' information** with ease.
+LittleLogBook helps **kindergarten teachers** in Singapore keep track of **students' and parents' information** with ease.
 Unlike traditional contact management tools, LittleLogBook is optimised for fast typing and minimal clicking, making it ideal for teachers who prefer keyboard-driven workflows.
 
 ## Target User
-LittleLogBook is designed for kindergarten teachers who need to
+LittleLogBook is designed for kindergarten teachers in Singapore who need to
 manage students' and parents' contact information efficiently.
 
 **Assumptions** about our target user:
-1. A kindergarten teacher who is an avid user of typed user commands
-(able to use Command prompt/terminal).
-2. The teacher teaches multiple classes, each containing multiple students.
-3. The teacher will also have multiple colleagues to work with.
+1. Singapore-based kindergarten teacher. 
+2. A kindergarten teacher who is an avid user of typed user commands
+(able to use Command prompt/terminal). 
+3. The teacher teaches multiple classes, each containing multiple students. 
+4. The teacher will also have multiple colleagues to work with.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -98,13 +99,13 @@ manage students' and parents' contact information efficiently.
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/name [desc/NOTE]` can be used as `n/John Doe desc/Allergic to peanut` or as `n/John Doe`.
 
 * Items followed by ellipsis `...` accept more than one value.<br>
   e.g `c/CLASS...` can be used as `c/K1A` or as `c/K1A c/K2B`.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
+* Parameters (excluding INDEX) can be in any order.<br>
+  e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable. <br> e.g. if the command specifies `INDEX s/status` you must write `INDEX` first before the other parameters.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -421,9 +422,12 @@ view 1
 **Purpose**: Stores additional info (student progress, allergies, parent instructions, etc.).
 
 ##### Command Format
+
+**To add/change notes to a specific index:**
 ```shell
 note INDEX desc/NOTE_TEXT
 ```
+**To delete notes from a specific index:**
 ```shell
 note INDEX
 ```
@@ -743,7 +747,8 @@ attendance INDEX(es) s/STATUS [d/DATE]
 | <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
 |                                                    | Cannot be 0 or negative                                    |
 |                                                    | Must correspond to an existing contact in the current list |
-|                                                    | Accepts multiple inputs                                    |
+|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)  |
+|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                       |
 | <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
 |                                                    | Must be contiguous without spaces or symbols in between    |
 |                                                    | Error if empty                                             |
@@ -934,7 +939,11 @@ LittleLogBook data are saved in the hard disk automatically after any command th
 
 ### Editing the data file
 
-LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/littlelogbook.json`. Advanced users are welcome to update data directly by editing that data file.
+LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+
+Any direct changes inside the JSON file while the app is closed will be reflected inside the app once you open the app.
+
+Remember to close the application first before directly changing the JSON file, as making changes while the app is open and running won't automatically reflect the changes.
 
 <box type="warning">
 
@@ -989,20 +998,22 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|   Action   | Command Format                                                                                    | Example Commands                                                                                           |
-|:----------:|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                       | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-|  **Edit**  | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`  | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`  |
-| **Delete** | `delete INDEX`<br>`delete n/NAME`                                                                 | `delete 1`<br>`delete n/John Doe`                                                                          |
-|  **View**  | `view INDEX`                                                                                      | `view 1`                                                                                                   |
-|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                       | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-| **Find-n** | `find-n NAME(s)`                                                                                  | `find-n John`                                                                                              |
-| **Find-p** | `find-p PHONE(s)`                                                                                 | `find-p 84871234`                                                                                          |
-| **Find-t** | `find-t TAG(s)`                                                                                   | `find-t student`                                                                                           |
-|  **Find-c**| `find-c CLASS(es)`                                                                                | `find-c K1A nursery`                                                                                       |
-|  **Fav**   | `fav INDEX(es)`                                                                                   | `fav 1 2`                                                                                                  |
-| **Remind** | `remind`                                                                                          | `remind`                                                                                                   |
-|  **List**  | `list`                                                                                            | `list`                                                                                                     |
-| **Clear**  | `clear`                                                                                           | `clear`                                                                                                    |
-|  **Help**  | `help`                                                                                            | `help`                                                                                                     |
-|  **Exit**  | `exit`                                                                                            | `exit`                                                                                                     |
+|     Action      | Command Format                                                                                                   | Example Commands                                                                                                |
+|:---------------:|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`      |
+|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`       |
+|   **Delete**    | `delete INDEX`<br>`delete n/NAME`                                                                                | `delete 1`<br>`delete n/John Doe`                                                                               |
+|    **View**     | `view INDEX`                                                                                                     | `view 1`                                                                                                        |
+|    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                                      | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                                   |
+|   **Find-n**    | `find-n NAME(s)`                                                                                                 | `find-n John`                                                                                                   |
+|   **Find-p**    | `find-p PHONE(s)`                                                                                                | `find-p 84871234`                                                                                               |
+|   **Find-t**    | `find-t TAG(s)`                                                                                                  | `find-t student`                                                                                                |
+|   **Find-c**    | `find-c CLASS(es)`                                                                                               | `find-c K1A nursery`                                                                                            |
+|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1 2`                                                                                                       |
+|   **Remind**    | `remind`                                                                                                         | `remind`                                                                                                        |
+| **Attendance**  | `attendance INDEX(es) s/STATUS [d/DATE]`                                                                         |                                                                                                                 |
+| **AttendanceD** | `attendanceD INDEX(es) [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE]` <br> `attendanceD c/CLASS... [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A d/29-01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025`    |
+|    **List**     | `list`                                                                                                           | `list`                                                                                                          |
+|    **Clear**    | `clear`                                                                                                          | `clear`                                                                                                         |
+|    **Help**     | `help`                                                                                                           | `help`                                                                                                          |
+|    **Exit**     | `exit`                                                                                                           | `exit`                                                                                                          |
