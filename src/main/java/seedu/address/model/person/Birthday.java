@@ -82,6 +82,17 @@ public class Birthday {
     }
 
     /**
+     * Checks whether incoming date is within six years of born year.
+     *
+     * @param date The other date to be compared to.
+     * @return True if other date is within six years of born date, else false.
+     */
+    public boolean isWithinSixYears(LocalDate date) {
+        LocalDate sixYearsLater = this.date.plusYears(6);
+        return !date.isAfter(sixYearsLater);
+    }
+
+    /**
      * Calculates the age based on year difference only (as per requirement).
      * For example: born in 2024, in 2025 would be 1 year old.
      *

@@ -402,6 +402,46 @@ public class BirthdayTest {
     }
 
     @Test
+    public void isBeforeBirthday_beforeBirthday() {
+        Birthday today = new Birthday(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        assertTrue(today.isBeforeBirthday(LocalDate.now().minusDays(1)));
+        assertTrue(today.isBeforeBirthday(LocalDate.now().minusWeeks(1)));
+        assertTrue(today.isBeforeBirthday(LocalDate.now().minusMonths(1)));
+        assertTrue(today.isBeforeBirthday(LocalDate.now().minusYears(1)));
+    }
+
+    @Test
+    public void isBeforeBirthday_afterBirthday() {
+        Birthday today = new Birthday(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        assertFalse(today.isBeforeBirthday(LocalDate.now().plusDays(1)));
+        assertFalse(today.isBeforeBirthday(LocalDate.now().plusWeeks(1)));
+        assertFalse(today.isBeforeBirthday(LocalDate.now().plusMonths(1)));
+        assertFalse(today.isBeforeBirthday(LocalDate.now().plusYears(1)));
+    }
+
+    @Test
+    public void isWithinSixYears_withinSixYears() {
+        Birthday today = new Birthday(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        assertTrue(today.isWithinSixYears(LocalDate.now()));
+        assertTrue(today.isWithinSixYears(LocalDate.now().plusDays(1)));
+        assertTrue(today.isWithinSixYears(LocalDate.now().plusWeeks(1)));
+        assertTrue(today.isWithinSixYears(LocalDate.now().plusMonths(1)));
+        assertTrue(today.isWithinSixYears(LocalDate.now().plusYears(1)));
+        assertTrue(today.isWithinSixYears(LocalDate.now().plusYears(6)));
+    }
+
+    @Test
+    public void isWithinSixYears_outsideSixYears() {
+        Birthday today = new Birthday(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        assertFalse(today.isWithinSixYears(LocalDate.now().plusYears(7)));
+        assertFalse(today.isWithinSixYears(LocalDate.now().plusYears(7).plusDays(1)));
+    }
+
+    @Test
     public void equals() {
         Birthday birthday = new Birthday("15-03-2018");
 
