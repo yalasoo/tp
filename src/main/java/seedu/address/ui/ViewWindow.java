@@ -263,6 +263,7 @@ public class ViewWindow extends UiPart<Stage> {
     /**
      * Sets up listener for left and arrow key to
      * navigate previous and next month respectively.
+     * Add ESC key to exit the window easily.
      */
     public void setUpKeyboardNavigation() {
         if (keyEventHandler != null) {
