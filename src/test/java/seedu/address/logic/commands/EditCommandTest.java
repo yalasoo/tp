@@ -311,4 +311,12 @@ public class EditCommandTest {
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
     }
 
+    @Test
+    public void execute_sameInfoEdit_showsNoChange() {
+        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(personToEdit).build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NO_CHANGE);
+    }
+
 }
