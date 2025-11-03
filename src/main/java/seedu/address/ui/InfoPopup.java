@@ -49,6 +49,7 @@ public class InfoPopup extends UiPart<Stage> {
      */
     public void show(String message, String instruction) {
         msgLabel.setText(message);
+        instrLabel.setText(instruction);
         isClosed = false;
         getRoot().centerOnScreen();
         getRoot().showAndWait();
