@@ -23,6 +23,7 @@ Class Name
 Class Note
 Class Phone
 Class Tag
+Class Class
 
 Class I #FFFFFF
 }
@@ -50,7 +51,7 @@ Person *--> Birthday
 Person *--> Class
 Person *--> Favourite
 Person *--> Note
-Person *--> "*" Tag
+Person *--> Tag
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

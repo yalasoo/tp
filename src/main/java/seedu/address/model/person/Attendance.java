@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 
 /**
  * Represents a Person's attendance in the address book.
@@ -30,11 +31,25 @@ public class Attendance {
      * Marks attendance for a specific date with the given status.
      * If attendance already exists for the date, it will be updated.
      *
-     * @param date date the date of attendance
-     * @param status date the date of attendance
+     * @param date The date of attendance.
+     * @param status The status of attendance.
      */
-    public void markAttendance(LocalDate date, AttendanceStatus status) {
-        attendance.put(date, status);
+    public boolean markAttendance(LocalDate date, AttendanceStatus status) {
+        AttendanceStatus s = attendance.put(date, status);
+        return !status.equals(s); // The status is different from the previous one
+    }
+
+    /**
+     * Unmarks attendance for a specific date.
+     *
+     * @param date The date of attendance.
+     */
+    public boolean unmarkAttendance(LocalDate date) throws NoAttendanceRecordException {
+        if (attendance.remove(date) != null) {
+            return true;
+        } else {
+            throw new NoAttendanceRecordException("No attendance record on the specified date.");
+        }
     }
 
     /**

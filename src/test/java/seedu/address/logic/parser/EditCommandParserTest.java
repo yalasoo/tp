@@ -61,8 +61,8 @@ public class EditCommandParserTest {
         // no index specified
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
 
-        // no field specified
-        assertParseFailure(parser, "1", EditCommand.MESSAGE_NOT_EDITED);
+        // no field specified - should parse successfully but fail during execution
+        assertParseSuccess(parser, "1", new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor()));
 
         // no index and no field specified
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);

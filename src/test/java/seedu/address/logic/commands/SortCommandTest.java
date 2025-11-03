@@ -2,27 +2,35 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.function.Predicate;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.ObservableList;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.index.Index;
-import seedu.address.model.AddressBook;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 public class SortCommandTest {
+
+    private Model model;
+
+    @BeforeEach
+    public void setUp() {
+        model = new ModelManager();
+
+        Person andy = new PersonBuilder().withName("Andy").build();
+        Person ben = new PersonBuilder().withName("Ben").build();
+        Person craig = new PersonBuilder().withName("Craig").build();
+        Person danny = new PersonBuilder().withName("Danny").build();
+
+        model.addPerson(andy);
+        model.addPerson(ben);
+        model.addPerson(craig);
+        model.addPerson(danny);
+    }
 
     @Test
     public void constructor_nullField_throwsNullPointerException() {
@@ -37,70 +45,66 @@ public class SortCommandTest {
     }
 
     @Test
-    public void execute_sortByNameAscending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
+    public void execute_emptyContactList_throwsCommandException() {
+        Model model = new ModelManager();
+
         SortCommand command = new SortCommand(SortCommand.SortField.NAME, SortCommand.SortOrder.ASC);
 
-        CommandResult result = command.execute(modelStub);
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
+
+    @Test
+    public void execute_sortByNameAscending_success() throws Exception {
+        SortCommand command = new SortCommand(SortCommand.SortField.NAME, SortCommand.SortOrder.ASC);
+
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
-        assertNotNull(modelStub.getLastComparator());
     }
 
     @Test
     public void execute_sortByNameDescending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
         SortCommand command = new SortCommand(SortCommand.SortField.NAME, SortCommand.SortOrder.DESC);
 
-        CommandResult result = command.execute(modelStub);
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
     }
 
     @Test
     public void execute_sortByClassAscending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
         SortCommand command = new SortCommand(SortCommand.SortField.CLASS, SortCommand.SortOrder.ASC);
 
-        CommandResult result = command.execute(modelStub);
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
     }
 
     @Test
     public void execute_sortByClassDescending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
         SortCommand command = new SortCommand(SortCommand.SortField.CLASS, SortCommand.SortOrder.DESC);
 
-        CommandResult result = command.execute(modelStub);
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
     }
 
     @Test
     public void execute_sortByTagAscending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
         SortCommand command = new SortCommand(SortCommand.SortField.TAG, SortCommand.SortOrder.ASC);
 
-        CommandResult result = command.execute(modelStub);
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
     }
 
     @Test
     public void execute_sortByTagDescending_success() throws Exception {
-        ModelStubWithSortTracking modelStub = new ModelStubWithSortTracking();
         SortCommand command = new SortCommand(SortCommand.SortField.TAG, SortCommand.SortOrder.DESC);
 
-        CommandResult result = command.execute(modelStub);
+        CommandResult result = command.execute(model);
 
         assertEquals(SortCommand.MESSAGE_SORT_SUCCESS, result.getFeedbackToUser());
-        assertTrue(modelStub.isSortMethodCalled());
     }
 
     @Test

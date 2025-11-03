@@ -58,12 +58,14 @@ public class AttendanceCommandParserTest {
 
     @Test
     public void parse_emptyStatus_throwsParseException() {
-        assertParseFailure(parser, "1 s/", "Status cannot be empty. Use: present, late, sick, absent");
+        assertParseFailure(parser, "1 s/", "Status cannot be empty."
+                + " Use: present, late, sick, absent, or remove");
     }
 
     @Test
     public void parse_invalidStatus_throwsParseException() {
-        assertParseFailure(parser, "1 s/invalid", "Invalid status. Valid status: present, late, sick, absent");
+        assertParseFailure(parser, "1 s/invalid", "Invalid status."
+                + " Valid status: present, late, sick, absent, or remove");
     }
 
     @Test
@@ -93,7 +95,7 @@ public class AttendanceCommandParserTest {
     @Test
     public void parse_invalidDate_throwsParseException() {
         assertParseFailure(parser, "1 s/present d/invalid",
-                "Invalid date format. Please use dd-MM-yyyy (e.g. 29-12-2025).");
+                "Invalid date format/input. Please use dd-MM-yyyy (e.g. 29-12-2025).");
     }
 
     @Test

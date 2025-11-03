@@ -53,6 +53,12 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjackexample.com")); // missing '@' symbol
         assertFalse(Email.isValidEmail("peterjack@")); // missing domain name
 
+        // domain without dots (should be invalid)
+        assertFalse(Email.isValidEmail("user@domain")); // no dot in domain
+        assertFalse(Email.isValidEmail("a@bc")); // no dot in domain
+        assertFalse(Email.isValidEmail("x@xx")); // no dot in domain
+        assertFalse(Email.isValidEmail("test@localhost")); // no dot in domain
+
         // invalid parts
         assertFalse(Email.isValidEmail("peterjack@-")); // invalid domain name
         assertFalse(Email.isValidEmail("peterjack@exam_ple.com")); // underscore in domain name
@@ -95,6 +101,27 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("student@e.ntu.edu.sg"));
         assertTrue(Email.isValidEmail("STUDENT@E.NTU.EDU.SG"));
     }
+
+    @Test
+    public void isValidEmail_domainMustHaveDot() {
+        // Test cases specifically for the domain dot requirement
+
+        // Invalid: additional domains without dots (beyond those already tested above)
+        assertFalse(Email.isValidEmail("admin@server"));
+        assertFalse(Email.isValidEmail("john@company"));
+
+        // Valid: domains with at least one dot (examples from issue)
+        assertTrue(Email.isValidEmail("user@domain.com"));
+        assertTrue(Email.isValidEmail("x@xx.xx")); // specifically mentioned in issue
+        assertTrue(Email.isValidEmail("test@localhost.local"));
+        assertTrue(Email.isValidEmail("admin@server.org"));
+        assertTrue(Email.isValidEmail("john@company.co.uk"));
+
+        // Valid: complex domains with multiple dots
+        assertTrue(Email.isValidEmail("user@mail.example.com"));
+        assertTrue(Email.isValidEmail("staff@dept.university.edu"));
+    }
+
 
     @Test
     public void equals() {

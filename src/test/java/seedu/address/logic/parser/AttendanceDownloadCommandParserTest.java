@@ -7,8 +7,10 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,35 +48,49 @@ public class AttendanceDownloadCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsAttendanceCommand() {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
+
         // Single index
         assertParseSuccess(parser, "1",
-                new AttendanceDownloadCommand(Set.of(Index.fromOneBased(1)), null,
+                new AttendanceDownloadCommand(indexes, null,
                         LocalDate.now(), YearMonth.now(), false, false));
+
+        indexes.clear();
+        indexes.add(Index.fromOneBased(1));
+        indexes.add(Index.fromOneBased(3));
+        indexes.add(Index.fromOneBased(5));
 
         // Multiple indexes
         assertParseSuccess(parser, "1,3,5",
-                new AttendanceDownloadCommand(Set.of(Index.fromOneBased(1),
-                        Index.fromOneBased(3), Index.fromOneBased(5)), null,
+                new AttendanceDownloadCommand(indexes, null,
                         LocalDate.now(), YearMonth.now(), false, false));
+
+        indexes.clear();
+        indexes.add(Index.fromOneBased(1));
+        indexes.add(Index.fromOneBased(2));
+        indexes.add(Index.fromOneBased(3));
 
         // Range indexes
         assertParseSuccess(parser, "1-3",
-                new AttendanceDownloadCommand(Set.of(Index.fromOneBased(1),
-                        Index.fromOneBased(2), Index.fromOneBased(3)), null,
+                new AttendanceDownloadCommand(indexes, null,
                         LocalDate.now(), YearMonth.now(), false, false));
+
+        indexes.clear();
+        indexes.add(Index.fromOneBased(1));
+        indexes.add(Index.fromOneBased(2));
+        indexes.add(Index.fromOneBased(3));
+        indexes.add(Index.fromOneBased(5));
+        indexes.add(Index.fromOneBased(7));
 
         // Mixed range and individual indexes
         assertParseSuccess(parser, "1-3,5,7",
-                new AttendanceDownloadCommand(Set.of(Index.fromOneBased(1),
-                        Index.fromOneBased(2), Index.fromOneBased(3),
-                        Index.fromOneBased(5), Index.fromOneBased(7)), null,
+                new AttendanceDownloadCommand(indexes, null,
                         LocalDate.now(), YearMonth.now(), false, false));
 
         // Mixed range and individual indexes with whitespaces
         assertParseSuccess(parser, "1    -   3,     5,     7   ",
-                new AttendanceDownloadCommand(Set.of(Index.fromOneBased(1),
-                        Index.fromOneBased(2), Index.fromOneBased(3),
-                        Index.fromOneBased(5), Index.fromOneBased(7)), null,
+                new AttendanceDownloadCommand(indexes, null,
                         LocalDate.now(), YearMonth.now(), false, false));
 
         // One classes
@@ -101,6 +117,10 @@ public class AttendanceDownloadCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse(invalidDate));
         assertThrows(ParseException.class, () -> parser.parse(invalidMonthFormat));
         assertThrows(ParseException.class, () -> parser.parse(invalidMonth));
+
+        assertParseFailure(parser, " c/InvalidClass",
+                "Class must be one of the following (case-insensitive):"
+                        + " Nursery, Pre-K, K1A, K1B, K1C, K2A, K2B, K2C");
     }
 
 }

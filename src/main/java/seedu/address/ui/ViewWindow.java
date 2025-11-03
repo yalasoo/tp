@@ -17,8 +17,6 @@ import seedu.address.model.person.Person;
 public class ViewWindow extends UiPart<Stage> {
 
     private static final String FXML = "ViewWindow.fxml";
-    private static final double MIN_WIDTH = 500;
-    private static final double MIN_HEIGHT = 600;
 
     private javafx.event.EventHandler<javafx.scene.input.KeyEvent> keyEventHandler;
 
@@ -74,12 +72,28 @@ public class ViewWindow extends UiPart<Stage> {
 
     /**
      * Creates a new ViewWindow.
+     *
      * @param root Stage to use as the root of the ViewWindow.
      */
     public ViewWindow(Stage root) {
         super(FXML, root);
-        root.setMinWidth(MIN_WIDTH);
-        root.setMinHeight(MIN_HEIGHT);
+
+        Stage stage = getRoot();
+        stage.setMaxWidth(800);
+        stage.setMaxHeight(700);
+
+        // Ensure window fits on screen
+        stage.setOnShown(event -> {
+            // If window is larger than screen, adjust to fit
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+            if (stage.getWidth() > screenBounds.getWidth()) {
+                stage.setWidth(screenBounds.getWidth() * 0.9);
+            }
+            if (stage.getHeight() > screenBounds.getHeight()) {
+                stage.setHeight(screenBounds.getHeight() * 0.9);
+            }
+        });
+
         initializeAttendancePanel();
     }
 
@@ -156,12 +170,8 @@ public class ViewWindow extends UiPart<Stage> {
         classLabel.setText(person.getStudentClass().value);
         birthdayLabel.setText(person.getBirthday().value);
 
-        // Tags
-        boolean isStudent = person.getTags().stream()
-                .anyMatch(tag -> tag.tagName.equalsIgnoreCase("student"));
-
         // Update layout based on whether it's a student or not
-        if (isStudent) {
+        if (person.isStudent()) {
             // Student layout: Separate sections
             setupStudentLayout(person);
             classText.setText("Class:");
@@ -178,7 +188,7 @@ public class ViewWindow extends UiPart<Stage> {
                 .forEach(tag -> {
                     Label tagLabel = new Label(tag.tagName);
                     // Apply different CSS classes based on tag type
-                    if (isStudent) {
+                    if (person.isStudent()) {
                         tagLabel.getStyleClass().add("student-tag");
                     } else {
                         tagLabel.getStyleClass().add("colleague-tag");
@@ -194,10 +204,10 @@ public class ViewWindow extends UiPart<Stage> {
         }
 
         // Attendance - Only show for students
-        attendanceSection.setVisible(isStudent);
-        attendanceSection.setManaged(isStudent); // This affects layout
+        attendanceSection.setVisible(person.isStudent());
+        attendanceSection.setManaged(person.isStudent()); // This affects layout
 
-        if (isStudent) {
+        if (person.isStudent()) {
             attendancePanel.setAttendance(person.getAttendance());
         } else {
             attendancePanel.setAttendance(null);
@@ -253,6 +263,7 @@ public class ViewWindow extends UiPart<Stage> {
     /**
      * Sets up listener for left and arrow key to
      * navigate previous and next month respectively.
+     * Add ESC key to exit the window easily.
      */
     public void setUpKeyboardNavigation() {
         if (keyEventHandler != null) {
