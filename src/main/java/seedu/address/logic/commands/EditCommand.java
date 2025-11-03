@@ -58,7 +58,7 @@ public class EditCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com "
-            + PREFIX_BIRTHDAY + "15-03-2019 "
+            + PREFIX_BIRTHDAY + "15-03-2007 "
             + PREFIX_CLASS + "K2B";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
