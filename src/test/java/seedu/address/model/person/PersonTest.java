@@ -8,10 +8,14 @@ import static seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_BIRTHDAY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CLASS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_COLLEAGUE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
@@ -21,6 +25,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.InvalidDateException;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 import seedu.address.testutil.PersonBuilder;
 
 public class PersonTest {
@@ -49,9 +56,14 @@ public class PersonTest {
         // null -> returns false
         assertFalse(ALICE.isSamePerson(null));
 
-        // same name and phone, all other attributes different -> returns true
+        // same name and phone, but different contact type -> returns false (different tags never duplicates)
         Person editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB)
                 .withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(ALICE.isSamePerson(editedAlice));
+
+        // same name and phone, same contact type -> returns true
+        editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB).withTags(VALID_TAG_STUDENT).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
         // different name, all other attributes same -> returns false
@@ -77,6 +89,129 @@ public class PersonTest {
     }
 
     @Test
+    public void isSamePerson_colleagueDuplicateDetection() {
+        // Test colleague duplicate detection logic - colleagues can have same names
+
+        // Two colleagues with same phone -> duplicate (not allowed)
+        Person colleague1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(colleague1.isSamePerson(colleague2)); // Same phone, should be duplicate
+
+        // Two colleagues with same email -> duplicate (not allowed)
+        Person colleague3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(colleague1.isSamePerson(colleague3)); // Same email, should be duplicate
+
+        // Two colleagues with same name but different phone and email -> allowed
+        Person colleague4 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(colleague1.isSamePerson(colleague4)); // Same name allowed for colleagues
+
+        // Two colleagues with different names, phones, and emails -> different persons
+        Person colleague5 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(colleague1.isSamePerson(colleague5));
+    }
+
+    @Test
+    public void isSamePerson_studentDuplicateDetection() {
+        // Test student duplicate detection logic (should allow different names with same phone)
+
+        // Two students with same name and phone -> same person
+        Person student1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_STUDENT).build();
+        Person student2 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertTrue(student1.isSamePerson(student2));
+
+        // Two students with different names but same phone -> different persons (allowed for emergency contacts)
+        Person student3 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertFalse(student1.isSamePerson(student3)); // Different names allowed for students
+
+        // Two students with different names and phones -> different persons
+        Person student4 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertFalse(student1.isSamePerson(student4));
+    }
+
+    @Test
+    public void isSamePerson_mixedContactTypes() {
+        // Test mixed contact type scenarios - different tags are never considered duplicates
+
+        // Student and colleague with identical details -> NOT duplicates (different tags)
+        Person student = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_STUDENT).build();
+        Person colleague = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(student.isSamePerson(colleague)); // Different tags -> never duplicates
+
+        // Student and colleague with different names, same phone -> not duplicates (different tags)
+        Person student2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_STUDENT).build();
+        assertFalse(student.isSamePerson(student2)); // Different names, student logic allows same phone
+        assertFalse(colleague.isSamePerson(student2)); // Different tags -> never duplicates
+
+        // Colleague and student with same phone and email -> not duplicates (different tags)
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withTags(VALID_TAG_COLLEAGUE).build();
+        assertFalse(student.isSamePerson(colleague2)); // Different tags -> never duplicates
+    }
+
+    @Test
+    public void isStudent() {
+        // Test isStudent method coverage
+        Person student = new PersonBuilder().withTags(VALID_TAG_STUDENT).build();
+        Person colleague = new PersonBuilder().withTags(VALID_TAG_COLLEAGUE).build();
+
+        assertTrue(student.isStudent());
+        assertFalse(colleague.isStudent());
+    }
+
+    @Test
+    public void isColleague() {
+        // Test isColleague method coverage
+        Person student = new PersonBuilder().withTags(VALID_TAG_STUDENT).build();
+        Person colleague = new PersonBuilder().withTags(VALID_TAG_COLLEAGUE).build();
+
+        assertFalse(student.isColleague());
+        assertTrue(colleague.isColleague());
+    }
+
+    @Test
+    public void isSamePerson_edgeCases() {
+        // Test edge cases for isSamePerson method
+        Person person1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withTags(VALID_TAG_COLLEAGUE).build();
+
+        // Same object reference -> true
+        assertTrue(person1.isSamePerson(person1));
+
+        // Null comparison -> false
+        assertFalse(person1.isSamePerson(null));
+
+        // Two colleagues with same phone, different names -> duplicate (should be true)
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_BOB).withTags(VALID_TAG_COLLEAGUE).build();
+        assertTrue(person1.isSamePerson(colleague2)); // Different names but same phone - not allowed for colleagues
+    }
+
+    @Test
+    public void isSamePerson_colleagueDifferentPhoneSameEmail() {
+        // Test specific case: colleagues with different phones but same email
+        Person colleague1 = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail("common@email.com").withTags(VALID_TAG_COLLEAGUE).build();
+        Person colleague2 = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail("common@email.com").withTags(VALID_TAG_COLLEAGUE).build();
+
+        // Should be detected as duplicate due to same email
+        assertTrue(colleague1.isSamePerson(colleague2));
+        assertTrue(colleague2.isSamePerson(colleague1)); // Test bidirectional
+    }
+
+    @Test
     public void markAttendance_nullDate_throwsAssertionError() {
         Person student = new PersonBuilder().withTags("student").build();
 
@@ -94,7 +229,7 @@ public class PersonTest {
     }
 
     @Test
-    public void markAttendance_validDateAndStatus_success() {
+    public void markAttendance_validDateAndStatus_success() throws CommandException {
         LocalDate today = LocalDate.of(2025, 10, 9);
         Person person = new PersonBuilder().withTags("student").build();
 
@@ -106,7 +241,76 @@ public class PersonTest {
     }
 
     @Test
-    public void getAttendanceRecords_studentWithAttendance_returnsRecords() {
+    public void markAttendance_dateBeforeBirthday_throwsInvalidDateException() {
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+
+        LocalDate date = LocalDate.of(2023, 1, 1);
+
+        assertThrows(InvalidDateException.class, () -> person.markAttendance(date, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void markAttendance_dateAfterToday_throwsInvalidDateException() throws CommandException {
+        Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        assertThrows(InvalidDateException.class, () -> person.markAttendance(date, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void markAttendance_colleague_failure() throws CommandException {
+        Person person = new PersonBuilder().withTags("colleague").withBirthday("01-01-2024").build();
+
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void unmarkAttendance_nullDate_throwsAssertionError() {
+        Person student = new PersonBuilder().withTags("student").build();
+
+        assertThrows(AssertionError.class, () ->
+                student.unmarkAttendance(null));
+    }
+
+    @Test
+    public void unmarkAttendance_beforeBirthday_throwsInvalidDateException() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2023, 1, 1);
+
+        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void unmarkAttendance_futureDate_throwsInvalidDateException() {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
+    }
+
+    @Test
+    public void unmarkAttendance_colleague_failure() throws InvalidDateException, NoAttendanceRecordException {
+        Person student = new PersonBuilder().withTags("colleague").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        assertFalse(student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void unmarkAttendance_studentValidDate_success() throws InvalidDateException, NoAttendanceRecordException {
+        Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
+        LocalDate date = LocalDate.of(2024, 1, 1);
+
+        student.markAttendance(date, AttendanceStatus.PRESENT);
+
+        assertTrue(student.unmarkAttendance(date));
+    }
+
+    @Test
+    public void getAttendanceRecords_studentWithAttendance_returnsRecords() throws CommandException {
         Person student = new PersonBuilder().withTags("student").build();
         LocalDate date1 = LocalDate.of(2024, 1, 15);
         LocalDate date2 = LocalDate.of(2024, 1, 16);
@@ -241,5 +445,40 @@ public class PersonTest {
                 + ", class=" + ALICE.getStudentClass() + ", birthday=" + ALICE.getBirthday()
                 + ", note=" + ALICE.getNote() + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());
+    }
+
+    @Test
+    public void isSamePerson_separateContactTypes() {
+        // Test the core feature: students and colleagues with identical info are NOT duplicates
+
+        // Create a student
+        Person student = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .withAddress("123 Main St")
+                .withClass("K1A")
+                .withBirthday("15-03-2018")
+                .withTags(VALID_TAG_STUDENT)
+                .build();
+
+        // Create a colleague with identical information
+        Person colleague = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .withAddress("123 Main St")
+                .withClass("K1A")
+                .withBirthday("15-03-2018")
+                .withTags(VALID_TAG_COLLEAGUE)
+                .build();
+
+        // They should NOT be considered duplicates despite having identical information
+        assertFalse(student.isSamePerson(colleague));
+        assertFalse(colleague.isSamePerson(student));
+
+        // This allows real-world scenarios like:
+        // - A student and their parent (colleague) having the same contact details
+        // - Someone who is both a student's parent and works at the school
     }
 }

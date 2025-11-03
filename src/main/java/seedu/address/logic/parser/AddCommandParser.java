@@ -62,6 +62,22 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException("Exactly one tag must be provided (either 'student' or 'colleague')");
         }
 
+        // Birthday validation - student is 3-6 years old
+        boolean isStudent = tagList.stream().anyMatch(Tag::isStudent);
+        boolean isStudentBirthdate = birthday.isStudentBirthday();
+        boolean isColleagueBirthdate = birthday.isColleagueBirthday();
+        if (isStudent) {
+            if (!isStudentBirthdate) {
+                throw new ParseException("Invalid student birthday!\n"
+                        + "Student's birthday must be between 3 to 6 years old.");
+            }
+        } else { // can only be student or colleague
+            if (!isColleagueBirthdate) {
+                throw new ParseException("Invalid colleague birthday!\n"
+                        + "Colleague's birthday must be between above 18 years old.");
+            }
+        }
+
         Person person = new Person(name, phone, email, address, studentClass, birthday, note, tagList, null, null);
 
         return new AddCommand(person);

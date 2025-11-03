@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+_No third party libraries were used in the development of LittleLogBook_
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -52,7 +52,9 @@ The bulk of the app's work is done by the following four components:
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
-<puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
+<div align="center">
+    <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="600" />
+</div>
 
 Each of the four main components (also shown in the diagram above),
 
@@ -61,15 +63,19 @@ Each of the four main components (also shown in the diagram above),
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
-<puml src="diagrams/ComponentManagers.puml" width="300" />
+<div align="center">
+    <puml src="diagrams/ComponentManagers.puml" width="300" />
+</div>
 
 The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
-<puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+<div align="center">
+    <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+</div>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
@@ -84,15 +90,19 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
-<puml src="diagrams/LogicClassDiagram.puml" width="550"/>
+<div align="center">
+    <puml src="diagrams/LogicClassDiagram.puml" width="maxwidth"/>
+</div>
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<div align="center">
+    <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" width="maxwidth"/>
+</div>
 
 <box type="info" seamless>
 
@@ -108,17 +118,20 @@ How the `Logic` component works:
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
-
-<puml src="diagrams/ParserClasses.puml" width="600"/>
+<div align="center">
+    <puml src="diagrams/ParserClasses.puml" width="600"/>
+</div>
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<div align="center">
+    <puml src="diagrams/ModelClassDiagram.puml" width="800"/>
+</div>
 
 
 The `Model` component,
@@ -132,16 +145,18 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="700" />
 
 </box>
 
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<div align="center">
+    <puml src="diagrams/StorageClassDiagram.puml" width="700" />
+</div>
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
@@ -158,103 +173,107 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### View Command
 
-#### Proposed Implementation
+#### Implementation
+The `view` command displays detailed information about a specific person in a pop-up window.
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+**Operation:** `view INDEX`
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+**How it works:**
+1. **User Input Parsing**:
+    - User enters a view command (e.g., "view 1")
+    - `AddressBookParser` identifies it as a view command and delegates to `ViewCommandParser`
+    - `ViewCommandParser` extracts and validates the index format
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+2. **Index Validation**:
+    - Validates that the index is a positive integer
+    - Checks that the index is within bounds of the current filtered person list using `Model#getFilteredPersonList()`
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+3. **Command Creation**:
+    - Creates a `ViewCommand` object with the validated target index
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+4. **Command Execution**:
+    - When executed, the command retrieves the corresponding person from the filtered list using the stored index
+    - Opens a pop-up window (`ViewWindow`) displaying all the person's details
+    - The main window remains fully accessible while the view window is open (non-modal)
 
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
+#### Design Rationale
+The view command was implemented as a separate window to fulfill the requirement of displaying all of a contact's fields simultaneously, which was not feasible within the constrained rows of the main contact list. 
+This design offers a clean separation between the high-level list view and the detailed single-contact view.
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+A key design constraint was managing application stability and data consistency. To prevent potential performance issues or system resource exhaustion, the application is restricted to having only one ViewWindow open at any time. Attempting to open a second view window will replace the existing contact with the new contact.
 
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
+Furthermore, to ensure that the UI never displays outdated information, the view window is automatically closed upon the execution of any other command that modifies the model or the viewed state (e.g. edit, delete). This guarantees that if a user views a contact, then edits another, the view window will close, preventing a scenario where it shows details that may no longer be accurate or where the indexed person in the list has changed.
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+**Overall Sequence Diagram for View:**
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-Overall.puml" alt="ViewOverState" />
+</div>
 
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
+Below is the more in depth breakdown of the Logic and UI Sequence diagrams.
 
-<box type="info" seamless>
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-Logic.puml" alt="ViewLogicState" />
+</div>
+<div align="center">
+    <puml src="diagrams/ViewSequenceDiagram-UI.puml" alt="ViewUIState" />
+</div>
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+### Remind Command
 
-</box>
+#### Implementation
+The `remind` command shows current and upcoming birthdays.
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+**Operation:** `remind`
 
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
+**How it works:**
+1. User launch the program
+2. Remind command is automatically called
+3. Get list of persons whose birthdays is today or in the upcoming 7 days
+4. Displays a list of upcoming events/birthdays 
+5. Can show both students and colleagues with upcoming dates
 
+**Sequence Diagram for Automated Remind on start:**
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Auto.puml" alt="RemindAutoState" />
+</div>
 
-<box type="info" seamless>
+**Key Classes:**
+- `RemindCommand` - Handles the command execution
+- `Birthday` - Contains date logic for reminder calculations
+- `Person` - Stores birthday information
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+**Validation for Birthday:**
+- The Birthday class implements comprehensive date validation with the following constraints:
+- Format Validation 
+  - Required Format: `dd-MM-yyyy` (e.g., 24-12-2005)
+  - Regex Pattern: `^\d{2}-\d{2}-\d{4}$` ensures exactly 2 digits for day, 2 for month, and 4 for year 
+  - Strict Parsing: Uses `ResolverStyle.STRICT` to reject invalid dates like 31-04-2023 (April has only 30 days)
+- Temporal Constraints 
+  - Minimum Date: 01-01-1900 - Prevents unrealistically old birth dates 
+  - Maximum Date: Current date - Prevents future birth dates 
+  - Range Validation: Ensures birthday falls between January 1, 1900 and today
+- Student's age must be either 3, 4, 5 or 6 years old. (by Singapore Education requirements)
+- Colleague's age must be above 18 years old. (Of working age)
 
-</box>
+**Overall Sequence Diagram for Remind:**
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Overall.puml" alt="RemindOverallState" />
+</div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+Below is the more in depth breakdown of the Logic, Model and UI Sequence diagrams.
 
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-Logic.puml" alt="RemindLogicState" />
+</div>
+<div align="center">
+    <puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
+</div>
 
-<box type="info" seamless>
-
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</box>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
+**Future improvement:**
+- Students that are currently 6 years old would be 7 years old next year and would be invalid in the system
+- Possibly remind the teacher to remove the graduated students
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -321,17 +340,19 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Use cases
 
-(For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise)
+[//]: # (&#40;For all use cases below, the **System** is the `LittleLogBook` and the **Actor** is the `user`, unless specified otherwise&#41;)
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Add a contact**
 
 **MSS**
 
-1. User opens LittleLogBook.
-2. LittleLogBook shows list of all the contacts added.
-3. User enters the contact information.
-4. LittleLogBook validates input information.
-5. LittleLogBook saves contact and updates contact list.
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User enters the contact information. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook saves contact and updates contact list. 
 6. LittleLogBook displays success confirmation.
 
 Use case ends.
@@ -341,6 +362,9 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: View a contact**
 
@@ -348,9 +372,86 @@ Use case ends.
 
 1. User opens LittleLogBook.
 2. LittleLogBook shows list of all the contacts added.
-3. User enters a specific contact name.
-4. LittleLogBook validates input information and finds the matching contact.
-5. LittleLogBook displays the contact information.
+3. User requests to view a specific contact. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook finds the matching contact. 
+6. LittleLogBook displays the contact's full information in a pop-up window.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. The requested contact to be viewed is invalid.
+    * 4a1. LittleLogBook shows an error message and request for a valid input.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Delete a contact**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to delete a specific contact in the list. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook displays a confirmation popup asking the user to confirm the deletion.
+6. Users confirms the deletion. 
+7. LittleLogBook deletes the person and updates the list.
+
+Use case ends.
+
+**Extensions**
+
+* 3a. The contact does not exist. 
+    * 3a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 5a. User cancels the deletion.
+   * 5a.1 LittleLogBook closes the confirmation popup and goes back to main window.
+         Use case resumes at step 2.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Check birthday reminders**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook automatically checks for birthdays and shows reminder notification.
+3. User requests to manually check for birthday reminders.
+4. LittleLogBook validates input information. 
+5. LittleLogBook looks through all contacts for birthdays today and within the next 7 days. 
+6. LittleLogBook displays formatted birthday reminders.
+
+Use case ends.
+
+**Extensions**
+
+* 5a. There are birthdays today.
+    * 5a1. LittleLogBook shows a list of people whose birthday is today.
+* 5b. There are upcoming birthdays within 7 days.
+    * 5b1. LittleLogBook shows a list of people whose birthday is upcoming.
+* 5c. No birthdays today or within 7 days.
+    * 5c1. LittleLogBook tells the user that there is no upcoming birthdays. 
+* 5d. LittleLogBook is empty.
+    * 5d1. LittleLogBook tells the user that there is no contacts in LittleLogBook
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+
+**Use case: Find a contact based on partial name**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User enters the command with partial name(s).
+4. LittleLogBook validates input information.
+5. LittleLogBook filters contacts matching partial name(s) and updates contact list.
+6. LittleLogBook displays the result.
 
 Use case ends.
 
@@ -359,59 +460,150 @@ Use case ends.
 * 4a. The input information is invalid.
     * 4a1. LittleLogBook shows an error message.
       Use case resumes at step 3.
+</div>
 
-**Use case: Delete a contact**
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
-**MSS**
-
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to delete a specific contact in the list.
-4.  LittleLogBook deletes the person.
-
-    Use case ends.
-
-**Extensions**
-
-* 3a. The contact does not exist.
-  *    3a.1 LittleLogBook requests for valid input.
-       Use case resumes at step 3.
-
-
-**Use case: Searches a contact**
+**Use case: Sort contacts**
 
 **MSS**
 
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to search a contact in the list with partial information.
-4.  LittleLogBook shows list of all contacts matching the information.
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to sort contacts by a specific field and order. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully sorts contacts and displays them in the new order.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 3a. No contact matches the information.
-    *    3a.1 LittleLogBook requests for valid input.
-         Use case resumes at step 3.
+* 4a. Missing parameters.
+    * 4a.1 LittleLogBook requests for valid input.
+      Use case resumes at step 3.
+* 4b. The input information is invalid.
+    * 4b.1 LittleLogBook requests for valid input.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+
+**Use case: Favourite a contact**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User enters the command with index(es).
+4. LittleLogBook validates input information.
+5. LittleLogBook updates contact list by updating the favourites contacts.
+6. LittleLogBook displays the result.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. The input information is invalid.
+    * 4a1. LittleLogBook shows an error message.
+      Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
 
 **Use case: Marks attendance**
 
 **MSS**
 
-1.  User opens LittleLogBook.
-2.  LittleLogBook shows list of all the contacts added.
-3.  User requests to mark attendance of a specific student.
-4.  LittleLogBook succesfully marks student's attendance.
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to mark attendance of a specific contact. 
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully marks contact's attendance.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 3a. No contact matches the information.
-    *    3a.1 LittleLogBook requests for valid input.
+* 4a. No contact matches the information.
+    *    4a.1 LittleLogBook requests for valid input.
          Use case resumes at step 3.
+* 4b. Contact is a colleague.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4c. Date provided is before student's born date.
+    *    4c.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4d. Date provided is beyond today's date.
+    *    4d.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
 
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads student monthly attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook. 
+2. LittleLogBook shows list of all the contacts added. 
+3. User requests to Download monthly attendance report of a student.
+4. LittleLogBook validates input information. 
+5. LittleLogBook successfully downloads student's attendance.
+
+Use case ends.
+
+**Extensions**
+
+* 4a. Student is not inside contact.
+    *    4a.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads class daily attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User requests to Download daily attendance report of a class.
+4. LittleLogBook validates input information.
+5. LittleLogBook successfully downloads student's attendance.
+
+Use case ends.
+
+**Extensions**
+
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; border-top: 4px solid #ffd519; margin: 10px 0;">
+
+**Use case: Downloads class monthly attendance report**
+
+**MSS**
+
+1. User opens LittleLogBook.
+2. LittleLogBook shows list of all the contacts added.
+3. User requests to Download monthly attendance report of a class.
+4. LittleLogBook validates input information.
+5. LittleLogBook successfully downloads student's attendance.
+
+Use case ends.
+
+**Extensions**
+
+* 4b. The input information is invalid.
+    *    4b.1 LittleLogBook requests for valid input.
+         Use case resumes at step 3.
+</div>
 
 *{More to be added}*
 
@@ -420,9 +612,6 @@ Use case ends.
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4.  Only authenticated users (teachers) can access the app.
-
-*{More to be added}*
 
 ### Glossary
 
@@ -445,42 +634,497 @@ testers are expected to do more *exploratory* testing.
 
 ### Launch and shutdown
 
-1. Initial launch
+1. **Initial launch**
+   - Download the jar file and copy into an empty folder 
+   - Double-click the jar file<br>
+   - **Expected:** Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-   1. Download the jar file and copy into an empty folder
+<br>
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+2. **Saving window preferences**
+   - Resize the window to an optimum size. Move the window to a different location. Close the window. 
+   - Re-launch the app by double-clicking the jar file.<br>
+   - **Expected:** The most recent window size and location is retained.
 
-1. Saving window preferences
+----------------------------------------------------------------------------------------------------------------------------------
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+### Adding contacts
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+##### Adding a valid contact
 
-1. _{ more test cases …​ }_
+1. **Adding a student contact with all fields**
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/student desc/Allergic to peanuts`
+    - **Expected:** New student contact added successfully with all specified fields.
 
-### Deleting a person
+1. **Adding a colleague contact with optional note**
+    - Test case: `add n/Mary Tan p/91234567 e/marytan@e.nut.edu a/123 Jurong West Ave 6 c/K2B b/24-12-2017 t/colleague desc/Allergic to peanuts`<br>**Expected**: New colleague contact added with note.
 
-1. Deleting a person while all persons are being shown
+2. **Adding a colleague contact with mandatory fields only**
+    - Test case: `add n/Marie p/98765432 e/john.doe@gmail.com a/123 Main Street c/K1A b/15-03-2018 t/colleague`
+    - **Expected:** New colleague contact added with only required fields.
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+1. **Adding contact with mixed tags (same info)**
+    - Prerequisites: Student contact "John Doe" exists
+    - Test case: `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/colleague`<br>**Expected**: Success - different tags allow identical info.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+1. **Invalid parameter formats**
+    - Test case: `add n/John123 p/123 e/invalid-email a/ c/InvalidClass b/32-13-2020 t/invalidtag`<br>**Expected**: Multiple validation errors shown.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+----------------------------------------------------------------------------------------------------------------------------------
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+### Editing contacts
 
-1. _{ more test cases …​ }_
+##### Editing contact fields
+
+1. **Editing a contact's basic information**
+   - Prerequisites: List all persons. Note the details of contact at index 1.
+   - Test case: `edit 1 n/New Name p/87654321 e/new.email@school.edu`
+   - **Expected:** The command box shows the edited information, and the contact list refreshes with the updated entry.
+
+<br> 
+
+2. **Editing contact with duplicate detection**
+   - Prerequisites: Add 2 contacts with the same details for every field EXCEPT name. Assume they are at index `x` and `y`
+   - Test case: `edit x n/{y's name}` (e.g., If y's name is `Bob` then run `edit x n/Bob`)
+   - **Expected:** The command box shows a duplicate alert message. No changes are made to the contact list.
+
+<br>
+
+3. **Editing contact with missing parameters**
+    - Test case: `edit`, `edit 1` (assuming 1 is a valid index)
+    - **Expected:** No detail is edited. Error details shown in the status message. Status bar remains the same.
+
+<br>
+
+4. **Editing a contact with invalid parameter format**
+     - Test case: `edit 1 p/abc`, `edit 1 e/not-an-email` (assuming 1 is a valid index)
+     - **Expected:** No detail is edited. Error details shown in the status message. Status bar remains the same.
+   
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Deleting contacts
+
+##### Deleting by index and name
+
+1. **Deleting a contact by valid index**
+   - Prerequisites: List all persons. Multiple persons in the list.
+   - Test case: `delete 1`
+   - **Expected:** A confirmation popup appears. The contact is deleted upon confirmation, otherwise, the app returns to the main window. The command box shows a success or cancellation message.
+
+<br>
+
+2. **Deleting a contact by invalid index**
+   - Test case: `delete 1`, `delete`, `delete x`, `...` (where x is larger than the list size)
+   - **Expected:** No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+<br>
+
+3. **Deleting a contact by name with full name**
+   - Prerequisite: List all persons. Alex Yeoh is in the person list.
+   - Test case: `delete n/ALex Yeoh`
+   - **Expected:** If only one person has this name, a confirmation popup appears, and the contact is deleted upon confirmation. Otherwise, a popup showing multiple matches appears first, followed by a confirmation popup for the selected contact.
+
+<br>
+
+4. **Deleting a contact by name with partial name**
+   - Prerequisites: List all persons. Multiple persons in the list with `a` in their name.
+   - Test case: `delete n/a`
+   - **Expected:** A popup shows possible matches for selection. After the user makes a selection, a confirmation popup appears.
+
+<br>
+
+5. **Deleting a contact by name with a invalid name**
+    - Prerequisites: List all persons. No person in the list with `random name` in their name..
+    - Test case: `delete n/random name`
+    - **Expected:** A popup shows no matches found. Pressing Enter returns to the main window.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Sorting contacts
+
+##### Sorting by different fields
+- All sort comparison is done alphabetically.
+
+1. **Sorting contacts by name**
+   - Test case: `sort f/name`
+   - **Expected:** Contacts sorted alphabetically by name.
+
+<br>
+
+2. **Sorting contacts by class in descending order**
+   - Test case: `sort f/class o/desc`
+   - **Expected:** Contacts sorted by class in reverse alphabetical order.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Birthday reminders
+
+##### Checking birthday notifications
+
+1. **Manual reminder check with birthdays today and upcoming**
+    - Prerequisites: At least one contact has birthday today, and at least one has birthday within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows two sections: "Happy Birthday to these people today!" and "Upcoming birthdays in the next 7 days:" with numbered lists.
+
+<br>
+
+2. **Manual reminder with only upcoming birthdays**
+    - Prerequisites: No contacts have birthday today, but some have birthdays within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No birthdays today!" followed by "Upcoming birthdays in the next 7 days:" section.
+
+<br>
+
+3. **Manual reminder with no upcoming birthdays**
+    - Prerequisites: No contacts have birthdays today or within next 7 days
+    - Test case: `remind`<br>**Expected**: Shows "No upcoming birthdays found." message.
+
+<br>
+
+4. **Manual reminder with empty address book**
+    - Prerequisites: Clear all contacts using `clear` command
+    - Test case: `remind`<br>**Expected**: Shows "No contacts in LittleLogBook." message.
+
+<br>
+
+5. **Automatic reminder on startup**
+    - Prerequisites: Contacts with birthdays today and/or upcoming exist
+    - Action: Close and reopen the app<br>**Expected**: Birthday reminders shown automatically in the result display when app starts.
+
+<br>
+
+6. **Reminder formatting verification**
+    - Prerequisites: Contacts with various birthday scenarios exist
+    - Test case: `remind`<br>**Expected**: Each entry shows:
+        - Name in correct format
+        - Birthday in dd-MM-yyyy format
+        - Tags in square brackets (if present)
+        - "(TODAY!)" for today's birthdays
+        - "(in X day(s))" for upcoming birthdays
+
+<br>
+
+7. **Reminder with extraneous parameters**
+    - Test case: `remind extra parameter`<br>**Expected**: Command works normally (extraneous parameters ignored).
+
+<br>
+
+8. **Cross-year birthday handling**
+    - Prerequisites: Test in late December with contacts having January birthdays
+    - Test case: `remind`<br>**Expected**: Correctly shows upcoming birthdays that cross into next year.
+
+<br>
+
+**Testing Tips for `remind` command:**
+- Use system date changes to simulate different scenarios
+- Test across month and year boundaries
+- Verify the "in X days" calculation is accurate
+- Check that both automatic (startup) and manual execution work
+- Ensure the output is helpful and actionable for kindergarten teachers
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Note management
+
+##### Adding and editing notes
+
+1. **Adding a note to a contact**
+   - Test case: `note 1 desc/Allergic to peanuts and dairy products`
+   - **Expected:** Note successfully added to contact.
+
+<br>
+
+2. **Removing a note from a contact**
+   - Test case: `note 1`
+   - **Expected:** Existing note removed from contact.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Viewing contacts
+
+##### Detailed contact viewing
+
+1. **Viewing valid contact**
+    - Prerequisites: Multiple contacts in list
+    - Test case: `view 1`<br>**Expected**: Popup window shows full contact details.
+
+<br>
+
+2. **Viewing student vs colleague**
+    - Test cases: `view 1` (student), `view 2` (colleague)<br>**Expected**: Different layouts shown (student shows attendance, colleague does not).
+
+<br>
+
+3. **Viewing with invalid index**
+    - Test case: `view 0`<br>**Expected**: Error message about invalid index.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance management
+
+##### Marking attendance
+
+1. **Marking attendance for a single student**
+    - Prerequisites: Ensure contact at index 1 is a student.
+    - Test case: `attendance 1 s/present`
+    - **Expected:** Attendance marked successfully for current date.
+
+<br>
+
+2. **Marking attendance for multiple students with specific date**
+    - Prerequisites: Ensure contact at index 1, 2, 3 is a student.
+    - Test case: `attendance 1,2,3 s/late d/15-03-2024`
+    - **Expected:** Attendance marked for all specified students on given date.
+
+<br>
+
+3. **Marking attendance for multiple contacts (student and colleague)**
+    - Prerequisites: Ensure you have at least one student and one colleague at index 1, 2, 3. 
+    - Test case: `attendance 1,2,3 s/late`
+    - **Expected:** Attendance marked ONLY for students.
+
+<br>
+
+4. **Marking attendance for a colleague**
+    - Prerequisites: Ensure contact at index 1 is a colleague.
+    - Test case: `attendance 1 s/sick`
+    - **Expected:** Error message and attendance rule reminder.
+
+<br>
+
+5. **Marking attendance with invalid date**
+    - Test case: `attendance 1 s/present d/29-02-2023`
+    - **Expected:** Error message for invalid date.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Attendance reports
+
+##### Downloading reports
+
+1. **Downloading individual student monthly report**
+    - Prerequisites: Ensure contact at index 1 is a student with attendance records.
+    - Test case: `attendanceD 1 m/03-2024`
+    - **Expected:** CSV report downloaded successfully.
+
+<br>
+
+2. **Downloading multiple individual students monthly report**
+    - Prerequisites: Ensure contact at index 1, 2, 3 is a student with attendance records.
+    - Test case: `attendanceD 1-3 m/03-2024`
+    - **Expected:** CSV report downloaded successfully.
+
+<br>
+
+3. **Downloading individual student daily report**
+    - Prerequisites: Ensure contact at index 1 is a student with attendance records.
+    - Test case: `attendanceD 1 d/01-03-2024`
+    - **Expected:** Error message. Individual report are monthly only.
+
+<br>
+
+4. **Downloading class-based daily report**
+    - Test case: `attendanceD c/K1A d/15-03-2024`
+    - **Expected:** Class attendance report downloaded for specified date.
+    
+<br>
+
+5. **Downloading multiple class-based daily report**
+    - Test case: `attendanceD c/K1A c/K2B d/15-03-2024`
+    - **Expected:** Class attendance reports downloaded for specified date.
+
+<br>
+
+6. **Downloading class-based monthly report**
+    - Test case: `attendanceD c/K1A`
+    - **Expected:** Class attendance report downloaded for current month.
+
+<br>
+
+7. **Downloading multiple class-based monthly report**
+    - Test case: `attendanceD c/K1A c/K2B`
+    - **Expected:** Class attendance reports downloaded for current month.
+
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+##### Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+1. **Simulating missing data file:**
+    - Navigate to the `data/` folder in your LittleLogBook directory
+    - Delete or rename the `littlelogbook.json` file
+    - Launch LittleLogBook
+    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `littlelogbook.json` file automatically
 
-1. _{ more test cases …​ }_
+<br>
+
+2. **Simulating corrupted data file:**
+    - Open the `data/littlelogbook.json` file in a text editor
+    - Manually modify the JSON structure to be invalid, for example:
+        - Remove essential fields like `"name"`, `"phone"`, etc. from a contact
+        - Change field types (e.g., change a phone number to an array: `"phone": [12345678]`)
+        - Introduce JSON syntax errors (remove closing braces, add extra commas)
+        - Add invalid date formats in birthday/attendance fields
+        - Remove the entire `"persons"` array or make it null
+    - Save the file and launch LittleLogBook
+    - **Expected behavior:** LittleLogBook should detect the corruption and start with an empty address book.
+
+<br>
+
+3. **Testing with invalid birthday formats:**
+    - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
+    - **Expected behavior:** LittleLogBook should detect the corruption and start with an empty address book.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Finding contacts
+##### Similar process for the different find commands (`find-n`, `find-c`, `find-t`, `find-p` )
+
+1. **Simulating find for no-matches:**
+    - Add contacts to the LittleLogBook with no names containing z or y, no classes containing K1A
+    - Input the find command with required parameter(s) to find for an information such as partial name that does not exist in your contacts
+        - Test case: `find-p 123456789 `
+        - Test case: `find-n zy z y`
+        - Test case: `find-c k1A`
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show empty contact list with information on how to proceed.
+
+<br>
+
+2. **Simulating find for matches:**
+    - Add contacts to the LittleLogBook with class starting with K, names containing b and/or d
+    - Input the find command with required parameter(s) to find for an information such as partial phone number that exists in your contacts
+        - Test case: `find-p 8 9`
+        - Test case: `find-c k`
+        - Test case: `find-n b d`
+        - Test case: `find-t stu coll`
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show filtered contact list of only those that match the input string with information on how to proceed.
+
+<br>
+
+3. **Simulating find with no parameter inputs:**
+   - Input the find command with no parameter
+        - - Test case: `find-c `
+   - **Expected behavior:** LittleLogBook should say `invalid command format` and guide users on next steps.
+   
+<br>
+   
+4. **Simulating find with wrong parameter inputs:**
+   - Input the find command 
+       - Example: passing in alphabetic string for find-p command
+       - Test case: `find-p ala`
+       - Test case: `find-t 1`
+       - Test case: `find-n @ !`
+       - Test case: `find-c !`
+   - Press enter
+   - **Expected behavior:** LittleLogBook should state the valid inputs that are allowed to guide user.
+
+<box type="info" seamless="true">
+
+**Note:** To continue testing other commands, use `list` command as guided by LittleLogBook GUI to escape the filtered view.
+
+</box>
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Favourite contacts
+
+1. **Simulating adding a contact to favourites for the first time:**
+    - Add a new contact to a LittleLogBook
+    - Input the `fav` command with index of newly added contact 
+        - Test case: `fav 1` assuming added contact is the first contact
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show a successful message with the name of the added contact. There will be a star icon indicated next to that contact.
+
+<br>
+
+2. **Simulating removing a contact from favourites:**
+    - Add a new contact to the LittleLogBook
+    - Do the process of adding that contact to favourites _(Refer to point 1 in this section)_
+    - Input the favourite command with index of that specific contact
+        - Test case: `fav 1` assuming added contact is the first contact
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show succesful message with information on the contact that is removed from favourites. The star icon next to the contact will disappear.
+
+<br>
+   
+3. **Checking `list` behaviour:**
+    - Add two new contacts to the LittleLogBook
+    - Do the process of adding one of the two contacts to favourites _(Refer to point 1 in this section)_
+        - Test case: `fav 2` assuming added contacts are the first and second respectively
+    - Input `list` command
+    - Press enter
+    - **Expected behavior:** LittleLogBook should show those added to favourites on the top of the list
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### Edge Cases and Error Handling
+1. **Command case sensitivity**
+    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-sensitive).
+
+<br>
+
+2. **Parameter order variations**
+    - Test: `add t/student b/15-03-2018 c/K1A a/Blk 456, Den Road, #01-355 e/john.doe@gmail.com p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+
+<br>
+
+[//]: # (TODO: Either remove this from the DG or figure out a way to solve the spaces not visible in webiste)
+
+3. **Extra spaces in commands and parameters (ONLY for `n/`, `p/`, and `a/`)**
+    - Test: `add n/Johns          Doe       p/9876         5432 e/john.doe@gmail.com a/Blk 456, Den            Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Should handle gracefully (trim spaces).
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+### System commands
+
+##### Basic system operations
+
+1. **Listing all contacts**
+    - Test case: `list`
+    - **Expected:** All contacts displayed with favourites at top.
+
+<br>
+
+2. **Clearing all contacts**
+    - Test case: `clear`
+    - **Expected:** Confirmation and removal of all contacts.
+
+<br>
+
+3. **Viewing help**
+    - Test case: `help`
+    - **Expected:** Help window opens with link to our user guide.
+
+<br>
+
+4. **Exiting application**
+    - Test case: `exit`
+    - **Expected:** Application closes gracefully.
+
+**Note:** These instructions provide a starting point for testers. Testers should perform additional *exploratory* testing beyond these specified cases, including:
+- Testing concurrent operations
+- Testing boundary conditions
+- Testing error recovery
+- Testing UI responsiveness with different data volumes
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+### 1 Attendance
+- **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to do it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
+
+<br>
+
+### 2 Edit
+- **Display a confirmation pop-up window when changing contact's tags**: Currently, users can change tags freely from student to colleague and vice versa. However, there is a possibility that the user did not intend to do this action in the first place. Having a confirmation window will also increase user experience and prevent accidental deletion of student's attendance history (although right now, we keep attendance record even if a contact's tag was edited form student to colleague).
+
+- **Add birthday validation to edit command**: Currently, the edit command accepts birthdays that would make a student younger than 3 or older than 6 years old or the colleague to be younger than 18. We will modify the edit command to apply the same age validation checks as the add command, preventing invalid birthdays from being set through editing.
+   - Example: edit 1 b/01-01-2024 would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
+
+<br>
+
+### 3 Birthday field
+- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students.
+  - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."

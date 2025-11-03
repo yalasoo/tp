@@ -31,7 +31,7 @@ public class AttendanceCsvStorage {
 
         FileUtil.writeToFile(filePath, fileCsv);
 
-        return filePath.toAbsolutePath().toString();
+        return dataDir.toAbsolutePath().toString();
     }
 
     /**

@@ -11,12 +11,16 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AttendanceCommand;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
@@ -46,6 +50,7 @@ import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.TestDateUtil;
 import seedu.address.ui.DeletePopupHandler;
 import seedu.address.ui.InfoPopupHandler;
 import seedu.address.ui.TestDeletePopupHandler;
@@ -58,20 +63,22 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_add() throws Exception {
         // Create expected person with known values
+        String validBirthday = TestDateUtil.getValidStudentBirthday();
+
         Person expectedPerson = new PersonBuilder()
                 .withName("Amy Bee")
                 .withPhone("81234567")
                 .withEmail("amy@example.com")
                 .withAddress("123, Jurong West Ave 6, #08-111")
                 .withClass("K1B")
-                .withBirthday("23-10-1995")
+                .withBirthday(validBirthday)
                 .withNote("")
                 .withTags("student") // Add mandatory tag
                 .build();
 
         // Construct command string directly to avoid PersonUtil issues
         String commandString = "add n/Amy Bee p/81234567 e/amy@example.com "
-                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/23-10-1995 t/student"; // Add tag parameter
+                + "a/123, Jurong West Ave 6, #08-111 c/K1B b/" + validBirthday + " t/student";
 
         AddCommand command = (AddCommand) parser.parseCommand(commandString);
         assertEquals(new AddCommand(expectedPerson), command);
@@ -171,6 +178,9 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_attendanceDownload() throws Exception {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(Index.fromOneBased(1));
+
         AttendanceDownloadCommand command = (AttendanceDownloadCommand) parser.parseCommand(
                 AttendanceDownloadCommand.COMMAND_WORD + " "
                         + INDEX_FIRST_PERSON.getOneBased()
@@ -178,7 +188,7 @@ public class AddressBookParserTest {
         );
 
         AttendanceDownloadCommand expectedCommand = new AttendanceDownloadCommand(
-                Set.of(INDEX_FIRST_PERSON), null, LocalDate.now(),
+                indexes, null, LocalDate.now(),
                         YearMonth.of(2025, 12), false, true);
 
         assertEquals(expectedCommand, command);

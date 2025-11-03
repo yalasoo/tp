@@ -40,6 +40,13 @@ public class Tag {
         return tagName.equals("student");
     }
 
+    /**
+     * Returns true if this is a colleague tag.
+     */
+    public boolean isColleague() {
+        return tagName.equals("colleague");
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

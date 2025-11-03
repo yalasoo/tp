@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -56,15 +57,19 @@ public class SortCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (model.getFilteredPersonList().isEmpty()) {
+            throw new CommandException("No contacts available to sort.");
+        }
 
         Comparator<Person> comparator = null;
 
         switch (field) {
-        case NAME -> comparator = Comparator.comparing(p -> p.getName().toString());
-        case CLASS -> comparator = Comparator.comparing(p -> p.getStudentClass().toString());
-        case TAG -> comparator = Comparator.comparing(p -> p.getTags().toString());
+        case NAME -> comparator = Comparator.comparing(p -> p.getName().toString().toLowerCase());
+        case CLASS -> comparator = Comparator.comparing(p -> p.getStudentClass().toString().toLowerCase());
+        case TAG -> comparator = Comparator.comparing(p -> p.getTags().toString().toLowerCase());
         default -> throw new AssertionError("Unexpected sort field: " + field);
         }
 

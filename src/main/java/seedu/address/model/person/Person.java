@@ -14,6 +14,8 @@ import javafx.beans.property.BooleanProperty;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
+import seedu.address.logic.commands.exceptions.InvalidDateException;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -55,12 +57,7 @@ public class Person {
         this.note = note;
         this.tags.addAll(tags);
 
-        // only add attendance for student
-        if (tags.contains(new Tag("student"))) {
-            this.attendance = (attendance != null) ? attendance : new Attendance();
-        } else {
-            this.attendance = null;
-        }
+        this.attendance = (attendance != null) ? attendance : new Attendance();
 
         // favourite could potentially be null in which case set it to default false
         if (favourite == null) {
@@ -118,19 +115,71 @@ public class Person {
     }
 
     /**
-     * Marks the attendance of this person object
-     * @param date when does this attendance apply
-     * @param status what is the status of this attendance
+     * Marks the attendance of this person object.
+     *
+     * @param date When does this attendance apply.
+     * @param status What is the status of this attendance.
+     * @return False if date is not a valid attendance date, true otherwise.
      */
-    public void markAttendance(LocalDate date, AttendanceStatus status) {
+    public boolean markAttendance(LocalDate date, AttendanceStatus status)
+            throws InvalidDateException, NoAttendanceRecordException {
         assert date != null;
         assert status != null;
 
-        if (attendance != null) {
-            attendance.markAttendance(date, status);
+        if (!validAttendanceDate(date)) {
+            throw new InvalidDateException("Attendance cannot be mark for invalid date: " + date);
+        }
+
+        if (isStudent()) {
+            return attendance.markAttendance(date, status);
+        } else {
+            return false;
         }
     }
 
+    /**
+     * Unmarks the attendance of this person object.
+     *
+     * @param date When does this attendance apply.
+     * @return False if date is not a valid attendance date, true otherwise.
+     */
+    public boolean unmarkAttendance(LocalDate date)
+            throws InvalidDateException, NoAttendanceRecordException {
+        assert date != null;
+
+        if (!validAttendanceDate(date)) {
+            throw new InvalidDateException("Attendance cannot be unmark for invalid date: " + date);
+        }
+
+        if (isStudent()) {
+            return attendance.unmarkAttendance(date);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether the given date is a valid attendance date.
+     * A valid attendance date must be within person's born date and today's date.
+     *
+     * @param date When does this attendance apply.
+     * @return False if date before born date or after born date.
+     */
+    private boolean validAttendanceDate(LocalDate date) {
+        int afterToday = date.compareTo(LocalDate.now());
+
+        if (birthday.isBeforeBirthday(date) || afterToday > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the attendance record of caller if they are
+     * a student (attendance != null).
+     *
+     * @return The attendance record of caller.
+     */
     public Map<LocalDate, AttendanceStatus> getAttendanceRecords() {
         return (attendance != null) ? attendance.getAttendanceRecords() : Collections.emptyMap();
     }
@@ -149,7 +198,7 @@ public class Person {
     /**
      * Retrieves the boolean value of favourite attribute.
      *
-     * @return whether Person is in favourites or not.
+     * @return Whether Person is in favourites or not.
      */
     public boolean getIsFavBoolean() {
         return favourite.getIsFavouriteBoolean();
@@ -165,17 +214,47 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name and phone.
-     * This defines duplicate detection as per MVP requirements (case-insensitive name comparison).
+     * Returns true if both persons are considered the same based on their contact type.
+     * Contacts with different tags (student vs colleague) are never considered duplicates.
+     * For colleagues: Same phone number OR same email address (different names allowed)
+     * For students: Same name AND phone number (allows different names with same phone for emergency contacts)
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
-                && otherPerson.getPhone().equals(getPhone());
+        if (otherPerson == null) {
+            return false;
+        }
+
+        // Different contact types are never considered duplicates
+        // This allows a student and colleague to have the same information
+        if (this.isStudent() != otherPerson.isStudent()
+                || this.isColleague() != otherPerson.isColleague()) {
+            return false;
+        }
+
+        // For colleagues: Check phone number conflict and email conflict only
+        // Colleagues can have the same name but must have unique phone numbers and emails
+        if (this.isColleague() && otherPerson.isColleague()) {
+            // Same phone (not allowed for colleagues - each should have unique phone)
+            boolean samePhone = otherPerson.getPhone().equals(getPhone());
+
+            // Same email (not allowed for colleagues - each should have unique email)
+            boolean sameEmail = otherPerson.getEmail().equals(getEmail());
+
+            return samePhone || sameEmail;
+        }
+
+        // For students: Only check name and phone (allows different names with same phone)
+        if (this.isStudent() && otherPerson.isStudent()) {
+            return otherPerson.getName().getNormalizedName().equals(getName().getNormalizedName())
+                    && otherPerson.getPhone().equals(getPhone());
+        }
+
+        // Should not reach here, but return false as safe default
+        return false;
     }
 
     /**
@@ -183,6 +262,13 @@ public class Person {
      */
     public boolean isStudent() {
         return tags.stream().anyMatch(tag -> tag.isStudent());
+    }
+
+    /**
+     * Returns true if person has a colleague tag.
+     */
+    public boolean isColleague() {
+        return tags.stream().anyMatch(tag -> tag.isColleague());
     }
 
     /**

@@ -1,0 +1,36 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+Title View Command - UI
+
+box UI UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+participant ":ViewWindow" as ViewWindow UI_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Person" as Person MODEL_COLOR
+end box
+
+[-> MainWindow : openViewWindow(personData)
+activate MainWindow
+
+MainWindow -> ViewWindow : new ViewWindow(personData)
+activate ViewWindow
+
+ViewWindow -> Person : fillFields()
+activate Person
+Person --> ViewWindow :
+deactivate Person
+
+ViewWindow --> ViewWindow : show()
+
+ViewWindow --> MainWindow :
+deactivate ViewWindow
+
+MainWindow --> MainWindow : window displayed\n(main window remains active)
+
+[<-- MainWindow
+deactivate MainWindow
+@enduml

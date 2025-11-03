@@ -2,6 +2,7 @@ package seedu.address.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -26,6 +27,7 @@ import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.TestDateUtil;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
@@ -52,11 +54,11 @@ public class LogicManagerTest {
         assertParseException(invalidCommand, MESSAGE_UNKNOWN_COMMAND);
     }
 
-    //    @Test
-    //    public void execute_commandExecutionError_throwsCommandException() {
-    //        String deleteCommand = "delete 9";
-    //        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-    //    }
+    @Test
+    public void execute_commandExecutionError_throwsCommandException() {
+        String deleteCommand = "delete 9";
+        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
 
     @Test
     public void execute_validCommand_success() throws Exception {
@@ -153,12 +155,14 @@ public class LogicManagerTest {
         logic = new LogicManager(model, storage);
 
         // Add mandatory tag parameter
-        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main St c/K1A b/23-10-1995 t/student";
+        String validStudentBirthday = TestDateUtil.getValidStudentBirthday(); // e.g., "15-03-2020"
+        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main St c/K1A b/"
+                + validStudentBirthday + " t/student";
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         Person expectedPerson = new PersonBuilder().withName("Amy Bee").withPhone("81111111")
                 .withEmail("amy@example.com").withAddress("123 Main St").withClass("K1A")
-                .withBirthday("23-10-1995").withNote("").withTags("student").build();
+                .withBirthday(validStudentBirthday).withNote("").withTags("student").build();
         expectedModel.addPerson(expectedPerson);
 
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);

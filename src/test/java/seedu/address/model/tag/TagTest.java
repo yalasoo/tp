@@ -67,4 +67,32 @@ public class TagTest {
         assertTrue(Tag.isValidTagName("Colleague"));
         assertTrue(Tag.isValidTagName("COLLEAGUE"));
     }
+
+    @Test
+    public void isStudent() {
+        // Test isStudent method
+        Tag studentTag = new Tag("student");
+        Tag colleagueTag = new Tag("colleague");
+
+        assertTrue(studentTag.isStudent());
+        assertFalse(colleagueTag.isStudent());
+
+        // Test case-insensitive behavior
+        Tag studentTagUpperCase = new Tag("STUDENT");
+        assertTrue(studentTagUpperCase.isStudent());
+    }
+
+    @Test
+    public void isColleague() {
+        // Test isColleague method
+        Tag studentTag = new Tag("student");
+        Tag colleagueTag = new Tag("colleague");
+
+        assertFalse(studentTag.isColleague());
+        assertTrue(colleagueTag.isColleague());
+
+        // Test case-insensitive behavior
+        Tag colleagueTagUpperCase = new Tag("COLLEAGUE");
+        assertTrue(colleagueTagUpperCase.isColleague());
+    }
 }
