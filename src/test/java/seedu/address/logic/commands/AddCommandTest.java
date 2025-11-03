@@ -366,6 +366,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredPersonListCumulative(Predicate<Person> newPredicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ArrayList<Index> retrieveInitialFavList() {
             throw new AssertionError("This method should not be called.");
         }

@@ -473,7 +473,7 @@ note 1
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by name : `find-n`
+### Finding contacts by name (cumulative filtering): `find-n`
 **Purpose**: Allows teachers to find contacts quickly with partial names (contiguous).
 
 ##### Format 
@@ -505,11 +505,17 @@ find-n Tan
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!`  _(with guidance on next possible steps)_  | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+</box>
 
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by phone number : `find-p`
+### Finding contacts by phone number (cumulative filtering): `find-p`
 **Purpose**: Allows teachers to find contacts quickly with partial number (contiguous).
 
 ##### Format 
@@ -543,10 +549,17 @@ find-p 3133
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
+
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by tags : `find-t`
+### Finding contacts by tags (cumulative filtering): `find-t`
 **Purpose**: Allows teachers to find contacts quickly with partial tags (contiguous).
 
 ##### Format
@@ -580,10 +593,17 @@ find-t ague
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
+
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by classes : `find-c`
+### Finding contacts by classes (cumulative filtering): `find-c`
 **Purpose**: Allows teachers to find contacts quickly with partial classes (contiguous).
 
 ##### Format
@@ -617,6 +637,13 @@ find-c 2 A
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
+
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -971,6 +998,13 @@ If your changes to the data file makes its format invalid, LittleLogBook will di
 Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
+--------------------------------------------------------------------------------------------------------------------
+
+## Glossary
+|           Term           | Explanation                                                                                                                                                           | Example & Elaboration                                                                                                     |
+|:------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| **Cumulative Filtering** | Once a find command is used, those matching the input condition will be shown on the screen. Subsequent find commands will filter from the contacts listed on screen. | Doing `find-c K1A` followed by `find-n ne` will update GUI to only show contacts in K1A with letters 'ne' in their names. |
+ 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ

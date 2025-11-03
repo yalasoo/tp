@@ -168,6 +168,19 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void updateFilteredPersonListCumulative(Predicate<Person> newPredicate) {
+        requireNonNull(newPredicate);
+        Predicate<Person> originalPredicate = (Predicate<Person>) filteredPersons.getPredicate();
+        Predicate<Person> combinedPredicate;
+        if (originalPredicate == null) {
+            combinedPredicate = newPredicate;
+        } else {
+            combinedPredicate = originalPredicate.and(newPredicate);
+        }
+        filteredPersons.setPredicate(combinedPredicate);
+    }
+
+    @Override
     public void sortFilteredPersonList(Comparator<Person> comparator) {
         requireNonNull(comparator);
         addressBook.sortPersons(comparator);

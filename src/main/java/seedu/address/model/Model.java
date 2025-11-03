@@ -108,4 +108,11 @@ public interface Model {
      */
     ArrayList<Index> retrieveInitialFavList();
 
+    /**
+     * Refine the filtered list further (cumulatively) based on new predicate.
+     *
+     * @param newPredicate The new predicate condition to filter list based on.
+     */
+    void updateFilteredPersonListCumulative(Predicate<Person> newPredicate);
+
 }

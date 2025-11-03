@@ -23,6 +23,7 @@ import seedu.address.model.tag.Tag;
 public class SampleDataUtil {
 
     public static final Note EMPTY_NOTE = new Note("");
+    public static final Favourite DEFAULT_FAV_STATUS = new Favourite(false);
 
     public static Person[] getSamplePersons() {
         return new Person[] {
