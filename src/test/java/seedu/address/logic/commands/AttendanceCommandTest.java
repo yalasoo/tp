@@ -10,7 +10,10 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.Person;
@@ -53,7 +57,7 @@ public class AttendanceCommandTest {
     }
 
     @Test
-    public void execute_emptyContactList_failure() {
+    public void execute_emptyContactList_throwsCommandException() {
         Model newModel = new ModelManager();
 
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
@@ -105,11 +109,16 @@ public class AttendanceCommandTest {
         Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-2024").build();
         model.addPerson(student1);
 
-        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
+        indexes.add(INDEX_FIRST_PERSON);
+
         LocalDate futureDate = LocalDate.now().plusDays(1);
         AttendanceCommand command = new AttendanceCommand(indexes, futureDate, AttendanceStatus.LATE);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
+
     }
 
     @Test
@@ -121,7 +130,9 @@ public class AttendanceCommandTest {
         LocalDate beforeBirthday = LocalDate.of(2023, 1, 1);
         AttendanceCommand command = new AttendanceCommand(indexes, beforeBirthday, AttendanceStatus.LATE);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
     }
 
     @Test
@@ -133,7 +144,9 @@ public class AttendanceCommandTest {
         LocalDate beforeBirthday = LocalDate.of(1900, 1, 1).minusDays(1);
         AttendanceCommand command = new AttendanceCommand(indexes, beforeBirthday, AttendanceStatus.LATE);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Date before birthday or today"));
     }
 
     @Test
@@ -148,10 +161,7 @@ public class AttendanceCommandTest {
 
         CommandResult result = command.execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("Modified"));
-        assertTrue(result.getFeedbackToUser().contains("out of"));
-        assertTrue(result.getFeedbackToUser().contains("SICK"));
-        assertTrue(result.getFeedbackToUser().contains(pastDateStr));
+        assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 1 contacts as SICK on " + pastDateStr));
     }
 
     @Test
@@ -167,15 +177,78 @@ public class AttendanceCommandTest {
             AttendanceCommand command = new AttendanceCommand(indexes, date, status);
             CommandResult result = command.execute(model);
 
-            assertTrue(result.getFeedbackToUser().contains("Modified"));
-            assertTrue(result.getFeedbackToUser().contains("out of"));
-            assertTrue(result.getFeedbackToUser().contains(status.toString()));
-            assertTrue(result.getFeedbackToUser().contains(dateStr));
+            assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 1 contacts as "
+                    + status + " on " + dateStr));
         }
     }
 
     @Test
-    public void execute_colleague_throwsCommandException() {
+    public void execute_duplicateMarkingStatus_failure() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-2024").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+
+        student1.markAttendance(date, AttendanceStatus.PRESENT);
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Status unchanged - same as previous record"));
+    }
+
+    @Test
+    public void execute_differentMarkingStatus_success() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-2024").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+        String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        student1.markAttendance(date, AttendanceStatus.PRESENT);
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.SICK);
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 1 contacts as "
+                + AttendanceStatus.SICK + " on " + dateStr));
+    }
+
+    @Test
+    public void execute_unmarkingDateWithNoRecord_throwsNoAttendanceRecordException() {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-2024").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.REMOVE);
+
+        assertThrows(NoAttendanceRecordException.class, () -> command.execute(model));
+    }
+
+    @Test
+    public void execute_unmarkingDateWithRecord_success() throws CommandException {
+        Person student1 = new PersonBuilder().withName("StuOne").withTags("student").withBirthday("01-01-2024").build();
+        model.addPerson(student1);
+
+        Set<Index> indexes = Set.of(INDEX_FIRST_PERSON);
+        LocalDate date = LocalDate.now();
+        String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        student1.markAttendance(date, AttendanceStatus.PRESENT);
+
+        AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.REMOVE);
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 1 contacts as "
+                + AttendanceStatus.REMOVE + " on " + dateStr));
+    }
+
+    @Test
+    public void execute_colleague_throwsCommandException() throws CommandException {
         Person colleague1 = new PersonBuilder().withName("ColOne").withTags("colleague")
                 .withBirthday("01-01-2024").build();
         model.addPerson(colleague1);
@@ -185,7 +258,9 @@ public class AttendanceCommandTest {
 
         AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.PRESENT);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("Not a student"));
     }
 
     @Test public void execute_studentAndColleague_success() throws CommandException {
@@ -196,6 +271,7 @@ public class AttendanceCommandTest {
         model.addPerson(colleague1);
 
         LocalDate date = LocalDate.of(2024, 1, 1);
+        String dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         Set<Index> indexes = Set.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
 
         AttendanceCommand command = new AttendanceCommand(indexes, date, AttendanceStatus.SICK);
@@ -203,8 +279,7 @@ public class AttendanceCommandTest {
         System.out.println(result.getFeedbackToUser());
 
         assertTrue(result.getFeedbackToUser().contains("Modified 1 out of 2 contacts as "
-                + AttendanceStatus.SICK
-                + " on " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+                + AttendanceStatus.SICK + " on " + dateStr));
 
         assertTrue(result.getFeedbackToUser().contains(colleague1.getName() + " [Not a student]"));
     }

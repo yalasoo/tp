@@ -79,7 +79,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/AY2
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S1-CS2103T-F14B-1/tp/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -765,23 +765,33 @@ testers are expected to do more *exploratory* testing.
     - Prerequisites: At least one contact has birthday today, and at least one has birthday within next 7 days
     - Test case: `remind`<br>**Expected**: Shows two sections: "Happy Birthday to these people today!" and "Upcoming birthdays in the next 7 days:" with numbered lists.
 
-1. **Manual reminder with only upcoming birthdays**
+<br>
+
+2. **Manual reminder with only upcoming birthdays**
     - Prerequisites: No contacts have birthday today, but some have birthdays within next 7 days
     - Test case: `remind`<br>**Expected**: Shows "No birthdays today!" followed by "Upcoming birthdays in the next 7 days:" section.
 
-1. **Manual reminder with no upcoming birthdays**
+<br>
+
+3. **Manual reminder with no upcoming birthdays**
     - Prerequisites: No contacts have birthdays today or within next 7 days
     - Test case: `remind`<br>**Expected**: Shows "No upcoming birthdays found." message.
 
-1. **Manual reminder with empty address book**
+<br>
+
+4. **Manual reminder with empty address book**
     - Prerequisites: Clear all contacts using `clear` command
     - Test case: `remind`<br>**Expected**: Shows "No contacts in LittleLogBook." message.
 
-1. **Automatic reminder on startup**
+<br>
+
+5. **Automatic reminder on startup**
     - Prerequisites: Contacts with birthdays today and/or upcoming exist
     - Action: Close and reopen the app<br>**Expected**: Birthday reminders shown automatically in the result display when app starts.
 
-1. **Reminder formatting verification**
+<br>
+
+6. **Reminder formatting verification**
     - Prerequisites: Contacts with various birthday scenarios exist
     - Test case: `remind`<br>**Expected**: Each entry shows:
         - Name in correct format
@@ -790,12 +800,18 @@ testers are expected to do more *exploratory* testing.
         - "(TODAY!)" for today's birthdays
         - "(in X day(s))" for upcoming birthdays
 
-1. **Reminder with extraneous parameters**
+<br>
+
+7. **Reminder with extraneous parameters**
     - Test case: `remind extra parameter`<br>**Expected**: Command works normally (extraneous parameters ignored).
 
-1. **Cross-year birthday handling**
+<br>
+
+8. **Cross-year birthday handling**
     - Prerequisites: Test in late December with contacts having January birthdays
     - Test case: `remind`<br>**Expected**: Correctly shows upcoming birthdays that cross into next year.
+
+<br>
 
 **Testing Tips for `remind` command:**
 - Use system date changes to simulate different scenarios
@@ -830,10 +846,14 @@ testers are expected to do more *exploratory* testing.
     - Prerequisites: Multiple contacts in list
     - Test case: `view 1`<br>**Expected**: Popup window shows full contact details.
 
-1. **Viewing student vs colleague**
+<br>
+
+2. **Viewing student vs colleague**
     - Test cases: `view 1` (student), `view 2` (colleague)<br>**Expected**: Different layouts shown (student shows attendance, colleague does not).
 
-1. **Viewing with invalid index**
+<br>
+
+3. **Viewing with invalid index**
     - Test case: `view 0`<br>**Expected**: Error message about invalid index.
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -952,7 +972,7 @@ testers are expected to do more *exploratory* testing.
 
 3. **Testing with invalid birthday formats:**
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
-    - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
+    - **Expected behavior:** LittleLogBook should detect the corruption and start with an empty address book.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1042,11 +1062,17 @@ testers are expected to do more *exploratory* testing.
 1. **Command case sensitivity**
     - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-sensitive).
 
-1. **Parameter order variations**
-    - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+<br>
 
-1. **Extra spaces in commands**
-    - Test: `add   n/John   Doe   p/98765432`<br>**Expected**: Should handle gracefully (trim spaces).
+2. **Parameter order variations**
+    - Test: `add t/student b/15-03-2018 c/K1A a/Blk 456, Den Road, #01-355 e/john.doe@gmail.com p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+
+<br>
+
+[//]: # (TODO: Either remove this from the DG or figure out a way to solve the spaces not visible in webiste)
+
+3. **Extra spaces in commands and parameters (ONLY for `n/`, `p/`, and `a/`)**
+    - Test: `add n/Johns          Doe       p/9876         5432 e/john.doe@gmail.com a/Blk 456, Den            Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Should handle gracefully (trim spaces).
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1082,13 +1108,23 @@ testers are expected to do more *exploratory* testing.
 - Testing error recovery
 - Testing UI responsiveness with different data volumes
 
-----------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
-### Planned Enhancements
+## **Appendix: Planned Enhancements**
 
-1. Add birthday validation to edit command: Currently, the edit command accepts birthdays that would make a student younger than 3 or older than 6 years old or the colleague to be younger than 18. We will modify the edit command to apply the same age validation checks as the add command, preventing invalid birthdays from being set through editing.
-- Example: edit 1 b/01-01-2024 would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
+### 1 Attendance
+- **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to do it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
 
-2. Handle age-based expiration for existing students: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students. 
-- Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."
+<br>
 
+### 2 Edit
+- **Display a confirmation pop-up window when changing contact's tags**: Currently, users can change tags freely from student to colleague and vice versa. However, there is a possibility that the user did not intend to do this action in the first place. Having a confirmation window will also increase user experience and prevent accidental deletion of student's attendance history (although right now, we keep attendance record even if a contact's tag was edited form student to colleague).
+
+- **Add birthday validation to edit command**: Currently, the edit command accepts birthdays that would make a student younger than 3 or older than 6 years old or the colleague to be younger than 18. We will modify the edit command to apply the same age validation checks as the add command, preventing invalid birthdays from being set through editing.
+   - Example: edit 1 b/01-01-2024 would show an error: "Birthday would make student 1 year old. Students must be between 3 and 6 years old."
+
+<br>
+
+### 3 Birthday field
+- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students.
+  - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."

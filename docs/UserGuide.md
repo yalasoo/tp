@@ -7,18 +7,19 @@
 # LittleLogBook
 
 ## Product description
-LittleLogBook helps **kindergarten teachers** keep track of **students' and parents' information** with ease.
+LittleLogBook helps **kindergarten teachers** in Singapore keep track of **students' and parents' information** with ease.
 Unlike traditional contact management tools, LittleLogBook is optimised for fast typing and minimal clicking, making it ideal for teachers who prefer keyboard-driven workflows.
 
 ## Target User
-LittleLogBook is designed for kindergarten teachers who need to
+LittleLogBook is designed for kindergarten teachers in Singapore who need to
 manage students' and parents' contact information efficiently.
 
 **Assumptions** about our target user:
-1. A kindergarten teacher who is an avid user of typed user commands
-(able to use Command prompt/terminal).
-2. The teacher teaches multiple classes, each containing multiple students.
-3. The teacher will also have multiple colleagues to work with.
+1. Singapore-based kindergarten teacher. 
+2. A kindergarten teacher who is an avid user of typed user commands
+(able to use Command prompt/terminal). 
+3. The teacher teaches multiple classes, each containing multiple students. 
+4. The teacher will also have multiple colleagues to work with.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -98,13 +99,13 @@ manage students' and parents' contact information efficiently.
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/name [desc/NOTE]` can be used as `n/John Doe desc/Allergic to peanut` or as `n/John Doe`.
 
 * Items followed by ellipsis `...` accept more than one value.<br>
   e.g `c/CLASS...` can be used as `c/K1A` or as `c/K1A c/K2B`.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
+* Parameters (excluding INDEX) can be in any order.<br>
+  e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable. <br> e.g. if the command specifies `INDEX s/status` you must write `INDEX` first before the other parameters.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -431,9 +432,12 @@ view 1
 **Purpose**: Stores additional info (student progress, allergies, parent instructions, etc.).
 
 ##### Command Format
+
+**To add/change notes to a specific index:**
 ```shell
 note INDEX desc/NOTE_TEXT
 ```
+**To delete notes from a specific index:**
 ```shell
 note INDEX
 ```
@@ -629,7 +633,7 @@ fav INDEX(es)
 ##### Parameters & Validation Rules
 |                     Parameter                     | Validation Rules                                                                                                                              |
 |:-------------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string                                                                                                                                | 
+| <span style="color: #e83f8b">**INDEX(es)**</span> | Numeric string separated by commas (spaces before and after commas are ignored)                                                               | 
 |                                                   | When called once on an index, the index is added to favourites <br> When called again on the same index, the index is removed from favourites |
 |                                                   | Error if empty string                                                                                                                         |
 
@@ -638,19 +642,24 @@ fav INDEX(es)
 fav 1 
 ```
 ```shell
-fav 1 2 3 4 5
+fav 1,2,3 
 ```
 ```shell
-fav 3 5 2 1
+fav 1, 2, 3, 4, 5
+```
+```shell
+fav 3 ,5 , 2 ,1
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                   | Message                                                                                              | GUI Action                                                                                                                      |
-|:---------------------------------------------:|--------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| <span style="color: green">**Success**</span> | All contacts were not in favourites before | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
-| <span style="color: green">**Success**</span> | All contacts were in favourites before     | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
-| <span style="color: green">**Success**</span> | Some contacts were in favourites before    | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
-|  <span style="color: red">**Failure**</span>  | Empty keyword                              | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|                 Outcome Type                  | Scenario                                                           | Message                                                                                              | GUI Action                                                                                                                      |
+|:---------------------------------------------:|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| <span style="color: green">**Success**</span> | All contacts were not in favourites before                         | `Updated favourites successfully.` _(with information on who were added)_                            | Contact list updates with star icon next to contacts of specified index(es)                                                     |
+| <span style="color: green">**Success**</span> | All contacts were in favourites before                             | `Updated favourites successfully.` _(with information on who were removed)_                          | Contact list updates with star icon removed from the contacts of specified index(es)                                            |
+| <span style="color: green">**Success**</span> | Some contacts were in favourites before                            | `Updated favourites succesfully.` _(with information on who were added and removed from favourites)_ | Contact list updates with star icon next to newly added favourite contacts and no star next to contacts removed from favourites |
+|  <span style="color: red">**Failure**</span>  | Empty keyword                                                      | `Invalid command format!` _(with correct format guidance)_                                           | No changes                                                                                                                      |
+|  <span style="color: red">**Failure**</span>  | Non-positive index(es) or multiple indexes not separated by commas | `Index(es) must be positive integers separated by commas.`                                           | No changes                                                                                                                      |    
+|  <span style="color: red">**Failure**</span>  | Out of bounds positive index(es)                                   | `You have passed in out of bound index(es).` _(with guidance on what index(es) are valid)_           | No changes                                                                                                                      |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -753,7 +762,8 @@ attendance INDEX(es) s/STATUS [d/DATE]
 | <span style="color: #e83f8b">**INDEX(es)**</span>  | Must be a positive integer (1, 2, 3, ...)                  | 
 |                                                    | Cannot be 0 or negative                                    |
 |                                                    | Must correspond to an existing contact in the current list |
-|                                                    | Accepts multiple inputs                                    |
+|                                                    | Accepts multiple inputs (separated by commas. E.g. 1,2,3)  |
+|                                                    | Accepts ranged inputs (E.g. 1-2,5-6)                       |
 | <span style="color: #e83f8b">**STATUS(es)**</span> | Valid status field: present, late, sick, absent, remove    |
 |                                                    | Must be contiguous without spaces or symbols in between    |
 |                                                    | Error if empty                                             |
@@ -777,14 +787,15 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                | Message                                                                      | GUI Action                            |
-|:---------------------------------------------:|-----------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS` | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
-| <span style="color: green">**Success**</span> | Student's attendance removed            | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance          | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound              | `Modified 0 out of <x> contacts.` _(reminder on attendance rules)_           | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter              | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format                | _Parameter-specific validation error_                                        | No changes                            |
+|                 Outcome Type                  | Scenario                                    | Message                                                                      | GUI Action                            |
+|:---------------------------------------------:|---------------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS`     | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
+| <span style="color: green">**Success**</span> | Student's attendance removed                | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance              | `Modified 0 out of 1 contacts.` _(attendance details)_                       | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking attendance on an empty contact list | `No contacts available to download attendance.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                  | `Modified 0 out of <x> contacts.` _(attendance details)_                     | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                  | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                    | _Parameter-specific validation error_                                        | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -835,7 +846,7 @@ attendanceD c/CLASS... [m/MONTH]
 
 **Notes about report saving:**
 * Individual attendance (<code>INDEX(es)</code>) will be saved into one file named: <code>student_attendance_[MONTH].csv</code>
-* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]_[MONTH].csv</code> or <code>[CLASS]\_attendance\_[DATE].csv</code>
+* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]\_attendance\_[DATE].csv</code> or <code>[CLASS]\_attendance\_[MONTH].csv</code>
 * All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
 </box>
 
@@ -857,14 +868,17 @@ attendanceD c/K1A c/K2B m/01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                       | Message                                                       | GUI Action                            |
-|:---------------------------------------------:|--------------------------------|---------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Attendance report downloaded   | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound     | `Date must be within 01-01-1900 until <current date>.`        | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Month out of accepted bound    | `Month must be within 01-1900 until <current month>.`         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter     | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format       | _Parameter-specific validation error_                         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Error saving attendance report | `Error saving attendance report: _error message_`             | No changes                            |
+|                 Outcome Type                  | Scenario                                              | Message                                                                | GUI Action                            |
+|:---------------------------------------------:|-------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded                          | `Attendance report downloaded. Saved to:`<br>`<path/to/folder>`        | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading a class attendance report with 0 students | `No attendance report downloaded. Class(es) provided has no students.` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading colleagues' attendance report             | `No attendance report downloaded. No student in the index specified.`  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading on an empty contact list                  | `No contacts available to mark attendance.`                            | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                            | `Date must be within 01-01-1900 until <current date>.`                 | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Month out of accepted bound                           | `Month must be within 01-1900 until <current month>.`                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                            | `Invalid command format!` _(with correct format guidance)_             | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                              | _Parameter-specific validation error_                                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report                        | `Error saving attendance report: _error message_`                      | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -944,7 +958,11 @@ LittleLogBook data are saved in the hard disk automatically after any command th
 
 ### Editing the data file
 
-LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/littlelogbook.json`. Advanced users are welcome to update data directly by editing that data file.
+LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+
+Any direct changes inside the JSON file while the app is closed will be reflected inside the app once you open the app.
+
+Remember to close the application first before directly changing the JSON file, as making changes while the app is open and running won't automatically reflect the changes.
 
 <box type="warning">
 
@@ -957,6 +975,36 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## FAQ
 
+### General
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?  
+**A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
+
+<br>
+
+### Attendance
+##### Marking
+**Q**: What happens if I accidentally include colleague indexes when marking student attendance?<br>
+**A**: LittleLogBook will automatically filter out colleagues and only mark attendance for students. You'll see a summary showing which students were successfully marked and which contacts were skipped (with reasons).
+
+**Q**: Can I mark attendance for future dates?<br>
+**A**: No, you can only mark attendance from a student's birthday up to today's date.
+
+**Q**: What happens if I try to mark attendance with an invalid date?<br>
+**A**: LittleLogBook will show an error and list the affected students with the reason "Date before birthday or after today".
+
+**Q**: How do I update a student's attendance if I made a mistake?<br>
+**A**: Use the same attendance command with the correct status, or use remove as status to clear the record for that date.
+
+##### Reports
+**Q**: What happens if I include colleague indexes when downloading attendance reports?<br>
+**A**: Colleagues are automatically excluded from attendance reports. You'll only receive CSV files containing student attendance records.
+
+**Q**: Where are attendance reports saved?<br>
+**A**: All CSV reports are saved in the data/ folder within your LittleLogBook directory.
+
+<br>
+
+### Data
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous LittleLogBook home folder.
 
@@ -1001,20 +1049,22 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## Command summary
 
-|   Action   | Command Format                                                                                    | Example Commands                                                                                           |
-|:----------:|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-|  **Add**   | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                       | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student` |
-|  **Edit**  | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`  | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`  |
-| **Delete** | `delete INDEX`<br>`delete n/NAME`                                                                 | `delete 1`<br>`delete n/John Doe`                                                                          |
-|  **View**  | `view INDEX`                                                                                      | `view 1`                                                                                                   |
-|  **Note**  | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                       | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                              |
-| **Find-n** | `find-n NAME(s)`                                                                                  | `find-n John`                                                                                              |
-| **Find-p** | `find-p PHONE(s)`                                                                                 | `find-p 84871234`                                                                                          |
-| **Find-t** | `find-t TAG(s)`                                                                                   | `find-t student`                                                                                           |
-|  **Find-c**| `find-c CLASS(es)`                                                                                | `find-c K1A nursery`                                                                                       |
-|  **Fav**   | `fav INDEX(es)`                                                                                   | `fav 1 2`                                                                                                  |
-| **Remind** | `remind`                                                                                          | `remind`                                                                                                   |
-|  **List**  | `list`                                                                                            | `list`                                                                                                     |
-| **Clear**  | `clear`                                                                                           | `clear`                                                                                                    |
-|  **Help**  | `help`                                                                                            | `help`                                                                                                     |
-|  **Exit**  | `exit`                                                                                            | `exit`                                                                                                     |
+|     Action      | Command Format                                                                                                   | Example Commands                                                                                                |
+|:---------------:|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+|     **Add**     | `add n/NAME p/PHONE e/EMAIL a/ADDRESS c/CLASS b/BIRTHDAY t/TAG [desc/NOTE]`                                      | `add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1A b/15-03-2018 t/student`      |
+|    **Edit**     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TAG] [desc/NOTE]`                 | `edit 1 n/Bobby p/98765432 e/bobby@gmail.com a/Blk 676, Hen Road, #01-205 c/K2B b/15-03-2019 t/colleague`       |
+|   **Delete**    | `delete INDEX`<br>`delete n/NAME`                                                                                | `delete 1`<br>`delete n/John Doe`                                                                               |
+|    **View**     | `view INDEX`                                                                                                     | `view 1`                                                                                                        |
+|    **Note**     | `note INDEX desc/NOTE_TEXT`<br>`note INDEX`                                                                      | `note 1 desc/Allergic to peanuts`<br>`note 1`                                                                   |
+|   **Find-n**    | `find-n NAME(s)`                                                                                                 | `find-n John`                                                                                                   |
+|   **Find-p**    | `find-p PHONE(s)`                                                                                                | `find-p 84871234`                                                                                               |
+|   **Find-t**    | `find-t TAG(s)`                                                                                                  | `find-t student`                                                                                                |
+|   **Find-c**    | `find-c CLASS(es)`                                                                                               | `find-c K1A nursery`                                                                                            |
+|     **Fav**     | `fav INDEX(es)`                                                                                                  | `fav 1,2`                                                                                                       |
+|   **Remind**    | `remind`                                                                                                         | `remind`                                                                                                        |
+| **Attendance**  | `attendance INDEX(es) s/STATUS [d/DATE]`                                                                         |                                                                                                                 |
+| **AttendanceD** | `attendanceD INDEX(es) [m/MONTH]` <br> `attendanceD c/CLASS... [d/DATE]` <br> `attendanceD c/CLASS... [m/MONTH]` | `attendanceD 1-4,6 m/01-2025` <br> `attendanceD c/K1A d/29-01-2025` <br> `attendanceD c/K1A c/K2B m/01-2025`    |
+|    **List**     | `list`                                                                                                           | `list`                                                                                                          |
+|    **Clear**    | `clear`                                                                                                          | `clear`                                                                                                         |
+|    **Help**     | `help`                                                                                                           | `help`                                                                                                          |
+|    **Exit**     | `exit`                                                                                                           | `exit`                                                                                                          |
