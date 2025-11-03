@@ -61,6 +61,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.TestDateUtil;
 
 public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
@@ -436,13 +437,14 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_birthdayNormalization_success() {
-        // Birthday with spaces should be normalized
+        String validBirthday = TestDateUtil.getValidStudentBirthday();
+
         Person expectedPerson = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
-                .withBirthday("15-03-2018").withNote("").withTags(VALID_TAG_STUDENT).build();
+                .withBirthday(validBirthday).withNote("").withTags(VALID_TAG_STUDENT).build();
 
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + CLASS_DESC_BOB + " b/ 15-03-2018 " + TAG_DESC_STUDENT, new AddCommand(expectedPerson));
+                + CLASS_DESC_BOB + " b/ " + validBirthday + " " + TAG_DESC_STUDENT, new AddCommand(expectedPerson));
     }
 
     @Test
@@ -476,5 +478,138 @@ public class AddCommandParserTest {
         // Test case 3: Multiple tags - caught by duplicate prefix validation
         // (already tested in parse_multipleTags_failure)
         // The "exactly one tag" validation remains uncovered because it's unreachable
+    }
+    @Test
+    public void parse_studentWithValidBirthday_success() {
+        String validBirthday = TestDateUtil.getValidStudentBirthday();
+
+        Person expectedStudent = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
+                .withBirthday(validBirthday)
+                .withNote("").withTags(VALID_TAG_STUDENT).build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + validBirthday + TAG_DESC_STUDENT, new AddCommand(expectedStudent));
+    }
+
+    @Test
+    public void parse_studentWithTooYoungBirthday_failure() {
+        String tooYoungBirthday = TestDateUtil.getTooYoungStudentBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooYoungBirthday + TAG_DESC_STUDENT;
+
+        assertParseFailure(parser, command, "Invalid student birthday!\n"
+                + "Student's birthday must be between 3 to 6 years old.");
+    }
+
+    @Test
+    public void parse_studentWithTooOldBirthday_failure() {
+        String tooOldBirthday = TestDateUtil.getTooOldStudentBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooOldBirthday + TAG_DESC_STUDENT;
+
+        assertParseFailure(parser, command, "Invalid student birthday!\n"
+                + "Student's birthday must be between 3 to 6 years old.");
+    }
+
+    @Test
+    public void parse_colleagueWithValidBirthday_success() {
+        String validColleagueBirthday = TestDateUtil.getValidColleagueBirthday();
+
+        Person expectedColleague = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
+                .withBirthday(validColleagueBirthday)
+                .withNote("").withTags("colleague").build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB + CLASS_DESC_BOB + " b/" + validColleagueBirthday
+                + TAG_DESC_COLLEAGUE, new AddCommand(expectedColleague));
+    }
+
+    @Test
+    public void parse_colleagueWithTooYoungBirthday_failure() {
+        String tooYoungColleagueBirthday = TestDateUtil.getTooYoungColleagueBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooYoungColleagueBirthday + TAG_DESC_COLLEAGUE;
+
+        assertParseFailure(parser, command, "Invalid colleague birthday!\n"
+                + "Colleague's birthday must be between above 18 years old.");
+    }
+
+    @Test
+    public void parse_boundaryAgeStudent_success() {
+        // Test boundary cases for students
+        // Minimum age: 3 years old
+        String minAgeBirthday = TestDateUtil.getMinStudentBirthday();
+        Person minAgeStudent = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
+                .withBirthday(minAgeBirthday)
+                .withNote("").withTags(VALID_TAG_STUDENT).build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + minAgeBirthday + TAG_DESC_STUDENT, new AddCommand(minAgeStudent));
+
+        // Maximum age: 6 years old
+        String maxAgeBirthday = TestDateUtil.getMaxStudentBirthday();
+        Person maxAgeStudent = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
+                .withBirthday(maxAgeBirthday)
+                .withNote("").withTags(VALID_TAG_STUDENT).build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + maxAgeBirthday + TAG_DESC_STUDENT, new AddCommand(maxAgeStudent));
+    }
+
+    @Test
+    public void parse_boundaryAgeColleague_success() {
+        // Test boundary case for colleagues
+        // Minimum age: 18 years old
+        String minAgeBirthday = TestDateUtil.getMinColleagueBirthday();
+        Person minAgeColleague = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withClass(VALID_CLASS_BOB)
+                .withBirthday(minAgeBirthday)
+                .withNote("").withTags("colleague").build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + minAgeBirthday + TAG_DESC_COLLEAGUE, new AddCommand(minAgeColleague));
+    }
+
+    @Test
+    public void parse_edgeCaseStudentJustBeforeValid_failure() {
+        // Student just before valid range (2 years old)
+        String tooYoungBirthday = TestDateUtil.getTooYoungStudentBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooYoungBirthday + TAG_DESC_STUDENT;
+
+        assertParseFailure(parser, command, "Invalid student birthday!\n"
+                + "Student's birthday must be between 3 to 6 years old.");
+    }
+
+    @Test
+    public void parse_edgeCaseStudentJustAfterValid_failure() {
+        // Student just after valid range (7 years old)
+        String tooOldBirthday = TestDateUtil.getTooOldStudentBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooOldBirthday + TAG_DESC_STUDENT;
+
+        assertParseFailure(parser, command, "Invalid student birthday!\n"
+                + "Student's birthday must be between 3 to 6 years old.");
+    }
+
+    @Test
+    public void parse_edgeCaseColleagueJustBeforeValid_failure() {
+        // Colleague just before valid range (17 years old)
+        String tooYoungColleagueBirthday = TestDateUtil.getTooYoungColleagueBirthday();
+
+        String command = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + CLASS_DESC_BOB + " b/" + tooYoungColleagueBirthday + TAG_DESC_COLLEAGUE;
+
+        assertParseFailure(parser, command, "Invalid colleague birthday!\n"
+                + "Colleague's birthday must be between above 18 years old.");
     }
 }

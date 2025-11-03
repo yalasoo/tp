@@ -181,12 +181,30 @@ The `view` command displays detailed information about a specific person in a po
 **Operation:** `view INDEX`
 
 **How it works:**
-1. Parses the user-provided index using ViewCommandParser 
-2. Validates that the index is within bounds of the current filtered list 
-3. Retrieves the corresponding person from the filtered person list using Model#getFilteredPersonList()
-4. Creates a ViewCommand object with the target index 
-5. When executed, opens a pop-up window (ViewWindow) displaying all person details 
-6. The main window remains accessible while the view window is open
+1. **User Input Parsing**:
+    - User enters a view command (e.g., "view 1")
+    - `AddressBookParser` identifies it as a view command and delegates to `ViewCommandParser`
+    - `ViewCommandParser` extracts and validates the index format
+
+2. **Index Validation**:
+    - Validates that the index is a positive integer
+    - Checks that the index is within bounds of the current filtered person list using `Model#getFilteredPersonList()`
+
+3. **Command Creation**:
+    - Creates a `ViewCommand` object with the validated target index
+
+4. **Command Execution**:
+    - When executed, the command retrieves the corresponding person from the filtered list using the stored index
+    - Opens a pop-up window (`ViewWindow`) displaying all the person's details
+    - The main window remains fully accessible while the view window is open (non-modal)
+
+#### Design Rationale
+The view command was implemented as a separate window to fulfill the requirement of displaying all of a contact's fields simultaneously, which was not feasible within the constrained rows of the main contact list. 
+This design offers a clean separation between the high-level list view and the detailed single-contact view.
+
+A key design constraint was managing application stability and data consistency. To prevent potential performance issues or system resource exhaustion, the application is restricted to having only one ViewWindow open at any time. Attempting to open a second view window will replace the existing contact with the new contact.
+
+Furthermore, to ensure that the UI never displays outdated information, the view window is automatically closed upon the execution of any other command that modifies the model or the viewed state (e.g. edit, delete). This guarantees that if a user views a contact, then edits another, the view window will close, preventing a scenario where it shows details that may no longer be accurate or where the indexed person in the list has changed.
 
 **Overall Sequence Diagram for View:**
 <div align="center">
@@ -212,7 +230,7 @@ The `remind` command shows current and upcoming birthdays.
 **How it works:**
 1. User launch the program
 2. Remind command is automatically called
-3. Get list of persons whose birthdays is today or in the upcoming 7 days. 
+3. Get list of persons whose birthdays is today or in the upcoming 7 days
 4. Displays a list of upcoming events/birthdays 
 5. Can show both students and colleagues with upcoming dates
 
@@ -236,6 +254,8 @@ The `remind` command shows current and upcoming birthdays.
   - Minimum Date: 01-01-1900 - Prevents unrealistically old birth dates 
   - Maximum Date: Current date - Prevents future birth dates 
   - Range Validation: Ensures birthday falls between January 1, 1900 and today
+- Student's age must be either 3, 4, 5 or 6 years old. (by Singapore Education requirements)
+- Colleague's age must be above 18 years old. (Of working age)
 
 **Overall Sequence Diagram for Remind:**
 <div align="center">
@@ -250,6 +270,10 @@ Below is the more in depth breakdown of the Logic, Model and UI Sequence diagram
 <div align="center">
     <puml src="diagrams/RemindSequenceDiagram-UI.puml" alt="RemindUIState" />
 </div>
+
+**Future improvement:**
+- Students that are currently 6 years old would be 7 years old next year and would be invalid in the system
+- Possibly remind the teacher to remove the graduated students
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -907,14 +931,14 @@ testers are expected to do more *exploratory* testing.
 
 1. **Simulating missing data file:**
     - Navigate to the `data/` folder in your LittleLogBook directory
-    - Delete or rename the `addressbook.json` file
+    - Delete or rename the `littlelogbook.json` file
     - Launch LittleLogBook
-    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `addressbook.json` file automatically
+    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `littlelogbook.json` file automatically
 
 <br>
 
 2. **Simulating corrupted data file:**
-    - Open the `data/addressbook.json` file in a text editor
+    - Open the `data/littlelogbook.json` file in a text editor
     - Manually modify the JSON structure to be invalid, for example:
         - Remove essential fields like `"name"`, `"phone"`, etc. from a contact
         - Change field types (e.g., change a phone number to an array: `"phone": [12345678]`)
@@ -1016,7 +1040,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Edge Cases and Error Handling
 1. **Command case sensitivity**
-    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-insensitive).
+    - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-sensitive).
 
 1. **Parameter order variations**
     - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.

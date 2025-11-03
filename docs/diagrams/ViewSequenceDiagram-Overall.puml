@@ -15,7 +15,7 @@ activate ui UI_COLOR
 ui -[UI_COLOR]> logic : execute("view 1")
 activate logic LOGIC_COLOR
 
-logic -[LOGIC_COLOR]> logic : "parse command &\ncreate ViewCommand"
+logic -[LOGIC_COLOR]> logic : parse "view 1"\n(creates ViewCommand)
 activate logic LOGIC_COLOR_T1
 logic --[LOGIC_COLOR]> logic
 deactivate logic
@@ -26,7 +26,7 @@ activate model MODEL_COLOR
 model --[MODEL_COLOR]> logic : personList
 deactivate model
 
-logic -[LOGIC_COLOR]> logic : "extract person\nat index 1"
+logic -[LOGIC_COLOR]> logic : extract person\nat index 1
 activate logic LOGIC_COLOR_T1
 logic --[LOGIC_COLOR]> logic
 deactivate logic
