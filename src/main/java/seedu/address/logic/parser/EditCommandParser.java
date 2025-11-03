@@ -87,10 +87,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         assert tags != null;
 
         if (tags.isEmpty()) {
-            return Optional.empty();
+            throw new ParseException("Tag must be either student or colleague.");
         }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        return Optional.of(ParserUtil.parseTags(tags));
     }
 
 }
