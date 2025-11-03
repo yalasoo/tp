@@ -43,7 +43,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/yalasoo)]
 
 * Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Responsibilities: Pop-up windows be popping like soda pop in my nightmares
 
 ### Zeng Jing
 
