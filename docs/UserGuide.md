@@ -764,14 +764,15 @@ attendance 1-3,7,9 s/sick d/29-01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                                | Message                                                                      | GUI Action                            |
-|:---------------------------------------------:|-----------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS` | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
-| <span style="color: green">**Success**</span> | Student's attendance removed            | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance          | `Modified 0 out of 1 contacts.` _(reminder on attendance rules)_             | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound              | `Modified 0 out of <x> contacts.` _(reminder on attendance rules)_           | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter              | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format                | _Parameter-specific validation error_                                        | No changes                            |
+|                 Outcome Type                  | Scenario                                    | Message                                                                      | GUI Action                            |
+|:---------------------------------------------:|---------------------------------------------|------------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Student's attendance marked as `STATUS`     | `Modified <x> out of <x> contacts as STATUS on DATE.` _(attendance details)_ | No changes                            |
+| <span style="color: green">**Success**</span> | Student's attendance removed                | `Modified <x> out of <x> contacts as REMOVE on DATE.` _(attendance details)_ | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking a colleague attendance              | `Modified 0 out of 1 contacts.` _(attendance details)_                       | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Marking attendance on an empty contact list | `No contacts available to download attendance.`                              | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                  | `Modified 0 out of <x> contacts.` _(attendance details)_                     | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                  | `Invalid command format!` _(with correct format guidance)_                   | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                    | _Parameter-specific validation error_                                        | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -822,7 +823,7 @@ attendanceD c/CLASS... [m/MONTH]
 
 **Notes about report saving:**
 * Individual attendance (<code>INDEX(es)</code>) will be saved into one file named: <code>student_attendance_[MONTH].csv</code>
-* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]_[MONTH].csv</code> or <code>[CLASS]\_attendance\_[DATE].csv</code>
+* Class attendance (<code>CLASS(es)</code>) will be saved into one file per class. <br> E.g. <code>[CLASS]\_attendance\_[DATE].csv</code> or <code>[CLASS]\_attendance\_[MONTH].csv</code>
 * All files are saved in <code>csv</code> format. <a href="#open-csv-guide">Learn how to open csv file</a>.
 </box>
 
@@ -844,14 +845,17 @@ attendanceD c/K1A c/K2B m/01-2025
 ```
 
 ##### Outputs
-|                 Outcome Type                  | Scenario                       | Message                                                       | GUI Action                            |
-|:---------------------------------------------:|--------------------------------|---------------------------------------------------------------|---------------------------------------|
-| <span style="color: green">**Success**</span> | Attendance report downloaded   | `Attendance report downloaded. Saved to:`<br>`<path/to/file>` | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Date out of accepted bound     | `Date must be within 01-01-1900 until <current date>.`        | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Month out of accepted bound    | `Month must be within 01-1900 until <current month>.`         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Missing required parameter     | `Invalid command format!` _(with correct format guidance)_    | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Invalid parameter format       | _Parameter-specific validation error_                         | No changes                            |
-|  <span style="color: red">**Failure**</span>  | Error saving attendance report | `Error saving attendance report: _error message_`             | No changes                            |
+|                 Outcome Type                  | Scenario                                              | Message                                                                | GUI Action                            |
+|:---------------------------------------------:|-------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------|
+| <span style="color: green">**Success**</span> | Attendance report downloaded                          | `Attendance report downloaded. Saved to:`<br>`<path/to/folder>`        | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading a class attendance report with 0 students | `No attendance report downloaded. Class(es) provided has no students.` | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading colleagues' attendance report             | `No attendance report downloaded. No student in the index specified.`  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Downloading on an empty contact list                  | `No contacts available to mark attendance.`                            | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Date out of accepted bound                            | `Date must be within 01-01-1900 until <current date>.`                 | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Month out of accepted bound                           | `Month must be within 01-1900 until <current month>.`                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Missing required parameter                            | `Invalid command format!` _(with correct format guidance)_             | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Invalid parameter format                              | _Parameter-specific validation error_                                  | No changes                            |
+|  <span style="color: red">**Failure**</span>  | Error saving attendance report                        | `Error saving attendance report: _error message_`                      | No changes                            |
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -944,6 +948,36 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 
 ## FAQ
 
+### General
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?  
+**A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
+
+<br>
+
+### Attendance
+##### Marking
+**Q**: What happens if I accidentally include colleague indexes when marking student attendance?<br>
+**A**: LittleLogBook will automatically filter out colleagues and only mark attendance for students. You'll see a summary showing which students were successfully marked and which contacts were skipped (with reasons).
+
+**Q**: Can I mark attendance for future dates?<br>
+**A**: No, you can only mark attendance from a student's birthday up to today's date.
+
+**Q**: What happens if I try to mark attendance with an invalid date?<br>
+**A**: LittleLogBook will show an error and list the affected students with the reason "Date before birthday or after today".
+
+**Q**: How do I update a student's attendance if I made a mistake?<br>
+**A**: Use the same attendance command with the correct status, or use remove as status to clear the record for that date.
+
+##### Reports
+**Q**: What happens if I include colleague indexes when downloading attendance reports?<br>
+**A**: Colleagues are automatically excluded from attendance reports. You'll only receive CSV files containing student attendance records.
+
+**Q**: Where are attendance reports saved?<br>
+**A**: All CSV reports are saved in the data/ folder within your LittleLogBook directory.
+
+<br>
+
+### Data
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous LittleLogBook home folder.
 
