@@ -1046,10 +1046,23 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 ## FAQ
 
 ### General
-**Q**: Can I use both `INDEX` and `CLASS` together in commands?
+**Q**: Can I use both `INDEX` and `CLASS` together in commands?<br>
 **A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
 
+**Q**: What happens if I enter an index beyond MAX_INT of `2147483647` ?<br>
+**A**: If contact list shown in GUI does not have an index `2147483647`, when using commands such as `note` or `fav` you will get messages about the index being invalid or out of bounds respectively. If you input an index beyond this, due to stack overflow, it will be treated as a negative value and you will get appropriate error messages requesting for positive values.
+
 <br>
+
+### Find commands
+**Q**: What happens if I call find commands consecutively?<br>
+**A**: The contact list shown in GUI will be filtered further using the new find commands you input. So you can consecutively call the various find commands to narrow down a contact.
+
+**Q**: What happens if I call non-find commands after a find command?<br>
+**A**: If you call `list` command, it will display all the contacts. If you call `add`, `edit`, `note` commands on the filtered contacts view, once executed the contact list will reset to showing all the contacts. Whereas, if you call `fav`, `delete`, `view`, `remind`, `help`, `attendance`, `attendanceD` commands, the filtered view from find command will remain.
+
+**Q**: How do I go back to displaying all contacts after using find commands?<br>
+**A**: As guided by the GUI messages, you may call the `list` command to display all the contacts.
 
 ### Attendance
 ##### Marking

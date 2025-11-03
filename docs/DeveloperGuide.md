@@ -1129,5 +1129,5 @@ testers are expected to do more *exploratory* testing.
 <br>
 
 ### 3 Birthday field
-- **Handle age-based expiration for existing students**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Add graduation reminder system: Currently, there is no reminder for teachers to remove graduated students.
+- **Handle age-based expiration for existing students by creating graduated students reminder system**: Currently, students who are 6 years old will become invalid next year when they turn 7. We will implement an annual check that automatically flags or archives students who have reached the maximum age with a confirmation prompt for deletion. Afterward, LittleLogBook will remind the teacher to remove graduated students.
   - Example: Running the app after a year would show: "3 students have reached invalid age. Use cleanup_age to review and remove them."
