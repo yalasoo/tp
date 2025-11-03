@@ -14,7 +14,6 @@ import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
 import seedu.address.model.Model;
 import seedu.address.model.person.Class;
 import seedu.address.model.person.Person;
-import seedu.address.model.tag.Tag;
 
 /**
  * Formats attendance data into CSV file.
@@ -30,8 +29,10 @@ public class AttendanceCsvUtil {
      * @param month The month to generate attendance for.
      * @return CSV string with all dates in the month as columns.
      */
-    public static String generateStudentsMonthlyAttendanceReport(Model model, Set<Index> indexes, YearMonth month) {
+    public static String generateStudentsMonthlyAttendanceReport(Model model, Set<Index> indexes, YearMonth month)
+            throws IndexOutOfBoundsException {
         StringBuilder csv = new StringBuilder();
+        boolean atLeasOneRecord = false;
 
         String header = generateStudentMonthlyHeader(month);
 
@@ -42,8 +43,9 @@ public class AttendanceCsvUtil {
 
             String row;
 
-            if (person.getTags().contains(new Tag("student"))) {
+            if (person.isStudent()) {
                 row = generateStudentMonthlyRow(person, month);
+                atLeasOneRecord = true;
             } else {
                 continue;
             }
@@ -51,7 +53,11 @@ public class AttendanceCsvUtil {
             csv.append(row).append("\n");
         }
 
-        return csv.toString();
+        if (atLeasOneRecord) {
+            return csv.toString();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -65,6 +71,7 @@ public class AttendanceCsvUtil {
      */
     public static String generateClassDailyAttendanceReport(Model model, Class studentClass, LocalDate date) {
         StringBuilder csv = new StringBuilder();
+        boolean atLeasOneRecord = false;
 
         csv.append("Class attendance on: ")
                 .append(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
@@ -77,15 +84,17 @@ public class AttendanceCsvUtil {
         ObservableList<Person> filteredStudent = model.getFilteredPersonList()
                 .filtered(person -> person.getStudentClass().equals(studentClass));
 
-        for (Person student : filteredStudent) {
-            if (student.getTags().contains(new Tag("student"))) {
-                csv.append(student.getName()).append(",");
+        for (Person person : filteredStudent) {
+            if (person.isStudent()) {
+                csv.append(person.getName()).append(",");
 
-                Map<LocalDate, AttendanceStatus> attendance = student.getAttendance().getAttendanceRecords();
+                Map<LocalDate, AttendanceStatus> attendance = person.getAttendance().getAttendanceRecords();
 
                 if (attendance.containsKey(date)) {
                     csv.append(attendance.get(date).toString());
                 }
+
+                atLeasOneRecord = true;
             } else {
                 continue;
             }
@@ -93,7 +102,11 @@ public class AttendanceCsvUtil {
             csv.append("\n");
         }
 
-        return csv.toString();
+        if (atLeasOneRecord) {
+            return csv.toString();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -107,6 +120,7 @@ public class AttendanceCsvUtil {
     */
     public static String generateClassMonthlyAttendanceReport(Model model, Class studentClass, YearMonth month) {
         StringBuilder csv = new StringBuilder();
+        boolean atLeasOneRecord = false;
 
         String header = generateStudentMonthlyHeader(month);
 
@@ -116,11 +130,12 @@ public class AttendanceCsvUtil {
                 .filtered(person -> person.getStudentClass().equals(studentClass));
 
 
-        for (Person student : filteredStudent) {
+        for (Person person : filteredStudent) {
             String row;
 
-            if (student.getTags().contains(new Tag("student"))) {
-                row = generateStudentMonthlyRow(student, month);
+            if (person.isStudent()) {
+                row = generateStudentMonthlyRow(person, month);
+                atLeasOneRecord = true;
             } else {
                 continue;
             }
@@ -128,7 +143,11 @@ public class AttendanceCsvUtil {
             csv.append(row).append("\n");
         }
 
-        return csv.toString();
+        if (atLeasOneRecord) {
+            return csv.toString();
+        } else {
+            return "";
+        }
     }
 
     /**

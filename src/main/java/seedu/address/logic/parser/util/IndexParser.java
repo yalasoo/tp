@@ -1,7 +1,10 @@
 package seedu.address.logic.parser.util;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -18,8 +21,8 @@ public class IndexParser {
      * @return Parsed index(es) in the form of {@code Set<Index>}.
      * @throws ParseException If an error occurs during parsing.
      */
-    public static Set<Index> parseIndexes(String strIndexes) throws ParseException {
-        Set<Index> indexes = new HashSet<>();
+    public static SortedSet<Index> parseIndexes(String strIndexes) throws ParseException, NumberFormatException {
+        SortedSet<Index> indexes = new TreeSet<>(Comparator.comparingInt(Index::getOneBased));
         String[] parts = strIndexes.split(",");
 
         for (String part : parts) {
@@ -42,7 +45,7 @@ public class IndexParser {
      * @return Parsed indexes in the form of {@code Set<Index>}.
      * @throws ParseException If an error occurred during parsing.
      */
-    public static Set<Index> parseRange(String range) throws ParseException {
+    public static Set<Index> parseRange(String range) throws ParseException, NumberFormatException {
         Set<Index> indexes = new HashSet<>();
         String[] bounds = range.split("-");
 
@@ -50,8 +53,11 @@ public class IndexParser {
             throw new ParseException("Invalid range format: " + range);
         }
 
-        int start = Integer.parseInt(bounds[0].trim());
-        int end = Integer.parseInt(bounds[1].trim());
+        int start;
+        int end;
+
+        start = Integer.parseInt(bounds[0].trim());
+        end = Integer.parseInt(bounds[1].trim());
 
         if (start <= 0 || end <= 0) {
             throw new ParseException("Index range must contain positive numbers only.");
@@ -75,7 +81,7 @@ public class IndexParser {
      * @return Index object.
      * @throws ParseException If an error occurs during parsing.
      */
-    public static Index parseSingleIndex(String strIndex) throws ParseException {
+    public static Index parseSingleIndex(String strIndex) throws ParseException, NumberFormatException {
         try {
             int index = Integer.parseInt(strIndex.trim());
             if (index <= 0) {

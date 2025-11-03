@@ -48,7 +48,7 @@ public class AttendanceCsvUtilTest {
     }
 
     @Test
-     void generateStudentsMonthlyAttendanceReport_nonStudents_generatesCsvHeaderOnly() {
+     void generateStudentsMonthlyAttendanceReport_nonStudents_notSaved() {
         Person colleague = new PersonBuilder().withTags("colleague").build();
         model.addPerson(colleague);
 
@@ -57,8 +57,7 @@ public class AttendanceCsvUtilTest {
 
         String result = generateStudentsMonthlyAttendanceReport(model, indexes, month);
 
-        assertTrue(result.contains("Name,Class")); // Header present
-        assertFalse(result.contains(colleague.getName().toString())); // Should skip colleague
+        assertTrue(result.isEmpty());
     }
 
     @Test
