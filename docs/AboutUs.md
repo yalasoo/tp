@@ -21,10 +21,10 @@ We are a team based in the [School of Computing, National University of Singapor
 
 <img src="images/theresiaong.png" width="200px">
 
-[[github](http://github.com/theresiaong)]
+[[github](http://github.com/theresiaong)] [[Portofolio](team/theresiaong.md)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: Ensuring each member have their daily dose of duck related insights!
 
 ### Wong Wei Feng
 

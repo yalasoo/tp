@@ -86,6 +86,10 @@ manage students' and parents' contact information efficiently.
 
 1. Refer to the [Features](#features) below for details of each command.
 
+<box type="tip">
+<strong>Tip:</strong> For quick reference, check out our <a href="#glossary">Glossary</a> of terms below!
+</box>
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Features
@@ -1021,7 +1025,7 @@ LittleLogBook data are saved in the hard disk automatically after any command th
 
 ### Editing the data file
 
-LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+LittleLogBook data are saved automatically as a JSON file `[JAR file location]/data/littlelogbookf.json`. Advanced users are welcome to update data directly by editing that data file.
 
 Any direct changes inside the JSON file while the app is closed will be reflected inside the app once you open the app.
 
@@ -1037,9 +1041,12 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Glossary
-|           Term           | Explanation                                                                                                                                                           | Example & Elaboration                                                                                                     |
-|:------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| **Cumulative Filtering** | Once a find command is used, those matching the input condition will be shown on the screen. Subsequent find commands will filter from the contacts listed on screen. | Doing `find-c K1A` followed by `find-n ne` will update GUI to only show contacts in K1A with letters 'ne' in their names. |
+|           Term           | Explanation                                                                                                                                                           | Example & Elaboration                                                                                                                                                             |
+|:------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|       **Student**        | Refers to a child (age 3 - 6) enrolled in a kindergarten.                                                                                                             | Information about phone number, email, and address associated with student are assumed to be their parent's or guardian's. <br><br> Each student can only have 1 parent/guardian. |
+|   **Parent/Guardian**    | Refers to a person with legal responsibility for a child's care.                                                                                                      | We assume a parent/guardian can have 0 or more children enrolled in a kindergarten.                                                                                               |
+|      **Colleague**       | Refers to kindergarten teachers who are age 18 and above.                                                                                                             | Information about phone number, email, and address associated with colleague are assumed to be their own. <br><br> Each teacher can only have 1 class.                            |
+| **Cumulative Filtering** | Once a find command is used, those matching the input condition will be shown on the screen. Subsequent find commands will filter from the contacts listed on screen. | Doing `find-c K1A` followed by `find-n ne` will update GUI to only show contacts in K1A with letters 'ne' in their names.                                                         |
  
 --------------------------------------------------------------------------------------------------------------------
 
