@@ -907,14 +907,14 @@ testers are expected to do more *exploratory* testing.
 
 1. **Simulating missing data file:**
     - Navigate to the `data/` folder in your LittleLogBook directory
-    - Delete or rename the `addressbook.json` file
+    - Delete or rename the `littlelogbook.json` file
     - Launch LittleLogBook
-    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `addressbook.json` file automatically
+    - **Expected behavior:** LittleLogBook should start with a fresh empty address book and create a new `littlelogbook.json` file automatically
 
 <br>
 
 2. **Simulating corrupted data file:**
-    - Open the `data/addressbook.json` file in a text editor
+    - Open the `data/littlelogbook.json` file in a text editor
     - Manually modify the JSON structure to be invalid, for example:
         - Remove essential fields like `"name"`, `"phone"`, etc. from a contact
         - Change field types (e.g., change a phone number to an array: `"phone": [12345678]`)

@@ -23,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.TestDateUtil;
 
 /**
  * Contains helper methods for testing commands.
@@ -37,8 +38,9 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_CLASS_AMY = "K1A";
     public static final String VALID_CLASS_BOB = "K2B";
-    public static final String VALID_BIRTHDAY_AMY = "15-03-2018";
-    public static final String VALID_BIRTHDAY_BOB = "24-12-2017";
+    public static final String VALID_BIRTHDAY_AMY = TestDateUtil.getStudentBirthdayForAge(4);
+    public static final String VALID_BIRTHDAY_BOB = TestDateUtil.getStudentBirthdayForAge(5);
+    public static final String VALID_BIRTHDAY_COLLEAGUE = TestDateUtil.getColleagueBirthdayForAge(25);
     public static final String VALID_NOTE_AMY = "She is allergic to peanut.";
     public static final String VALID_NOTE_BOB = "He is allergic to chocolate!";
     public static final String VALID_TAG_STUDENT = "student";
@@ -56,6 +58,7 @@ public class CommandTestUtil {
     public static final String CLASS_DESC_BOB = " " + PREFIX_CLASS + VALID_CLASS_BOB;
     public static final String BIRTHDAY_DESC_AMY = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_AMY;
     public static final String BIRTHDAY_DESC_BOB = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_BOB;
+    public static final String BIRTHDAY_DESC_COLLEAGUE = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_COLLEAGUE;
     public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
     public static final String TAG_DESC_COLLEAGUE = " " + PREFIX_TAG + VALID_TAG_COLLEAGUE;
     public static final String NOTE_DESC_AMY = " " + PREFIX_NOTE + VALID_NOTE_AMY;
