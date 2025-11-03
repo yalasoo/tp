@@ -1049,6 +1049,9 @@ Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways 
 **Q**: Can I use both `INDEX` and `CLASS` together in commands?<br>
 **A**: No, most commands require you to choose either INDEX or CLASS parameters, not both simultaneously.
 
+**Q**: What happens if I enter an index beyond MAX_INT of `2147483647` ?<br>
+**A**: If contact list shown in GUI does not have an index `2147483647`, when using commands such as `note` or `fav` you will get messages about the index being invalid or out of bounds respectively. If you input an index beyond this, due to stack overflow, it will be treated as a negative value and you will get appropriate error messages requesting for positive values.
+
 <br>
 
 ### Find commands
