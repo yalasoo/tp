@@ -741,23 +741,33 @@ testers are expected to do more *exploratory* testing.
     - Prerequisites: At least one contact has birthday today, and at least one has birthday within next 7 days
     - Test case: `remind`<br>**Expected**: Shows two sections: "Happy Birthday to these people today!" and "Upcoming birthdays in the next 7 days:" with numbered lists.
 
-1. **Manual reminder with only upcoming birthdays**
+<br>
+
+2. **Manual reminder with only upcoming birthdays**
     - Prerequisites: No contacts have birthday today, but some have birthdays within next 7 days
     - Test case: `remind`<br>**Expected**: Shows "No birthdays today!" followed by "Upcoming birthdays in the next 7 days:" section.
 
-1. **Manual reminder with no upcoming birthdays**
+<br>
+
+3. **Manual reminder with no upcoming birthdays**
     - Prerequisites: No contacts have birthdays today or within next 7 days
     - Test case: `remind`<br>**Expected**: Shows "No upcoming birthdays found." message.
 
-1. **Manual reminder with empty address book**
+<br>
+
+4. **Manual reminder with empty address book**
     - Prerequisites: Clear all contacts using `clear` command
     - Test case: `remind`<br>**Expected**: Shows "No contacts in LittleLogBook." message.
 
-1. **Automatic reminder on startup**
+<br>
+
+5. **Automatic reminder on startup**
     - Prerequisites: Contacts with birthdays today and/or upcoming exist
     - Action: Close and reopen the app<br>**Expected**: Birthday reminders shown automatically in the result display when app starts.
 
-1. **Reminder formatting verification**
+<br>
+
+6. **Reminder formatting verification**
     - Prerequisites: Contacts with various birthday scenarios exist
     - Test case: `remind`<br>**Expected**: Each entry shows:
         - Name in correct format
@@ -766,12 +776,18 @@ testers are expected to do more *exploratory* testing.
         - "(TODAY!)" for today's birthdays
         - "(in X day(s))" for upcoming birthdays
 
-1. **Reminder with extraneous parameters**
+<br>
+
+7. **Reminder with extraneous parameters**
     - Test case: `remind extra parameter`<br>**Expected**: Command works normally (extraneous parameters ignored).
 
-1. **Cross-year birthday handling**
+<br>
+
+8. **Cross-year birthday handling**
     - Prerequisites: Test in late December with contacts having January birthdays
     - Test case: `remind`<br>**Expected**: Correctly shows upcoming birthdays that cross into next year.
+
+<br>
 
 **Testing Tips for `remind` command:**
 - Use system date changes to simulate different scenarios
@@ -806,10 +822,14 @@ testers are expected to do more *exploratory* testing.
     - Prerequisites: Multiple contacts in list
     - Test case: `view 1`<br>**Expected**: Popup window shows full contact details.
 
-1. **Viewing student vs colleague**
+<br>
+
+2. **Viewing student vs colleague**
     - Test cases: `view 1` (student), `view 2` (colleague)<br>**Expected**: Different layouts shown (student shows attendance, colleague does not).
 
-1. **Viewing with invalid index**
+<br>
+
+3. **Viewing with invalid index**
     - Test case: `view 0`<br>**Expected**: Error message about invalid index.
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -928,7 +948,7 @@ testers are expected to do more *exploratory* testing.
 
 3. **Testing with invalid birthday formats:**
     - Change a contact's birthday to an invalid format (e.g., `"32-13-2020"`, `"birthday": "not-a-date"`)
-    - **Expected behavior:** LittleLogBook should either use a default date or show an error during startup
+    - **Expected behavior:** LittleLogBook should detect the corruption and start with an empty address book.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1018,11 +1038,17 @@ testers are expected to do more *exploratory* testing.
 1. **Command case sensitivity**
     - Test: `ADD`, `Add`, `add`<br>**Expected**: only commands in lower case should work (case-insensitive).
 
-1. **Parameter order variations**
-    - Test: `add p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+<br>
 
-1. **Extra spaces in commands**
-    - Test: `add   n/John   Doe   p/98765432`<br>**Expected**: Should handle gracefully (trim spaces).
+2. **Parameter order variations**
+    - Test: `add t/student b/15-03-2018 c/K1A a/Blk 456, Den Road, #01-355 e/john.doe@gmail.com p/98765432 n/John Doe` (reverse order)<br>**Expected**: Should work correctly.
+
+<br>
+
+[//]: # (TODO: Either remove this from the DG or figure out a way to solve the spaces not visible in webiste)
+
+3. **Extra spaces in commands and parameters (ONLY for `n/`, `p/`, and `a/`)**
+    - Test: `add n/Johns          Doe       p/9876         5432 e/john.doe@gmail.com a/Blk 456, Den            Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Should handle gracefully (trim spaces).
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
