@@ -20,6 +20,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -195,6 +198,33 @@ public class ModelManagerTest {
         // From zeroBased indexing, firstPerson will be index 1
         expectedList.add(Index.fromZeroBased(0));
         expectedList.add(Index.fromZeroBased(2));
+        assertEquals(actualList, expectedList);
+    }
+
+    @Test
+    public void updateFilteredPersonListCumulative_returnsCorrectList() {
+        ModelManager modelManager = new ModelManager();
+        Person firstPerson = new PersonBuilder().withName("Alice").withFavourite(true).build();
+        Person secondPerson = new PersonBuilder().withName("Bob Doe").withFavourite(false).build();
+        Person thirdPerson = new PersonBuilder().withName("Charles Doe").withFavourite(true).build();
+
+        // Add the people
+        modelManager.addPerson(firstPerson);
+        modelManager.addPerson(secondPerson);
+        modelManager.addPerson(thirdPerson);
+
+        // Obtain current filteredList (should have all three persons)
+        FilteredList<Person> filteredList = (FilteredList<Person>) modelManager.getFilteredPersonList();
+
+        // Set first predicate
+        filteredList.setPredicate(person -> person.getName().fullName.contains("a"));
+        // Use the method for combined predicate
+        modelManager.updateFilteredPersonListCumulative(person -> person.getName().fullName.contains("Doe"));
+
+        // Expected output list
+        ObservableList<Person> expectedList = FXCollections.observableArrayList(thirdPerson);
+        // Actual output list
+        ObservableList<Person> actualList = modelManager.getFilteredPersonList();
         assertEquals(actualList, expectedList);
     }
 

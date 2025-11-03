@@ -226,6 +226,12 @@ The system uses different rules for detecting duplicates based on contact type. 
 • **Mixed Types:** No conflicts - students and colleagues can share the same information
 </box>
 
+<box type="info">
+<strong>Why Different Duplicate Rules?</strong><br>
+• <strong>Colleagues:</strong> In a professional setting, multiple colleagues can have the same name, but each should have their own unique phone number and email address<br>
+• <strong>Students:</strong> Multiple students may share the same emergency contact number (e.g., siblings), but each student should have a unique name-phone combination to distinguish between them
+</box>
+
 ##### Sample Commands
 ```shell
 add n/John Doe p/98765432 e/john.doe@gmail.com a/Blk 456, Den Road, #01-355 c/K1D b/15-03-2020 t/student
@@ -295,7 +301,7 @@ edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [b/BIRTHDAY] [t/TA
 |                                                       | Age is calculated using Singapore education system rules: Age = Current Year - Birth Year (Not by exact date)                                                                           |
 |   <span style="color: #6b7280">**TAG (t/)**</span>    | Exactly one tag                                                                                                                                                                         |
 |                                                       | Must be either 'student' or 'colleague' (case-insensitive)                                                                                                                              |
-| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Any text up to 500                                                                                                                                                                      |
+| <span style="color: #6b7280">**NOTE (desc/)**</span>  | Up to 500 characters                                                                                                                                                                    |
 |                                                       | Leading/trailing spaces trimmed                                                                                                                                                         |
 
 ##### Sample Commands
@@ -361,21 +367,21 @@ delete n/John Doe
 
 **1. Delete by INDEX**
 
-|                                      Outcome Type                                       | Scenario          | Message                                                    | GUI Action                                                 |
-|:---------------------------------------------------------------------------------------:|-------------------|------------------------------------------------------------|------------------------------------------------------------|
-|                      <span style="color: green">**Success**</span>                      | Contact deleted   | `Deleted Person: <Person>`                                 | Contact list refreshes without deleted entry               |
-|                       <span style="color: red">**Failure**</span>                       | Invalid index     | `The person index provided is invalid`                     | No changes                                                 |
-|                       <span style="color: red">**Failure**</span>                       | No index provided | `Invalid command format!` _(with correct format guidance)_ | No changes                                                 |
-|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`  | Pop-up window with the selected person information appears |
+|                                      Outcome Type                                       | Scenario                            | Message                                                        | GUI Action                                                 |
+|:---------------------------------------------------------------------------------------:|-------------------------------------|----------------------------------------------------------------|------------------------------------------------------------|
+|                      <span style="color: green">**Success**</span>                      | Contact deleted                     | `Deleted Person: <Person>`                                     | Contact list refreshes without deleted entry               |
+|                       <span style="color: red">**Failure**</span>                       | Invalid index                       | `The person index provided is invalid`                         | No changes                                                 |
+|                       <span style="color: red">**Failure**</span>                       | No index provided                   | `Invalid command format!` _(with correct format guidance)_     | No changes                                                 |
+|              <span style="color: orange">**Confirmation Required**</span>               | Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`      | Pop-up window with the selected person information appears |
 
 **2. Delete by NAME**
 
-|                         Outcome Type                         | Scenario                                                                   | Message                                                                                             | GUI Action                                                 |
-|:------------------------------------------------------------:|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-|        <span style="color: green">**Success**</span>         | Contact deleted                                                            | `Deleted Person: <Person>`                                                                          | Contact list refreshes without deleted entry               |
-|         <span style="color: red">**Failure**</span>          | No matches found                                                           | `No matches found. Please try again`                                                                | Pop-up window appears                                      |
-| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                     | `Possible matches found. Type index and ENTER to delete or ESC to cancel and go back to main window` | Pop-up window with list of matches appears                 |
-| <span style="color: orange">**Confirmation Required**</span> | One exact same name found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                           | Pop-up window with the selected person information appears |
+|                         Outcome Type                         | Scenario                                                                   | Message                                                                                               | GUI Action                                                 |
+|:------------------------------------------------------------:|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+|        <span style="color: green">**Success**</span>         | Contact deleted                                                            | `Deleted Person: <Person>`                                                                            | Contact list refreshes without deleted entry               |
+|         <span style="color: red">**Failure**</span>          | No matches found                                                           | `No matches found. Please try again`                                                                  | Pop-up window appears                                      |
+| <span style="color: orange">**Confirmation Required**</span> | Multiple matches found                                                     | `Possible matches found. Type index and ENTER to delete or ESC to cancel and go back to main window`  | Pop-up window with list of matches appears                 |
+| <span style="color: orange">**Confirmation Required**</span> | One exact same name found / selected - Double confirmation before deletion | `Are you sure you want to delete this contact <Person> ?`                                             | Pop-up window with the selected person information appears |
 
 <box type="warning">
 <strong>Note:</strong> When a popup window appears, you must respond to it before continuing. 
@@ -490,7 +496,7 @@ note 1
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by name : `find-n`
+### Finding contacts by name (cumulative filtering): `find-n`
 **Purpose**: Allows teachers to find contacts quickly with partial names (contiguous).
 
 ##### Format 
@@ -522,11 +528,17 @@ find-n Tan
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!`  _(with guidance on next possible steps)_  | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+</box>
 
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by phone number : `find-p`
+### Finding contacts by phone number (cumulative filtering): `find-p`
 **Purpose**: Allows teachers to find contacts quickly with partial number (contiguous).
 
 ##### Format 
@@ -560,10 +572,17 @@ find-p 3133
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
+
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by tags : `find-t`
+### Finding contacts by tags (cumulative filtering): `find-t`
 **Purpose**: Allows teachers to find contacts quickly with partial tags (contiguous).
 
 ##### Format
@@ -597,10 +616,17 @@ find-t ague
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
 
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
+
 [//]: # (COMMAND BREAK)
 <br>
 
-### Finding contacts by classes : `find-c`
+### Finding contacts by classes (cumulative filtering): `find-c`
 **Purpose**: Allows teachers to find contacts quickly with partial classes (contiguous).
 
 ##### Format
@@ -634,6 +660,13 @@ find-c 2 A
 | <span style="color: green">**Success**</span> | Matches found    | `<x> persons listed!` _(with guidance on next possible steps)_ | Contact list updates with matching contacts |
 | <span style="color: green">**Success**</span> | No matches found | `0 persons listed!` _(with guidance on next possible steps)_   | Contact list shows empty results            |
 |  <span style="color: red">**Failure**</span>  | Empty keyword    | `Invalid command format!` _(with correct format guidance)_     | No changes                                  |
+
+<box type="info" markdown>
+
+* Find commands filter contacts cumulatively. Refer to <a href="#glossary">Glossary</a> section on cumulative filtering to find out more! <br>
+
+* Using add, edit, note, list commands will revert to displaying **all** contacts!
+  </box>
 
 [//]: # (COMMAND BREAK)
 <br>
@@ -739,12 +772,12 @@ remind
 
 ##### Possible Outputs
 
-|                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                             GUI Action                            |
-|:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| :---------------------------------------------------------------: |
+|                                           Outcome Type                                           |                    Scenario                    |                                                                   Message shown (exact/representative)                                                                   |                            GUI Action                             |
+|:------------------------------------------------------------------------------------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------:|
 |                          <span style="color: green">**Success**</span>                           | There are birthdays today and/or within 7 days | `Happy Birthday to these people today!`<br/>`1) ...`<br/><br/>`Upcoming birthdays in the next 7 days:`<br/>`1) ...`<br/><br/>`Don't forget to wish them happy birthday!` | Reminder printed to command output / help window (no data change) |
-|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                       `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                               |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                          Reminder printed                         |
-|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                      `No contacts in LittleLogBook.`                                                                      |                          Reminder printed                         |
+|                          <span style="color: green">**Success**</span>                           |     No birthdays today, some are upcoming      |                                                   `No birthdays today!\n\nUpcoming birthdays in the next 7 days:\n...`                                                   |                         Reminder printed                          |
+|                          <span style="color: green">**Success**</span>                           |   No birthdays today and none within 7 days    |                                                                      `No upcoming birthdays found.`                                                                      |                         Reminder printed                          |
+|                          <span style="color: green">**Success**</span>                           |             Address book is empty              |                                                                     `No contacts in LittleLogBook.`                                                                      |                         Reminder printed                          |
 
 ##### Formatting of the reminder list
 
@@ -988,6 +1021,13 @@ If your changes to the data file makes its format invalid, LittleLogBook will di
 Furthermore, certain edits can cause LittleLogBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
+--------------------------------------------------------------------------------------------------------------------
+
+## Glossary
+|           Term           | Explanation                                                                                                                                                           | Example & Elaboration                                                                                                     |
+|:------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| **Cumulative Filtering** | Once a find command is used, those matching the input condition will be shown on the screen. Subsequent find commands will filter from the contacts listed on screen. | Doing `find-c K1A` followed by `find-n ne` will update GUI to only show contacts in K1A with letters 'ne' in their names. |
+ 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
