@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphabetic characters, spaces, hyphens, and apostrophes. "
+            "Names should only contain alphabetic characters, spaces, hyphens, and apostrophes.\n"
             + "Names must contain at least 2 alphabetic characters, cannot consist only of punctuation, "
             + "and should not have consecutive punctuation (e.g., 'Mary-Jane' ✓, 'Mary--Jane' ✗).";
 

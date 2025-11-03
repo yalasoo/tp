@@ -29,8 +29,8 @@ public class InfoPopup extends UiPart<Stage> {
     public InfoPopup(Stage root) {
         super(FXML, root);
         setUpKeyboardHandlers();
-        root.setWidth(300);
-        root.setHeight(200);
+        root.setWidth(375);
+        root.setHeight(275);
         root.initModality(Modality.APPLICATION_MODAL);
         root.setAlwaysOnTop(true);
     }
