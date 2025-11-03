@@ -44,9 +44,9 @@ public class AddCommand extends Command {
             + PREFIX_NOTE + "Likes to study in the library";
 
     public static final String MESSAGE_SUCCESS = "Successfully added a new contact: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "Duplicate contact detected. "
-            + "For colleagues: ensure unique phone numbers and email addresses. "
-            + "For students: ensure unique name-phone combinations.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This contact already exists in the address book.\n"
+            + "For colleagues: Phone numbers and email addresses must be unique.\n"
+            + "For students: Name-phone combinations must be unique.";
 
     private final Person toAdd;
 

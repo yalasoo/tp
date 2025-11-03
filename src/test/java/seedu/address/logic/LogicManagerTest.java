@@ -156,12 +156,12 @@ public class LogicManagerTest {
 
         // Add mandatory tag parameter
         String validStudentBirthday = TestDateUtil.getValidStudentBirthday(); // e.g., "15-03-2020"
-        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main St c/K1A b/"
+        String addCommand = "add n/Amy Bee p/81111111 e/amy@example.com a/123 Main Street Avenue c/K1A b/"
                 + validStudentBirthday + " t/student";
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         Person expectedPerson = new PersonBuilder().withName("Amy Bee").withPhone("81111111")
-                .withEmail("amy@example.com").withAddress("123 Main St").withClass("K1A")
+                .withEmail("amy@example.com").withAddress("123 Main Street Avenue").withClass("K1A")
                 .withBirthday(validStudentBirthday).withNote("").withTags("student").build();
         expectedModel.addPerson(expectedPerson);
 

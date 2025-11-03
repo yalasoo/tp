@@ -12,7 +12,8 @@ public class Name {
     public static final String MESSAGE_CONSTRAINTS =
             "Names should only contain alphabetic characters, spaces, hyphens, and apostrophes. "
             + "Names must contain at least 2 alphabetic characters, cannot consist only of punctuation, "
-            + "and should not have consecutive punctuation (e.g., 'Mary-Jane' ✓, 'Mary--Jane' ✗).";
+            + "should not have consecutive punctuation (e.g., 'Mary-Jane' ✓, 'Mary--Jane' ✗), "
+            + "and must have more letters than punctuation marks (e.g., 'O'Connor' ✓, 'a'a'' ✗).";
 
     /*
      * The name must contain only letters, spaces, hyphens, and apostrophes.

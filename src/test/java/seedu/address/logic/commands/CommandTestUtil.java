@@ -70,7 +70,7 @@ public class CommandTestUtil {
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_CLASS_DESC = " " + PREFIX_CLASS
-            + "K1A1"; // 'K1A1' invalid kindergarten class format (extra character)
+            + "K1 A"; // 'K1 A' contains space which is not allowed
     public static final String INVALID_BIRTHDAY_DESC = " " + PREFIX_BIRTHDAY + "32-13-2005"; // invalid date
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "friend"; // only 'student' or 'colleague' allowed
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty address not allowed
