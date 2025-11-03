@@ -31,6 +31,7 @@ public class Messages {
                     + "\nor ESC to cancel and return to main window.";
     public static final String MESSAGE_INVALID_INDEX_IN_POPUP =
             "Please enter a valid index number\nor press ESC to cancel and go back to main window.";
+    public static final String MESSAGE_INSTRUCTION = "(Press ENTER to return to main window)";
 
 
 
