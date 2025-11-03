@@ -14,7 +14,7 @@ import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
@@ -52,10 +52,17 @@ public class AttendanceDownloadCommandParser implements Parser<AttendanceDownloa
 
         validateParameterCombinations(hasIndex, hasClass, userProvidedDate, userProvidedMonth);
 
-        Set<Index> indexes = null;
+        SortedSet<Index> indexes = null;
         List<Class> studentClasses = null;
 
         if (hasIndex) {
+            String preamble = argMultimap.getPreamble();
+
+            if (!preamble.matches("[0-9,\\-\\s]+")) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        AttendanceDownloadCommand.MESSAGE_USAGE));
+            }
+
             indexes = parseIndexes(argMultimap.getPreamble());
         } else {
             studentClasses = new ArrayList<>();

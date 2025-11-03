@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.commands.util.AttendanceCsvUtil.generateClassDailyAttendanceReport;
 import static seedu.address.logic.commands.util.AttendanceCsvUtil.generateClassMonthlyAttendanceReport;
 import static seedu.address.logic.commands.util.AttendanceCsvUtil.generateStudentsMonthlyAttendanceReport;
@@ -16,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
@@ -47,14 +48,14 @@ public class AttendanceDownloadCommand extends Command {
             + "• " + COMMAND_WORD + " " + PREFIX_CLASS + "K1A " + PREFIX_DATE + "12-12-2025\n"
             + "• " + COMMAND_WORD + " " + PREFIX_CLASS + "K1A " + PREFIX_CLASS + "K2B " + PREFIX_MONTH + "12-2025";
 
-    public static final String MESSAGE_SUCCESS = "Attendance report downloaded.";
+    public static final String MESSAGE_SUCCESS = "Attendance report(s) downloaded.";
 
     public static final LocalDate EARLIEST_DATE = LocalDate.of(1900, 1, 1);
     public static final YearMonth EARLIEST_MONTH = YearMonth.of(1900, 1);
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
-    private final Set<Index> indexes;
+    private final SortedSet<Index> indexes;
     private final List<Class> studentClass;
     private final LocalDate date;
     private final YearMonth month;
@@ -70,8 +71,8 @@ public class AttendanceDownloadCommand extends Command {
      * @param date Which date to download attendance report.
      * @param month Which month to download attendance report.
      */
-    public AttendanceDownloadCommand(Set<Index> indexes, List<Class> studentClass, LocalDate date, YearMonth month,
-                                     Boolean userProvideDate, Boolean userProvideMonth) {
+    public AttendanceDownloadCommand(SortedSet<Index> indexes, List<Class> studentClass, LocalDate date,
+                                     YearMonth month, Boolean userProvideDate, Boolean userProvideMonth) {
         requireNonNull(date);
         requireNonNull(month);
 
@@ -86,6 +87,10 @@ public class AttendanceDownloadCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (model.getFilteredPersonList().isEmpty()) {
+            throw new CommandException("No contacts available to download attendance.");
+        }
 
         if (userProvideDate) {
             checkValidDate();
@@ -110,7 +115,10 @@ public class AttendanceDownloadCommand extends Command {
             return new CommandResult(MESSAGE_SUCCESS + " Saved to:\n" + filePath);
         } catch (IOException e) {
             logger.severe("Error saving attendance report: " + e.getMessage());
-            return new CommandResult("Error saving attendance report: " + e.getMessage());
+            throw new CommandException("Error saving attendance report: " + e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            logger.warning("Index out of bound: " + e.getMessage());
+            throw new CommandException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
     }
 
@@ -154,17 +162,23 @@ public class AttendanceDownloadCommand extends Command {
      * @return The file path of the last saved class attendance report.
      * @throws IOException If an error occurs during file saving.
      */
-    private String downloadClassMonthlyAttendanceReport(Model model, String filePath) throws IOException {
+    private String downloadClassMonthlyAttendanceReport(Model model, String filePath)
+            throws IOException, CommandException {
         String fileName;
         for (Class studentClass : studentClass) {
             String classCsv = generateClassMonthlyAttendanceReport(model, studentClass, month);
-            fileName = studentClass + "_"
+            fileName = studentClass + "_attendance_"
                     + month.format(DateTimeFormatter.ofPattern("MM-yyyy"))
                     + ".csv";
 
-            filePath = saveAttendanceCsv(classCsv, fileName);
+            filePath = classCsv.isEmpty() ? "" : saveAttendanceCsv(classCsv, fileName);
         }
-        return filePath;
+
+        if (filePath.isEmpty()) {
+            throw new CommandException("No attendance report downloaded. Class(es) provided has no students.");
+        } else {
+            return filePath;
+        }
     }
 
     /**
@@ -177,7 +191,8 @@ public class AttendanceDownloadCommand extends Command {
      * @return The file path of the last saved class attendance report.
      * @throws IOException If an error occurs during file saving.
      */
-    private String downloadClassDailyAttendanceReport(Model model, String filePath) throws IOException {
+    private String downloadClassDailyAttendanceReport(Model model, String filePath)
+            throws IOException, CommandException {
         String fileName;
         for (Class studentClass : studentClass) {
             String classCsv = generateClassDailyAttendanceReport(model, studentClass, date);
@@ -185,9 +200,14 @@ public class AttendanceDownloadCommand extends Command {
                     + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                     + ".csv";
 
-            filePath = saveAttendanceCsv(classCsv, fileName);
+            filePath = classCsv.isEmpty() ? "" : saveAttendanceCsv(classCsv, fileName);
         }
-        return filePath;
+
+        if (filePath.isEmpty()) {
+            throw new CommandException("No attendance report downloaded. Class(es) provided has no students.");
+        } else {
+            return filePath;
+        }
     }
 
     /**
@@ -198,13 +218,18 @@ public class AttendanceDownloadCommand extends Command {
      * @return The file path of the saved student attendance report.
      * @throws IOException If an error occurs during file saving.
      */
-    private String downloadStudentMonthlyAttendanceReport(Model model) throws IOException {
+    private String downloadStudentMonthlyAttendanceReport(Model model)
+            throws IOException, IndexOutOfBoundsException, CommandException {
         String fileCsv = generateStudentsMonthlyAttendanceReport(model, indexes, month);
         String fileName = "student_attendance_"
                 + month.format(DateTimeFormatter.ofPattern("MM-yyyy"))
                 + ".csv";
 
-        return saveAttendanceCsv(fileCsv, fileName);
+        if (fileCsv.isEmpty()) {
+            throw new CommandException("No attendance report downloaded. No student in the index specified.");
+        } else {
+            return saveAttendanceCsv(fileCsv, fileName);
+        }
     }
 
     @Override
@@ -219,19 +244,6 @@ public class AttendanceDownloadCommand extends Command {
 
         AttendanceDownloadCommand otherAttendanceDownloadCommand = (AttendanceDownloadCommand) other;
 
-        // Sort indexes before comparison
-        List<Index> thisSortedIndexes = (this.indexes != null)
-                ? this.indexes.stream()
-                .sorted((a, b) -> Integer.compare(a.getZeroBased(), b.getZeroBased()))
-                .toList()
-                : null;
-
-        List<Index> otherSortedIndexes = (otherAttendanceDownloadCommand.indexes != null)
-                ? otherAttendanceDownloadCommand.indexes.stream()
-                .sorted((a, b) -> Integer.compare(a.getZeroBased(), b.getZeroBased()))
-                .toList()
-                : null;
-
         // Sort classes by their string value before comparison
         List<Class> thisSortedClass = (this.studentClass != null)
                 ? this.studentClass.stream()
@@ -245,14 +257,13 @@ public class AttendanceDownloadCommand extends Command {
                 .toList()
                 : null;
 
-        return Objects.equals(thisSortedIndexes, otherSortedIndexes)
+        return Objects.equals(indexes, otherAttendanceDownloadCommand.indexes)
                 && Objects.equals(thisSortedClass, otherSortedClass)
                 && date.equals(otherAttendanceDownloadCommand.date)
                 && month.equals(otherAttendanceDownloadCommand.month)
                 && userProvideDate.equals(otherAttendanceDownloadCommand.userProvideDate)
                 && userProvideMonth.equals(otherAttendanceDownloadCommand.userProvideMonth);
     }
-
 
     @Override
     public String toString() {

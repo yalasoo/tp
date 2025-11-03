@@ -17,6 +17,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.InvalidDateException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -39,8 +40,7 @@ public class AttendanceCommand extends Command {
             + PREFIX_STATUS + "present "
             + PREFIX_DATE + "29-12-2025";
 
-    public static final String MESSAGE_SUCCESS = "Modified %d out of %d contacts as %s on %s."
-            + "\nStudents with updated attendance:";
+    public static final String MESSAGE_SUCCESS = "Modified %d out of %d contacts as %s on %s.";
 
     private static final Logger logger = LogsCenter.getLogger(AttendanceCommand.class);
 
@@ -56,7 +56,7 @@ public class AttendanceCommand extends Command {
     private final AttendanceStatus status;
 
     private final StringBuilder studentsModified = new StringBuilder();
-    private final StringBuilder contactsNotMarked = new StringBuilder();
+    private final StringBuilder contactsNotModified = new StringBuilder();
 
     /**
      * Creates a AttendanceCommand to mark attendance of the
@@ -101,24 +101,20 @@ public class AttendanceCommand extends Command {
      * @throws CommandException If an error occurs during command execution.
      */
     private CommandResult getCommandResult(int totalModified) throws CommandException {
-        if (totalModified > 0) {
-            logger.info("Successfully modified attendance for " + totalModified + " students");
-            String dateMsg = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        logger.info("Successfully modified attendance for " + totalModified + " students");
+        String dateMsg = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-            if (!contactsNotMarked.isEmpty()) {
-                contactsNotMarked.insert(0, "\n\nBelow are the unmarked contacts:");
-            }
-
-            return new CommandResult(String.format(
-                    MESSAGE_SUCCESS, totalModified, indexes.size(), status, dateMsg)
-                    + studentsModified.append(contactsNotMarked));
-        } else {
-            String unsuccessfulMsg = "Modified 0 out of " + indexes.size() + " contacts.";
-            logger.info(unsuccessfulMsg);
-            throw new CommandException(unsuccessfulMsg + " Please remember:"
-                    + "\nAttendance will only apply to student."
-                    + "\nProvide a date between the student's birthday and today's date.");
+        if (!studentsModified.isEmpty()) {
+            studentsModified.insert(0, "\n\nStudents with updated attendance:");
         }
+
+        if (!contactsNotModified.isEmpty()) {
+            contactsNotModified.insert(0, "\n\nBelow are the unmodified contacts:");
+        }
+
+        return new CommandResult(String.format(
+                MESSAGE_SUCCESS, totalModified, indexes.size(), status, dateMsg)
+                + studentsModified.append(contactsNotModified));
     }
 
     /**
@@ -147,26 +143,31 @@ public class AttendanceCommand extends Command {
             if (personToEdit.isStudent()) {
                 logger.fine("Marking attendance for " + personToEdit.getName() + " on " + date + " as " + status);
 
-                if (status.equals(AttendanceStatus.REMOVE)) {
-                    personToEdit.unmarkAttendance(date);
-                    studentsModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
-                    totalModified++;
-                    continue;
-                }
+                try {
+                    boolean isDuplicate = false;
+                    if (status.equals(AttendanceStatus.REMOVE)) {
+                        personToEdit.unmarkAttendance(date);
+                    } else {
+                        isDuplicate = !personToEdit.markAttendance(date, status);
+                    }
 
-                // Ensure marking was successful
-                // Guarantees unsuccessful to only be because of date error
-                if (personToEdit.markAttendance(date, status)) {
+                    if (isDuplicate) {
+                        logger.warning("Duplicate attendance: " + i.getOneBased());
+                        contactsNotModified.append("\n").append(i.getOneBased()).append(". ")
+                                .append(personToEdit.getName()).append(" [Status unchanged - same as previous record]");
+                        continue;
+                    }
+
                     studentsModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName());
                     totalModified++;
-                } else {
-                    logger.warning("Date provided before birthday or after today: " + i.getOneBased());
-                    contactsNotMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
-                            .append(" [Date before birthday or after today]");
+                } catch (InvalidDateException e) {
+                    logger.warning("Invalid date for attendance: " + i.getOneBased());
+                    contactsNotModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
+                            .append(" [Date before birthday or today]");
                 }
             } else {
                 logger.warning("Contact is not a student: " + i.getOneBased());
-                contactsNotMarked.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
+                contactsNotModified.append("\n").append(i.getOneBased()).append(". ").append(personToEdit.getName())
                         .append(" [Not a student]");
             }
         }

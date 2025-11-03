@@ -14,7 +14,8 @@ import javafx.beans.property.BooleanProperty;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.AttendanceCommand.AttendanceStatus;
-import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.InvalidDateException;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -56,12 +57,7 @@ public class Person {
         this.note = note;
         this.tags.addAll(tags);
 
-        // only add attendance for student
-        if (tags.contains(new Tag("student"))) {
-            this.attendance = (attendance != null) ? attendance : new Attendance();
-        } else {
-            this.attendance = null;
-        }
+        this.attendance = (attendance != null) ? attendance : new Attendance();
 
         // favourite could potentially be null in which case set it to default false
         if (favourite == null) {
@@ -125,17 +121,20 @@ public class Person {
      * @param status What is the status of this attendance.
      * @return False if date is not a valid attendance date, true otherwise.
      */
-    public Boolean markAttendance(LocalDate date, AttendanceStatus status)
-            throws CommandException {
+    public boolean markAttendance(LocalDate date, AttendanceStatus status)
+            throws InvalidDateException, NoAttendanceRecordException {
         assert date != null;
         assert status != null;
 
-        if (!validAttendanceDate(date) || attendance == null) {
-            return false;
+        if (!validAttendanceDate(date)) {
+            throw new InvalidDateException("Attendance cannot be mark for invalid date: " + date);
         }
 
-        attendance.markAttendance(date, status);
-        return true;
+        if (isStudent()) {
+            return attendance.markAttendance(date, status);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -144,22 +143,26 @@ public class Person {
      * @param date When does this attendance apply.
      * @return False if date is not a valid attendance date, true otherwise.
      */
-    public Boolean unmarkAttendance(LocalDate date) {
+    public boolean unmarkAttendance(LocalDate date)
+            throws InvalidDateException, NoAttendanceRecordException {
         assert date != null;
 
-        if (!validAttendanceDate(date) || attendance == null) {
-            return false;
+        if (!validAttendanceDate(date)) {
+            throw new InvalidDateException("Attendance cannot be unmark for invalid date: " + date);
         }
 
-        attendance.unmarkAttendance(date);
-        return true;
+        if (isStudent()) {
+            return attendance.unmarkAttendance(date);
+        } else {
+            return false;
+        }
     }
 
     /**
      * Checks whether the given date is a valid attendance date.
      * A valid attendance date must be within person's born date and today's date.
      *
-     * @param date
+     * @param date When does this attendance apply.
      * @return False if date before born date or after born date.
      */
     private boolean validAttendanceDate(LocalDate date) {

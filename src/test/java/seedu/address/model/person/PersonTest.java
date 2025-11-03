@@ -26,6 +26,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.InvalidDateException;
+import seedu.address.logic.commands.exceptions.NoAttendanceRecordException;
 import seedu.address.testutil.PersonBuilder;
 
 public class PersonTest {
@@ -239,21 +241,21 @@ public class PersonTest {
     }
 
     @Test
-    public void markAttendance_dateBeforeBirthday_failure() throws CommandException {
+    public void markAttendance_dateBeforeBirthday_throwsInvalidDateException() {
         Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
 
         LocalDate date = LocalDate.of(2023, 1, 1);
 
-        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT));
+        assertThrows(InvalidDateException.class, () -> person.markAttendance(date, AttendanceStatus.PRESENT));
     }
 
     @Test
-    public void markAttendance_dateAfterToday_failure() throws CommandException {
+    public void markAttendance_dateAfterToday_throwsInvalidDateException() throws CommandException {
         Person person = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
 
         LocalDate date = LocalDate.now().plusDays(1);
 
-        assertFalse(person.markAttendance(date, AttendanceStatus.PRESENT));
+        assertThrows(InvalidDateException.class, () -> person.markAttendance(date, AttendanceStatus.PRESENT));
     }
 
     @Test
@@ -274,23 +276,23 @@ public class PersonTest {
     }
 
     @Test
-    public void unmarkAttendance_beforeBirthday_failure() {
+    public void unmarkAttendance_beforeBirthday_throwsInvalidDateException() {
         Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.of(2023, 1, 1);
 
-        assertFalse(student.unmarkAttendance(date));
+        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
     }
 
     @Test
-    public void unmarkAttendance_futureDate_failure() {
+    public void unmarkAttendance_futureDate_throwsInvalidDateException() {
         Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.now().plusDays(1);
 
-        assertFalse(student.unmarkAttendance(date));
+        assertThrows(InvalidDateException.class, () -> student.markAttendance(date, AttendanceStatus.PRESENT));
     }
 
     @Test
-    public void unmarkAttendance_colleague_failure() {
+    public void unmarkAttendance_colleague_failure() throws InvalidDateException, NoAttendanceRecordException {
         Person student = new PersonBuilder().withTags("colleague").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.of(2024, 1, 1);
 
@@ -298,9 +300,11 @@ public class PersonTest {
     }
 
     @Test
-    public void unmarkAttendance_studentValidDate_success() {
+    public void unmarkAttendance_studentValidDate_success() throws InvalidDateException, NoAttendanceRecordException {
         Person student = new PersonBuilder().withTags("student").withBirthday("01-01-2024").build();
         LocalDate date = LocalDate.of(2024, 1, 1);
+
+        student.markAttendance(date, AttendanceStatus.PRESENT);
 
         assertTrue(student.unmarkAttendance(date));
     }

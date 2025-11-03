@@ -1107,3 +1107,15 @@ testers are expected to do more *exploratory* testing.
 - Testing boundary conditions
 - Testing error recovery
 - Testing UI responsiveness with different data volumes
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+### Attendance
+1. **Change attendance report into a more readable format**: Currently, attendance reports will be downloaded in CSV format which might be a little hard for some users to open (although we provide steps to do it in our [User Guide](../UserGuide.md#open-csv-guide)). We plan to format it into a XLSX, XLS, or other format that might not require external libraries to achieve the same result.
+
+<br>
+
+### Edit
+1. **Display a confirmation pop-up window when changing contact's tags**: Currently, users can change tags freely from student to colleague and vice versa. However, there is a possibility that the user did not intend to do this action in the first place. Having a confirmation window will also increase user experience and prevent accidental deletion of student's attendance history (although right now, we keep attendance record even if a contact's tag was edited form student to colleague).
