@@ -400,7 +400,7 @@ view 1
 |:---------------------------------------------:|------------------------|------------------------------------------------------------|-------------------------------------------------------------------|
 | <span style="color: green">**Success**</span> | Valid index provided   | `Viewing information of <contact>`                         | Pop-up windows appears displaying the contact's full information. |
 |  <span style="color: red">**Failure**</span>  | Invalid command format | `Invalid command format!` _(with correct format guidance)_ | No changes                                                        |
-|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `Person index provided is invalid`                         | No changes                                                        |
+|  <span style="color: red">**Failure**</span>  | Index out of bounds    | `The person index provided is invalid`                     | No changes                                                        |
 
 <div style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap;">
   <div style="text-align: center;">
