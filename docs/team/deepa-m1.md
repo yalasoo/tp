@@ -11,8 +11,8 @@ Given below are my contributions to the project.
 
 * **New Feature**: Favourite command 
     * What it does: Allows users to favourite desired contacts. When a contact is added to favourites, it will have a star icon next to it and using `list` command will display the favourite contacts at the top.
-    * Justification: This feature enhances the product by enabling users to quickly find contacts that they might often need.
-    * Highlights: This implementation is unique and user friendly as calling the `fav` command on a contact that is in favourites will remove it from favourites. The parser handles errors such as out of bounds index(es) gracefully and command result provides clear feedback on errors, and changes made to the favourites by user.
+    * Justification: This feature enhances the product by enabling users to quickly get the contacts that they might often need.
+    * Highlights: This implementation is unique and user friendly as calling the `fav` command on a contact that is in favourites will remove it from favourites. The parser handles errors such as out of bounds index(es) gracefully and command result provides clear feedback on errors and changes made to the favourites by user.
 
 * **Code contributed**: [RepoSense link](https://nus-cs2103-ay2526s1.github.io/tp-dashboard/?search=deepa-m1&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-09-19T00%3A00%3A00&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&filteredFileName=)
 
@@ -36,13 +36,15 @@ Given below are my contributions to the project.
     * **Reported bugs and suggestions for my team and other teams**: Reported 17 bugs during PE-D for another team and multiple alpha-bugs for my own team (Pull requests: [#174](https://github.com/AY2526S1-CS2103T-F14B-1/tp/issues/174), [#202](https://github.com/AY2526S1-CS2103T-F14B-1/tp/issues/202))
 
 * **Tools**:
-    * **CI: Set up the CI workflow in github
+    * **CI**: Set up the CI workflow in github
 
-* **Thank you Note**:
-* Huge shoutout to my amazing team from whom I learnt a lot. This journey was an enjoyable one despite the late nights and bug fixing because of **EACH and EVERYONE** of you:
-* [Theresia](https://github.com/theresiaong)
-  [Wei Feng](https://github.com/Hypovolemic)
-  [Yatong](https://github.com/yalasoo)
-  [Zeng Jing](https://github.com/zjaoyuki)
+    <br>
+
+**Thank you Note**:
+  Huge shoutout to my amazing team from whom I learnt a lot. This journey was an enjoyable one despite the late nights and bug fixing because of **EACH and EVERYONE** of you:<br>
+    [Theresia](https://github.com/theresiaong),
+    [Wei Feng](https://github.com/Hypovolemic),
+    [Yatong](https://github.com/yalasoo),
+    [Zeng Jing](https://github.com/zjaoyuki)!
  
-* To more projects together :)
+ To more projects together :)
