@@ -1,6 +1,6 @@
 ---
 layout: default.md
-title: "Theresia's Project Portfolio Page"
+title: "Theresia's Project Contributions Page"
 ---
 
 ### Project: LittleLogBook
@@ -11,7 +11,7 @@ The application was developed in Java over a 6-week engineering cycle, maintaini
 
 -----
 
-#### Contribution to Project
+#### Contributions to Project
 ##### New Features
 
 **1. Attendance Command**

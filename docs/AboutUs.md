@@ -21,7 +21,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 <img src="images/theresiaong.png" width="200px">
 
-[[github](http://github.com/theresiaong)] [[Portofolio](team/theresiaong.md)]
+[[github](http://github.com/theresiaong)] [[Project Contributions](team/theresiaong.md)]
 
 * **Role**: Software Developer and UI Designer
 * **Responsibilities**: Ensuring each member have their daily dose of duck related insights!
@@ -48,7 +48,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 <img src="images/zjaoyuki.png" width="200px">
 
-[[github](http://github.com/zjaoyuki)] [[Portofolio](team/zjaoyuki.md)]
+[[github](http://github.com/zjaoyuki)] [[Project Contributions](team/zjaoyuki.md)]
 
 * **Role**: Developer
 * **Responsibilities**: UI
