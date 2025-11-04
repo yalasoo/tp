@@ -1076,7 +1076,10 @@ testers are expected to do more *exploratory* testing.
 
 3. **Extra spaces in commands and parameters (ONLY for `n/`, `p/`, and `a/`)**
     - Test: `add n/Johns          Doe       p/9876         5432 e/john.doe@gmail.com a/Blk 456, Den            Road, #01-355 c/K1A b/15-03-2018 t/student`<br>**Expected**: Should handle gracefully (trim spaces).
+      <box type="info" seamless>
 
+        **Note:** When you copy the above command, the spaces may not appear as markbind does not allow spacings. Hence, for your testing purpose, you may add spaces to the command when you copy it into the GUI.
+    </box>
 ----------------------------------------------------------------------------------------------------------------------------------
 
 ### System commands

@@ -13,7 +13,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 <img src="images/deepa-m1.png" width="200px">
 
-[[github](https://github.com/deepa-m1)]
+[[github](https://github.com/deepa-m1)][[Project Contributions](team/deepa-m1.md)]
 
 * **Role**: Software Developer
 * **Responsibilities**: Eagle-eyed PR reviewer (and part-time grammar police)
