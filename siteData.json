@@ -173,8 +173,24 @@
       "headingKeywords": {}
     },
     {
+      "src": "team/deepa-m1.md",
+      "title": "Zeng Jing's Project Portfolio Page",
+      "headings": {
+        "project-littlelogbook": "Project: LittleLogBook"
+      },
+      "headingKeywords": {}
+    },
+    {
       "src": "team/theresiaong.md",
-      "title": "Theresia's Project Portfolio Page",
+      "title": "Theresia's Project Contributions Page",
+      "headings": {
+        "project-littlelogbook": "Project: LittleLogBook"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "team/yalasoo.md",
+      "title": "Yang Yatong's Project Contributions Page",
       "headings": {
         "project-littlelogbook": "Project: LittleLogBook"
       },
@@ -182,7 +198,7 @@
     },
     {
       "src": "team/zjaoyuki.md",
-      "title": "Zeng Jing's Project Portfolio Page",
+      "title": "Zeng Jing's Project Contributions Page",
       "headings": {
         "project-littlelogbook": "Project: LittleLogBook"
       },
