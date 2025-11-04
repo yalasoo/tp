@@ -15,17 +15,17 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/deepa-m1)]
 
-* Role: Software Developer
-* Responsibilities: Eagle-eyed PR reviewer (and part-time grammar police)
+* **Role**: Software Developer
+* **Responsibilities**: Eagle-eyed PR reviewer (and part-time grammar police)
 
 ### Theresia
 
 <img src="images/theresiaong.png" width="200px">
 
-[[github](http://github.com/theresiaong)] [[Portofolio](team/theresiaong.md)]
+[[github](http://github.com/theresiaong)] [[Project Contributions](team/theresiaong.md)]
 
-* Role: Developer
-* Responsibilities: Ensuring each member have their daily dose of duck related insights!
+* **Role**: Software Developer and UI Designer
+* **Responsibilities**: Ensuring each member have their daily dose of duck related insights!
 
 ### Wong Wei Feng
 
@@ -33,8 +33,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/Hypovolemic)]
 
-* Role: Developer
-* Responsibilities: Becoming one of the girlies
+* **Role**: Developer
+* **Responsibilities**: Becoming one of the girlies
 
 ### Yang Yatong
 
@@ -42,14 +42,14 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/yalasoo)]
 
-* Role: Developer
-* Responsibilities: Pop-up windows be popping like soda pop in my nightmares
+* **Role**: Developer
+* **Responsibilities**: Pop-up windows be popping like soda pop in my nightmares
 
 ### Zeng Jing
 
 <img src="images/zjaoyuki.png" width="200px">
 
-[[github](http://github.com/zjaoyuki)]
+[[github](http://github.com/zjaoyuki)] [[Project Contributions](team/zjaoyuki.md)]
 
-* Role: Developer
-* Responsibilities: Turning caffeine into code and bugs into features since Epoch
+* **Role**: Developer
+* **Responsibilities**: Turning caffeine into code and bugs into features since Epoch

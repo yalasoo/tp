@@ -1,6 +1,6 @@
 ---
 layout: default.md
-title: "Zeng Jing's Project Portfolio Page"
+title: "Zeng Jing's Project Contributions Page"
 ---
 
 ### Project: LittleLogBook
