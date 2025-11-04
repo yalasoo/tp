@@ -15,7 +15,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/deepa-m1)]
 
-* Role: Software Developer
+* **Role**: Software Developer
 
 ### Theresia
 
@@ -23,8 +23,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/theresiaong)] [[Portofolio](team/theresiaong.md)]
 
-* Role: Developer
-* Responsibilities: Ensuring each member have their daily dose of duck related insights!
+* **Role**: Software Developer and UI Designer
+* **Responsibilities**: Ensuring each member have their daily dose of duck related insights!
 
 ### Wong Wei Feng
 
@@ -32,8 +32,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/Hypovolemic)]
 
-* Role: Developer
-* Responsibilities: Data
+* **Role**: Developer
+* **Responsibilities**: Data
 
 ### Yang Yatong
 
@@ -41,14 +41,14 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/yalasoo)]
 
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
+* **Role**: Developer
+* **Responsibilities**: Dev Ops + Threading
 
 ### Zeng Jing
 
 <img src="images/zjaoyuki.png" width="200px">
 
-[[github](http://github.com/zjaoyuki)]
+[[github](http://github.com/zjaoyuki)] [[Portofolio](team/zjaoyuki.md)]
 
-* Role: Developer
-* Responsibilities: UI
+* **Role**: Developer
+* **Responsibilities**: UI
