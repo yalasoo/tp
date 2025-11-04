@@ -40,7 +40,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 <img src="images/yalasoo.png" width="200px">
 
-[[github](http://github.com/yalasoo)]
+[[github](http://github.com/yalasoo)] [[Project Contributions](team/yalasoo.md)]
 
 * Role: Developer
 * Responsibilities: Pop-up windows be popping like soda pop in my nightmares
